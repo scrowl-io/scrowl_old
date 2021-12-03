@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  scrowl:
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - CHOKIDAR_USEPOLLING=true
+    container_name: electron
+    build:
+      dockerfile: ./.docker/node.dockerfile
+      context: .
+    image: scrowl_image
+    working_dir: /app
+    command: >
+      sh -c "
+        su root &&
+        chown root /app/node_modules/electron/dist/chrome-sandbox &&
+        chmod 4755 /app/node_modules/electron/dist/chrome-sandbox  &&
+        mkdir /root/.config &&
+        chown -R node /root/.config &&
+        chown -R node /app &&
+        su node &&
+        npx yarn start"
+    ports:
+      - "9001:9000"
+    volumes:
+      - "./src:/app/src"
+      - "./package.json:/app/package.json"
+      - "./webpack:/app/webpack"
+      - "./tsconfig.json:/app/tsconfig.json"
+      - "./preload.js:/app/preload.js"
+    networks:
+      - scrowl-network
+
+networks:
+  scrowl-network:
+    driver: bridge
