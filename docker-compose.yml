@@ -2,23 +2,21 @@ version: "3.9"
 services:
   scrowl:
     environment:
+      # Fixes sockets on Docker on macOS. Using the container host for xhost
+      # https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949
       - DISPLAY=host.docker.internal:0
-      - CHOKIDAR_USEPOLLING=true
     container_name: electron
     build:
       dockerfile: ./.docker/node.dockerfile
       context: .
     image: scrowl_image
     working_dir: /app
+    security_opt:
+      # workaround to running headless chrome from container
+      # https://stackoverflow.com/a/53975412/15077454
+      - seccomp=./chrome.json
     command: >
       sh -c "
-        su root &&
-        chown root /app/node_modules/electron/dist/chrome-sandbox &&
-        chmod 4755 /app/node_modules/electron/dist/chrome-sandbox  &&
-        mkdir /root/.config &&
-        chown -R node /root/.config &&
-        chown -R node /app &&
-        su node &&
         npx yarn start"
     ports:
       - "9001:9000"
