@@ -1,4 +1,2 @@
 # SCROWL
-1. `yarn install`
-1. `yarn make`
-The MacOS package is lockated: `./out/scrowl-darwin-x64/scrowl.app/Contents/MacOS/scrowl`
+Follow [these instructions](https://github.com/EEBOS/SCROWL/wiki/1.-Setup-Local-dev) for local dev setup.
