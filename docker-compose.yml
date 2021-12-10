@@ -5,11 +5,12 @@ services:
       # Fixes sockets on Docker on macOS. Using the container host for xhost
       # https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949
       - DISPLAY=host.docker.internal:0
-    container_name: electron
-    build:
-      dockerfile: ./.docker/node.dockerfile
-      context: .
-    image: scrowl_image
+    container_name: scrowl_electron
+    # build:
+    #   dockerfile: ./.docker/node.dockerfile
+    #   context: .
+
+    image: docker.io/sezarosg/electron_app:latest
     working_dir: /app
     security_opt:
       # workaround to running headless chrome from container
