@@ -139,6 +139,35 @@ stop:
 	@echo " docker compose ${START_HIGHLIGHT}stop${STOP_STYLING}";
 	@echo "${STOP_STYLE_CMD_INFO}"; 
 	@docker compose stop;
+
+installAWS:
+	$(call INTRO,"Installing AWS CLI for MacOS.                                            ")
+	@echo "${STOP_STYLING}";
+
+	@echo "Step 1: ${START_DESC}Downloading AWS CLI installer${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " curl ${START_HIGHLIGHT}"https://awscli.amazonaws.com/AWSCLIV2.pkg" ${START_HIGHLIGHT_SECONDARY}-o "AWSCLIV2.pkg"${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg";
+
+	@echo "Step 2: ${START_DESC}Running the installer${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " sudo installer ${START_HIGHLIGHT}-pkg ./AWSCLIV2.pkg -target /${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@sudo installer -pkg ./AWSCLIV2.pkg -target /;
+
+	@echo "Step 3: ${START_DESC}Cleaning up${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " rm -rf ${START_HIGHLIGHT}AWSCLIV2.pkg${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@rm -rf AWSCLIV2.pkg;
+
+	@echo "Step 4: ${START_DESC}Restart your terminal. Then try:${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " aws${START_HIGHLIGHT} --version${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@echo "Which would show something like: " 
+	@echo "aws-cli/2.3.7 Python/3.8.8 Darwin/18.7.0 botocore/2.0.0";
 	
 start:
 	$(call INTRO,"Starting the project.                                            ")
