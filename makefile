@@ -355,3 +355,11 @@ help:
 		"N/A\n", \
 		"" \
 		)
+#
+# installAWS
+#
+	$(call INFO_CONTAINER,"(Installs AWS CLI for MacOS)", \
+		"installAWS", \
+		"N/A\n", \
+		"" \
+		)
