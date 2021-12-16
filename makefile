@@ -1,4 +1,4 @@
-.PHONY: help start stop showLogs showLogFeed cleanStart
+.PHONY: help start stop showLogs showLogFeed cleanStart installAWS getSecrets
 
 # Determine this makefile's path. Ensures that the $(MAKE) command uses the same makefile
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
@@ -13,6 +13,12 @@ LOCAL_FRONTEND_CONTAINER = scrowl_electron
 FRONTEND_IMAGE_TAG = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:$(versionTag)
 FRONTEND_IMAGE_TAG_LATEST = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:latest
 MAKEFILE_VERSION = "v1.0.0"
+
+# Secret files that cannot be push to repo
+SECRET_ENV_DEVELOPMENT = .env
+
+# Secret name on Secret Manager
+SECRET_NAME_ENV_DEVELOPMENT = /eebos/local/scrowl/env
 
 ### Endof Unique variables per project
 
@@ -57,6 +63,16 @@ endef
 # $1 is the files to delete
 define Delete_FILES
 	@rm -rf ${1};
+endef
+
+# Fetch file from Secret Manager
+# $1 is the name of the secret
+# $2 is the path and name of the file 
+define FETCH_SECRET_FILE
+	@echo "${START_STYLE_CMD_INFO}"; 
+	@echo " aws ${START_HIGHLIGHT}--region=ca-central-1 ssm get-parameter --name "${1}" --with-decryption --output text --query Parameter.Value${START_HIGHLIGHT_SECONDARY} > ${2}${STOP_STYLING}"; 
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@aws --region=ca-central-1 ssm get-parameter --name "${1}" --with-decryption --output text --query Parameter.Value > ${2}; 
 endef
 
 # Delete the local image
@@ -139,7 +155,55 @@ stop:
 	@echo " docker compose ${START_HIGHLIGHT}stop${STOP_STYLING}";
 	@echo "${STOP_STYLE_CMD_INFO}"; 
 	@docker compose stop;
+
+installAWS:
+	$(call INTRO,"Installing AWS CLI for MacOS.                                            ")
+	@echo "${STOP_STYLING}";
+
+	@echo "Step 1: ${START_DESC}Downloading AWS CLI installer${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " curl ${START_HIGHLIGHT}"https://awscli.amazonaws.com/AWSCLIV2.pkg" ${START_HIGHLIGHT_SECONDARY}-o "AWSCLIV2.pkg"${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg";
+
+	@echo "Step 2: ${START_DESC}Running the installer${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " sudo installer ${START_HIGHLIGHT}-pkg ./AWSCLIV2.pkg -target /${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@sudo installer -pkg ./AWSCLIV2.pkg -target /;
+
+	@echo "Step 3: ${START_DESC}Cleaning up${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " rm -rf ${START_HIGHLIGHT}AWSCLIV2.pkg${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@rm -rf AWSCLIV2.pkg;
+
+	@echo "Step 4: ${START_DESC}Restart your terminal. Then try:${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " aws${START_HIGHLIGHT} --version${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@echo "Which would show something like: " 
+	@echo "aws-cli/2.3.7 Python/3.8.8 Darwin/18.7.0 botocore/2.0.0";
+	@echo "Then please login:" 
+	@echo "aws ${START_HIGHLIGHT}configure${STOP_STYLING}";
+
+getSecrets:
+	$(call INTRO,"Fetching all latest secret files                                 ")
+	@echo "${STOP_STYLING}";
+
+ifeq ($(wildcard ~/.aws/credentials),)
+	@echo " Looks like you do not have AWS CLI installed.";
+	@echo " It will be installed for you, but you will need to login.";
+	@$(MAKE) -f $(THIS_FILE) installAWS
+	@exit 1;
+endif
+
+	@echo "\nStep 1: ${START_DESC}Fetch latest Secret files from AWS and save it locally${STOP_STYLING}"; 
+	$(call FETCH_SECRET_FILE,${SECRET_NAME_ENV_DEVELOPMENT},${SECRET_ENV_DEVELOPMENT})
 	
+	@echo "\n\n${START_DESC}Complete! Fetched latest Secret files from GCP${STOP_STYLING}"; 
+
+
 start:
 	$(call INTRO,"Starting the project.                                            ")
 	@echo "${STOP_STYLING}";
@@ -222,9 +286,7 @@ cleanStart:
 	@echo "${STOP_STYLE_CMD_INFO}";
 	$(call Delete_FILES, yarn.lock node_modules) 
 
-# Will add this when we setup AWS parameter store
-#@$(MAKE) -f $(THIS_FILE) getLatestSecrets
-
+	@$(MAKE) -f $(THIS_FILE) getSecrets
 	@$(MAKE) -f $(THIS_FILE) start startOver=true
 
 
@@ -247,6 +309,15 @@ help:
 		"updateNodeImage", \
 		"${START_HIGHLIGHT_SECONDARY}versionTag${STOP_STYLING} -Required\n", \
 		"versionTag=V1.0.0" \
+		)
+
+#
+# getSecrets
+#
+	$(call INFO_CONTAINER,"Get the latest secret files", \
+		"getSecrets", \
+		"N/A\n", \
+		"" \
 		)
 
 #
@@ -281,6 +352,14 @@ help:
 #
 	$(call INFO_CONTAINER,"Show logs of all containers (not a live feed)", \
 		"showLogs", \
+		"N/A\n", \
+		"" \
+		)
+#
+# installAWS
+#
+	$(call INFO_CONTAINER,"(Installs AWS CLI for MacOS)", \
+		"installAWS", \
 		"N/A\n", \
 		"" \
 		)
