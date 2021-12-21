@@ -211,11 +211,13 @@ start:
 	$(eval $@_step:=1)
 
 
-# This is only needed for MacOS. TODO only execute this if it's MacOS
+# This is only needed for MacOS.
+ifeq ($(shell uname -s),Darwin)
 	@export DISPLAY=:0 &&\
 	open /Applications/Utilities/XQuartz.app &&\
 	sleep 3 &&\
 	xhost +localhost;
+endif	
 
 ifneq ($(strip $(startOver)),)
 	@echo "\nStep $($@_step)-1: ${START_DESC}Remove all containers and volumes${STOP_STYLING}";
