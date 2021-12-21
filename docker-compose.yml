@@ -1,15 +1,40 @@
 version: "3.9"
+
+volumes:
+  shared_data:
+
 services:
+
+# This service has Docker's defualt user.
+# Which mean this container is used to update node modules.
+  scrowl_modules:
+    image: docker.io/sezarosg/electron_app:latest
+    # image: scrowl_modules
+    # build:
+    #   dockerfile: ./.docker/electron.dockerfile
+    #   context: .
+    container_name: scrowl_modules
+    working_dir: /app
+    tty: true
+    volumes:
+       - "./package.json:/app/package.json"
+       - "shared_data:/app"
+    networks:
+      - scrowl-network
+
+
+# This service has a non-root user (Electron app requirement).
+# Which mean this container cannot be used to update node modules.
+# Electron app development happens in this container
   scrowl:
+    user: node
+    env_file:
+      - .env
     environment:
       # Fixes sockets on Docker on macOS. Using the container host for xhost
       # https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949
       - DISPLAY=host.docker.internal:0
     container_name: scrowl_electron
-    # build:
-    #   dockerfile: ./.docker/node.dockerfile
-    #   context: .
-
     image: docker.io/sezarosg/electron_app:latest
     working_dir: /app
     security_opt:
@@ -17,13 +42,13 @@ services:
       # https://stackoverflow.com/a/53975412/15077454
       - seccomp=./chrome.json
     command: >
-      sh -c "
-        npx yarn start"
+      sh -c "npx yarn start"
     ports:
       - "9001:9000"
     volumes:
+      - "shared_data:/app"
+      - "./package.json:/app/package.json:ro"
       - "./src:/app/src"
-      - "./package.json:/app/package.json"
       - "./webpack:/app/webpack"
       - "./tsconfig.json:/app/tsconfig.json"
       - "./preload.js:/app/preload.js"
