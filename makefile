@@ -9,7 +9,7 @@ DOCKERHUB_PROJECT_ID = sezarosg
 DOCKERHUB_REGISTRY_ID = sezarosg.io
 DOCKERHUB_HOSTNAME = docker.io
 DOCKERHUB_FRONTEND_IMAGE_NAME = electron_app
-LOCAL_FRONTEND_CONTAINER = scrowl_electron
+LOCAL_FRONTEND_CONTAINER = scrowl_modules
 FRONTEND_IMAGE_TAG = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:$(versionTag)
 FRONTEND_IMAGE_TAG_LATEST = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:latest
 MAKEFILE_VERSION = "v1.0.0"
@@ -103,7 +103,7 @@ define REBUILD_IMAGE_PUSH
 	@echo "${STOP_STYLE_CMD_INFO}"; 
 	@docker build -f ./.docker/${2}.dockerfile -t ${1} -t ${3} .;
 
-	@echo "\nStep 3: ${START_DESC}Push image to GCR${STOP_STYLING}"; 
+	@echo "\nStep 3: ${START_DESC}Push image to container registry${STOP_STYLING}"; 
 	@echo "${START_STYLE_CMD_INFO}"; 
 	@echo " docker ${START_HIGHLIGHT}push${START_HIGHLIGHT_SECONDARY} ${1}${STOP_STYLING}"; 
 	@echo "${STOP_STYLE_CMD_INFO}"; 
@@ -205,11 +205,17 @@ endif
 
 
 start:
-	$(call INTRO,"Starting the project.                                            ")
+	$(call INTRO," Starting the project.                                            ")
 	@echo "${STOP_STYLING}";
 
 	$(eval $@_step:=1)
 
+
+# This is only needed for MacOS. TODO only execute this if it's MacOS
+	@export DISPLAY=:0 &&\
+	open /Applications/Utilities/XQuartz.app &&\
+	sleep 3 &&\
+	xhost +localhost;
 
 ifneq ($(strip $(startOver)),)
 	@echo "\nStep $($@_step)-1: ${START_DESC}Remove all containers and volumes${STOP_STYLING}";
@@ -226,6 +232,23 @@ ifneq ($(strip $(startOver)),)
 	
 	$(eval $@_step:=$(shell expr $($@_step) + 1))
 endif
+
+ifeq ($(wildcard ./node_modules/.),)
+	$(eval $@_step:=$(shell expr $($@_step) + 1))
+	@docker compose up -d;
+	@echo "\nStep $($@_step): ${START_DESC}node_modules folder is missing${STOP_STYLING}";
+	@echo "Step $($@_step)-1: ${START_DESC}Ok, now lets copy the node_modules from the container${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}"
+	@echo " docker ${START_HIGHLIGHT}cp${START_HIGHLIGHT_SECONDARY} "'${LOCAL_FRONTEND_CONTAINER}:/app/node_modules ./node_modules'"${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}";
+	@docker cp ${LOCAL_FRONTEND_CONTAINER}:/app/node_modules ./node_modules;
+
+	@echo "\nStep $($@_step)-2: ${START_DESC}While we are here, lets copy the yarn.lock as well${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " docker ${START_HIGHLIGHT}cp${START_HIGHLIGHT_SECONDARY} "'${LOCAL_FRONTEND_CONTAINER}:/app/yarn.lock ./yarn.lock'"${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}";
+	@docker cp ${LOCAL_FRONTEND_CONTAINER}:/app/yarn.lock ./yarn.lock;
+endif 
 
 ifneq ($(strip $(logOff)),)
 	@echo "\nStep $($@_step): ${START_DESC}Start project in the background${STOP_STYLING}";
@@ -255,25 +278,6 @@ else
 	@echo "${STOP_STYLE_CMD_INFO}"; 
 	@docker compose up;
 endif
-
-
-
-ifeq ($(wildcard ./node_modules/.),)
-	$(eval $@_step:=$(shell expr $($@_step) + 1))
-
-	@echo "\nStep $($@_step): ${START_DESC}node_modules folder is missing${STOP_STYLING}";
-	@echo "Step $($@_step)-1: ${START_DESC}Ok, now lets copy the node_modules from the container${STOP_STYLING}";
-	@echo "${START_STYLE_CMD_INFO}"
-	@echo " docker ${START_HIGHLIGHT}cp${START_HIGHLIGHT_SECONDARY} "'${LOCAL_FRONTEND_CONTAINER}:/app/node_modules ./node_modules'"${STOP_STYLING}";
-	@echo "${STOP_STYLE_CMD_INFO}";
-	@docker cp ${LOCAL_FRONTEND_CONTAINER}:/app/node_modules ./node_modules;
-
-	@echo "\nStep $($@_step)-2: ${START_DESC}While we are here, lets copy the yarn.lock as well${STOP_STYLING}";
-	@echo "${START_STYLE_CMD_INFO}";
-	@echo " docker ${START_HIGHLIGHT}cp${START_HIGHLIGHT_SECONDARY} "'${LOCAL_FRONTEND_CONTAINER}:/app/yarn.lock ./yarn.lock'"${STOP_STYLING}";
-	@echo "${STOP_STYLE_CMD_INFO}";
-	@docker cp ${LOCAL_FRONTEND_CONTAINER}:/app/yarn.lock ./yarn.lock;
-endif 
 
 
 cleanStart:
