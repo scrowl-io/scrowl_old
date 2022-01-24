@@ -1,8 +1,8 @@
 .PHONY: help start stop showLogs showLogFeed cleanStart installAWS getSecrets
 
 # Determine this makefile's path. Ensures that the $(MAKE) command uses the same makefile
-THIS_FILE := $(lastword $(MAKEFILE_LIST))
-
+THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
+BASE_DIR := $(shell pwd)
 ### Unique variables per project
 PROJECT_NAME = "SCROWL"
 DOCKERHUB_PROJECT_ID = sezarosg
@@ -12,10 +12,14 @@ DOCKERHUB_FRONTEND_IMAGE_NAME = electron_app
 LOCAL_FRONTEND_CONTAINER = scrowl_modules
 FRONTEND_IMAGE_TAG = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:$(versionTag)
 FRONTEND_IMAGE_TAG_LATEST = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:latest
-MAKEFILE_VERSION = "v1.0.0"
+ELECTRON_PATH = apps/electron
+CONFIG_PATH = packages/config
+UI_PATH = packages/ui
+
+MAKEFILE_VERSION = "v1.1.0"
 
 # Secret files that cannot be push to repo
-SECRET_ENV_DEVELOPMENT = .env
+SECRET_ENV_DEVELOPMENT = apps/electron/.env
 
 # Secret name on Secret Manager
 SECRET_NAME_ENV_DEVELOPMENT = /eebos/local/scrowl/env
@@ -80,10 +84,21 @@ endef
 define CLEANUP
 	@echo "\n ${START_DESC}Cleanning up${STOP_STYLING}";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo "docker ${START_HIGHLIGHT}rmi ${START_HIGHLIGHT_SECONDARY}-f"'$$ (docker images ${1} -q)'"${STOP_STYLING}";
+	@echo " docker ${START_HIGHLIGHT}rmi ${START_HIGHLIGHT_SECONDARY}-f"'$$ (docker images ${1} -q)'"${STOP_STYLING}";
 	@echo "${STOP_STYLE_CMD_INFO}";
 
 	@docker rmi -f $$(docker images ${1} -q);
+endef
+
+# Copy files from container into host machine
+# $1 the command itself
+# $2 target path
+# $3 source path
+define COPY_FROM_CONTAINER
+	@echo "${START_STYLE_CMD_INFO}"
+	@echo " ${1} ${START_HIGHLIGHT} "'${2}'" ${START_HIGHLIGHT_SECONDARY} "'${3}'"${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}";
+	@${1} ${2} ${3}
 endef
 
 # Rebuild image and uploads to registry
@@ -93,7 +108,7 @@ endef
 define REBUILD_IMAGE_PUSH
 	@echo "Step 1: ${START_DESC}Making sure node_modules and yarn.lock are removed${STOP_STYLING}";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo ' rm -rf yarn.lock node_modules';
+	@echo ' rm -rf **/yarn.lock **/node_modules';
 	@echo "${STOP_STYLE_CMD_INFO}"; 
 	$(call Delete_FILES, yarn.lock node_modules) 
 	
@@ -240,16 +255,14 @@ ifeq ($(wildcard ./node_modules/.),)
 	@docker compose up -d;
 	@echo "\nStep $($@_step): ${START_DESC}node_modules folder is missing${STOP_STYLING}";
 	@echo "Step $($@_step)-1: ${START_DESC}Ok, now lets copy the node_modules from the container${STOP_STYLING}";
-	@echo "${START_STYLE_CMD_INFO}"
-	@echo " docker ${START_HIGHLIGHT}cp${START_HIGHLIGHT_SECONDARY} "'${LOCAL_FRONTEND_CONTAINER}:/app/node_modules ./node_modules'"${STOP_STYLING}";
-	@echo "${STOP_STYLE_CMD_INFO}";
-	@docker cp ${LOCAL_FRONTEND_CONTAINER}:/app/node_modules ./node_modules;
+	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/node_modules, ./node_modules)
+	
+	$(call COPY_FROM_CONTAINER, cd ./apps && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${ELECTRON_PATH}, - | tar x)
+	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${CONFIG_PATH}, - | tar x)
+	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${UI_PATH}, - | tar x)
 
 	@echo "\nStep $($@_step)-2: ${START_DESC}While we are here, lets copy the yarn.lock as well${STOP_STYLING}";
-	@echo "${START_STYLE_CMD_INFO}";
-	@echo " docker ${START_HIGHLIGHT}cp${START_HIGHLIGHT_SECONDARY} "'${LOCAL_FRONTEND_CONTAINER}:/app/yarn.lock ./yarn.lock'"${STOP_STYLING}";
-	@echo "${STOP_STYLE_CMD_INFO}";
-	@docker cp ${LOCAL_FRONTEND_CONTAINER}:/app/yarn.lock ./yarn.lock;
+	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/yarn.lock, ./yarn.lock) 
 endif 
 
 ifneq ($(strip $(logOff)),)
@@ -288,7 +301,7 @@ cleanStart:
 
 	@echo "*- Making sure node_modules and yarn.lock are removed";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo ' rm -rf yarn.lock node_modules';
+	@echo ' rm -rf **/yarn.lock **/node_modules';
 	@echo "${STOP_STYLE_CMD_INFO}";
 	$(call Delete_FILES, yarn.lock node_modules) 
 
