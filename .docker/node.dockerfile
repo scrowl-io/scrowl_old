@@ -5,18 +5,32 @@ RUN apt-get update && apt-get install \
     -yq --no-install-suggests --no-install-recommends
 
 FROM builder AS configure
-WORKDIR /app/
+WORKDIR /scrowl-project
+RUN mkdir -p apps/electron \ 
+    packages/config \
+    packages/tsconfig \
+    packages/ui
+
 COPY ./package.json ./
+COPY ./apps/electron/package.json ./apps/electron/
+COPY ./packages/config/package.json ./packages/config/
+COPY ./packages/tsconfig/package.json ./packages/tsconfig/
+COPY ./packages/ui/package.json ./packages/ui/
+
 RUN npx yarn install
-RUN npx electron-rebuild
+
+# This allows you to use native Node.js modules in Electron apps 
+# without your system version of Node.js matching exactly
+# https://github.com/electron/electron-rebuild
+RUN cd apps/electron && npx electron-rebuild
+
 # Electron needs root for sand boxing
 # see https://github.com/electron/electron/issues/17972
 USER root
-RUN chown root /app/node_modules/electron/dist/chrome-sandbox
-RUN chmod 4755 /app/node_modules/electron/dist/chrome-sandbox
+RUN chown root /scrowl-project/node_modules/electron/dist/chrome-sandbox
+RUN chmod 4755 /scrowl-project/node_modules/electron/dist/chrome-sandbox
 
 FROM builder
-WORKDIR /app/
-COPY --from=configure /app/node_modules ./node_modules
-COPY --from=configure /app/yarn.lock ./yarn.lock
-RUN chown -R node /app
+WORKDIR /scrowl-project
+COPY --from=configure /scrowl-project ./
+RUN chown -R node /scrowl-project
