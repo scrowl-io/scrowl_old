@@ -5,8 +5,8 @@ volumes:
 
 services:
 
-# This service has Docker's defualt user.
-# Which mean this container is used to update node modules.
+  # This service has Docker's defualt user.
+  # Which mean this container is used to update node modules.
   scrowl_modules:
     image: docker.io/sezarosg/electron_app:latest
     # image: scrowl_modules
@@ -17,19 +17,18 @@ services:
     working_dir: /scrowl-project
     tty: true
     volumes:
-       - "./package.json:/scrowl-project/package.json"
-       - "./apps/electron/package.json:/scrowl-project/apps/electron/package.json"
-       - "./packages/config/package.json:/scrowl-project/packages/config/package.json"
-       - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
-       - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json"
-       - "shared_data:/scrowl-project/scrowl-project"
+      - "./package.json:/scrowl-project/package.json"
+      - "./apps/electron/package.json:/scrowl-project/apps/electron/package.json"
+      - "./packages/config/package.json:/scrowl-project/packages/config/package.json"
+      - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
+      - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json"
+      - "shared_data:/scrowl-project/scrowl-project"
     networks:
       - scrowl-network
 
-
-# This service has a non-root user (Electron app requirement).
-# Which mean this container cannot be used to update node modules.
-# Electron app development happens in this container
+  # This service has a non-root user (Electron app requirement).
+  # Which mean this container cannot be used to update node modules.
+  # Electron app development happens in this container
   scrowl:
     user: node
     env_file:
@@ -49,6 +48,7 @@ services:
       sh -c "ls -al ./apps/electron/webpack && npx yarn turbo run start"
     ports:
       - "9001:9000"
+      - "9223:9223"
     volumes:
       # adding shared volums (has access to all of the package.json files)
       - "shared_data:/scrowl-project"
@@ -58,12 +58,12 @@ services:
       - "./apps/electron/webpack:/scrowl-project/apps/electron/webpack"
       - "./apps/electron/tsconfig.json:/scrowl-project/apps/electron/tsconfig.json"
       - "./apps/electron/preload.js:/scrowl-project/apps/electron/preload.js"
-      
+
       # adding config files
       - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
       - "./packages/config/linters:/scrowl-project/packages/config/linters"
       - "./packages/config/package.json:/scrowl-project/packages/config/package.json:ro"
-      
+
       # adding config files
       - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json:ro"
       - "./packages/tsconfig:/scrowl-project/packages/tsconfig"
