@@ -85,10 +85,6 @@
     "node-loader": "^2.0.0",
     "style-loader": "^3.0.0",
     "stylelint": "^14.5.1",
-    "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-standard": "^25.0.0",
-    "stylelint-order": "^5.0.0",
-    "stylelint-prettier": "^2.0.0",
     "ts-loader": "^9.2.2",
     "tsconfig": "*",
     "typescript": "^4.0.2"
