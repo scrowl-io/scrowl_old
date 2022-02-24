@@ -17,12 +17,13 @@ services:
     working_dir: /scrowl-project
     tty: true
     volumes:
-      - "./package.json:/scrowl-project/package.json"
-      - "./apps/electron/package.json:/scrowl-project/apps/electron/package.json"
-      - "./packages/config/package.json:/scrowl-project/packages/config/package.json"
-      - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
-      - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json"
-      - "shared_data:/scrowl-project/scrowl-project"
+       - "./package.json:/scrowl-project/package.json"
+       - "./apps/electron/package.json:/scrowl-project/apps/electron/package.json"
+       - "./packages/config/package.json:/scrowl-project/packages/config/package.json"
+       - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
+       - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json"
+       - "shared_data:/scrowl-project"
+
     networks:
       - scrowl-network
 
