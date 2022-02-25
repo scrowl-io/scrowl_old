@@ -5,8 +5,8 @@ volumes:
 
 services:
 
-# This service has Docker's defualt user.
-# Which mean this container is used to update node modules.
+  # This service has Docker's defualt user.
+  # Which mean this container is used to update node modules.
   scrowl_modules:
     image: docker.io/sezarosg/electron_app:latest
     # image: scrowl_modules
@@ -23,13 +23,13 @@ services:
        - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
        - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json"
        - "shared_data:/scrowl-project"
+
     networks:
       - scrowl-network
 
-
-# This service has a non-root user (Electron app requirement).
-# Which mean this container cannot be used to update node modules.
-# Electron app development happens in this container
+  # This service has a non-root user (Electron app requirement).
+  # Which mean this container cannot be used to update node modules.
+  # Electron app development happens in this container
   scrowl:
     user: node
     env_file:
@@ -38,6 +38,8 @@ services:
       # Fixes sockets on Docker on macOS. Using the container host for xhost
       # https://gist.github.com/paul-krohn/e45f96181b1cf5e536325d1bdee6c949
       - DISPLAY=host.docker.internal:0
+      - DEBUG_ELECTRON_NODE=9000
+      - DEBUG_ELECTRON_REACT=3000
     container_name: scrowl_electron
     image: docker.io/sezarosg/electron_app:latest
     working_dir: /scrowl-project
@@ -52,19 +54,22 @@ services:
     volumes:
       # adding shared volums (has access to all of the package.json files)
       - "shared_data:/scrowl-project"
+      # adding VS Code launch file
+      - "./.vscode:/scrowl-project/.vscode"
+
       # adding electron app files
       - "./apps/electron/package.json:/scrowl-project/apps/electron/package.json:ro"
       - "./apps/electron/src:/scrowl-project/apps/electron/src"
       - "./apps/electron/webpack:/scrowl-project/apps/electron/webpack"
       - "./apps/electron/tsconfig.json:/scrowl-project/apps/electron/tsconfig.json"
       - "./apps/electron/preload.js:/scrowl-project/apps/electron/preload.js"
-      
+
       # adding config files
       - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
       - "./packages/config/linters:/scrowl-project/packages/config/linters"
       - "./packages/config/package.json:/scrowl-project/packages/config/package.json:ro"
-      
-      # adding config files
+
+      # adding tsconfig files
       - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json:ro"
       - "./packages/tsconfig:/scrowl-project/packages/tsconfig"
 
