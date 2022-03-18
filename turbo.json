@@ -6,6 +6,9 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
+    "deploy-gh": {
+      "outputs": ["build/**"]
+    },
     "lint": {
       "outputs": []
     },
