@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  scrowl-downloads:
+    environment:
+      - NODE_PATH="/scrowl-project/apps/scrowl-downloads/src"
+    build:
+      context: .
+      dockerfile: ./.docker/scrowl-downloads.dockerfile
+    container_name: scrowl-downloads
+    working_dir: /scrowl-project/apps/scrowl-downloads
+    command: >
+      sh -c "npx yarn start --scope='@apps/scrowl-downloads'"
+    ports:
+      - 3011:3000
+    volumes:
+      - "./apps/scrowl-downloads/src:/scrowl-project/apps/scrowl-downloads/src"
+      - "./apps/scrowl-downloads/public:/scrowl-project/apps/scrowl-downloads/public"
+      - "./apps/scrowl-downloads/package.json:/scrowl-project/apps/scrowl-downloads/package.json"
+      
+      # adding config files
+      - "./packages/config/esßlint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
+      - "./packages/config/linters:/scrowl-project/packages/config/linters"
+      - "./packages/config/package.json:/scrowl-project/packages/config/package.json:ro"
+
+      # adding tsconfig files
+      - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json:ro"
+      - "./packages/tsconfig:/scrowl-project/packages/tsconfig"
+
+      # adding ui files
+      - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json:ro"
+      - "./packages/ui/src:/scrowl-project/packages/ui/src"
+      - "./packages/ui/tsconfig.json:/scrowl-project/packages/ui/tsconfig.json"
+    networks:
+      - scrowl-network
+
+networks:
+  scrowl-network:
+    driver: bridge
