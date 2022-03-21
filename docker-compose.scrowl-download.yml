@@ -17,6 +17,7 @@ services:
       - "./apps/scrowl-downloads/src:/scrowl-project/apps/scrowl-downloads/src"
       - "./apps/scrowl-downloads/public:/scrowl-project/apps/scrowl-downloads/public"
       - "./apps/scrowl-downloads/package.json:/scrowl-project/apps/scrowl-downloads/package.json"
+      - "./apps/scrowl-downloads/tsconfig.json:/scrowl-project/apps/scrowl-downloads/tsconfig.json"
       
       # adding config files
       - "./packages/config/esßlint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
