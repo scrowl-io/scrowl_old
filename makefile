@@ -108,7 +108,7 @@ endef
 define REBUILD_IMAGE_PUSH
 	@echo "Step 1: ${START_DESC}Making sure node_modules and yarn.lock are removed${STOP_STYLING}";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo ' rm -rf **/yarn.lock **/node_modules';
+	@echo ' rm -rf ./**/yarn.lock ./**/node_modules';
 	@echo "${STOP_STYLE_CMD_INFO}"; 
 	$(call Delete_FILES, yarn.lock node_modules) 
 	
@@ -301,7 +301,7 @@ cleanStart:
 
 	@echo "*- Making sure node_modules and yarn.lock are removed";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo ' rm -rf **/yarn.lock **/node_modules';
+	@echo ' rm -rf ./**/yarn.lock ./**/node_modules';
 	@echo "${STOP_STYLE_CMD_INFO}";
 	$(call Delete_FILES, yarn.lock node_modules) 
 
