@@ -1,10 +1,10 @@
 {
   "name": "mono-scrowl",
-  "homepage": "https://eebos.github.io/scrowl-downloads",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
     "apps/*",
+    "apps/scrowl-download",
     "packages/*"
   ],
   "nohoist": [
@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "deploy-gh": "turbo run deploy-gh",
+    "deploy-gh": "turbo run build --scope=scrowl-downloads && turbo run deploy-gh",
     "dev": "turbo run dev --parallel",
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
@@ -31,5 +31,6 @@
     "stylelint-prettier": "^2.0.0",
     "turbo": "*",
     "gh-pages": "^3.2.3"
-  }
+  },
+  "packageManager": "yarn@1.22.17"
 }
