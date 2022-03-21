@@ -23,7 +23,6 @@ services:
        - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
        - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json"
        - "shared_data:/scrowl-project"
-
     networks:
       - scrowl-network
 
