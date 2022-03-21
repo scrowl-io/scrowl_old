@@ -18,6 +18,7 @@ services:
     tty: true
     volumes:
        - "./package.json:/scrowl-project/package.json"
+       - "./turbo.json:/scrowl-project/turbo.json"
        - "./apps/electron/package.json:/scrowl-project/apps/electron/package.json"
        - "./packages/config/package.json:/scrowl-project/packages/config/package.json"
        - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
