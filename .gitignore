@@ -90,3 +90,5 @@ out/
 
 # turbo
 .turbo
+
+**/build
