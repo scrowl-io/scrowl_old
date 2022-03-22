@@ -52,9 +52,10 @@ services:
     ports:
       - "9001:9000"
     volumes:
+      - "./turbo.json:/scrowl-project/turbo.json"
+     
       # adding shared volums (has access to all of the package.json files)
       - "shared_data:/scrowl-project"
-      - "./turbo.json:/scrowl-project/turbo.json"
       
       # adding VS Code launch file
       - "./.vscode:/scrowl-project/.vscode"
