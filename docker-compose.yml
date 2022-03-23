@@ -49,12 +49,13 @@ services:
       # https://stackoverflow.com/a/53975412/15077454
       - seccomp=./apps/electron/chrome.json
     command: >
-      sh -c "ls -al ./apps/electron/webpack && npx yarn turbo run start"
+      sh -c "npx yarn start"
     ports:
       - "9001:9000"
     volumes:
       - "./turbo.json:/scrowl-project/turbo.json"
-     
+      - "./package.json:/scrowl-project/package.json:ro"
+
       # adding shared volums (has access to all of the package.json files)
       - "shared_data:/scrowl-project"
       
@@ -67,6 +68,9 @@ services:
       - "./apps/electron/webpack:/scrowl-project/apps/electron/webpack"
       - "./apps/electron/tsconfig.json:/scrowl-project/apps/electron/tsconfig.json"
       - "./apps/electron/preload.js:/scrowl-project/apps/electron/preload.js"
+     
+      # adding scrowl-downloads package.json
+      - "./apps/scrowl-downloads/package.json:/scrowl-project/apps/scrowl-downloads/package.json:ro"
 
       # adding config files
       - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
