@@ -1,22 +1,27 @@
 version: "3.9"
 
+
 services:
-  scrowl-downloads:
+  scrowl_downloads:
     environment:
       - NODE_PATH="/scrowl-project/apps/scrowl-downloads/src"
     build:
       context: .
       dockerfile: ./.docker/scrowl-downloads.dockerfile
-    container_name: scrowl-downloads
+    container_name: scrowl_downloads
     working_dir: /scrowl-project/apps/scrowl-downloads
+    stdin_open: true
     command: >
       sh -c "npx yarn start --scope='@apps/scrowl-downloads'"
     ports:
       - 3011:3000
     volumes:
+      - "./turbo.json:/scrowl-project/turbo.json"
+      - "./package.json:/scrowl-project/package.json:ro"
+      
       - "./apps/scrowl-downloads/src:/scrowl-project/apps/scrowl-downloads/src"
       - "./apps/scrowl-downloads/public:/scrowl-project/apps/scrowl-downloads/public"
-      - "./apps/scrowl-downloads/package.json:/scrowl-project/apps/scrowl-downloads/package.json"
+      - "./apps/scrowl-downloads/package.json:/scrowl-project/apps/scrowl-downloads/package.json:ro"
       - "./apps/scrowl-downloads/tsconfig.json:/scrowl-project/apps/scrowl-downloads/tsconfig.json"
       
       # adding config files
@@ -33,8 +38,8 @@ services:
       - "./packages/ui/src:/scrowl-project/packages/ui/src"
       - "./packages/ui/tsconfig.json:/scrowl-project/packages/ui/tsconfig.json"
     networks:
-      - scrowl-network
+      - scrowl-downloads-network
 
 networks:
-  scrowl-network:
+  scrowl-downloads-network:
     driver: bridge
