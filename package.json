@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "apps/scrowl-download",
+    "apps/scrowl-downloads",
+    "apps/electron",
     "packages/*"
   ],
   "nohoist": [
