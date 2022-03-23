@@ -1,4 +1,4 @@
-.PHONY: help start stop showLogs showLogFeed cleanStart installAWS getSecrets
+.PHONY: help start stop showLogs showLogFeed cleanStart installAWS getSecrets startGhPages
 
 # Determine this makefile's path. Ensures that the $(MAKE) command uses the same makefile
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
@@ -10,13 +10,15 @@ DOCKERHUB_REGISTRY_ID = sezarosg.io
 DOCKERHUB_HOSTNAME = docker.io
 DOCKERHUB_FRONTEND_IMAGE_NAME = electron_app
 LOCAL_FRONTEND_CONTAINER = scrowl_modules
+LOCAL_GIHUB_PAGES = scrowl_downloads
 FRONTEND_IMAGE_TAG = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:$(versionTag)
 FRONTEND_IMAGE_TAG_LATEST = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:latest
 ELECTRON_PATH = apps/electron
 CONFIG_PATH = packages/config
 UI_PATH = packages/ui
+GITHUB_PAGES_PATH = apps/scrowl-downloads
 
-MAKEFILE_VERSION = "v1.1.0"
+MAKEFILE_VERSION = "v1.2.0"
 
 # Secret files that cannot be push to repo
 SECRET_ENV_DEVELOPMENT = apps/electron/.env
@@ -295,6 +297,58 @@ else
 endif
 
 
+startGhPages:
+	$(call INTRO," Starting the Github Page app.                                            ")
+	@echo "${STOP_STYLING}";
+
+	$(eval $@_step:=1)
+	
+
+ifneq ($(strip $(startOver)),)
+
+	@echo "\nStep $($@_step)-1: ${START_DESC}Remove the containers and volumes${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.scrowl-download.yml down ${START_HIGHLIGHT_SECONDARY}-v${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@docker compose -f docker-compose.scrowl-download.yml down -v;
+
+	@echo "\nStep $($@_step)-2: ${START_DESC}Rebuild the image${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.scrowl-download.yml build ${START_HIGHLIGHT_SECONDARY}--no-cache${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}"; 
+	@docker compose -f docker-compose.scrowl-download.yml build --no-cache;
+
+	$(eval $@_step:=$(shell expr $($@_step) + 1))
+endif
+	
+	@echo "\nStep $($@_step)-2: ${START_DESC}Starting the project${STOP_STYLING}";
+	@echo "${START_STYLE_CMD_INFO}";
+	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.scrowl-download.yml up -d${STOP_STYLING}";
+	@echo "${STOP_STYLE_CMD_INFO}";
+	@docker compose -f docker-compose.scrowl-download.yml up -d;
+
+	$(eval $@_step:=$(shell expr $($@_step) + 1))
+
+ifeq ($(wildcard ./node_modules/.),)
+	$(eval $@_step:=$(shell expr $($@_step) + 1))
+
+	@echo "\nStep $($@_step): ${START_DESC}node_modules folder is missing${STOP_STYLING}";
+	@echo "Step $($@_step)-1: ${START_DESC}Ok, now lets copy the node_modules from the container${STOP_STYLING}";
+	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_GIHUB_PAGES}:/scrowl-project/node_modules, ./node_modules)
+
+	$(call COPY_FROM_CONTAINER, cd ./apps && docker cp,${LOCAL_GIHUB_PAGES}:/scrowl-project/${GITHUB_PAGES_PATH}, - | tar x)
+	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${CONFIG_PATH}, - | tar x)
+	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${UI_PATH}, - | tar x)
+
+	@echo "\nStep $($@_step)-2: ${START_DESC}While we are here, lets copy the yarn.lock as well${STOP_STYLING}";
+	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/yarn.lock, ./yarn.lock) 
+endif 
+
+# We need to start the container in the backgound first so the makefile continues down to this point,
+# then we let docker know that we want a live log feed from the container.
+	@docker compose -f docker-compose.scrowl-download.yml up;
+
+
 cleanStart:
 	$(call INTRO,"A clean start has some extra steps so it will take longer        ")
 	@echo "${STOP_STYLING}";
@@ -346,6 +400,15 @@ help:
 		"start", \
 		"${START_HIGHLIGHT_SECONDARY}startOver=true${STOP_STYLING} -Optional- removes containers and volumes first\n   ${START_HIGHLIGHT_SECONDARY}logOff=true${STOP_STYLING} -Optional- will run the project in the background\n", \
 		"<Extra_options>" \
+		)
+
+#
+# start
+#
+	$(call INFO_CONTAINER,"Start Github Pages app", \
+		"startGhPages", \
+		"${START_HIGHLIGHT_SECONDARY}startOver=true${STOP_STYLING} -Optional- removes containers and volumes first\n ", \
+		"" \
 		)
 		
 #
