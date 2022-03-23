@@ -329,7 +329,7 @@ endif
 
 	$(eval $@_step:=$(shell expr $($@_step) + 1))
 
-ifeq ($(wildcard ./node_modules/.),)
+ifeq ($(wildcard ./${GITHUB_PAGES_PATH}/node_modules/.),)
 	$(eval $@_step:=$(shell expr $($@_step) + 1))
 
 	@echo "\nStep $($@_step): ${START_DESC}node_modules folder is missing${STOP_STYLING}";
