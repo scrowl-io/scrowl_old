@@ -1,0 +1,17 @@
+name: Integration workflow
+
+on: 
+  push: 
+    branches: [ main, develop ]
+  pull_request:
+  workflow_dispatch: # so we can run this workflow manually as well
+
+jobs: 
+  test-react:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install react dependancies
+  test-node:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install node dependancies
