@@ -12,7 +12,7 @@ services:
     working_dir: /scrowl-project/apps/scrowl-downloads
     stdin_open: true
     command: >
-      sh -c "npx yarn start --scope='@apps/scrowl-downloads'"
+      sh -c "npx yarn start-gh --scope='@apps/scrowl-downloads'"
     ports:
       - 3011:3000
     volumes:
