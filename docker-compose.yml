@@ -69,9 +69,6 @@ services:
       - "./apps/electron/tsconfig.json:/scrowl-project/apps/electron/tsconfig.json"
       - "./apps/electron/preload.js:/scrowl-project/apps/electron/preload.js"
      
-      # adding scrowl-downloads package.json
-      - "./apps/scrowl-downloads/package.json:/scrowl-project/apps/scrowl-downloads/package.json:ro"
-
       # adding config files
       - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
       - "./packages/config/linters:/scrowl-project/packages/config/linters"
