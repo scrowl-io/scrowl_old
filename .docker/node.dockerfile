@@ -1,18 +1,20 @@
 # node version needs to match Electron's version 
 FROM node:16.9-slim AS builder 
 RUN apt-get update && apt-get install \
-    git libx11-xcb1 libxcb-dri3-0 libxtst6 libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2 libdrm2 libgbm1 \
-    -yq --no-install-suggests --no-install-recommends
+  git libx11-xcb1 libxcb-dri3-0 libxtst6 libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2 libdrm2 libgbm1 \
+  -yq --no-install-suggests --no-install-recommends
 
 FROM builder AS configure
 WORKDIR /scrowl-project
 RUN mkdir -p apps/electron \ 
-    packages/config \
-    packages/tsconfig \
-    packages/ui
+  apps/scrowl-downloads \
+  packages/config \
+  packages/tsconfig \
+  packages/ui
 
 COPY ./package.json ./
 COPY ./apps/electron/package.json ./apps/electron/
+COPY ./apps/scrowl-downloads/package.json ./apps/scrowl-downloads/
 COPY ./packages/config/package.json ./packages/config/
 COPY ./packages/tsconfig/package.json ./packages/tsconfig/
 COPY ./packages/ui/package.json ./packages/ui/
