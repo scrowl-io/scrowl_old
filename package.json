@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "apps/*",
-    "apps/scrowl-downloads",
     "apps/electron",
+    "apps/scrowl-downloads",
     "packages/*"
   ],
   "nohoist": [
@@ -17,6 +16,7 @@
   "scripts": {
     "build": "turbo run build",
     "deploy-gh": "turbo run build --scope=scrowl-downloads && turbo run deploy-gh",
+    "start-gh": "turbo run start-gh --parallel",
     "dev": "turbo run dev --parallel",
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
