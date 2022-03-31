@@ -54,6 +54,7 @@ services:
       - "9001:9000"
     volumes:
       - "./turbo.json:/scrowl-project/turbo.json"
+      - "./.prettierrc:/scrowl-project/.prettierrc"
       - "./package.json:/scrowl-project/package.json:ro"
 
       # adding shared volums (has access to all of the package.json files)
@@ -68,6 +69,7 @@ services:
       - "./apps/electron/webpack:/scrowl-project/apps/electron/webpack"
       - "./apps/electron/tsconfig.json:/scrowl-project/apps/electron/tsconfig.json"
       - "./apps/electron/preload.js:/scrowl-project/apps/electron/preload.js"
+      - "./apps/electron/.eslintrc.js:/scrowl-project/apps/electron/.eslintrc.js"
      
       # adding config files
       - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
