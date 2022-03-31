@@ -18,6 +18,9 @@
     },
     "start-gh": {
       "cache": false
+    },
+    "test": {
+      "cache": false
     }
   }
 }
