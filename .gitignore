@@ -89,4 +89,6 @@ typings/
 out/
 
 # turbo
-.turbo
+**/.turbo
+
+**/build

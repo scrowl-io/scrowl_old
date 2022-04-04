@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "apps/*",
+    "apps/electron",
+    "apps/scrowl-downloads",
     "packages/*"
   ],
   "nohoist": [
@@ -14,6 +15,8 @@
   ],
   "scripts": {
     "build": "turbo run build",
+    "deploy-gh": "turbo run build --scope=scrowl-downloads && turbo run deploy-gh",
+    "start-gh": "turbo run start-gh --parallel",
     "dev": "turbo run dev --parallel",
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
@@ -27,25 +30,8 @@
     "stylelint-config-standard": "^25.0.0",
     "stylelint-order": "^5.0.0",
     "stylelint-prettier": "^2.0.0",
-    "turbo": "*"
+    "turbo": "*",
+    "gh-pages": "^3.2.3"
   },
-  "turbo": {
-    "baseBranch": "origin/develop",
-    "pipeline": {
-      "build": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "dist/**"
-        ]
-      },
-      "lint": {
-        "outputs": []
-      },
-      "start": {
-        "cache": false
-      }
-    }
-  }
+  "packageManager": "yarn@1.22.17"
 }

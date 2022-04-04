@@ -18,7 +18,9 @@ services:
     tty: true
     volumes:
        - "./package.json:/scrowl-project/package.json"
+       - "./turbo.json:/scrowl-project/turbo.json"
        - "./apps/electron/package.json:/scrowl-project/apps/electron/package.json"
+       - "./apps/scrowl-downloads/package.json:/scrowl-project/apps/scrowl-downloads/package.json"
        - "./packages/config/package.json:/scrowl-project/packages/config/package.json"
        - "./packages/tsconfig/package.json:/scrowl-project/packages/tsconfig/package.json"
        - "./packages/ui/package.json:/scrowl-project/packages/ui/package.json"
@@ -47,12 +49,16 @@ services:
       # https://stackoverflow.com/a/53975412/15077454
       - seccomp=./apps/electron/chrome.json
     command: >
-      sh -c "ls -al ./apps/electron/webpack && npx yarn turbo run start"
+      sh -c "npx yarn start"
     ports:
       - "9001:9000"
     volumes:
+      - "./turbo.json:/scrowl-project/turbo.json"
+      - "./package.json:/scrowl-project/package.json:ro"
+
       # adding shared volums (has access to all of the package.json files)
       - "shared_data:/scrowl-project"
+      
       # adding VS Code launch file
       - "./.vscode:/scrowl-project/.vscode"
 
@@ -62,7 +68,7 @@ services:
       - "./apps/electron/webpack:/scrowl-project/apps/electron/webpack"
       - "./apps/electron/tsconfig.json:/scrowl-project/apps/electron/tsconfig.json"
       - "./apps/electron/preload.js:/scrowl-project/apps/electron/preload.js"
-
+     
       # adding config files
       - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
       - "./packages/config/linters:/scrowl-project/packages/config/linters"
