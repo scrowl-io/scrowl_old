@@ -2,6 +2,7 @@
   "name": "@scrowl/root",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -16,21 +17,25 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start:tool:course": "yarn workspace @scrowl/courseauthoring run start",
     "build:tool:course": "yarn workspace @scrowl/courseauthoring run build",
-    "package:tool:course": "yarn workspace @scrowl/courseauthoring run build",
-    "start:downloads": "yarn workspace @scrowl/appdownloads run start",
-    "build:downloads": "yarn workspace @scrowl/appdownloads run build"
+    "package:tool:course": "yarn workspace @scrowl/courseauthoring run package",
+    "move:apps": "node ./scripts/pipeline/cmd.move-apps.js",
+    "start:downloads": "concurrently \"yarn workspace @scrowl/appdownloads run start\" \"wait-on http://localhost:1234 && yarn run move:apps\"",
+    "build:downloads": "yarn workspace @scrowl/appdownloads run build",
+    "deploy": "yarn run package:scrowl && yarn run build:web && yarn run move:app-packages"
   },
   "devDependencies": {
+    "chalk": "^5.0.1",
+    "concurrently": "^7.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "gh-pages": "^3.2.3",
+    "fs-extra": "^10.0.1",
     "lerna": "^4.0.0",
     "prettier": "^2.5.1",
     "stylelint": "^14.5.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-standard": "^25.0.0",
     "stylelint-order": "^5.0.0",
-    "stylelint-prettier": "^2.0.0"
+    "stylelint-prettier": "^2.0.0",
+    "wait-on": "^6.0.1"
   },
-  "packageManager": "yarn@1.22.17",
-  "dependencies": {}
+  "packageManager": "yarn@1.22.17"
 }
