@@ -31,7 +31,10 @@
     "package:test": "electron-builder build --dir",
     "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
     "prepackage": "yarn run build",
-    "package": "electron-builder build"
+    "package": "electron-builder build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "main": "./dist/main.js",
   "backend": "./dist/main.js",
