@@ -972,6 +972,92 @@
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
 
+"@owlui/button@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/button/-/button-0.0.18.tgz#54609dfb5047f42884b6b424550ba1d513120fac"
+  integrity sha512-LYDpZs6A9pczI+fGv8n2vBB0s+/T3hzoIJLOVZckL6jh9gHBn7W1QiVEFuSbGwzF85dKfdSLzMhrxRl4yGyrAA==
+  dependencies:
+    "@owlui/theme" "^0.0.18"
+    "@owlui/typings" "^0.0.18"
+    "@owlui/utils" "^0.0.18"
+
+"@owlui/card@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/card/-/card-0.0.18.tgz#5f547159ebbdc6aa1a3cf9e91f673a7ee8d562b9"
+  integrity sha512-3u2MC9XPOsMo8Ki4Yb2yM5Rr3aByupW2M09I0Rkmp4mIcPSSV1NnC+a6W0UDRvphZFyWkczDWzRu4YvgNuI0JA==
+  dependencies:
+    "@owlui/typings" "^0.0.1"
+    "@owlui/utils" "^0.0.18"
+
+"@owlui/components@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/components/-/components-0.0.18.tgz#b57ecb346dab0e722d7d292b501afb53a95ce7db"
+  integrity sha512-LUIF76k+Gf3Ipbx7fDTP8iArKkNRJZ4OENNOty7LEyNFbB5Ya1HEg+SdidaRbGJWW5zWKq7nHDR1QAhzUNwiWw==
+  dependencies:
+    "@owlui/button" "^0.0.18"
+    "@owlui/card" "^0.0.18"
+    "@owlui/icons" "^0.0.18"
+    "@owlui/navigationdrawer" "^0.0.18"
+    "@owlui/table" "^0.0.18"
+    "@owlui/textfield" "^0.0.18"
+    "@owlui/theme" "^0.0.18"
+    "@owlui/typings" "^0.0.18"
+    "@owlui/utils" "^0.0.18"
+
+"@owlui/icons@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/icons/-/icons-0.0.18.tgz#798634e6b4fdf867ade322f408c6a9ee3314ab4c"
+  integrity sha512-I0KVRobDw9KwiIdaPumBTSHpiuXzTGzefEBJJkP9NoYbBZ1WJRJ9QyYeqD51uINm8UUKNFb59ZX0DuLtdz+EKQ==
+  dependencies:
+    "@owlui/typings" "^0.0.1"
+
+"@owlui/navigationdrawer@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/navigationdrawer/-/navigationdrawer-0.0.18.tgz#cecf55aaba7685fa4a82f9ba75d694707e2dbd82"
+  integrity sha512-ha/CKAQG0bvQqya7izieEIW7vMP9nyO3WRPfD0vM0tAh8ssNoaAbKul+J2Gs9omRPnxNaa2h1YrlL6LQpuPJXw==
+  dependencies:
+    "@owlui/typings" "^0.0.1"
+    "@owlui/utils" "^0.0.18"
+
+"@owlui/table@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/table/-/table-0.0.18.tgz#64ab1b2c6d1f28fe27594e6e0e0bde0731957c59"
+  integrity sha512-GwnAOHnh4tcHfPLLQbdXICZoPHN0TKR253kwO9nyEJcJjR7DxxqDj6EtaDrq6I3QhCnoVHHezBZgGEDx7GTmgg==
+  dependencies:
+    "@owlui/typings" "^0.0.1"
+    "@owlui/utils" "^0.0.18"
+
+"@owlui/textfield@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/textfield/-/textfield-0.0.18.tgz#c99f61580788bd650105c874a376965b8a7544b5"
+  integrity sha512-v4S/PD4pUq2a+goLOJJV+NL8Q2whzn806RmgT3ANVFFT8BFplOqwTs3NExlfES2bwEMCktK8NQJj/NDZ/3qokA==
+  dependencies:
+    "@owlui/theme" "^0.0.18"
+    "@owlui/typings" "^0.0.18"
+
+"@owlui/theme@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/theme/-/theme-0.0.18.tgz#1a018d37a433b9d03e51b0bf401686b873ccee13"
+  integrity sha512-Iw/jAmdX+RTgim+nU/1g1jslZ33RriNSG5r7iIblBxWOjvFi+eAmQaZwFlEzwTCnMVOI8fY7CXmeu9ueEocT7w==
+  dependencies:
+    "@owlui/typings" "^0.0.1"
+    material-design-icons "^3.0.1"
+
+"@owlui/typings@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.1.tgz#713a45a5eef4d9ba10c8d3963079da40f2f4c127"
+  integrity sha512-BruOjZvXTTSUOr/+uA2OnU73yjsvpjTB/O971uTqbx77HONI52d8dSEv5xDqxrMM2+mxZOUjb4hRkAqJhQXylw==
+
+"@owlui/typings@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.18.tgz#2bd3730ded07dbaaaa66025a5e9b4c0b2800c490"
+  integrity sha512-YOqS6Y/3Y9TF9olDk3HVFLsmX8qeL5D/JtU4IlIZd0Isksxd6LBCSOjU4rq2vf5j7yF4/OiGr1y3ITliwcDnCQ==
+
+"@owlui/utils@^0.0.18":
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/@owlui/utils/-/utils-0.0.18.tgz#ac6090801b3bf3117b2b4cd4d3af9f154bc4c614"
+  integrity sha512-U/J5ZmXn/C0uAQ8J1PxnE9XdDk+cyc20v2a98rn0ivsJH/mm1ODLY9UPCoRu6wSU+x5qz8gJNIA27CqUpv62gg==
+
 "@parcel/bundler-default@2.4.1":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@parcel/bundler-default/-/bundler-default-2.4.1.tgz#a158fe63d99e38865db8353132bd1b2ff62ab47a"
@@ -5162,6 +5248,11 @@ matcher@^3.0.0:
   dependencies:
     escape-string-regexp "^4.0.0"
 
+material-design-icons@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/material-design-icons/-/material-design-icons-3.0.1.tgz#9a71c48747218ebca51e51a66da682038cdcb7bf"
+  integrity sha1-mnHEh0chjrylHlGmbaaCA4zct78=
+
 mathml-tag-names@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/mathml-tag-names/-/mathml-tag-names-2.1.3.tgz#4ddadd67308e780cf16a47685878ee27b736a0a3"
@@ -6783,7 +6874,7 @@ sanitize-filename@^1.6.3:
   dependencies:
     truncate-utf8-bytes "^1.0.0"
 
-sass@^1.38.0:
+sass@^1.38.0, sass@^1.50.0:
   version "1.50.0"
   resolved "https://registry.yarnpkg.com/sass/-/sass-1.50.0.tgz#3e407e2ebc53b12f1e35ce45efb226ea6063c7c8"
   integrity sha512-cLsD6MEZ5URXHStxApajEh7gW189kkjn4Rc8DQweMyF+o5HF5nfEz8QYLMlPsTOD88DknatTmBWkOcw5/LnJLQ==
