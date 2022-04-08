@@ -78,11 +78,3 @@ jspm_packages/
 
 # DynamoDB Local files
 .dynamodb/
-
-# Webpack
-.webpack/
-
-# Electron-Forge
-out/
-
-**/build

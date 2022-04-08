@@ -13,7 +13,10 @@
     "**/jest/**"
   ],
   "scripts": {
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start:tool:course": "yarn workspace @scrowl/courseauthoring run start",
+    "build:tool:course": "yarn workspace @scrowl/courseauthoring run build",
+    "package:tool:course": "yarn workspace @scrowl/courseauthoring run build"
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^4.0.0",
