@@ -1,0 +1,4 @@
+{
+  "outFile": "./dist/[folder].css",
+  "includePaths": ["./node_modules/", "./packages/", "./"]
+}
