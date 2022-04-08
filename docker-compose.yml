@@ -45,7 +45,7 @@ services:
       # https://stackoverflow.com/a/53975412/15077454
       - seccomp=./apps/course-authoring/chrome.json
     command: >
-      sh -c "npx yarn workspace @scrowl/courseauthoring run start"
+      sh -c "npx yarn run start:tool:course"
     ports:
       - '9001:9000'
     volumes:
@@ -57,9 +57,7 @@ services:
       # adding electron app files
       - './apps/course-authoring/package.json:/scrowl-project/apps/course-authoring/package.json:ro'
       - './apps/course-authoring/src:/scrowl-project/apps/course-authoring/src'
-      - './apps/course-authoring/webpack:/scrowl-project/apps/course-authoring/webpack'
       - './apps/course-authoring/tsconfig.json:/scrowl-project/apps/course-authoring/tsconfig.json'
-      - './apps/course-authoring/preload.js:/scrowl-project/apps/course-authoring/preload.js'
 
       # adding config files
       - './packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js'
