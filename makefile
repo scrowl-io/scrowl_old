@@ -9,19 +9,17 @@ DOCKERHUB_PROJECT_ID = sezarosg
 DOCKERHUB_REGISTRY_ID = sezarosg.io
 DOCKERHUB_HOSTNAME = docker.io
 DOCKERHUB_FRONTEND_IMAGE_NAME = electron_app
-LOCAL_FRONTEND_CONTAINER = scrowl_modules
 LOCAL_GIHUB_PAGES = scrowl_downloads
 FRONTEND_IMAGE_TAG = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:$(versionTag)
 FRONTEND_IMAGE_TAG_LATEST = ${DOCKERHUB_HOSTNAME}/${DOCKERHUB_PROJECT_ID}/${DOCKERHUB_FRONTEND_IMAGE_NAME}:latest
-ELECTRON_PATH = apps/electron
+ELECTRON_PATH = apps/course-authoring
 CONFIG_PATH = packages/config
-UI_PATH = packages/ui
-GITHUB_PAGES_PATH = apps/scrowl-downloads
+GITHUB_PAGES_PATH = apps/app-downloads
 
 MAKEFILE_VERSION = "v1.2.0"
 
 # Secret files that cannot be push to repo
-SECRET_ENV_DEVELOPMENT = apps/electron/.env
+SECRET_ENV_DEVELOPMENT = apps/course-authoring/.env
 
 # Secret name on Secret Manager
 SECRET_NAME_ENV_DEVELOPMENT = /eebos/local/scrowl/env
@@ -108,19 +106,13 @@ endef
 # $2 is the name of the dockerfile
 # $3 is the image name with latest version tag
 define REBUILD_IMAGE_PUSH
-	@echo "Step 1: ${START_DESC}Making sure node_modules and yarn.lock are removed${STOP_STYLING}";
-	@echo "${START_STYLE_CMD_INFO}";
-	@echo ' rm -rf ./**/yarn.lock ./**/node_modules';
-	@echo "${STOP_STYLE_CMD_INFO}"; 
-	$(call Delete_FILES, yarn.lock node_modules) 
-	
-	@echo "\nStep 2: ${START_DESC}Build fresh image and tag it${STOP_STYLING}"; 
+	@echo "\nStep 1: ${START_DESC}Build fresh image and tag it${STOP_STYLING}"; 
 	@echo "${START_STYLE_CMD_INFO}"; 
 	@echo "docker ${START_HIGHLIGHT}build${START_HIGHLIGHT_SECONDARY} -f ./.docker/${2}.dockerfile -t ${1} -t ${3} .${STOP_STYLING}";
 	@echo "${STOP_STYLE_CMD_INFO}"; 
 	@docker build -f ./.docker/${2}.dockerfile -t ${1} -t ${3} .;
 
-	@echo "\nStep 3: ${START_DESC}Push image to container registry${STOP_STYLING}"; 
+	@echo "\nStep 2: ${START_DESC}Push image to container registry${STOP_STYLING}"; 
 	@echo "${START_STYLE_CMD_INFO}"; 
 	@echo " docker ${START_HIGHLIGHT}push${START_HIGHLIGHT_SECONDARY} ${1}${STOP_STYLING}"; 
 	@echo "${STOP_STYLE_CMD_INFO}"; 
@@ -250,21 +242,6 @@ ifneq ($(strip $(startOver)),)
 	@docker compose pull;
 	
 	$(eval $@_step:=$(shell expr $($@_step) + 1))
-endif
-
-ifeq ($(wildcard ./node_modules/.),)
-	$(eval $@_step:=$(shell expr $($@_step) + 1))
-	@docker compose up -d;
-	@echo "\nStep $($@_step): ${START_DESC}node_modules folder is missing${STOP_STYLING}";
-	@echo "Step $($@_step)-1: ${START_DESC}Ok, now lets copy the node_modules from the container${STOP_STYLING}";
-	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/node_modules, ./node_modules)
-	
-	$(call COPY_FROM_CONTAINER, cd ./apps && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${ELECTRON_PATH}, - | tar x)
-	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${CONFIG_PATH}, - | tar x)
-	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${UI_PATH}, - | tar x)
-
-	@echo "\nStep $($@_step)-2: ${START_DESC}While we are here, lets copy the yarn.lock as well${STOP_STYLING}";
-	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/yarn.lock, ./yarn.lock) 
 endif 
 
 ifneq ($(strip $(logOff)),)
@@ -308,56 +285,35 @@ ifneq ($(strip $(startOver)),)
 
 	@echo "\nStep $($@_step)-1: ${START_DESC}Remove the containers and volumes${STOP_STYLING}";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.scrowl-download.yml down ${START_HIGHLIGHT_SECONDARY}-v${STOP_STYLING}";
+	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.app-downloads.yml down ${START_HIGHLIGHT_SECONDARY}-v${STOP_STYLING}";
 	@echo "${STOP_STYLE_CMD_INFO}"; 
-	@docker compose -f docker-compose.scrowl-download.yml down -v;
+	@docker compose -f docker-compose.app-downloads.yml down -v;
 
 	@echo "\nStep $($@_step)-2: ${START_DESC}Rebuild the image${STOP_STYLING}";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.scrowl-download.yml build ${START_HIGHLIGHT_SECONDARY}--no-cache${STOP_STYLING}";
+	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.app-downloads.yml build ${START_HIGHLIGHT_SECONDARY}--no-cache${STOP_STYLING}";
 	@echo "${STOP_STYLE_CMD_INFO}"; 
-	@docker compose -f docker-compose.scrowl-download.yml build --no-cache;
+	@docker compose -f docker-compose.app-downloads.yml build --no-cache;
 
 	$(eval $@_step:=$(shell expr $($@_step) + 1))
 endif
 	
 	@echo "\nStep $($@_step)-2: ${START_DESC}Starting the project${STOP_STYLING}";
 	@echo "${START_STYLE_CMD_INFO}";
-	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.scrowl-download.yml up -d${STOP_STYLING}";
+	@echo " docker compose ${START_HIGHLIGHT}-f docker-compose.app-downloads.yml up -d${STOP_STYLING}";
 	@echo "${STOP_STYLE_CMD_INFO}";
-	@docker compose -f docker-compose.scrowl-download.yml up -d;
+	@docker compose -f docker-compose.app-downloads.yml up -d;
 
 	$(eval $@_step:=$(shell expr $($@_step) + 1))
-
-ifeq ($(wildcard ./${GITHUB_PAGES_PATH}/node_modules/.),)
-	$(eval $@_step:=$(shell expr $($@_step) + 1))
-
-	@echo "\nStep $($@_step): ${START_DESC}node_modules folder is missing${STOP_STYLING}";
-	@echo "Step $($@_step)-1: ${START_DESC}Ok, now lets copy the node_modules from the container${STOP_STYLING}";
-	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_GIHUB_PAGES}:/scrowl-project/node_modules, ./node_modules)
-
-	$(call COPY_FROM_CONTAINER, cd ./apps && docker cp,${LOCAL_GIHUB_PAGES}:/scrowl-project/${GITHUB_PAGES_PATH}, - | tar x)
-	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${CONFIG_PATH}, - | tar x)
-	$(call COPY_FROM_CONTAINER, cd ./packages && docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/${UI_PATH}, - | tar x)
-
-	@echo "\nStep $($@_step)-2: ${START_DESC}While we are here, lets copy the yarn.lock as well${STOP_STYLING}";
-	$(call COPY_FROM_CONTAINER, docker cp,${LOCAL_FRONTEND_CONTAINER}:/scrowl-project/yarn.lock, ./yarn.lock) 
-endif 
 
 # We need to start the container in the backgound first so the makefile continues down to this point,
 # then we let docker know that we want a live log feed from the container.
-	@docker compose -f docker-compose.scrowl-download.yml up;
+	@docker compose -f docker-compose.app-downloads.yml up;
 
 
 cleanStart:
 	$(call INTRO,"A clean start has some extra steps so it will take longer        ")
 	@echo "${STOP_STYLING}";
-
-	@echo "*- Making sure node_modules and yarn.lock are removed";
-	@echo "${START_STYLE_CMD_INFO}";
-	@echo ' rm -rf ./**/yarn.lock ./**/node_modules';
-	@echo "${STOP_STYLE_CMD_INFO}";
-	$(call Delete_FILES, yarn.lock node_modules) 
 
 	@$(MAKE) -f $(THIS_FILE) getSecrets
 	@$(MAKE) -f $(THIS_FILE) start startOver=true
@@ -370,7 +326,7 @@ help:
 #
 # cleanStart
 #
-	$(call INFO_CONTAINER,"Gets the latest secret files then removes all containers before starting and updates your local yarn.lock as well as the node_modules folder by copying it over from the container", \
+	$(call INFO_CONTAINER,"Gets the latest secret files then removes all containers before starting", \
 		"cleanStart", \
 		"N/A\n", \
 		"" \

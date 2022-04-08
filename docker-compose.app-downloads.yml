@@ -1,0 +1,39 @@
+version: "3.9"
+
+
+services:
+  scrowl_downloads:
+    environment:
+      - NODE_PATH="/scrowl-project/apps/app-downloads/src"
+    build:
+      context: .
+      dockerfile: ./.docker/app-downloads.dockerfile
+    container_name: scrowl_downloads
+    working_dir: /scrowl-project/apps/app-downloads
+    stdin_open: true
+    command: >
+      sh -c "npx yarn start-gh --scope='@apps/app-downloads'"
+    ports:
+      - 3011:3000
+    volumes:
+      - "./package.json:/scrowl-project/package.json:ro"
+      
+      - "./apps/app-downloads/src:/scrowl-project/apps/app-downloads/src"
+      - "./apps/app-downloads/public:/scrowl-project/apps/app-downloads/public"
+      - "./apps/app-downloads/package.json:/scrowl-project/apps/app-downloads/package.json:ro"
+      - "./apps/app-downloads/tsconfig.json:/scrowl-project/apps/app-downloads/tsconfig.json"
+      
+      # adding config files
+      - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
+      - "./packages/config/linters:/scrowl-project/packages/config/linters"
+      - "./packages/config/package.json:/scrowl-project/packages/config/package.json:ro"
+
+      # adding tsconfig files
+      - "./packages/typings/package.json:/scrowl-project/packages/typings/package.json:ro"
+      - "./packages/typings:/scrowl-project/packages/typings"
+    networks:
+      - app-downloads-network
+
+networks:
+  app-downloads-network:
+    driver: bridge
