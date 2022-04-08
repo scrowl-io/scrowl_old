@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aubeOSG/git-actions-check.git",
+    "url": "git+https://github.com/EEBOS/SCROWL.git",
     "directory": "apps/course-authoring"
   },
   "bugs": {
-    "url": "https://github.com/aubeOSG/git-actions-check/issues"
+    "url": "https://github.com/EEBOS/SCROWL/issues"
   },
-  "homepage": "https://github.com/aubeOSG/git-actions-check/apps/course-authoring#readme",
+  "homepage": "https://github.com/EEBOS/SCROWL/apps/course-authoring#readme",
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
     "prebuild": "yarn run clean",
