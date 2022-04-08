@@ -6,25 +6,23 @@ RUN apt-get update && apt-get install \
 
 FROM builder AS configure
 WORKDIR /scrowl-project
-RUN mkdir -p apps/electron \ 
-  apps/scrowl-downloads \
+RUN mkdir -p apps/course-authoring \ 
+  apps/app-downloads \
   packages/config \
-  packages/tsconfig \
-  packages/ui
+  packages/typings
 
 COPY ./package.json ./
-COPY ./apps/electron/package.json ./apps/electron/
-COPY ./apps/scrowl-downloads/package.json ./apps/scrowl-downloads/
+COPY ./apps/course-authoring/package.json ./apps/course-authoring/
+COPY ./apps/app-downloads/package.json ./apps/app-downloads/
 COPY ./packages/config/package.json ./packages/config/
-COPY ./packages/tsconfig/package.json ./packages/tsconfig/
-COPY ./packages/ui/package.json ./packages/ui/
+COPY ./packages/typings/package.json ./packages/typings/
 
 RUN npx yarn install
 
 # This allows you to use native Node.js modules in Electron apps 
 # without your system version of Node.js matching exactly
 # https://github.com/electron/electron-rebuild
-RUN cd apps/electron && npx electron-rebuild
+RUN cd apps/course-authoring && npx electron-rebuild
 
 # Electron needs root for sand boxing
 # see https://github.com/electron/electron/issues/17972

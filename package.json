@@ -1,10 +1,9 @@
 {
-  "name": "mono-scrowl",
+  "name": "@scrowl/root",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "apps/electron",
-    "apps/scrowl-downloads",
+    "apps/*",
     "packages/*"
   ],
   "nohoist": [
@@ -14,24 +13,19 @@
     "**/jest/**"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "deploy-gh": "turbo run build --scope=scrowl-downloads && turbo run deploy-gh",
-    "start-gh": "turbo run start-gh --parallel",
-    "dev": "turbo run dev --parallel",
-    "start": "turbo run start --parallel",
-    "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^4.0.0",
+    "gh-pages": "^3.2.3",
+    "lerna": "^4.0.0",
     "prettier": "^2.5.1",
     "stylelint": "^14.5.1",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-standard": "^25.0.0",
     "stylelint-order": "^5.0.0",
-    "stylelint-prettier": "^2.0.0",
-    "turbo": "*",
-    "gh-pages": "^3.2.3"
+    "stylelint-prettier": "^2.0.0"
   },
-  "packageManager": "yarn@1.22.17"
+  "packageManager": "yarn@1.22.17",
+  "dependencies": {}
 }

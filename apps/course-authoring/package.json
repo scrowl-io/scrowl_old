@@ -1,5 +1,5 @@
 {
-  "name": "scrowl",
+  "name": "@scrowl/courseauthoring",
   "productName": "scrowl",
   "version": "1.0.0",
   "description": "TODO",
@@ -30,12 +30,13 @@
     "@electron-forge/maker-zip": "^6.0.0-beta.61",
     "@electron-forge/plugin-webpack": "6.0.0-beta.61",
     "@owlui/components": "^0.0.18",
+    "@scrowl/config": "^1.0.0",
+    "@scrowl/typings": "^1.0.0",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "@vercel/webpack-asset-relocator-loader": "1.7.0",
-    "config": "*",
     "css-loader": "^6.0.0",
     "electron": "16.0.4",
     "electron-devtools-installer": "^3.2.0",
@@ -46,13 +47,11 @@
     "style-loader": "^3.0.0",
     "stylelint": "^14.5.1",
     "ts-loader": "^9.2.2",
-    "tsconfig": "*",
     "typescript": "^4.0.2"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "ui": "*"
+    "react-dom": "^17.0.2"
   }
 }

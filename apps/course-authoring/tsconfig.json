@@ -1,4 +1,4 @@
 {
-  "extends": "tsconfig/electron.json",
+  "extends": "@scrowl/typings/electron.json",
   "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }
