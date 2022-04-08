@@ -16,7 +16,9 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start:tool:course": "yarn workspace @scrowl/courseauthoring run start",
     "build:tool:course": "yarn workspace @scrowl/courseauthoring run build",
-    "package:tool:course": "yarn workspace @scrowl/courseauthoring run build"
+    "package:tool:course": "yarn workspace @scrowl/courseauthoring run build",
+    "start:downloads": "yarn workspace @scrowl/appdownloads run start",
+    "build:downloads": "yarn workspace @scrowl/appdownloads run build"
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^4.0.0",
