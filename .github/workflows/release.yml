@@ -21,7 +21,7 @@ jobs:
         run: npm install -g yarn
 
       - name: Install Lerna
-        run: yarn add lerna
+        run: yarn add lerna -W -D
 
        - name: Cache Node Modules
         uses: actions/cache@v3
