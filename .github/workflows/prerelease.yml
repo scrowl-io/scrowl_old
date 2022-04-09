@@ -26,8 +26,10 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+      - name: Install Lerna
+        run: npm install lerna
       - name: Install Dependencies
-        run: npm install
+        run: lerna bootstrap
       - name: Deploy Latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
