@@ -21,7 +21,7 @@
     "move:apps": "node ./scripts/pipeline/cmd.move-apps.js",
     "start:downloads": "concurrently \"yarn workspace @scrowl/appdownloads run start\" \"wait-on http://localhost:1234 && yarn run move:apps\"",
     "build:downloads": "yarn workspace @scrowl/appdownloads run build",
-    "deploy": "yarn run package:scrowl && yarn run build:web && yarn run move:app-packages"
+    "deploy": "yarn run package:tool:course && yarn run build:downloads && yarn run move:apps"
   },
   "devDependencies": {
     "chalk": "^5.0.1",
