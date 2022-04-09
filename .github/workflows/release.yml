@@ -12,24 +12,28 @@ jobs:
         os: [macos-latest]
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-node@master
         with:
           node-version: 16.9
-      - name: Cache Node Modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+
+      - name: Setup yarn
+        run: npm install -g yarn
+
       - name: Install Lerna
-        run: npm install lerna
+        run: yarn add lerna
+
+       - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install Dependencies
         run: lerna bootstrap
+
       - name: Publish Distributables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

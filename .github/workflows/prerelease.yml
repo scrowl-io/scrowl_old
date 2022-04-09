@@ -12,28 +12,33 @@ jobs:
         os: [macos-latest]
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-node@master
         with:
           node-version: 16.9
+
+      - name: Setup yarn
+        run: npm install -g yarn
+
+      - name: Install Lerna
+        run: yarn add lerna
+
       - name: Cache Node Modules
         uses: actions/cache@v3
-        env:
-          cache-name: cache-node-modules
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Install Lerna
-        run: npm install lerna
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
       - name: Install Dependencies
         run: lerna bootstrap
+
       - name: Deploy Latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm run deploy
+        run: yarn run deploy
+
       - uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
@@ -42,6 +47,7 @@ jobs:
           title: Development Build
           files: |
             ./apps/course-authoring/release/build/Scrowl-1.0.0.dmg
+
       - name: Publish Github Page
         uses: crazy-max/ghaction-github-pages@v2
         with:
