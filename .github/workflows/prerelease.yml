@@ -32,7 +32,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
 
       - name: Install Dependencies
-        run: lerna bootstrap
+        run: yarn run lerna bootstrap
 
       - name: Deploy Latest
         env:
