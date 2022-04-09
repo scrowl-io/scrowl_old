@@ -1,14 +1,14 @@
 const { Resolver } = require('@parcel/plugin');
-const path = require('path');
+const { pathToFileURL } = require('url');
 
 module.exports = new Resolver({
-  async resolve({specifier, dependency }) {
-    const nodeModuleRegex = /\/node_modules\//g
-
-    if (dependency.specifierType === 'url' && dependency.loc.filePath.match(nodeModuleRegex)) {
-      const dirname = path.dirname(dependency.loc.filePath);
-
-      return path.resolve(dirname, specifier);
+  async resolve({ dependency, options, specifier, logger }) {
+    const nodeModuleRegex = /\/node_modules\//g;
+    
+    if (dependency.specifierType === 'url' && dependency.loc && specifier.match(nodeModuleRegex)) {
+      return {
+        filePath: pathToFileURL(specifier).pathname
+      }
     }
 
     return null;
