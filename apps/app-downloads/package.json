@@ -19,7 +19,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache",
     "prebuild": "npm run clean",
-    "build": "parcel build --no-cache --public-url ../git-actions-check",
+    "build": "parcel build --no-cache --public-url ../SCROWL",
     "prestart": "npm run clean",
     "start": "parcel serve --open"
   },
