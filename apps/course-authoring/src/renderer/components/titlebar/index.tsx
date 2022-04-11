@@ -10,7 +10,7 @@ export const TitleBar = ({ pages }: TitleBarProps) => {
   return (
     <div className={`${styles.titleBar} drag`}>
       <span className={styles.titleBarTitle}>
-        Scrowl - {title?.Name ? title.Name : ''}
+        Scrowl{title?.Name ? ` - ${title.Name}` : ''}
       </span>
     </div>
   );
