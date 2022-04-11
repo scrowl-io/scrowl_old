@@ -3,6 +3,10 @@
   "plugins": ["stylelint-order", "stylelint-prettier"],
   "rules": {
     "prettier/prettier": true,
-    "declaration-empty-line-before": "never"
+    "declaration-empty-line-before": "never",
+    "selector-pseudo-class-no-unknown": [
+      true,
+      { "ignorePseudoClasses": ["global"] }
+    ]
   }
 }
