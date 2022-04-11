@@ -111,6 +111,7 @@
     "cross-env": "^7.0.3",
     "electron": "18.0.1",
     "electron-builder": "^22.14.13",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
     "parcel": "^2.4.1",
