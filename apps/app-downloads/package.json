@@ -57,7 +57,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@owlui/components": "^0.0.18",
+    "@owlui/components": "^0.0.19",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",

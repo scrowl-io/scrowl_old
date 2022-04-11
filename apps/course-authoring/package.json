@@ -123,6 +123,9 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
+    "@owlui/components": "^0.0.19",
+    "@scrowl/parcel-resolver-asset-path": "^0.0.0",
+    "@scrowl/parcel-transformer-asset-path": "^0.0.0",
     "electron-debug": "^3.2.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-reload": "^2.0.0-alpha.1",

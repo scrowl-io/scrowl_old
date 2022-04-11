@@ -1,0 +1,29 @@
+@use '~@owlui/theme/src' as theme;
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.nav {
+
+  &-title {
+    font-size: 1.8rem;
+    padding-left: 0.25rem;
+
+    &-icon {
+      font-size: inherit;
+      margin-right: 0.5rem;
+    }
+  }
+
+  &-actions {
+    margin-top: 2rem;
+  }
+
+  &-divider {
+    margin-top: 0.5rem;
+    height: 1px;
+    background-color: #d4d4d4;
+  }
+}
