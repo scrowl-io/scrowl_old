@@ -1,0 +1,13 @@
+@import './reset';
+
+:global .drag {
+  -webkit-app-region: drag;
+}
+
+:global .no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.main {
+  height: calc(100vh - 40px);
+}

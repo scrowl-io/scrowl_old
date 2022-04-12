@@ -1,0 +1,14 @@
+@use '~@owlui/theme/src' as theme;
+
+.title-bar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: theme.$owl-sys-color-primary;
+  border-bottom: 2px solid theme.$owl-ref-palette-primary-highlight;
+
+  &__title {
+    user-select: none;
+  }
+}
