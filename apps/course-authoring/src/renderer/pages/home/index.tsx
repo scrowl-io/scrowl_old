@@ -11,7 +11,7 @@ const Header = (
   <>
     <div>
       <h1 className={style.navTitle}>
-        <Icon className={style.navTitleIcon} icon="school" />
+        <Icon className={style.navTitleIcon} icon="school" aria-hidden="true" />
         <span>Scrowl</span>
       </h1>
     </div>
