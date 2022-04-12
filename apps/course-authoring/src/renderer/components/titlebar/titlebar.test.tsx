@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { TitleBar } from './index';
 
+// Create routes that will be used to render the component
 const routes = [
   {
     Route: '/',
@@ -13,6 +14,8 @@ const routes = [
   },
 ];
 
+// The TitleBar component uses the `useLocation` hook from react-router-dom
+// so we need to mock a route in order to Jest to render the component
 jest.mock('react-router', () => ({
   ...(jest.requireActual('react-router') as {}),
   useLocation: jest.fn().mockImplementation(() => {
