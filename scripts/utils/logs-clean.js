@@ -1,3 +1,3 @@
-import fs from './utils/file-system.js';
+import fs from './file-system.js';
 
 fs.removeSync('./logs');
