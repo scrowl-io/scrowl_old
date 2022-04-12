@@ -1,16 +1,10 @@
 {
-  "eslint.format.enable": true,
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true,
-    "source.fixAll.tslint": true
+    "source.fixAll.prettier": true
   },
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "editor.detectIndentation": false,
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "eslint.packageManager": "yarn",
   "eslint.workingDirectories": ["./apps/course-authoring", "./packages/config"],
   "css.validate": false,
   "less.validate": false,
