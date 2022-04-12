@@ -8,7 +8,7 @@ export const TitleBar = ({ pages }: TitleBarProps) => {
   let title = pages.find(page => page.Route === location);
 
   return (
-    <div className={`${styles.titleBar} drag`}>
+    <div className={`${styles.titleBar} drag`} data-testid="toolbar">
       <span className={styles.titleBarTitle}>
         Scrowl{title?.Name ? ` - ${title.Name}` : ''}
       </span>
