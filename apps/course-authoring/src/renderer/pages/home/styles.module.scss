@@ -6,22 +6,21 @@
 }
 
 .nav {
-
-  &-title {
+  &__title {
     font-size: 1.8rem;
     padding-left: 0.25rem;
 
-    &-icon {
+    &__icon {
       font-size: inherit;
       margin-right: 0.5rem;
     }
   }
 
-  &-actions {
+  &__actions {
     margin-top: 2rem;
   }
 
-  &-divider {
+  &__divider {
     margin-top: 0.5rem;
     height: 1px;
     background-color: #d4d4d4;
