@@ -26,4 +26,32 @@
   height: calc(100vh - 40px);
   width: 100vw;
   background-color: #dae2f4;
+  overflow-y: scroll;
+}
+
+.section-title {
+  font-weight: bold;
+  color: theme.$owl-sys-color-primary;
+  margin-bottom: 1rem;
+}
+
+.files-list {
+  font-size: 0.7rem;
+
+  thead {
+    background-color: #dae2f4;
+  }
+
+  th,
+  td {
+    &:nth-child(-n + 2) {
+      width: 33.33%;
+      padding-right: 0;
+    }
+
+    &:nth-last-child(-n + 2) {
+      width: 16.67%;
+      text-align: right;
+    }
+  }
 }

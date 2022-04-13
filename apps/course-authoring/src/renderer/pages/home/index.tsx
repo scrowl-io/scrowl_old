@@ -3,7 +3,8 @@ import style from './styles.module.scss';
 import { Default as Nav } from '@owlui/navigationdrawer';
 import { Default as Btn } from '@owlui/button';
 import { Default as Icon } from '@owlui/icons';
-import { sidebarItems, cards } from './data';
+import { Default as Table } from '@owlui/table';
+import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 
 export const Route = '/';
@@ -39,6 +40,21 @@ export const Element = () => {
         <section>
           <div className={style.sectionContent}>
             <CardGrid cards={cards} />
+          </div>
+        </section>
+        <section>
+          <div className={style.sectionContent}>
+            <h2 className={style.sectionTitle}>Your Files</h2>
+            <Table
+              className={style.filesList}
+              columns={filesList.columns}
+              items={filesList.items}
+            />
+          </div>
+        </section>
+        <section>
+          <div className={style.sectionContent}>
+            <h2 className={style.sectionTitle}>Templates</h2>
           </div>
         </section>
       </main>

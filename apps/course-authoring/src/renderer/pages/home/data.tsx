@@ -43,7 +43,61 @@ export const cards: CardProps[] = [
   },
 ];
 
+export const filesList = {
+  columns: [
+    {
+      label: 'Name',
+      field: 'name',
+    },
+    {
+      label: 'File Location',
+      field: 'fileLocation',
+    },
+    {
+      label: 'Last Modified',
+      field: 'lastModified',
+    },
+    {
+      label: 'size',
+      field: 'size',
+    },
+  ],
+  items: [
+    {
+      name: 'AODA v1.0.4',
+      fileLocation: '/Users/jsmith/Documents/Courses',
+      lastModified: 'yesterday',
+      size: '543 MB',
+    },
+    {
+      name: 'Working at Heights v4.0.3',
+      fileLocation: '/Users/jsmith/Documents/Courses',
+      lastModified: 'last week',
+      size: '124 MB',
+    },
+    {
+      name: 'Worker Health and Safety Awareness v2.0.1',
+      fileLocation: '/Users/jsmith/Documents/Courses',
+      lastModified: 'February 28',
+      size: '301 MB',
+    },
+    {
+      name: 'Office Ergonomics',
+      fileLocation: '/Users/jsmith/Documents/Courses',
+      lastModified: 'January 14',
+      size: '90 MB',
+    },
+    {
+      name: 'Workplace Hazardous Materials Information System (WHIMIS)',
+      fileLocation: '/Users/jsmith/Documents/Courses',
+      lastModified: 'December 13, 2022',
+      size: '805 MB',
+    },
+  ],
+};
+
 export default {
   sidebarItems,
   cards,
+  filesList,
 };
