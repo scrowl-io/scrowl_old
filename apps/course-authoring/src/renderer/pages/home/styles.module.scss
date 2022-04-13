@@ -1,10 +1,5 @@
 @use '~@owlui/theme/src' as theme;
 
-.container {
-  display: flex;
-  height: calc(100vh - 40px);
-}
-
 .nav {
   &__title {
     font-size: 1.8rem;
@@ -25,4 +20,10 @@
     height: 1px;
     background-color: #d4d4d4;
   }
+}
+
+.main {
+  height: calc(100vh - 40px);
+  width: 100vw;
+  background-color: #dae2f4;
 }

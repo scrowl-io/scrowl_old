@@ -3,6 +3,8 @@ import style from './styles.module.scss';
 import { Default as Nav } from '@owlui/navigationdrawer';
 import { Default as Btn } from '@owlui/button';
 import { Default as Icon } from '@owlui/icons';
+import { sidebarItems, cards } from './data';
+import { CardGrid } from '../../components/cardgrid';
 
 export const Route = '/';
 export const Name = 'Home';
@@ -29,26 +31,14 @@ const Header = (
   </>
 );
 
-const items = [
-  {
-    heading: 'RECENT FILES',
-    items: [{ label: 'AODA v1.0.4' }, { label: 'Working at Heights v4.0.3' }],
-  },
-  {
-    heading: 'HELP',
-    items: [
-      { label: 'User Guide' },
-      { label: 'FAQ' },
-      { label: 'Contact Support' },
-    ],
-  },
-];
-
 export const Element = () => {
   return (
-    <div className={style.container}>
-      <Nav className={style.nav} header={Header} items={items} />
-    </div>
+    <>
+      <Nav className={style.nav} header={Header} items={sidebarItems} />
+      <main className={style.main}>
+        <CardGrid cards={cards} />
+      </main>
+    </>
   );
 };
 

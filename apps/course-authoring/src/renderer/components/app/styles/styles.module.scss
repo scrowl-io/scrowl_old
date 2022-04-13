@@ -8,6 +8,7 @@
   -webkit-app-region: no-drag;
 }
 
-.main {
+.content {
+  display: flex;
   height: calc(100vh - 40px);
 }

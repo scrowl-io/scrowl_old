@@ -6,7 +6,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import pageHome from '../../pages/home';
-import * as styles from './styles/styles.module.scss';
+import * as style from './styles/styles.module.scss';
 import { TitleBar } from '../titlebar';
 
 const basename = '/';
@@ -26,12 +26,12 @@ export const App = () => {
   return (
     <Router>
       <TitleBar pages={pages} />
-      <main className={styles.main}>
+      <div className={style.content}>
         <Routes>
           {AppRoutes}
           <Route path="*" element={<Navigate to={basename} />} />
         </Routes>
-      </main>
+      </div>
     </Router>
   );
 };
