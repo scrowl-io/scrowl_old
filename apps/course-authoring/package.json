@@ -37,7 +37,7 @@
     "test:coverage": "jest --coverage",
     "logs:print": "node ../../scripts/utils/logs.js",
     "logs:clean": "node ../../scripts/utils/logs-clean.js",
-    "lint:check": "yarn lint:check:prettier && lint:check:eslint",
+    "lint:check": "yarn lint:check:prettier && yarn lint:check:eslint",
     "lint:check:prettier": "prettier --no-editorconfig --check \"./src/**/*.{json,ts,tsx,js,jsx}\"",
     "prelint:check:eslint": "yarn run logs:clean",
     "lint:check:eslint": "eslint \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
@@ -45,7 +45,7 @@
     "lint:fix": "yarn lint:fix:prettier && yarn lint:fix:eslint",
     "lint:fix:prettier": "prettier --no-editorconfig --write \"./src/**/*.{json,ts,tsx,js,jsx}\"",
     "prelint:fix:eslint": "yarn run logs:clean",
-    "lint:fix:eslint": "eslint --fix \"packages/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
+    "lint:fix:eslint": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
     "lint:fix:styles": "stylelint --fix \"./src/**/*.scss\""
   },
   "main": "./dist/main.js",

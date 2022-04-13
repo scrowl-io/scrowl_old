@@ -20,6 +20,8 @@
     "package:tool:course": "yarn workspace @scrowl/courseauthoring run package",
     "test:tool:course": "yarn workspace @scrowl/courseauthoring run test",
     "coverage:tool:course": "yarn workspace @scrowl/courseauthoring run test:coverage",
+    "lint:check:course": "yarn workspace @scrowl/courseauthoring run lint:check",
+    "lint:fix:course": "yarn workspace @scrowl/courseauthoring run lint:fix",
     "move:apps": "node ./scripts/pipeline/cmd.move-apps.js",
     "start:downloads": "concurrently \"yarn workspace @scrowl/appdownloads run start\" \"wait-on http://localhost:1234 && yarn run move:apps\"",
     "build:downloads": "yarn workspace @scrowl/appdownloads run build",

@@ -76,5 +76,4 @@ const processArgs = () => {
   }
 };
 
-clear();
 processArgs();
