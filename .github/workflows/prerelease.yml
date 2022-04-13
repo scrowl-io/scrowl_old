@@ -18,7 +18,7 @@ jobs:
           node-version: 16.9
 
       - name: Setup yarn
-        run: npm install -g yarn
+        run: npm install -g yarn --network-timeout 100000
 
       - name: Install Lerna
         run: yarn add lerna -W -D
