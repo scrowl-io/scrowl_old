@@ -35,7 +35,7 @@ const sassOpts = {
 const setRelativePaths = (source) => {
   const URL_RE = /url\("(\.\/assets\/(?:\w|\/|-|\d)*\.(?:woff|woff2|eot|ttf))"/g;
   const loadPaths = ["../../node_modules/@owlui/theme/dist/", "./node_modules/@owlui/theme/dist/", "./dist/"];
-  console.log('setting relative paths:\n')
+  
   let code = source.replace(URL_RE, (match, url) => {
 
     const filePaths = loadPaths
