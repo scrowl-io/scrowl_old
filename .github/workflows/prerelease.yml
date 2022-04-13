@@ -18,10 +18,10 @@ jobs:
           node-version: 16.9
 
       - name: Setup yarn
-        run: npm install -g yarn --network-timeout 100000
+        run: npm install -g yarn
 
       - name: Install Lerna
-        run: yarn add lerna -W -D
+        run: yarn add lerna -W -D --network-timeout 100000
 
       - name: Cache Node Modules
         uses: actions/cache@v3
