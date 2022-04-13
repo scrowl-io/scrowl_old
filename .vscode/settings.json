@@ -5,10 +5,8 @@
     "source.fixAll.stylelint": true,
     "source.fixAll.prettier": true
   },
-  "eslint.workingDirectories": ["./apps/course-authoring", "./packages/config"],
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
-  "stylelint.configFile": "packages/config/linters/.stylelintrc",
   "stylelint.validate": ["css", "less", "postcss", "scss"]
 }
