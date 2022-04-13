@@ -36,7 +36,11 @@ export const Element = () => {
     <>
       <Nav className={style.nav} header={Header} items={sidebarItems} />
       <main className={style.main}>
-        <CardGrid cards={cards} />
+        <section>
+          <div className={style.sectionContent}>
+            <CardGrid cards={cards} />
+          </div>
+        </section>
       </main>
     </>
   );
