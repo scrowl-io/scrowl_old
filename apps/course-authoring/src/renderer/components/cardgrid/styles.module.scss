@@ -1,14 +1,13 @@
 @use '~@owlui/theme/src' as theme;
 
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  row-gap: 1rem;
 
   .card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
 
     > div {
       padding: 0.5rem 0.7rem;
