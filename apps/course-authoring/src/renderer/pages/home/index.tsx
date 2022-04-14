@@ -36,8 +36,8 @@ const Header = (
 const TemplatesList = () => {
   return Array.from(Array(5), (e, i) => {
     return (
-      <div className={style.gridCol}>
-        <Card key={i} className={style.template}></Card>
+      <div key={i} className={style.gridCol}>
+        <Card className={style.template}></Card>
       </div>
     );
   });
