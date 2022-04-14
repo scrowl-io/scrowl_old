@@ -45,21 +45,3 @@
     background-color: #dae2f4;
   }
 }
-
-.templates-list {
-  .grid-container {
-    max-width: 100%;
-  }
-
-  .grid-row {
-    justify-content: space-between;
-  }
-
-  .grid-col {
-    width: 15%;
-
-    > div {
-      height: 110px;
-    }
-  }
-}

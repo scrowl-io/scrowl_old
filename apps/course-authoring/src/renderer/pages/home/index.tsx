@@ -34,10 +34,15 @@ const Header = (
 );
 
 const TemplatesList = () => {
-  return Array.from(Array(5), (e, i) => {
+  const tempTemplatesQty = 6;
+
+  return Array.from(Array(tempTemplatesQty), (e, i) => {
     return (
-      <div key={i} className={style.gridCol}>
-        <Card className={style.template}></Card>
+      <div key={i} className="owlui-grid-col-xs-2">
+        <Card
+          className={style.template}
+          style={{ height: '110px', cursor: 'pointer' }}
+        ></Card>
       </div>
     );
   });
@@ -62,9 +67,7 @@ export const Element = () => {
         <section className={style.templatesList}>
           <div>
             <h2 className={style.sectionTitle}>Templates</h2>
-            <div className={style.gridContainer}>
-              <div className={style.gridRow}>{TemplatesList()}</div>
-            </div>
+            <div className="owlui-grid-row">{TemplatesList()}</div>
           </div>
         </section>
       </main>
