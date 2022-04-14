@@ -4,6 +4,7 @@ import { Default as Nav } from '@owlui/navigationdrawer';
 import { Default as Btn } from '@owlui/button';
 import { Default as Icon } from '@owlui/icons';
 import { Default as Table } from '@owlui/table';
+import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 
@@ -32,29 +33,38 @@ const Header = (
   </>
 );
 
+const TemplatesList = () => {
+  return Array.from(Array(5), (e, i) => {
+    return (
+      <div className={style.gridCol}>
+        <Card key={i} className={style.template}></Card>
+      </div>
+    );
+  });
+};
+
 export const Element = () => {
   return (
     <>
       <Nav className={style.nav} header={Header} items={sidebarItems} />
       <main className={style.main}>
         <section>
-          <div className={style.sectionContent}>
+          <div>
             <CardGrid cards={cards} />
           </div>
         </section>
-        <section>
-          <div className={style.sectionContent}>
+        <section className={style.filesList}>
+          <div>
             <h2 className={style.sectionTitle}>Your Files</h2>
-            <Table
-              className={style.filesList}
-              columns={filesList.columns}
-              items={filesList.items}
-            />
+            <Table columns={filesList.columns} items={filesList.items} />
           </div>
         </section>
-        <section>
-          <div className={style.sectionContent}>
+        <section className={style.templatesList}>
+          <div>
             <h2 className={style.sectionTitle}>Templates</h2>
+            <div className={style.gridContainer}>
+              <div className={style.gridRow}>{TemplatesList()}</div>
+            </div>
           </div>
         </section>
       </main>
