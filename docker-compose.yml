@@ -63,9 +63,13 @@ services:
       - './packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js'
       - './packages/config/linters:/scrowl-project/packages/config/linters'
       - './packages/config/package.json:/scrowl-project/packages/config/package.json:ro'
+      
+      # adding parcel config files
+      - './packages/parcel-transformer-asset-path/src/index.js:/scrowl-project/packages/parcel-transformer-asset-path/src/index.js'
+      - './packages/parcel-resolver-asset-path/src/index.js:/scrowl-project/packages/parcel-resolver-asset-path/src/index.js'
+
 
       # adding tsconfig files
-      - './packages/typings/package.json:/scrowl-project/packages/typings/package.json:ro'
       - './packages/typings:/scrowl-project/packages/typings'
     networks:
       - scrowl-network
