@@ -13,9 +13,10 @@ RUN mkdir -p apps/course-authoring \
 
 COPY ./package.json ./
 COPY ./apps/course-authoring/package.json ./apps/course-authoring/
-COPY ./apps/app-downloads/package.json ./apps/app-downloads/
 COPY ./packages/config/package.json ./packages/config/
 COPY ./packages/typings/package.json ./packages/typings/
+COPY ./packages/parcel-resolver-asset-path/package.json ./packages/parcel-resolver-asset-path/
+COPY ./packages/parcel-transformer-asset-path/package.json ./packages/parcel-transformer-asset-path/
 
 RUN npx yarn install
 
