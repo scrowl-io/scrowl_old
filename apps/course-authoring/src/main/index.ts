@@ -56,6 +56,7 @@ const createWindow = async () => {
     titleBarStyle: 'hidden',
     show: false,
     width: 1024,
+    minWidth: 1024,
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {
@@ -73,6 +74,7 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+      mainWindow.webContents.openDevTools({ mode: 'detach' });
     }
   });
 

@@ -3,6 +3,10 @@ import style from './styles.module.scss';
 import { Default as Nav } from '@owlui/navigationdrawer';
 import { Default as Btn } from '@owlui/button';
 import { Default as Icon } from '@owlui/icons';
+import { Default as Table } from '@owlui/table';
+import { Default as Card } from '@owlui/card';
+import { sidebarItems, cards, filesList } from './data';
+import { CardGrid } from '../../components/cardgrid';
 
 export const Route = '/';
 export const Name = 'Home';
@@ -29,26 +33,45 @@ const Header = (
   </>
 );
 
-const items = [
-  {
-    heading: 'RECENT FILES',
-    items: [{ label: 'AODA v1.0.4' }, { label: 'Working at Heights v4.0.3' }],
-  },
-  {
-    heading: 'HELP',
-    items: [
-      { label: 'User Guide' },
-      { label: 'FAQ' },
-      { label: 'Contact Support' },
-    ],
-  },
-];
+const TemplatesList = () => {
+  const tempTemplatesQty = 6;
+
+  return Array.from(Array(tempTemplatesQty), (e, i) => {
+    return (
+      <div key={i} className="owlui-grid-col-xs-2">
+        <Card
+          className={style.template}
+          style={{ height: '110px', cursor: 'pointer' }}
+        ></Card>
+      </div>
+    );
+  });
+};
 
 export const Element = () => {
   return (
-    <div className={style.container}>
-      <Nav className={style.nav} header={Header} items={items} />
-    </div>
+    <>
+      <Nav className={style.nav} header={Header} items={sidebarItems} />
+      <main className={style.main}>
+        <section>
+          <div>
+            <CardGrid cards={cards} />
+          </div>
+        </section>
+        <section className={style.filesList}>
+          <div>
+            <h2 className={style.sectionTitle}>Your Files</h2>
+            <Table columns={filesList.columns} items={filesList.items} />
+          </div>
+        </section>
+        <section className={style.templatesList}>
+          <div>
+            <h2 className={style.sectionTitle}>Templates</h2>
+            <div className="owlui-grid-row">{TemplatesList()}</div>
+          </div>
+        </section>
+      </main>
+    </>
   );
 };
 

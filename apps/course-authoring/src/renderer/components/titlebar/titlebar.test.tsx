@@ -17,7 +17,7 @@ const routes = [
 // The TitleBar component uses the `useLocation` hook from react-router-dom
 // so we need to mock a route in order to Jest to render the component
 jest.mock('react-router', () => ({
-  ...jest.requireActual('react-router'),
+  ...(jest.requireActual('react-router') as object),
   useLocation: jest.fn().mockImplementation(() => {
     return { pathname: '/create' };
   }),

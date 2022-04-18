@@ -1,10 +1,5 @@
 @use '~@owlui/theme/src' as theme;
 
-.container {
-  display: flex;
-  height: calc(100vh - 40px);
-}
-
 .nav {
   &__title {
     font-size: 1.8rem;
@@ -24,5 +19,29 @@
     margin-top: 0.5rem;
     height: 1px;
     background-color: #d4d4d4;
+  }
+}
+
+.main {
+  height: calc(100vh - 40px);
+  width: 100vw;
+  background-color: #dae2f4;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.section-title {
+  font-weight: bold;
+  color: theme.$owl-sys-color-primary;
+  margin-bottom: 1rem;
+}
+
+.files-list {
+  table {
+    font-size: 0.7rem;
+  }
+
+  thead {
+    background-color: #dae2f4;
   }
 }
