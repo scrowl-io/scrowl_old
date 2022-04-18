@@ -5,7 +5,7 @@ import * as styles from './styles.module.scss';
 
 export const TitleBar = ({ pages }: TitleBarProps) => {
   const location = useLocation().pathname;
-  let title = pages.find(page => page.Route === location);
+  const title = pages.find(page => page.Route === location);
 
   return (
     <div className={`${styles.titleBar} drag`} data-testid="toolbar">
