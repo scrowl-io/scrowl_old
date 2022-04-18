@@ -1,78 +1,53 @@
-# Turborepo starter
+# Welcome to Scrowl!
 
-This is an official Yarn v1 starter turborepo.
+## Noteworthy Technologies
 
-## What's inside?
+### [Yarn](https://yarnpkg.com/)
 
-This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package manager. It includes the following packages/apps:
+We use Yarn to manage dependencies instead of npm. This project and others are mono repos and we make use of yarn’s workspace feature to make management easier.
 
-### Apps and Packages
+### [Lerna](https://lerna.js.org/)
 
-- `docs`: a [Next.js](https://nextjs.org) app
-- `web`: another [Next.js](https://nextjs.org) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+This project uses Lerna to manage dependencies of local packages.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### [React](https://reactjs.org/)
 
-### Utilities
+This project is built with functional react components.
 
-This turborepo has some additional tools already setup for you:
+### [Typescript](https://www.typescriptlang.org/)
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
+Typescript is a powerful tool that provides erroring checking and discovery
 
-## Setup
+## Getting Started
 
-This repository is used in the `npx create-turbo` command, and selected when choosing which package manager you wish to use with your monorepo (Yarn).
+With yarn being the preferred package manager, you should install it before continuing.
 
-### Build
+`npm install yarn -g`
 
-To build all apps and packages, run the following command:
+In case you get the error `Error: EACCES: permission denied` try to install the packages using `sudo` permissions, your user's password may be requested:
 
-```
-cd my-turborepo
-yarn run build
-```
+`sudo npm install yarn -g`
 
-### Develop
+Next lets install our dependencies.
 
-To develop all apps and packages, run the following command:
+`yarn install`
 
-```
-cd my-turborepo
-yarn run dev
-```
+### Course Authoring
 
-### Remote Caching
+The course authoring tool is the primary application being built in this repo. It is an electron app and you can start it in docker container or without docker.
 
-Turborepo can use a technique known as [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+> If you are on macOS you'll need to install [XQuartz](https://www.xquartz.org/) to overcome display port issues
 
-By default, Turborepo will cache locally. To enable Remote Caching (Beta) you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+**Docker**
 
-```
-cd my-turborepo
-npx turbo login
-```
+`make cleanStart` - This will build the docker image and containers. You'll need to do this if it is your first time starting with docker.
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+`make start` - Will start the application without having to build the image and containers.
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
+**Default**
 
-```
-npx turbo link
-```
+`yarn workspace @scrowl/courseauthoring run start`
 
-## Useful Links
+## Useful Commands
 
-Learn more about the power of Turborepo:
-
-- [Pipelines](https://turborepo.org/docs/features/pipelines)
-- [Caching](https://turborepo.org/docs/features/caching)
-- [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching)
-- [Scoped Tasks](https://turborepo.org/docs/features/scopes)
-- [Configuration Options](https://turborepo.org/docs/reference/configuration)
-- [CLI Usage](https://turborepo.org/docs/reference/command-line-reference)
+`lerna add <package> --scope=<local-package>` - The easiest way to add a package to a local package ([Documentation](https://github.com/lerna/lerna/tree/main/commands/add)).

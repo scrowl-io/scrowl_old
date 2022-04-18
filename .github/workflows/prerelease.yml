@@ -1,0 +1,57 @@
+name: pre-release
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  pre-release:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest]
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16.9
+
+      - name: Setup yarn
+        run: npm install -g yarn
+
+      - name: Install Lerna
+        run: yarn add lerna -W -D --network-timeout 100000
+
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn run lerna bootstrap
+
+      - name: Deploy Latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: yarn run deploy
+
+      - uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          automatic_release_tag: latest
+          prerelease: true
+          title: Development Build
+          files: |
+            ./apps/course-authoring/release/build/Scrowl-1.0.0.dmg
+
+      - name: Publish Github Page
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: apps/app-downloads/dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

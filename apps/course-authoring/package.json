@@ -1,0 +1,152 @@
+{
+  "name": "@scrowl/courseauthoring",
+  "productName": "course-authoring",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "keywords": [],
+  "author": {
+    "name": "OSG"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EEBOS/SCROWL.git",
+    "directory": "apps/course-authoring"
+  },
+  "bugs": {
+    "url": "https://github.com/EEBOS/SCROWL/issues"
+  },
+  "homepage": "https://github.com/EEBOS/SCROWL/apps/course-authoring#readme",
+  "scripts": {
+    "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
+    "prebuild": "yarn run clean",
+    "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist",
+    "start:frontend": "parcel serve --target frontend --no-cache --port 5001",
+    "prestart:backend": "parcel build --target backend --target preload --no-cache",
+    "start:backend": "wait-on http://localhost:5001 && nodemon --exec electron ./dist/main.js",
+    "watch:backend": "parcel watch ./src/main/index.ts ./src/main/preload.ts --no-cache --port 5000",
+    "prestart": "yarn run clean",
+    "start": "cross-env NODE_ENV=development PORT=5001 concurrently \"yarn run start:frontend\" \"yarn run start:backend\" \"yarn run watch:backend\"",
+    "postinstall": "electron-builder install-app-deps",
+    "package:test": "electron-builder build --dir",
+    "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
+    "prepackage": "yarn run build",
+    "package": "electron-builder build",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "logs:print": "node ../../scripts/pipeline/cmd.logs.js",
+    "logs:clean": "node ../../scripts/pipeline/cmd.logs-clean.js",
+    "lint:check": "yarn lint:check:prettier && yarn lint:check:eslint",
+    "lint:check:prettier": "prettier --no-editorconfig --check \"./src/**/*.{json,ts,tsx,js,jsx}\"",
+    "prelint:check:eslint": "yarn run logs:clean",
+    "lint:check:eslint": "eslint \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
+    "lint:check:styles": "stylelint \"./src/**/*.scss\"",
+    "lint:fix": "yarn lint:fix:prettier && yarn lint:fix:eslint",
+    "lint:fix:prettier": "prettier --no-editorconfig --write \"./src/**/*.{json,ts,tsx,js,jsx}\"",
+    "prelint:fix:eslint": "yarn run logs:clean",
+    "lint:fix:eslint": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
+    "lint:fix:styles": "stylelint --fix \"./src/**/*.scss\""
+  },
+  "main": "./dist/main.js",
+  "backend": "./dist/main.js",
+  "preload": "./dist/preload.js",
+  "frontend": "./dist/renderer.html",
+  "targets": {
+    "main": false,
+    "backend": {
+      "context": "electron-main",
+      "source": "./src/main/index.ts",
+      "outputFormat": "commonjs",
+      "engines": {
+        "node": "16.13.2"
+      }
+    },
+    "preload": {
+      "context": "electron-main",
+      "source": "./src/main/preload.ts",
+      "outputFormat": "commonjs",
+      "engines": {
+        "node": "16.13.2"
+      }
+    },
+    "frontend": {
+      "context": "browser",
+      "source": "./src/renderer/index.html"
+    }
+  },
+  "build": {
+    "appId": "org.eebos.scrowl",
+    "productName": "Scrowl",
+    "files": [
+      "dist/*",
+      "node_modules/**/*",
+      "../../node_modules/**/*",
+      "package.json"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "directories": {
+      "output": "release/build"
+    },
+    "publish": null
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@parcel/packager-ts": "^2.4.1",
+    "@parcel/runtime-react-refresh": "^2.4.1",
+    "@parcel/transformer-sass": "^2.4.1",
+    "@parcel/transformer-typescript-types": "^2.4.1",
+    "@scrowl/config": "^1.0.0",
+    "@scrowl/typings": "^1.0.0",
+    "@testing-library/react": "^13.0.0",
+    "@types/jest": "^27.4.1",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "asar": "^3.1.0",
+    "babel-jest": "^27.5.1",
+    "concurrently": "^7.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "18.0.1",
+    "electron-builder": "^22.14.13",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "parcel": "^2.4.1",
+    "postcss": "^8.4.12",
+    "postcss-import": "^14.1.0",
+    "postcss-modules": "^4.3.1",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.1.4",
+    "ts-node": "^10.7.0",
+    "wait-on": "^6.0.1"
+  },
+  "dependencies": {
+    "@owlui/components": "^0.0.19",
+    "@scrowl/parcel-resolver-asset-path": "^0.0.0",
+    "@scrowl/parcel-transformer-asset-path": "^0.0.0",
+    "electron-debug": "^3.2.0",
+    "electron-devtools-installer": "^3.2.0",
+    "electron-reload": "^2.0.0-alpha.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "path-browserify": "^1.0.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
+    "typescript": "^4.6.3"
+  }
+}

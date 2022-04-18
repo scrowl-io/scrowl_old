@@ -1,0 +1,4 @@
+{
+  "extends": "@scrowl/typings/react-library.json",
+  "exclude": ["dist", "build", "node_modules"]
+}

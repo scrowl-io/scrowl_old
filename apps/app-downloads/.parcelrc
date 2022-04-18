@@ -1,0 +1,7 @@
+{
+  "extends": "@parcel/config-default",
+  "resolvers": ["@scrowl/parcel-resolver-asset-path", "..."],
+  "transformers": {
+    "*.{css,scss}": ["@scrowl/parcel-transformer-asset-path", "@parcel/transformer-postcss", "@parcel/transformer-css"]
+  }
+}

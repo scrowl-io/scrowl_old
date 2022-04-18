@@ -1,63 +1,40 @@
-name: Release Workflow
-
+name: release
 on:
   release:
-    types: [created]
-  pull_request:
-    branches: [main, develop]
-    types: [closed]
-  workflow_dispatch: # so we can run this workflow manually as well
+    types:
+      - created
 
-jobs: 
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-        - uses: actions/checkout@v2
-        - name: Setup Node
-          uses: actions/setup-node@v1
-          with:
-            node-version: 16.9 # matching Elctron's version of node 
-        - name: Get yarn cache directory path
-          id: yarn-cache-dir-path
-          run: echo "::set-output name=dir::$(yarn cache dir)"
-        - uses: actions/cache@v1
-          id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-          with:
-            path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-            restore-keys: |
-              ${{ runner.os }}-yarn-
-        - name: Install dependancies
-          run: yarn
-        - name: lint
-          run: yarn lint
-  build:
-    needs: lint
-    name: Build (${{ matrix.os }})
+jobs:
+  release:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macOS-latest, ubuntu-latest, windows-latest ]
+        os: [macos-latest]
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.9 # matching Elctron's version of node
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v1
-        if: matrix.os != 'macOS-latest'
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install dependancies
-        run: yarn
-      - name: Make distributables
-        if: startsWith(github.ref, 'refs/tags/')
-        run: yarn make --arch=all
 
+      - uses: actions/setup-node@master
+        with:
+          node-version: 16.9
+
+      - name: Setup yarn
+        run: npm install -g yarn
+
+      - name: Install Lerna
+        run: yarn add lerna -W -D
+
+       - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn run lerna bootstrap
+
+      - name: Publish Distributables
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run package:tool:course
