@@ -30,7 +30,7 @@ test('A toolbar element is rendered', () => {
 });
 
 test('Should render title from route', () => {
-  const expectedText = 'Scrowl - Create New';
+  const expectedText = 'Scrowl - Create New Course';
 
   render(<TitleBar pages={routes} />);
 
