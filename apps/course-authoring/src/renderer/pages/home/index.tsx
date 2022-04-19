@@ -29,14 +29,20 @@ const Header = (
         </Btn>
       </div>
       <div>
-        <Btn size="Sm" onClick={async ()=>{
+        <Btn
+          size="Sm"
+          onClick={async () => {
             // Send to Main and get return
-            const messageFromMain = await window.exportScormApi.startScormExportProcess(
-              'Test Course'
-            );
+            const messageFromMain =
+              await window.exportScormApi.startScormExportProcess(
+                'Test Course'
+              );
 
             console.log(messageFromMain);
-        }}>Export</Btn>
+          }}
+        >
+          Export
+        </Btn>
       </div>
     </div>
     <div className={style.navDivider} />
