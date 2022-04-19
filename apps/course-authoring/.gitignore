@@ -42,3 +42,9 @@ release/build/*
 
 # build output
 dist/
+
+# SCORM build folder 
+# (The folder itself needs to be there for the exrport process)
+src/scormBuild/*
+!src/scormBuild
+scormPackages/

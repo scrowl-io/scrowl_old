@@ -6,6 +6,7 @@
 import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import electronReload from 'electron-reload';
+import buildPackage from '@liascript/simple-scorm-packager';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
@@ -17,6 +18,32 @@ ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
+});
+
+// Renderer to Main and back to Renderer
+ipcMain.handle('startScormExportProcess', (event, args) => {
+  console.log(`SCORM package export of ${args} has started`);
+  
+  const scormProcess= buildPackage({
+    version: '1.2',
+    organization: 'The Test Company',
+    title: `${args ?? ''}`,
+    language: 'en-ca',
+    identifier: '00',
+    masteryScore: 80,
+    startingPage: 'start.html',
+    source: './src/scormBuild',
+    package: {
+      version: "0.0.1",
+      zip: true,
+      outputFolder: './src/scormPackages'
+    }
+  }, function(msg){
+    console.log(msg);
+    return `${msg}`;
+  });
+
+  return scormProcess;
 });
 
 const isDevelopment =
