@@ -18,7 +18,7 @@ test('Should render title bar title element', async () => {
 test('Should render icon element', async () => {
   const title = await appWindow.locator('.nav__title__icon');
 
-  await expect(title).toHaveText('Scrowl - Homes');
+  await expect(title).toHaveText('school');
 });
 
 test.afterAll(async () => {
