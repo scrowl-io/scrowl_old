@@ -38,7 +38,7 @@ jobs:
       - name: Lint
         run: yarn run lint:check:course
 
-  test-course-authoring:
+  test-unit-course-authoring:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -68,8 +68,41 @@ jobs:
       - name: Install Dependencies
         run: yarn run lerna bootstrap
 
-      - name: Install Playwright Dependencies
-        run: npx playwright install --with-deps chromium
-
       - name: Test
-        run: yarn run test:tool:course
+        run: yarn run test:unit:tool:course
+
+  test-e2e-course-authoring:
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [macos-latest]
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Setup Node
+          uses: actions/setup-node@v2
+          with:
+            node-version: 16.13.2 # matching Elctron's version of node
+
+        - name: Get Yarn Cache
+          id: yarn-cache-dir-path
+          run: echo "::set-output name=dir::$(yarn cache dir)"
+        - uses: actions/cache@v1
+          id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+          with:
+            path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+            restore-keys: |
+              ${{ runner.os }}-yarn-
+
+        - name: Install Lerna
+          run: yarn add lerna -W -D --network-timeout 100000
+
+        - name: Install Dependencies
+          run: yarn run lerna bootstrap
+
+        - name: Install Playwright Dependencies
+          run: npx playwright install --with-deps chromium
+
+        - name: Test
+          run: yarn run test:e2e:tool:course
