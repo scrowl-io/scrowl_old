@@ -69,7 +69,7 @@ jobs:
         run: yarn run lerna bootstrap
 
       - name: Install Playwright Dependencies
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium
 
       - name: Test
-        run: DEBUG=pw:browser* npx playwright test tests/
+        run: yarn run test:tool:course

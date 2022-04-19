@@ -32,6 +32,7 @@
     "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
     "prepackage": "yarn run build",
     "package": "electron-builder build",
+    "pretest": "yarn run build",
     "test": "yarn test:unit && yarn test:e2e",
     "test:e2e": "npx playwright test tests/",
     "test:e2e:debug": "PWDEBUG=1 npx playwright test tests/",
