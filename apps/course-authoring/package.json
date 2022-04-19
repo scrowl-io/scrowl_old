@@ -147,6 +147,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
-    "typescript": "^4.6.3"
+    "typescript": "^4.6.3",
+    "@liascript/simple-scorm-packager": "git+https://git@github.com/andre-dietrich/simple-scorm-packager.git"
   }
 }
