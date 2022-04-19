@@ -7,6 +7,7 @@ import path from 'path';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import electronReload from 'electron-reload';
 import buildPackage from '@liascript/simple-scorm-packager';
+import electronDebug from 'electron-debug';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
@@ -50,7 +51,7 @@ const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 if (isDevelopment) {
-  require('electron-debug')();
+  electronDebug();
 
   try {
     electronReload(__dirname, {});
@@ -82,6 +83,7 @@ const createWindow = async () => {
     titleBarStyle: 'hidden',
     show: false,
     width: 1024,
+    minWidth: 1024,
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {
@@ -99,6 +101,7 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+      mainWindow.webContents.openDevTools({ mode: 'detach' });
     }
   });
 
