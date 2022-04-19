@@ -22,7 +22,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
 });
 
 // Renderer to Main and back to Renderer
-ipcMain.handle('startScormExportProcess', (event, args) => {
+ipcMain.handle('startScormExportProcess', (_event, args) => {
   console.log(`SCORM package export of ${args} has started`);
   
   const scormProcess= buildPackage({
