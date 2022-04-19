@@ -12,6 +12,8 @@ test.beforeAll(async () => {
 test('Should render title bar title element', async () => {
   const title = await appWindow.locator('.title-bar__title');
 
+  await appWindow.screenshot({ path: './tests/screenshots/title.png' });
+
   await expect(title).toHaveText('Scrowl - Home');
 });
 
