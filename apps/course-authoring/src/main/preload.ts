@@ -30,7 +30,7 @@ contextBridge.exposeInMainWorld('electron', {
 
 
 const exportScormApi = {
-  startScormExportProcess: (message) =>
+  startScormExportProcess: (message: string) =>
     ipcRenderer.invoke('startScormExportProcess', message),
 };
 

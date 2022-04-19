@@ -26,12 +26,12 @@ const Header = (
       </div>
       <div>
         <Btn size="Sm" onClick={async ()=>{
-                      // Send to Main and get return
+            // Send to Main and get return
             const messageFromMain = await window.exportScormApi.startScormExportProcess(
-                            'Test Course'
-                          );
+              'Test Course'
+            );
 
-              console.log(messageFromMain);
+            console.log(messageFromMain);
         }}>Export</Btn>
       </div>
     </div>

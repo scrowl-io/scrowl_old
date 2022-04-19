@@ -38,7 +38,7 @@ ipcMain.handle('startScormExportProcess', (event, args) => {
       zip: true,
       outputFolder: './src/scormPackages'
     }
-  }, function(msg){
+  }, function(msg: string){
     console.log(msg);
     return `${msg}`;
   });
