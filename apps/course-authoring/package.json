@@ -84,6 +84,7 @@
       "../../node_modules/**/*",
       "package.json"
     ],
+    "afterSign": "./scripts/notarize.js",
     "dmg": {
       "contents": [
         {
@@ -124,6 +125,7 @@
     "cross-env": "^7.0.3",
     "electron": "18.0.1",
     "electron-builder": "^22.14.13",
+    "electron-notarize": "^1.2.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
