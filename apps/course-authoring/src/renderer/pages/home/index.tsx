@@ -33,12 +33,12 @@ const Header = (
           size="Sm"
           onClick={async () => {
             // Send to Main and get return
-            const messageFromMain =
-              await window.exportScormApi.startScormExportProcess(
-                'Test Course'
-              );
+            const scormProcess = await window.electronAPI.ipcRenderer.invoke(
+              'start-scorm-export-process',
+              { courseName: 'Test Course' }
+            );
 
-            console.log(messageFromMain);
+            console.log(scormProcess);
           }}
         >
           Export
