@@ -29,8 +29,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Install Lerna
-        run: yarn add lerna -W -D --network-timeout 100000
+      - name: Install
+        run: yarn install
 
       - name: Install Dependencies
         run: yarn run lerna bootstrap
