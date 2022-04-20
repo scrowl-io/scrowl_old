@@ -75,7 +75,8 @@ jobs:
       runs-on: ${{ matrix.os }}
       strategy:
         matrix:
-          os: [macos-latest]
+          browser: [chromium]
+          os: [ubuntu-latest]
       steps:
         - uses: actions/checkout@v2
 
@@ -103,6 +104,6 @@ jobs:
 
         - name: Install Playwright Dependencies
           run: npx playwright install --with-deps chromium
-
+        
         - name: Test
-          run: yarn run test:e2e:tool:course
+        - run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn run test:e2e:tool:course
