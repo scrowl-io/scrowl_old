@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 contextBridge.exposeInMainWorld('electronAPI', {
   ipcRenderer: {
-     invoke(channel: string, ...args: unknown[]) {
+    invoke(channel: string, ...args: unknown[]) {
       const validChannels = ['ipc-example', 'start-scorm-export-process'];
       if (validChannels.includes(channel)) {
         return ipcRenderer.invoke(channel, ...args);
