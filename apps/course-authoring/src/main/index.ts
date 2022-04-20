@@ -33,7 +33,7 @@ ipcMain.handle('startScormExportProcess', (_event, args) => {
       language: 'en-ca',
       identifier: '00',
       masteryScore: 80,
-      startingPage: 'start.html',
+      startingPage: 'res/start.html',
       source: './src/scormBuild',
       package: {
         version: '0.0.1',
