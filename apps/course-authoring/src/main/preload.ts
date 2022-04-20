@@ -33,10 +33,3 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
   },
 });
-
-const exportScormApi = {
-  startScormExportProcess: (message: string) =>
-    ipcRenderer.invoke('startScormExportProcess', message),
-};
-
-contextBridge.exposeInMainWorld('exportScormApi', exportScormApi);
