@@ -90,6 +90,7 @@ jobs:
         run: yarn run lint:check:course
 
   test-unit-course-authoring:
+    needs: create-cache
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -134,6 +135,7 @@ jobs:
         run: yarn run test:unit:tool:course
 
   test-e2e-course-authoring:
+    needs: create-cache
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
