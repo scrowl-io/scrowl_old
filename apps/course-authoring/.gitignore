@@ -44,7 +44,7 @@ release/build/*
 dist/
 
 # SCORM build folder 
-# (The folder itself needs to be there for the exrport process)
+# (The folder itself needs to be there for the export process)
 src/scormBuild/*
 !src/scormBuild/.gitkeep
 scormPackages/
