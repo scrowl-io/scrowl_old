@@ -42,3 +42,6 @@ release/build/*
 
 # build output
 dist/
+
+# testing reports
+tests/reports
