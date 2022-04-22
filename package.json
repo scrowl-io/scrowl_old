@@ -19,6 +19,8 @@
     "build:tool:course": "yarn workspace @scrowl/courseauthoring run build",
     "package:tool:course": "yarn workspace @scrowl/courseauthoring run package",
     "test:tool:course": "yarn workspace @scrowl/courseauthoring run test",
+    "test:unit:tool:course": "yarn workspace @scrowl/courseauthoring run test:unit",
+    "test:e2e:tool:course": "yarn workspace @scrowl/courseauthoring run test:e2e",
     "coverage:tool:course": "yarn workspace @scrowl/courseauthoring run test:coverage",
     "lint:check:course": "yarn workspace @scrowl/courseauthoring run lint:check",
     "lint:fix:course": "yarn workspace @scrowl/courseauthoring run lint:fix",

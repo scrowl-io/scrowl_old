@@ -28,6 +28,22 @@ const Header = (
           Open
         </Btn>
       </div>
+      <div>
+        <Btn
+          size="Sm"
+          onClick={async () => {
+            // Send to Main and get return
+            const scormProcess = await window.electronAPI.ipcRenderer.invoke(
+              'start-scorm-export-process',
+              { courseName: 'Test Course' }
+            );
+
+            console.log(scormProcess);
+          }}
+        >
+          Export
+        </Btn>
+      </div>
     </div>
     <div className={style.navDivider} />
   </>
