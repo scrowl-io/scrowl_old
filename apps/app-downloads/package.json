@@ -27,10 +27,13 @@
   "type": "module",
   "eslintConfig": {
     "extends": [
+      "@scrowl/config/.eslintrc",
       "react-app",
       "react-app/jest"
     ]
   },
+  "prettier": "@scrowl/config/.prettierrc",
+  "stylelint": "@scrowl/config/.stylelintrc",
   "devDependencies": {
     "@parcel/packager-ts": "^2.4.1",
     "@parcel/transformer-sass": "^2.4.1",
@@ -48,6 +51,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.17.0",
     "@typescript-eslint/parser": "^5.17.0",
+    "eslint": "^8.13.0",
     "parcel": "^2.4.1",
     "postcss": "^8.4.12",
     "postcss-import": "^14.1.0",
@@ -62,5 +66,9 @@
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
     "sass": "^1.50.0"
+  },
+  "peerDependencies": {
+    "@scrowl/config": "^1.0.0",
+    "eslint": "^8.13.0"
   }
 }
