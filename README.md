@@ -10,6 +10,10 @@ We use Yarn to manage dependencies instead of npm. This project and others are m
 
 This project uses Lerna to manage dependencies of local packages.
 
+### [Parcel](https://parceljs.org/)
+
+This project uses Parcel as a build tool
+
 ### [React](https://reactjs.org/)
 
 This project is built with functional react components.
@@ -46,8 +50,18 @@ The course authoring tool is the primary application being built in this repo. I
 
 **Default**
 
-`yarn workspace @scrowl/courseauthoring run start`
+`yarn run start:tool:course`
 
 ## Useful Commands
 
 `lerna add <package> --scope=<local-package>` - The easiest way to add a package to a local package ([Documentation](https://github.com/lerna/lerna/tree/main/commands/add)).
+
+## Contributing
+
+When adding a new feature or fixing a bug, make sure to branch from `develop` and name your branch something meaningful.
+
+**Examples:**
+
+- `feature/[FEATURE_NAME]`
+- `bug/[BUG_NAME]`
+- `chore/[CHORE_NAME]`
