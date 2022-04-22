@@ -48,3 +48,5 @@ dist/
 src/scormBuild/*
 !src/scormBuild/.gitkeep
 scormPackages/
+# testing reports
+tests/reports
