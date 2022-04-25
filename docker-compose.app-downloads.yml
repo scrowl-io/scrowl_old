@@ -24,13 +24,7 @@ services:
       - "./apps/app-downloads/tsconfig.json:/scrowl-project/apps/app-downloads/tsconfig.json"
       
       # adding config files
-      - "./packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js"
-      - "./packages/config/linters:/scrowl-project/packages/config/linters"
-      - "./packages/config/package.json:/scrowl-project/packages/config/package.json:ro"
-
-      # adding tsconfig files
-      - "./packages/typings/package.json:/scrowl-project/packages/typings/package.json:ro"
-      - "./packages/typings:/scrowl-project/packages/typings"
+      - './packages/config/:/scrowl-project/packages/config'
     networks:
       - app-downloads-network
 

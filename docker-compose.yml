@@ -17,7 +17,6 @@ services:
       - './package.json:/scrowl-project/package.json'
       - './apps/course-authoring/package.json:/scrowl-project/apps/course-authoring/package.json'
       - './packages/config/package.json:/scrowl-project/packages/config/package.json'
-      - './packages/typings/package.json:/scrowl-project/packages/typings/package.json'
       - 'shared_data:/scrowl-project'
     networks:
       - scrowl-network
@@ -63,17 +62,11 @@ services:
       - './apps/course-authoring/.postcssrc.json:/scrowl-project/apps/course-authoring/.postcssrc.json'
 
       # adding config files
-      - './packages/config/eslint-preset.js:/scrowl-project/packages/config/eslint-preset.js'
-      - './packages/config/linters:/scrowl-project/packages/config/linters'
-      - './packages/config/package.json:/scrowl-project/packages/config/package.json:ro'
+      - './packages/config/:/scrowl-project/packages/config'
       
       # adding parcel config files
       - './packages/parcel-transformer-asset-path:/scrowl-project/packages/parcel-transformer-asset-path'
       - './packages/parcel-resolver-asset-path:/scrowl-project/packages/parcel-resolver-asset-path'
-
-
-      # adding tsconfig files
-      - './packages/typings:/scrowl-project/packages/typings'
     networks:
       - scrowl-network
 
