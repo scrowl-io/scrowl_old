@@ -126,7 +126,6 @@
     "@parcel/transformer-typescript-types": "^2.4.1",
     "@playwright/test": "^1.21.1",
     "@scrowl/eslint-config": "^1.0.0",
-    "@scrowl/typings": "^1.0.0",
     "@testing-library/react": "^13.0.0",
     "@types/jest": "^27.4.1",
     "@types/react": "^17.0.37",

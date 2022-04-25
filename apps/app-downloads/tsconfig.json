@@ -1,4 +1,7 @@
 {
-  "extends": "@scrowl/typings/react-library.json",
-  "exclude": ["dist", "build", "node_modules"]
+  "extends": "@scrowl/eslint-config/tsconfig",
+  "compilerOptions": {
+    "types": ["@scrowl/eslint-config/src/typings"]
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }
