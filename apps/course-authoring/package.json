@@ -41,7 +41,7 @@
     "test:coverage": "jest --coverage",
     "logs:print": "node ../../scripts/pipeline/cmd.logs.js",
     "logs:clean": "node ../../scripts/pipeline/cmd.logs-clean.js",
-    "lint:check": "yarn lint:check:prettier && yarn lint:check:eslint",
+    "lint:check": "yarn lint:check:prettier && yarn lint:check:eslint && yarn lint:check:styles",
     "lint:check:prettier": "prettier --no-editorconfig --check \"./src/**/*.{json,ts,tsx,js,jsx}\"",
     "prelint:check:eslint": "yarn run logs:clean",
     "lint:check:eslint": "eslint \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
@@ -80,10 +80,12 @@
     }
   },
   "eslintConfig": {
-    "extends": "@scrowl/config/.eslintrc"
+    "extends": "@scrowl/eslint-config"
   },
-  "prettier": "@scrowl/config/.prettierrc",
-  "stylelint": "@scrowl/config/.stylelintrc",
+  "prettier": "@scrowl/eslint-config/prettier",
+  "stylelint": {
+    "extends": "@scrowl/eslint-config/stylelint"
+  },
   "build": {
     "appId": "org.eebos.scrowl",
     "productName": "Scrowl",
@@ -123,7 +125,7 @@
     "@parcel/transformer-sass": "^2.4.1",
     "@parcel/transformer-typescript-types": "^2.4.1",
     "@playwright/test": "^1.21.1",
-    "@scrowl/config": "^1.0.0",
+    "@scrowl/eslint-config": "^1.0.0",
     "@scrowl/typings": "^1.0.0",
     "@testing-library/react": "^13.0.0",
     "@types/jest": "^27.4.1",
@@ -145,7 +147,9 @@
     "postcss": "^8.4.12",
     "postcss-import": "^14.1.0",
     "postcss-modules": "^4.3.1",
+    "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
+    "stylelint": "^14.7.1",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
     "wait-on": "^6.0.1"
@@ -166,7 +170,9 @@
     "typescript": "^4.6.3"
   },
   "peerDependencies": {
-    "@scrowl/config": "^1.0.0",
-    "eslint": "^8.13.0"
+    "@scrowl/eslint-config": "^1.0.0",
+    "eslint": "^8.13.0",
+    "prettier": "^2.6.2",
+    "stylelint": "^14.7.1"
   }
 }
