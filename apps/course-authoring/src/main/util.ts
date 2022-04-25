@@ -13,6 +13,6 @@ if (process.env.NODE_ENV === 'development') {
   };
 } else {
   resolveHtmlPath = (htmlFileName: string) => {
-    return `file://${path.resolve(__dirname, './', htmlFileName)}`;
+    return `file://${path.join(__dirname, '../../', 'dist', htmlFileName)}`;
   };
 }

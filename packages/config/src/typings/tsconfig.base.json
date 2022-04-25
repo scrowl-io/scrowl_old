@@ -3,7 +3,9 @@
   "compilerOptions": {
     "lib": ["DOM", "DOM.iterable", "ES5", "ES6"],
     "jsx": "react",
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ESNext",
     "allowJs": true,
     "sourceMap": true,
     "strict": true,
