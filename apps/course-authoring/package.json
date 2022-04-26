@@ -140,7 +140,7 @@
     "electron-notarize": "^1.2.1",
     "eslint": "^8.13.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^28.0.1",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15",
     "parcel": "^2.4.1",
     "playwright": "^1.21.1",
