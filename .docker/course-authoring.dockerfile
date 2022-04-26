@@ -8,13 +8,11 @@ FROM builder AS configure
 WORKDIR /scrowl-project
 RUN mkdir -p apps/course-authoring \ 
   apps/app-downloads \
-  packages/config \
-  packages/typings
+  packages/config
 
 COPY ./package.json ./
 COPY ./apps/course-authoring/package.json ./apps/course-authoring/
 COPY ./packages/config/package.json ./packages/config/
-COPY ./packages/typings/package.json ./packages/typings/
 COPY ./packages/parcel-resolver-asset-path/package.json ./packages/parcel-resolver-asset-path/
 COPY ./packages/parcel-transformer-asset-path/package.json ./packages/parcel-transformer-asset-path/
 

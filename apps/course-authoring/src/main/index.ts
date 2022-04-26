@@ -4,7 +4,14 @@
  * through IPC.
  */
 import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { fileURLToPath } from 'url';
+import {
+  app,
+  BrowserWindow,
+  shell,
+  ipcMain,
+  BrowserWindowConstructorOptions,
+} from 'electron';
 import electronReload from 'electron-reload';
 import buildPackage from '@liascript/simple-scorm-packager';
 import electronDebug from 'electron-debug';
@@ -13,6 +20,8 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = '.' + path.join(path.dirname(`${__filename}`), '../../');
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('ipc-example', async (event, arg) => {
@@ -73,17 +82,36 @@ const createWindow = async () => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
-  mainWindow = new BrowserWindow({
-    titleBarStyle: 'hidden',
-    show: false,
-    width: 1024,
-    minWidth: 1024,
-    height: 728,
-    icon: getAssetPath('icon.png'),
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
-  });
+  function getBrowserWindow(preloadPath: string) {
+    const browserWindowConfig: BrowserWindowConstructorOptions = {
+      titleBarStyle: 'hidden',
+      show: false,
+      width: 1024,
+      minWidth: 1024,
+      height: 728,
+      icon: getAssetPath('icon.png'),
+      webPreferences: {
+        preload: preloadPath,
+      },
+    };
+
+    try {
+      return new BrowserWindow(browserWindowConfig);
+    } catch (error) {
+      console.log(preloadPath, '\n', error);
+      return null;
+    }
+  }
+
+  mainWindow = getBrowserWindow(path.join(__dirname, 'dist', 'preload'));
+
+  if (!mainWindow) {
+    mainWindow = getBrowserWindow(path.join(path.resolve('.'), 'preload'));
+  }
+
+  if (!mainWindow) {
+    return;
+  }
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
 

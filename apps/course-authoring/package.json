@@ -41,15 +41,15 @@
     "test:coverage": "jest --coverage",
     "logs:print": "node ../../scripts/pipeline/cmd.logs.js",
     "logs:clean": "node ../../scripts/pipeline/cmd.logs-clean.js",
-    "lint:check": "yarn lint:check:prettier && yarn lint:check:eslint",
+    "lint:check": "yarn lint:check:prettier && yarn lint:check:eslint && yarn lint:check:styles",
     "lint:check:prettier": "prettier --no-editorconfig --check \"./src/**/*.{json,ts,tsx,js,jsx}\"",
     "prelint:check:eslint": "yarn run logs:clean",
-    "lint:check:eslint": "eslint \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
+    "lint:check:eslint": "eslint \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt && yarn run logs:print -f ./logs/eslint.txt",
     "lint:check:styles": "stylelint \"./src/**/*.scss\"",
     "lint:fix": "yarn lint:fix:prettier && yarn lint:fix:eslint",
     "lint:fix:prettier": "prettier --no-editorconfig --write \"./src/**/*.{json,ts,tsx,js,jsx}\"",
     "prelint:fix:eslint": "yarn run logs:clean",
-    "lint:fix:eslint": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt || yarn run logs:print -f ./logs/eslint.txt",
+    "lint:fix:eslint": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\" --format compact --output-file ./logs/eslint.txt && yarn run logs:print -f ./logs/eslint.txt",
     "lint:fix:styles": "stylelint --fix \"./src/**/*.scss\""
   },
   "main": "./dist/main.js",
@@ -78,6 +78,13 @@
       "context": "browser",
       "source": "./src/renderer/index.html"
     }
+  },
+  "eslintConfig": {
+    "extends": "@scrowl/eslint-config"
+  },
+  "prettier": "@scrowl/eslint-config/prettier",
+  "stylelint": {
+    "extends": "@scrowl/eslint-config/stylelint"
   },
   "build": {
     "appId": "org.eebos.scrowl",
@@ -117,20 +124,21 @@
     "@parcel/runtime-react-refresh": "^2.4.1",
     "@parcel/transformer-sass": "^2.4.1",
     "@parcel/transformer-typescript-types": "^2.4.1",
+    "@parcel/validator-typescript": "^2.5.0",
     "@playwright/test": "^1.21.1",
-    "@scrowl/config": "^1.0.0",
-    "@scrowl/typings": "^1.0.0",
+    "@scrowl/eslint-config": "^1.0.0",
     "@testing-library/react": "^13.0.0",
     "@types/jest": "^27.4.1",
-    "@types/react": "^17.0.37",
+    "@types/react": "^18.0.7",
     "@types/react-dom": "^18.0.0",
     "asar": "^3.1.0",
-    "babel-jest": "^27.5.1",
+    "babel-jest": "^28.0.1",
     "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
-    "electron": "18.0.1",
-    "electron-builder": "^22.14.13",
+    "electron": "18.1.0",
+    "electron-builder": "^23.0.3",
     "electron-notarize": "^1.2.1",
+    "eslint": "^8.13.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
@@ -139,12 +147,15 @@
     "postcss": "^8.4.12",
     "postcss-import": "^14.1.0",
     "postcss-modules": "^4.3.1",
+    "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
+    "stylelint": "^14.7.1",
     "ts-jest": "^27.1.4",
     "ts-node": "^10.7.0",
     "wait-on": "^6.0.1"
   },
   "dependencies": {
+    "@liascript/simple-scorm-packager": "git+https://git@github.com/andre-dietrich/simple-scorm-packager.git",
     "@owlui/components": "^0.0.19",
     "@scrowl/parcel-resolver-asset-path": "^0.0.0",
     "@scrowl/parcel-transformer-asset-path": "^0.0.0",
@@ -156,7 +167,12 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
-    "typescript": "^4.6.3",
-    "@liascript/simple-scorm-packager": "git+https://git@github.com/andre-dietrich/simple-scorm-packager.git"
+    "typescript": "^4.6.3"
+  },
+  "peerDependencies": {
+    "@scrowl/eslint-config": "^1.0.0",
+    "eslint": "^8.13.0",
+    "prettier": "^2.6.2",
+    "stylelint": "^14.7.1"
   }
 }

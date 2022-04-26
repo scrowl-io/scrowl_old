@@ -16,7 +16,7 @@
     "plugin:react-hooks/recommended",
     "prettier"
   ],
-  "plugins": ["prettier", "react", "import", "jsx-a11y"],
+  "plugins": ["prettier", "react", "import", "jsx-a11y", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "prettier/prettier": "error",

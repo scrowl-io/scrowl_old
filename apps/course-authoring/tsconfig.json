@@ -1,10 +1,8 @@
 {
-  "extends": "@scrowl/typings/electron.json",
-  "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "./types.d.ts",
-    "./src/renderer/renderer.d.ts"
-  ],
+  "extends": "@scrowl/eslint-config/tsconfig",
+  "compilerOptions": {
+    "types": ["@scrowl/eslint-config/src/typings", "jest"]
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./types/*.d.ts"],
   "exclude": ["./scripts/**/*.js"]
 }
