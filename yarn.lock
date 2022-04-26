@@ -2952,6 +2952,17 @@
     "@parcel/source-map" "^2.0.0"
     chalk "^4.1.0"
 
+"@parcel/validator-typescript@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@parcel/validator-typescript/-/validator-typescript-2.5.0.tgz#8c4b60f3e820b709ead168d975c10f8e113cdc66"
+  integrity sha512-fijVaT9EbfxTNfvB7Woc62uH7z5a26/uvm43kXdrLLaEEguiI9G3Xh2+qXh89JfvtqkzH6gnFHE3v2bLPwd8sA==
+  dependencies:
+    "@parcel/diagnostic" "2.5.0"
+    "@parcel/plugin" "2.5.0"
+    "@parcel/ts-utils" "2.5.0"
+    "@parcel/types" "2.5.0"
+    "@parcel/utils" "2.5.0"
+
 "@parcel/watcher@^2.0.0":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@parcel/watcher/-/watcher-2.0.5.tgz#f913a54e1601b0aac972803829b0eece48de215b"
@@ -3408,7 +3419,7 @@
   dependencies:
     "@types/node" "*"
 
-"@typescript-eslint/eslint-plugin@^5.20.0", "@typescript-eslint/eslint-plugin@^5.21.0":
+"@typescript-eslint/eslint-plugin@^5.17.0", "@typescript-eslint/eslint-plugin@^5.20.0", "@typescript-eslint/eslint-plugin@^5.21.0":
   version "5.21.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.21.0.tgz#bfc22e0191e6404ab1192973b3b4ea0461c1e878"
   integrity sha512-fTU85q8v5ZLpoZEyn/u1S2qrFOhi33Edo2CZ0+q1gDaWWm0JuPh3bgOyU8lM0edIEYgKLDkPFiZX2MOupgjlyg==
