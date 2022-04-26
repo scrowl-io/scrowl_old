@@ -23,5 +23,11 @@
   },
   "devDependencies": {
     "sass": "^1.50.0"
+  },
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.21.0"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.21.0"
   }
 }
