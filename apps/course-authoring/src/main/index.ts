@@ -4,7 +4,6 @@
  * through IPC.
  */
 import path from 'path';
-import { fileURLToPath } from 'url';
 import {
   app,
   BrowserWindow,
@@ -20,8 +19,8 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = '.' + path.join(path.dirname(`${__filename}`), '../../');
+const __rootdir = path.join(__dirname, '../../');
+
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('ipc-example', async (event, arg) => {
@@ -57,7 +56,7 @@ if (isDevelopment) {
   electronDebug();
 
   try {
-    electronReload(__dirname, {});
+    electronReload(__rootdir, {});
   } catch (err) {
     console.error(err);
   }
@@ -76,7 +75,7 @@ const createWindow = async () => {
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
-    : path.join(__dirname, '../../assets');
+    : path.join(__rootdir, 'dist', 'assets');
 
   const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
@@ -98,19 +97,15 @@ const createWindow = async () => {
     try {
       return new BrowserWindow(browserWindowConfig);
     } catch (error) {
-      console.log(preloadPath, '\n', error);
+      console.error(preloadPath, '\n', error);
       return null;
     }
   }
 
-  mainWindow = getBrowserWindow(path.join(__dirname, 'dist', 'preload'));
+  mainWindow = getBrowserWindow(path.join(__rootdir, 'dist', 'preload.js'));
 
   if (!mainWindow) {
-    mainWindow = getBrowserWindow(path.join(path.resolve('.'), 'preload'));
-  }
-
-  if (!mainWindow) {
-    return;
+    throw 'Unable to create Browser Window';
   }
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
