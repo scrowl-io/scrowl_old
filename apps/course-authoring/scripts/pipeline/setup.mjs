@@ -1,4 +1,4 @@
-import fs from '../utils/file-system.js';
+import fs from '../utils/file-system.mjs';
 
 const fileMap = {
   'node_modules/scorm-again/dist/scorm12.js': {

@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import { prettyJson } from './strings.js';
-import { hasProp } from './objects.js';
+import { prettyJson } from './strings.mjs';
+import { hasProp } from './objects.mjs';
 
 const COLORS = {
   black: 'black',

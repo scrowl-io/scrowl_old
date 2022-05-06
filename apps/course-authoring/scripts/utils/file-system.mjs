@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { prettyJson } from './strings.js';
-import { log } from './console.js';
+import { prettyJson } from './strings.mjs';
+import { log } from './console.mjs';
 
 fs.join = (...paths) => {
   return path.join.apply(null, paths);

@@ -2,7 +2,6 @@
   "name": "@scrowl/courseauthoring",
   "productName": "course-authoring",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "license": "MIT",
   "keywords": [],
@@ -28,7 +27,7 @@
     "watch:backend": "parcel watch ./src/main/index.ts ./src/main/preload.ts --no-cache --port 5000",
     "prestart": "yarn run clean",
     "start": "cross-env NODE_ENV=development PORT=5001 concurrently \"yarn run start:frontend\" \"yarn run start:backend\" \"yarn run watch:backend\"",
-    "setup": "node ./scripts/pipeline/setup.js",
+    "setup": "node ./scripts/pipeline/setup.mjs",
     "postinstall": "npx electron-builder install-app-deps && yarn run setup",
     "package:test": "npx electron-builder build --dir",
     "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
@@ -63,7 +62,6 @@
     "backend": {
       "context": "electron-main",
       "source": "./src/main/index.ts",
-      "outputFormat": "commonjs",
       "engines": {
         "node": "16.13.2"
       }
@@ -71,7 +69,6 @@
     "preload": {
       "context": "electron-main",
       "source": "./src/main/preload.ts",
-      "outputFormat": "commonjs",
       "engines": {
         "node": "16.13.2"
       }
