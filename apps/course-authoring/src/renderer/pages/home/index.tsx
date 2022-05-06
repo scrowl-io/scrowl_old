@@ -31,14 +31,15 @@ const Header = (
       <div>
         <Btn
           size="Sm"
-          onClick={async () => {
+          onClick={() => {
             // Send to Main and get return
-            const scormProcess = await window.electronAPI.ipcRenderer.invoke(
-              'start-scorm-export-process',
-              { courseName: 'Test Course' }
-            );
-
-            console.log(scormProcess);
+            window.electronAPI.ipcRenderer
+              .invoke('package-course', {
+                courseName: 'Test Course',
+              })
+              .then((msg: string) => {
+                console.log(`packaged ${msg}`);
+              });
           }}
         >
           Export
