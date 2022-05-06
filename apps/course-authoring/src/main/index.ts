@@ -10,7 +10,6 @@ import {
   shell,
   BrowserWindowConstructorOptions,
 } from 'electron';
-import electronReload from 'electron-reload';
 import electronDebug from 'electron-debug';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
@@ -25,25 +24,16 @@ let mainWindow: BrowserWindow | null = null;
 const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
-if (isDevelopment) {
-  electronDebug();
-
-  try {
-    electronReload(__rootdir, {});
-  } catch (err) {
-    console.error(err);
-  }
-}
-
 const installExtensions = () => {
   return Promise.all([installExtension(REACT_DEVELOPER_TOOLS)]);
 };
 
 const createWindow = async () => {
   if (isDevelopment) {
-    await installExtensions().then(installs => {
-      console.log(`Added Extensions: ${installs}`);
-    });
+    electronDebug();
+    const installResult = await installExtensions();
+
+    console.log(`\n\nAdded Extensions: ${installResult}\n\n`);
   }
 
   const RESOURCES_PATH = app.isPackaged
