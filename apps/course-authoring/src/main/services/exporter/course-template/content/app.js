@@ -26,3 +26,9 @@ API.on('LMSSetValue.cmi.*', function () {
 window.addEventListener('DOMContentLoaded', () => {
   API.LMSInitialize();
 });
+
+const btnComplete = document.getElementById('btn-complete');
+
+btnComplete.onclick = () => {
+  API.LMSFinish();
+};
