@@ -9,6 +9,7 @@ const hasProp = (obj, prop) => {
 const scormService = {
   API: {},
   init: false,
+  finished: false,
   _time: {
     start: '',
     end: '',
@@ -85,6 +86,9 @@ const scormService = {
       logout: 'logout',
     },
   },
+  isAvailable: () => {
+    return scormService.init && !scormService.finished;
+  },
   getError: printError => {
     printError =
       printError === undefined || printError === null ? true : printError;
@@ -143,7 +147,7 @@ const scormService = {
     }
   },
   save: () => {
-    if (!scormService.init) {
+    if (!scormService.isAvailable()) {
       return;
     }
 
@@ -158,7 +162,7 @@ const scormService = {
     return res;
   },
   stop: () => {
-    if (!scormService.init) {
+    if (!scormService.isAvailable()) {
       return;
     }
 
@@ -170,6 +174,8 @@ const scormService = {
 
     const res = scormService.API.LMSFinish();
 
+    scormService.finished = true;
+
     if (res === scormService.STATUSES.update.false) {
       scormService.getError();
     } else {
@@ -179,19 +185,17 @@ const scormService = {
     return res;
   },
   setValue: (elem, val) => {
-    let res;
-
-    if (!scormService.init) {
+    if (!scormService.isAvailable()) {
       return;
     }
 
-    res = scormService.API.LMSSetValue(elem, val);
+    const res = scormService.API.LMSSetValue(elem, val);
 
     if (res === scormService.STATUSES.update.false) {
       const err = scormService.getError(false);
 
       console.error(
-        `Error: could not save data (${elem}: ${val})\n${JSON.stringify(
+        `Error: could not set data (${elem}: ${val})\n${JSON.stringify(
           err,
           null,
           2
@@ -201,8 +205,27 @@ const scormService = {
 
     return res;
   },
+  getValue: elem => {
+    if (!scormService.isAvailable()) {
+      return;
+    }
+
+    const res = scormService.API.LMSGetValue(elem);
+
+    if (res == '') {
+      const err = scormService.getError(false);
+
+      console.error(
+        `Error: could not get data (${elem})\n${JSON.stringify(err, null, 2)}`
+      );
+
+      return;
+    }
+
+    return res;
+  },
   updateStatus: status => {
-    if (!scormService.init) {
+    if (!scormService.isAvailable()) {
       return;
     }
 
@@ -215,16 +238,17 @@ const scormService = {
       return;
     }
 
-    const res = scormService.setValue('cmi.core.lesson_status', status);
+    const lessonStatus = scormService.STATUSES.lesson[status];
+    const res = scormService.setValue('cmi.core.lesson_status', lessonStatus);
 
     if (res !== scormService.STATUSES.update.false) {
-      console.info(`Course Status Updated: ${status}`);
+      console.info(`Course Status Updated: ${lessonStatus}`);
     }
 
     return res;
   },
   exit: () => {
-    if (!scormService.init) {
+    if (!scormService.isAvailable()) {
       return;
     }
 
@@ -241,13 +265,26 @@ const scormService = {
   },
 };
 
-window.addEventListener('DOMContentLoaded', () => {
+const bootstrap = () => {
+  const btnComplete = document.getElementById('btn-complete');
+  const btnState = document.getElementById('btn-state');
+
   scormService.start();
-});
 
-const btnComplete = document.getElementById('btn-complete');
+  btnComplete.onclick = () => {
+    scormService.updateStatus('done');
+    scormService.exit();
+  };
 
-btnComplete.onclick = () => {
-  scormService.updateStatus('done');
-  scormService.exit();
+  btnState.onclick = () => {
+    const res = scormService.getValue('cmi.core.lesson_status');
+
+    if (res) {
+      alert(`Lesson is ${res}`);
+    }
+
+    console.info(`Lesson is ${res}`);
+  };
 };
+
+window.addEventListener('DOMContentLoaded', bootstrap);
