@@ -5,15 +5,12 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import pageHome from '../../pages/home';
 import * as style from './styles/styles.module.scss';
+import appRoutes from './routes';
 import { TitleBar } from '../titlebar';
 
-const basename = '/';
-const pages = [pageHome];
-
-const createAppRoutes = () => {
-  return pages.map((page, index) => {
+const renderAppRoutes = () => {
+  return appRoutes.pages.map((page, index) => {
     return (
       <Route key={index} path={`${page.Route}`} element={<page.Element />} />
     );
@@ -21,15 +18,13 @@ const createAppRoutes = () => {
 };
 
 export const App = () => {
-  const AppRoutes = createAppRoutes();
-
   return (
     <Router>
-      <TitleBar pages={pages} />
+      <TitleBar pages={appRoutes.pages} />
       <div className={style.content}>
         <Routes>
-          {AppRoutes}
-          <Route path="*" element={<Navigate to={basename} />} />
+          {renderAppRoutes()}
+          <Route path="*" element={<Navigate to={appRoutes.basename} />} />
         </Routes>
       </div>
     </Router>
