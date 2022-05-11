@@ -1,1 +1,8 @@
 @use '~@owlui/theme/src' as theme;
+
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
