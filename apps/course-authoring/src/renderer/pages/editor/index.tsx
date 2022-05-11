@@ -8,9 +8,26 @@ import style from './styles.module.scss';
 
 export const Route = '/editor';
 export const Name = 'Course Editor';
+const tabs = [
+  {
+    title: 'Structure',
+    label: 'tab-structure',
+    contentLabel: 'tab-content-structure',
+  },
+  {
+    title: 'Build',
+    label: 'tab-build',
+    contentLabel: 'tab-content-build',
+  },
+  {
+    title: 'Export',
+    label: 'tab-export',
+    contentLabel: 'tab-content-export',
+  },
+];
 
 export const Element = () => {
-  const initialTabLabel = 'tab-1';
+  const initialTabLabel = 'tab-structure';
   const [activeTab, setActiveTab] = useState(initialTabLabel);
 
   const onClickTabItem = (tab: string) => {
@@ -20,46 +37,37 @@ export const Element = () => {
   return (
     <div className={style.tabsContainer}>
       <TabsList>
-        <TabItem
-          label="tab-1"
-          contentLabel="tab-content-1"
-          activeTab={activeTab}
-          onClick={onClickTabItem}
-        />
-        <TabItem
-          label="tab-2"
-          contentLabel="tab-content-2"
-          activeTab={activeTab}
-          onClick={onClickTabItem}
-        />
-        <TabItem
-          label="tab-3"
-          contentLabel="tab-content-3"
-          activeTab={activeTab}
-          onClick={onClickTabItem}
-        />
+        {tabs.map(tab => (
+          <TabItem
+            label={tab.label}
+            contentLabel={tab.contentLabel}
+            activeTab={activeTab}
+            onClick={onClickTabItem}
+            key={tab.label}
+          />
+        ))}
       </TabsList>
       <TabsContentList>
         <TabContentItem
-          label="tab-content-1"
-          tabLabel="tab-1"
+          label="tab-content-structure"
+          tabLabel="tab-structure"
           activeTab={activeTab}
         >
-          <p>{`Content 1`}</p>
+          <p>{`Structure`}</p>
         </TabContentItem>
         <TabContentItem
-          label="tab-content-2"
-          tabLabel="tab-2"
+          label="tab-content-build"
+          tabLabel="tab-build"
           activeTab={activeTab}
         >
-          <p>{`Content 2`}</p>
+          <p>{`Build`}</p>
         </TabContentItem>
         <TabContentItem
-          label="tab-content-3"
-          tabLabel="tab-3"
+          label="tab-content-export"
+          tabLabel="tab-export"
           activeTab={activeTab}
         >
-          <p>{`Content 3`}</p>
+          <p>{`Export`}</p>
         </TabContentItem>
       </TabsContentList>
     </div>
