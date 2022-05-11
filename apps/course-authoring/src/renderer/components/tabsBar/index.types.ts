@@ -3,6 +3,7 @@ export interface TabsBarProps {
 }
 
 export interface TabProps {
+  title: string;
   label: string;
   contentLabel: string;
   activeTab: string;

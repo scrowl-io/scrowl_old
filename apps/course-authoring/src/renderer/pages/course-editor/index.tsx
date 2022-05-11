@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { TabsList, TabItem } from '../../components/tabsBar/TabsList';
+import { Default as Nav } from '@owlui/navigationdrawer';
+import { TabsList, TabItem } from '../../components/tabsbar/TabsList';
 import {
   TabsContentList,
   TabContentItem,
-} from '../../components/tabsBar/TabsContentList';
+} from '../../components/tabsbar/TabsContentList';
 import style from './styles.module.scss';
 
-export const Route = '/editor';
+export const Route = '/course-editor';
 export const Name = 'Course Editor';
+
 const tabs = [
   {
     title: 'Structure',
@@ -39,6 +41,7 @@ export const Element = () => {
       <TabsList>
         {tabs.map(tab => (
           <TabItem
+            title={tab.title}
             label={tab.label}
             contentLabel={tab.contentLabel}
             activeTab={activeTab}
@@ -53,21 +56,31 @@ export const Element = () => {
           tabLabel="tab-structure"
           activeTab={activeTab}
         >
-          <p>{`Structure`}</p>
+          <div className={style.tabContentContainer}>
+            <Nav />
+            <h2>Structure</h2>
+            <Nav />
+          </div>
         </TabContentItem>
         <TabContentItem
           label="tab-content-build"
           tabLabel="tab-build"
           activeTab={activeTab}
         >
-          <p>{`Build`}</p>
+          <div className={style.tabContentContainer}>
+            <Nav />
+            <h2>Build</h2>
+          </div>
         </TabContentItem>
         <TabContentItem
           label="tab-content-export"
           tabLabel="tab-export"
           activeTab={activeTab}
         >
-          <p>{`Export`}</p>
+          <div className={style.tabContentContainer}>
+            <h2>Export</h2>
+            <Nav />
+          </div>
         </TabContentItem>
       </TabsContentList>
     </div>

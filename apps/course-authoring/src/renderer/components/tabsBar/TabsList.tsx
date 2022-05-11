@@ -12,6 +12,7 @@ export const TabsList = ({ children }: TabsBarProps) => {
 };
 
 export const TabItem = ({
+  title,
   label,
   contentLabel,
   activeTab,
@@ -40,7 +41,7 @@ export const TabItem = ({
           onKeyUp={handleTabClick} // this might be replaced by a proper onKeyUp function to navigate using arrows once the user is in the tablist. WCAG specification.
           tabIndex={tabIsActive ? 0 : -1}
         >
-          {label}
+          {title}
         </Btn>
       </li>
     </>
