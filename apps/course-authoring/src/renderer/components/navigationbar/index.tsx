@@ -1,11 +1,15 @@
 import React from 'react';
 import style from './styles.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { NavigationBarProps, NavigationLink } from './index.types';
 
 const NavigationItem = ({ label, link }: NavigationLink) => {
   return (
-    <li className={style.navigationItem}>
+    <li
+      className={`${style.navigationItem} ${
+        useLocation().pathname === link ? style.navigationItemActive : ''
+      }`}
+    >
       <Link to={link}>{label}</Link>
     </li>
   );
