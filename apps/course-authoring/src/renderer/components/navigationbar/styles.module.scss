@@ -6,14 +6,5 @@
 
 .navigation-item {
   display: inline-block;
-}
-
-.tabs-content {
-  width: 100%;
-  height: 100%;
-  background-color: theme.$owl-ref-palette-primary-highlight;
-}
-
-.tabs-content-item {
-  text-decoration: underline;
+  margin: 1rem;
 }

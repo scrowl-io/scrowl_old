@@ -1,1 +1,9 @@
 @use '~@owlui/theme/src' as theme;
+
+.build {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  background-color: #dae2f4;
+  margin: 0;
+}

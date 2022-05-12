@@ -1,11 +1,17 @@
 import React from 'react';
 import * as style from './styles.module.scss';
+import { Default as Nav } from '@owlui/navigationdrawer';
 
 export const PageRoute = '/structure';
 export const PageName = 'Structure';
 
 export const Element = () => {
-  return <h1>Structure</h1>;
+  return (
+    <section className={style.structure}>
+      <Nav />
+      <main></main>
+    </section>
+  );
 };
 
 export default {

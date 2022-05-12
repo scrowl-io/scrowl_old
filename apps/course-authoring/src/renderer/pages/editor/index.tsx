@@ -9,7 +9,7 @@ export const PageName = 'Course Editor';
 
 export const Element = () => {
   return (
-    <div className={style.tabsContainer}>
+    <div className={style.editor}>
       <NavigationBar navigationLinks={navigationLinks} />
       <Routes>
         {editorRoutes.pages.map((page, index) => {
