@@ -5,12 +5,12 @@ import * as styles from './styles.module.scss';
 
 export const TitleBar = ({ pages }: TitleBarProps) => {
   const location = useLocation().pathname;
-  const title = pages.find(page => page.Route === location);
+  const title = pages.find(page => page.PageRoute === location);
 
   return (
     <div className={`${styles.titleBar} drag`} data-testid="toolbar">
       <span className={styles.titleBarTitle}>
-        Scrowl{title?.Name ? ` - ${title.Name}` : ''}
+        Scrowl{title?.PageName ? ` - ${title.PageName}` : ''}
       </span>
     </div>
   );

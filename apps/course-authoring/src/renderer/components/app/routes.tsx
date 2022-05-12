@@ -1,5 +1,5 @@
 import pageHome from '../../pages/home';
-import pageEditor from '../../pages/course-editor';
+import pageEditor from '../../pages/editor';
 
 const appRoutes = {
   basename: '/',

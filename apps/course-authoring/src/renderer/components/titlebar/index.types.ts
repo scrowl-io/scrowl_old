@@ -1,6 +1,6 @@
 export interface TitleBarProps {
   pages: Array<{
-    Route: string;
-    Name: string;
+    PageRoute: string;
+    PageName: string;
   }>;
 }

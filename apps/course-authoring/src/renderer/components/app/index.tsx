@@ -12,7 +12,11 @@ import { TitleBar } from '../titlebar';
 const renderAppRoutes = () => {
   return appRoutes.pages.map((page, index) => {
     return (
-      <Route key={index} path={`${page.Route}`} element={<page.Element />} />
+      <Route
+        key={index}
+        path={`${page.PageRoute}`}
+        element={<page.Element />}
+      />
     );
   });
 };

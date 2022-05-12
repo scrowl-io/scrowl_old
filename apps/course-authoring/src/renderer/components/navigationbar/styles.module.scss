@@ -1,17 +1,11 @@
 @use '~@owlui/theme/src' as theme;
 
-.tabs-list {
+.navigation-bar {
   display: flex;
 }
 
-.tabs-list-item {
+.navigation-item {
   display: inline-block;
-
-  &-active {
-    button {
-      background-color: theme.$owl-ref-palette-primary-highlight;
-    }
-  }
 }
 
 .tabs-content {
