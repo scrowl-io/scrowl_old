@@ -6,7 +6,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import * as style from './styles/styles.module.scss';
-import appRoutes from './routes';
+import { appRoutes } from './routes';
 import { TitleBar } from '../titlebar';
 
 const renderAppRoutes = () => {

@@ -1,17 +1,12 @@
 import React from 'react';
-import { Default as Btn } from '@owlui/button';
 import style from './styles.module.scss';
 import { Link } from 'react-router-dom';
 import { NavigationBarProps, NavigationLink } from './index.types';
 
-const NavigationItem = ({
-  navigationLink,
-}: {
-  navigationLink: NavigationLink;
-}) => {
+const NavigationItem = ({ label, link }: NavigationLink) => {
   return (
     <li className={style.navigationItem}>
-      <Link to={navigationLink.link}>{navigationLink.label}</Link>
+      <Link to={link}>{label}</Link>
     </li>
   );
 };
@@ -23,7 +18,8 @@ export const NavigationBar = ({ navigationLinks }: NavigationBarProps) => {
         return (
           <NavigationItem
             key={navigationLink.link}
-            navigationLink={navigationLink}
+            label={navigationLink.label}
+            link={navigationLink.link}
           />
         );
       })}

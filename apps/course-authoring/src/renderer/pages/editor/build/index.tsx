@@ -7,11 +7,11 @@ export const PageName = 'Build';
 
 export const Element = () => {
   return (
-    <section className={style.build}>
+    <div className={style.build}>
       <Nav />
       <main></main>
       <Nav />
-    </section>
+    </div>
   );
 };
 
