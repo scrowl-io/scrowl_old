@@ -5,10 +5,25 @@ import { Default as Nav } from '@owlui/navigationdrawer';
 export const PageRoute = '/structure';
 export const PageName = 'Structure';
 
+const SidebarContent = (
+  <>
+    <div>
+      <h3>Project Settings</h3>
+      <div className="field">
+        <label className="field__label" htmlFor="project-name">
+          Project Name<i aria-hidden="true">*</i>
+        </label>
+        <input className="field__input" id="project-name" type="text" />
+      </div>
+    </div>
+    <div className={style.navDivider} />
+  </>
+);
+
 export const Element = () => {
   return (
     <section className={style.structure}>
-      <Nav />
+      <Nav header={SidebarContent} />
       <main></main>
     </section>
   );
