@@ -1,36 +1,27 @@
 import React from 'react';
 import style from './styles.module.scss';
-import { Link, useLocation } from 'react-router-dom';
-import { NavigationBarProps, NavigationLink } from './index.types';
+import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { PageNav, PageNavItem } from '../../pages/editor/index.types';
 
-const pathPrefix = '/editor';
+const NavigationItem = ({ page }: { page: PageNavItem }) => {
+  const resolved = useResolvedPath(page.link);
+  const match = useMatch({ path: resolved.pathname, end: true });
 
-const NavigationItem = ({ page }: { page: NavigationLink }) => {
   return (
     <li
       className={`${style.navigationItem} ${
-        useLocation().pathname === `${pathPrefix}${page.PageRoute}`
-          ? style.navigationItemActive
-          : ''
+        match ? style.navigationItemActive : ''
       }`}
     >
-      <Link
-        to={
-          page.PageName !== 'Home'
-            ? `${pathPrefix}${page.PageRoute}`
-            : page.PageRoute
-        }
-      >
-        {page.PageName}
-      </Link>
+      <Link to={page.link}>{page.label}</Link>
     </li>
   );
 };
 
-export const NavigationBar = ({ pages }: NavigationBarProps) => {
+export const NavigationBar = ({ pages }: { pages: PageNav }) => {
   return (
     <ul className={style.navigationBar}>
-      {pages.map((page: NavigationLink, index) => {
+      {pages.map((page: PageNavItem, index: number) => {
         return <NavigationItem key={index} page={page} />;
       })}
     </ul>
