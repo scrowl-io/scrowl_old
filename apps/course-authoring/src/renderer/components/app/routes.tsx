@@ -5,3 +5,5 @@ export const appRoutes = {
   basename: '/',
   pages: [pageHome, pageEditor],
 };
+
+export default { appRoutes };

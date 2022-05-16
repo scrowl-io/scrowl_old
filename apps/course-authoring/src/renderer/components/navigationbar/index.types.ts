@@ -1,8 +1,7 @@
 export interface NavigationLink {
-  label: string;
-  link: string;
+  PageRoute: string;
+  PageName: string;
 }
-
 export interface NavigationBarProps {
-  navigationLinks: NavigationLink[];
+  pages: NavigationLink[];
 }
