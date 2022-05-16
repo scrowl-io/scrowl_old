@@ -3,9 +3,10 @@ import * as style from './styles.module.scss';
 import { Default as Nav } from '@owlui/navigationdrawer';
 
 export const PageRoute = '/structure';
+export const PageEditorRoute = '/editor/structure';
 export const PageName = 'Structure';
 
-export const Element = () => {
+export const PageElement = () => {
   return (
     <section className={style.structure}>
       <Nav />
@@ -16,6 +17,7 @@ export const Element = () => {
 
 export default {
   PageRoute,
+  PageEditorRoute,
   PageName,
-  Element,
+  PageElement,
 };

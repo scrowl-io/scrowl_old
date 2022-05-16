@@ -15,7 +15,7 @@ const renderAppRoutes = () => {
       <Route
         key={index}
         path={`${page.PageRoute}`}
-        element={<page.Element />}
+        element={<page.PageElement />}
       />
     );
   });

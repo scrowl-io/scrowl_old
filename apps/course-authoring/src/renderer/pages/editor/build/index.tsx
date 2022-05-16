@@ -5,7 +5,7 @@ import { Default as Nav } from '@owlui/navigationdrawer';
 export const PageRoute = '/build';
 export const PageName = 'Build';
 
-export const Element = () => {
+export const PageElement = () => {
   return (
     <div className={style.build}>
       <Nav />
@@ -18,5 +18,5 @@ export const Element = () => {
 export default {
   PageRoute,
   PageName,
-  Element,
+  PageElement,
 };

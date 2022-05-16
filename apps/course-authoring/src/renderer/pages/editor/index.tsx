@@ -2,22 +2,22 @@ import React from 'react';
 import style from './styles.module.scss';
 import { NavigationBar } from '../../components/navigationbar';
 import { Route, Routes } from 'react-router-dom';
-import { editorRoutes, navigationLinks } from './routes';
+import { editorRoutes } from './routes';
 
 export const PageRoute = '/editor/*';
 export const PageName = 'Course Editor';
 
-export const Element = () => {
+export const PageElement = () => {
   return (
     <div className={style.editor}>
-      <NavigationBar navigationLinks={navigationLinks} />
+      <NavigationBar pages={editorRoutes.pages} />
       <Routes>
         {editorRoutes.pages.map((page, index) => {
           return (
             <Route
               key={index}
               path={`${page.PageRoute}`}
-              element={<page.Element />}
+              element={<page.PageElement />}
             />
           );
         })}
@@ -29,5 +29,5 @@ export const Element = () => {
 export default {
   PageName,
   PageRoute,
-  Element,
+  PageElement,
 };
