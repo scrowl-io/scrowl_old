@@ -43,10 +43,10 @@ release/build/*
 # build output
 dist/
 
-# SCORM build folder 
-# (The folder itself needs to be there for the export process)
-src/scormBuild/*
-!src/scormBuild/.gitkeep
-scormPackages/
+# SCORM exporter folders
+src/main/services/exporter/course-packs
+src/main/services/exporter/course-template/*
+src/main/services/exporter/course-template/*/
+!src/main/services/exporter/course-template/content/
 # testing reports
 tests/reports
