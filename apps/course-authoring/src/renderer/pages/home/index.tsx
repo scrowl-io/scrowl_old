@@ -11,6 +11,16 @@ import { CardGrid } from '../../components/cardgrid';
 export const PageRoute = '/';
 export const PageName = 'Home';
 
+const exportPackage = () => {
+  window.electronAPI.ipcRenderer
+    .invoke('package-course', {
+      courseName: 'Test Course',
+    })
+    .then((msg: string) => {
+      console.log(`packaged ${msg}`);
+    });
+};
+
 const Header = (
   <>
     <div>
@@ -29,18 +39,7 @@ const Header = (
         </Btn>
       </div>
       <div>
-        <Btn
-          size="Sm"
-          onClick={async () => {
-            // Send to Main and get return
-            const scormProcess = await window.electronAPI.ipcRenderer.invoke(
-              'start-scorm-export-process',
-              { courseName: 'Test Course' }
-            );
-
-            console.log(scormProcess);
-          }}
-        >
+        <Btn size="Sm" onClick={exportPackage}>
           Export
         </Btn>
       </div>

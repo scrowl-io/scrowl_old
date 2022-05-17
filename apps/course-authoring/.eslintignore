@@ -1,4 +1,4 @@
-dist/
-node_modules/
-out/
-scripts/
+dist/*
+node_modules/*
+out/*
+scripts/**/*.js
