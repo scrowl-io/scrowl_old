@@ -7,16 +7,16 @@ import { Link } from 'react-router-dom';
 
 export const CardGrid = ({ cards }: CardsProps) => {
   const cardsRenderer = cards.map((card: CardProps) => {
-    let actionElement;
+    let btnElement;
 
     if (!card.btnRoute) {
-      actionElement = (
+      btnElement = (
         <Btn className={style.cardBtn} size="Sm">
           {card.btnTitle}
         </Btn>
       );
     } else {
-      actionElement = (
+      btnElement = (
         <Link className={style.cardBtn} to={card.btnRoute}>
           {card.btnTitle}
         </Link>
@@ -28,7 +28,7 @@ export const CardGrid = ({ cards }: CardsProps) => {
         <Card className={style.card}>
           <CardHeader className={style.cardHeader}>{card.title}</CardHeader>
           <CardBody className={style.cardBody}>{card.content}</CardBody>
-          <CardFooter className={style.cardFooter}>{actionElement}</CardFooter>
+          <CardFooter className={style.cardFooter}>{btnElement}</CardFooter>
         </Card>
       </div>
     );

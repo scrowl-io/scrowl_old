@@ -1,21 +1,39 @@
 import pageStructure from './structure';
 import pageBuild from './build';
+import { PageRoute, PageNav } from '../../pages/index.types';
 
-export const editorRoutes = {
-  pages: [pageStructure, pageBuild],
+export const PageRoutes: PageRoute = {
+  base: '/editor',
 };
 
-export const navigationLinks = [
+export const PageChildren = [pageStructure, pageBuild];
+
+export const PageNavItems: PageNav = [
   {
     label: 'Home',
     link: '/',
   },
-  {
-    label: 'Structure',
-    link: '/editor/structure',
-  },
-  {
-    label: 'Build',
-    link: '/editor/build',
-  },
 ];
+
+const setRoute = (page: { PageRoute: string }) => {
+  return `${PageRoutes.base}${page.PageRoute}`;
+};
+
+const setNav = () => {
+  PageChildren.forEach(page => {
+    const name = page.PageName.toLowerCase();
+    PageRoutes[name] = setRoute(page);
+    PageNavItems.push({
+      label: page.PageName,
+      link: PageRoutes[name],
+    });
+  });
+};
+
+setNav();
+
+export default {
+  PageChildren,
+  PageRoutes,
+  PageNavItems,
+};

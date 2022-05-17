@@ -1,31 +1,28 @@
 import React from 'react';
 import style from './styles.module.scss';
-import { Link, useLocation } from 'react-router-dom';
-import { NavigationBarProps, NavigationLink } from './index.types';
+import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { PageNav, PageNavItem } from '../../pages/index.types';
 
-const NavigationItem = ({ label, link }: NavigationLink) => {
+const NavigationItem = ({ page }: { page: PageNavItem }) => {
+  const resolved = useResolvedPath(page.link);
+  const match = useMatch({ path: resolved.pathname, end: true });
+
   return (
     <li
       className={`${style.navigationItem} ${
-        useLocation().pathname === link ? style.navigationItemActive : ''
+        match ? style.navigationItemActive : ''
       }`}
     >
-      <Link to={link}>{label}</Link>
+      <Link to={page.link}>{page.label}</Link>
     </li>
   );
 };
 
-export const NavigationBar = ({ navigationLinks }: NavigationBarProps) => {
+export const NavigationBar = ({ pages }: { pages: PageNav }) => {
   return (
     <ul className={style.navigationBar}>
-      {navigationLinks.map((navigationLink: NavigationLink) => {
-        return (
-          <NavigationItem
-            key={navigationLink.link}
-            label={navigationLink.label}
-            link={navigationLink.link}
-          />
-        );
+      {pages.map((page: PageNavItem, index: number) => {
+        return <NavigationItem key={index} page={page} />;
       })}
     </ul>
   );

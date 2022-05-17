@@ -1,23 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import style from './styles.module.scss';
 import { NavigationBar } from '../../components/navigationbar';
 import { Route, Routes } from 'react-router-dom';
-import { editorRoutes, navigationLinks } from './routes';
+import { PageNavItems, PageChildren } from './routes';
+import { PageProps } from '../index.types';
 
 export const PageRoute = '/editor/*';
 export const PageName = 'Course Editor';
 
-export const Element = () => {
+export const PageElement = ({ handleTitleChange }: PageProps) => {
+  const pageRoutes = PageNavItems.map(page => {
+    return { label: page.label, link: page.link };
+  });
+
+  useEffect(() => {
+    handleTitleChange(pageRoutes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={style.editor}>
-      <NavigationBar navigationLinks={navigationLinks} />
+      <NavigationBar pages={PageNavItems} />
       <Routes>
-        {editorRoutes.pages.map((page, index) => {
+        {PageChildren.map((page, index) => {
           return (
             <Route
               key={index}
               path={`${page.PageRoute}`}
-              element={<page.Element />}
+              element={<page.PageElement />}
             />
           );
         })}
@@ -29,5 +39,5 @@ export const Element = () => {
 export default {
   PageName,
   PageRoute,
-  Element,
+  PageElement,
 };

@@ -20,7 +20,7 @@ const SidebarContent = (
   </>
 );
 
-export const Element = () => {
+export const PageElement = () => {
   return (
     <section className={style.structure}>
       <Nav header={SidebarContent} />
@@ -32,5 +32,5 @@ export const Element = () => {
 export default {
   PageRoute,
   PageName,
-  Element,
+  PageElement,
 };

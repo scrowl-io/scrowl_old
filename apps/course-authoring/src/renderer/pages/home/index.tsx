@@ -63,7 +63,7 @@ const TemplatesList = () => {
   });
 };
 
-export const Element = () => {
+export const PageElement = () => {
   return (
     <>
       <Nav className={style.nav} header={Header} items={sidebarItems} />
@@ -93,5 +93,5 @@ export const Element = () => {
 export default {
   PageName,
   PageRoute,
-  Element,
+  PageElement,
 };
