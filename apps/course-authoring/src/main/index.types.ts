@@ -1,11 +1,9 @@
+import { IpcRenderer } from 'electron';
+
 declare global {
   interface Window {
     electronAPI: {
-      ipcRenderer: {
-        [key: string]: (...args: unknown[]) => void;
-      };
+      ipcRenderer: IpcRenderer;
     };
   }
 }
-
-export {};

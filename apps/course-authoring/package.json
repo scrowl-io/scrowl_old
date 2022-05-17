@@ -61,7 +61,6 @@
     "backend": {
       "context": "electron-main",
       "source": "./src/main/index.ts",
-      "outputFormat": "commonjs",
       "engines": {
         "node": "16.13.2"
       }
@@ -69,7 +68,6 @@
     "preload": {
       "context": "electron-main",
       "source": "./src/main/preload.ts",
-      "outputFormat": "commonjs",
       "engines": {
         "node": "16.13.2"
       }
@@ -133,12 +131,14 @@
     "@types/react-dom": "^18.0.0",
     "asar": "^3.1.0",
     "babel-jest": "^28.0.1",
+    "chalk": "^5.0.1",
     "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
     "electron": "18.1.0",
     "electron-builder": "^23.0.3",
     "electron-notarize": "^1.2.1",
     "eslint": "^8.13.0",
+    "fs-extra": "^10.1.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.15",
