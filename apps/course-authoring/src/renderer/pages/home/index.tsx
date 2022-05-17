@@ -7,6 +7,7 @@ import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
+import { PageProps } from '../index.types';
 
 export const PageRoute = '/';
 export const PageName = 'Home';

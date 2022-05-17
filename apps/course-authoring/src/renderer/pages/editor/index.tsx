@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import style from './styles.module.scss';
 import { NavigationBar } from '../../components/navigationbar';
 import { Route, Routes } from 'react-router-dom';
-import { PageNavItems, PageChildren } from './routes';
+import { PageRoutes, PageNavItems, PageChildren } from './routes';
+import { PageProps } from '../index.types';
 
 export const PageRoute = '/editor/*';
 export const PageName = 'Course Editor';
 
-export const PageElement = () => {
+interface NewRoute {
+  PageName: string;
+  PageRoute: string;
+}
+interface NewRoutes {
+  pages: NewRoute[];
+}
+
+export const PageElement = ({ handleTitleChange }: PageProps) => {
+  const newRoutes: NewRoutes = { pages: [] };
+
+  Object.entries(PageRoutes).map(page => {
+    newRoutes.pages.push({ PageName: page[0], PageRoute: page[1] });
+  });
+
+  useEffect(() => {
+    handleTitleChange(newRoutes);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={style.editor}>
       <NavigationBar pages={PageNavItems} />
