@@ -9,10 +9,7 @@ export const PageRoute = '/editor/*';
 export const PageName = 'Course Editor';
 
 export const PageElement = ({ handleTitleChange }: PageProps) => {
-  /* Create list of routes from the page navigation items to 
-  update the titlebar list of existing routes */
   const pageRoutes = PageNavItems.map(page => {
-    console.log('hey');
     return { label: page.label, link: page.link };
   });
 
