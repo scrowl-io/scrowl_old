@@ -8,9 +8,9 @@ import {
 import * as style from './styles/styles.module.scss';
 import { appRoutes } from './routes';
 import { TitleBar } from '../titlebar';
-import { TitleBarProps } from '../titlebar/index.types';
+import { PageNav } from '../../pages/index.types';
 
-const renderAppRoutes = (handleTitleChange: (pages: TitleBarProps) => void) => {
+const renderAppRoutes = (handleTitleChange: { (pages: PageNav): void }) => {
   return appRoutes.pages.map((page, index) => {
     return (
       <Route
@@ -27,21 +27,23 @@ const renderAppRoutes = (handleTitleChange: (pages: TitleBarProps) => void) => {
 };
 
 export const App = () => {
-  const [titlePages, setTitlePages] = useState(appRoutes.pages);
+  const [titlesList, setTitlesList] = useState(appRoutes.pages);
 
-  function handleTitleChange(pages: TitleBarProps) {
-    const newRoutes = [...titlePages];
+  const handleTitleChange = (pages: PageNav) => {
+    const newTitles = [...titlesList];
 
-    Object.entries(pages.pages).map(page => {
-      newRoutes.push(page[1]);
+    pages.map(page => {
+      if (!newTitles.some(title => title.PageName === page.label)) {
+        newTitles.push({ PageName: page.label, PageRoute: page.link });
+      }
     });
 
-    setTitlePages(newRoutes);
-  }
+    setTitlesList(newTitles);
+  };
 
   return (
     <Router>
-      <TitleBar pages={titlePages} />
+      <TitleBar pages={titlesList} />
       <div className={style.content}>
         <Routes>
           {renderAppRoutes(handleTitleChange)}

@@ -1,6 +1,6 @@
 import pageStructure from './structure';
 import pageBuild from './build';
-import { PageRoute, PageNav } from './index.types';
+import { PageRoute, PageNav } from '../../pages/index.types';
 
 export const PageRoutes: PageRoute = {
   base: '/editor',

@@ -1,5 +1,13 @@
-import { TitleBarProps } from '../components/titlebar/index.types';
+export interface PageRoute {
+  [key: string]: string;
+}
+export interface PageNavItem {
+  label: string;
+  link: string;
+}
+
+export type PageNav = PageNavItem[];
 
 export interface PageProps {
-  handleTitleChange: (pages: TitleBarProps) => void;
+  handleTitleChange: (pages: PageNav) => void;
 }

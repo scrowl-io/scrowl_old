@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './styles.module.scss';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
-import { PageNav, PageNavItem } from '../../pages/editor/index.types';
+import { PageNav, PageNavItem } from '../../pages/index.types';
 
 const NavigationItem = ({ page }: { page: PageNavItem }) => {
   const resolved = useResolvedPath(page.link);
