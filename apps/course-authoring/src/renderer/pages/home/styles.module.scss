@@ -1,4 +1,4 @@
-@use '~@owlui/theme/src' as theme;
+@import '~@owlui/theme/src/global/_variables.scss';
 
 .nav {
   &__title {
@@ -32,7 +32,7 @@
 
 .section-title {
   font-weight: bold;
-  color: theme.$owl-sys-color-primary;
+  color: $owl-sys-color-primary;
   margin-bottom: 1rem;
 }
 
