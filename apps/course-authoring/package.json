@@ -156,7 +156,7 @@
   },
   "dependencies": {
     "@liascript/simple-scorm-packager": "git+https://git@github.com/andre-dietrich/simple-scorm-packager.git",
-    "@owlui/components": "^0.0.19",
+    "@owlui/components": "0.0.20",
     "@scrowl/parcel-resolver-asset-path": "^0.0.0",
     "@scrowl/parcel-transformer-asset-path": "^0.0.0",
     "electron-debug": "^3.2.0",
