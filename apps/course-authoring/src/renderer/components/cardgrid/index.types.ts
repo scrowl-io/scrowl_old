@@ -2,7 +2,8 @@ export interface CardProps {
   id: number;
   title: React.ReactNode;
   content: React.ReactNode;
-  btnTitle: string;
+  btnTitle?: string;
+  btnRoute?: string;
 }
 
 export interface CardsProps {

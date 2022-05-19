@@ -1,4 +1,5 @@
 import { CardProps } from '../../components/cardgrid/index.types';
+import { PageRoutes } from '../editor/routes';
 
 export const sidebarItems = [
   {
@@ -21,6 +22,7 @@ export const cards: CardProps[] = [
     title: 'New Blank Document',
     content: 'Start from scratch with no template applied.',
     btnTitle: 'Create New',
+    btnRoute: PageRoutes['structure'],
   },
   {
     id: 2,
