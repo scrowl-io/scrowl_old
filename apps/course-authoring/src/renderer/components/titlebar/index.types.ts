@@ -1,6 +1,7 @@
+export interface TitleBarPage {
+  PageRoute: string;
+  PageName: string;
+}
 export interface TitleBarProps {
-  pages: Array<{
-    Route: string;
-    Name: string;
-  }>;
+  pages: TitleBarPage[];
 }

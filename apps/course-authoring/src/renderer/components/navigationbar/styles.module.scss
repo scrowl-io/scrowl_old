@@ -1,0 +1,14 @@
+@use '~@owlui/theme/src' as theme;
+
+.navigation-bar {
+  display: flex;
+}
+
+.navigation-item {
+  display: inline-block;
+  margin: 1rem;
+
+  &-active {
+    font-weight: bold;
+  }
+}

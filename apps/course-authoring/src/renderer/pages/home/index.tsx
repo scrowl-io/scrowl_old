@@ -8,8 +8,8 @@ import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 
-export const Route = '/';
-export const Name = 'Home';
+export const PageRoute = '/';
+export const PageName = 'Home';
 
 const exportPackage = () => {
   window.electronAPI.ipcRenderer
@@ -63,7 +63,7 @@ const TemplatesList = () => {
   });
 };
 
-export const Element = () => {
+export const PageElement = () => {
   return (
     <>
       <Nav className={style.nav} header={Header} items={sidebarItems} />
@@ -91,7 +91,7 @@ export const Element = () => {
 };
 
 export default {
-  Name,
-  Route,
-  Element,
+  PageName,
+  PageRoute,
+  PageElement,
 };

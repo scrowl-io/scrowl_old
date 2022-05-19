@@ -5,12 +5,12 @@ import { TitleBar } from './index';
 // Create routes that will be used to render the component
 const routes = [
   {
-    Route: '/',
-    Name: 'Dashboard',
+    PageRoute: '/',
+    PageName: 'Dashboard',
   },
   {
-    Route: '/create',
-    Name: 'Create New Course',
+    PageRoute: '/create',
+    PageName: 'Create New Course',
   },
 ];
 
