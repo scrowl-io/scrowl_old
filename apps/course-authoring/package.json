@@ -155,7 +155,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "@liascript/simple-scorm-packager": "git+https://git@github.com/andre-dietrich/simple-scorm-packager.git",
+    "EEBOS/scorm-packager": "git+https://git@github.com/EEBOS/scorm-packager.git",
     "@owlui/components": "^0.0.19",
     "@scrowl/parcel-resolver-asset-path": "^0.0.0",
     "@scrowl/parcel-transformer-asset-path": "^0.0.0",

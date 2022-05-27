@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs-extra';
 import { ipcMain } from 'electron';
-import packager from '@liascript/simple-scorm-packager';
+import packager from 'EEBOS/scorm-packager';
 import { PathingProps, PathingKey } from './types';
 
 const pathing: PathingProps = {
