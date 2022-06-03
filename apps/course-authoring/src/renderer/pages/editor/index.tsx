@@ -8,6 +8,16 @@ import { PageProps } from '../index.types';
 export const PageRoute = '/editor/*';
 export const PageName = 'Course Editor';
 
+const exportPackage = () => {
+  window.electronAPI.ipcRenderer
+    .invoke('package-course', {
+      courseName: 'Test Course',
+    })
+    .then((msg: string) => {
+      console.log(`packaged ${msg}`);
+    });
+};
+
 export const PageElement = ({ handleTitleChange }: PageProps) => {
   const pageRoutes = PageNavItems.map(page => {
     return { label: page.label, link: page.link };
@@ -20,7 +30,7 @@ export const PageElement = ({ handleTitleChange }: PageProps) => {
 
   return (
     <div className={style.editor}>
-      <NavigationBar pages={PageNavItems} />
+      <NavigationBar pages={PageNavItems} exportPackage={exportPackage} />
       <Routes>
         {PageChildren.map((page, index) => {
           return (

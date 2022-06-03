@@ -11,16 +11,6 @@ import { CardGrid } from '../../components/cardgrid';
 export const PageRoute = '/';
 export const PageName = 'Home';
 
-const exportPackage = () => {
-  window.electronAPI.ipcRenderer
-    .invoke('package-course', {
-      courseName: 'Test Course',
-    })
-    .then((msg: string) => {
-      console.log(`packaged ${msg}`);
-    });
-};
-
 const Header = (
   <>
     <div>
@@ -36,11 +26,6 @@ const Header = (
       <div>
         <Btn size="Sm" appearance="Link">
           Open
-        </Btn>
-      </div>
-      <div>
-        <Btn size="Sm" onClick={exportPackage}>
-          Export
         </Btn>
       </div>
     </div>
