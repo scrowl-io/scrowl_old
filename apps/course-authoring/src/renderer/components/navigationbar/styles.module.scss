@@ -1,5 +1,10 @@
 @use '~@owlui/theme/src' as theme;
 
+.top-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .navigation-bar {
   display: flex;
 }
