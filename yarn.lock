@@ -1428,6 +1428,15 @@
     "@owlui/typings" "^0.0.19"
     "@owlui/utils" "^0.0.19"
 
+"@owlui/button@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/button/-/button-0.0.21.tgz#404cf93d9bc470dbe9910a4fcc4020a1697f6acb"
+  integrity sha512-NlAmZ1C0Oze+7RWbYVShTP+2JRHZKd6O3c9cFwk9uUrfcI5vhdv+4VfCJDjGY2RpoVV35Z8jBt9gHsZWy4gaPQ==
+  dependencies:
+    "@owlui/theme" "^0.0.21"
+    "@owlui/typings" "^0.0.21"
+    "@owlui/utils" "^0.0.20"
+
 "@owlui/card@^0.0.19":
   version "0.0.19"
   resolved "https://registry.yarnpkg.com/@owlui/card/-/card-0.0.19.tgz#503fa1b9b9380a50bbc21769f989fcbfbca01a4c"
@@ -1435,6 +1444,15 @@
   dependencies:
     "@owlui/typings" "^0.0.1"
     "@owlui/utils" "^0.0.19"
+
+"@owlui/card@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/card/-/card-0.0.21.tgz#7703cf6807cfe993062f180a777a012b16e50724"
+  integrity sha512-vaKcoIJGzSJw129gYiRl1U9wzt6lE17dAL5pDC8BkPqWScKi7e+gYGcIWbDpmqABLqqecyHQkR0HH5oK+IBPvg==
+  dependencies:
+    "@owlui/theme" "^0.0.21"
+    "@owlui/typings" "^0.0.21"
+    "@owlui/utils" "^0.0.20"
 
 "@owlui/components@^0.0.19":
   version "0.0.19"
@@ -1451,12 +1469,41 @@
     "@owlui/typings" "^0.0.19"
     "@owlui/utils" "^0.0.19"
 
+"@owlui/design@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/design/-/design-0.0.21.tgz#6fbc13705100258ea8b36977030313853abd90ff"
+  integrity sha512-fMxWXd5WutRl6ujW47joZr5dVFP7JvmKq6W4IEVvnkCaHCTbD9fVrvhBPeOiSesrisleI0AKJ4VBgnT8U/jKcw==
+
 "@owlui/icons@^0.0.19":
   version "0.0.19"
   resolved "https://registry.yarnpkg.com/@owlui/icons/-/icons-0.0.19.tgz#8207bc4e97d674d09b515e3180473397b3b735e0"
   integrity sha512-oohtF85QGnrys+1HLfqRH3EFAgSydhm3gkhSWTBcK++7aE22FLrpNIo8SgJa4V+D6uPBXDd6WyNdZ+X8JRxlMA==
   dependencies:
     "@owlui/typings" "^0.0.1"
+
+"@owlui/icons@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/icons/-/icons-0.0.21.tgz#a53daf492a4213a86760759f4e74a67a339e42ff"
+  integrity sha512-19xUBpR6yLJpjGzbVg15ef5QzGXGNy7g4nmTDuN22bTReA1eMdr1HSggTQtggLpqlu612RLHRYQP4V9H8qVjUQ==
+  dependencies:
+    "@owlui/theme" "^0.0.21"
+    "@owlui/typings" "^0.0.21"
+    "@owlui/utils" "^0.0.20"
+
+"@owlui/lib@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/lib/-/lib-0.0.21.tgz#910b2415779c7a39517aa9d01b436b8ef270cf8b"
+  integrity sha512-FzjQivHIAw6+b1hhP5Kp8gn0QMzpByxcAdxbqq1f5pSSDx0gsiEy5b4jvDY0DmjQ2F5Pr1SpF/cTy1QzhjvUHg==
+  dependencies:
+    "@owlui/button" "^0.0.21"
+    "@owlui/card" "^0.0.21"
+    "@owlui/icons" "^0.0.21"
+    "@owlui/navigationdrawer" "^0.0.21"
+    "@owlui/table" "^0.0.21"
+    "@owlui/textfield" "^0.0.21"
+    "@owlui/theme" "^0.0.21"
+    "@owlui/typings" "^0.0.21"
+    "@owlui/utils" "^0.0.20"
 
 "@owlui/navigationdrawer@^0.0.19":
   version "0.0.19"
@@ -1466,6 +1513,15 @@
     "@owlui/typings" "^0.0.1"
     "@owlui/utils" "^0.0.19"
 
+"@owlui/navigationdrawer@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/navigationdrawer/-/navigationdrawer-0.0.21.tgz#b5088d0acc807724d303c3b6509d6c6ed6709fc6"
+  integrity sha512-Mg+okLgtwcbhpyn3fMshi+8D5hj+DPJm+opElMXgIpCmDg52iFn1WOyfBE0WkV03xLQbqu0Cs+8fJMhJW/yZeQ==
+  dependencies:
+    "@owlui/theme" "^0.0.21"
+    "@owlui/typings" "^0.0.21"
+    "@owlui/utils" "^0.0.20"
+
 "@owlui/table@^0.0.19":
   version "0.0.19"
   resolved "https://registry.yarnpkg.com/@owlui/table/-/table-0.0.19.tgz#02e42ed1daf445a9766e3a2ac48d1af4a05e7836"
@@ -1473,6 +1529,15 @@
   dependencies:
     "@owlui/typings" "^0.0.1"
     "@owlui/utils" "^0.0.19"
+
+"@owlui/table@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/table/-/table-0.0.21.tgz#6801b43b631f310b3225a0c95fd126a78fb04bde"
+  integrity sha512-QnTY/G77aoX8Hmfub2qk8VbzXrhL3FFqkJIkA99oFI6HPriEVieqPb7DWS2kGw9FvVRpm7csvCY1l4juwGrgDQ==
+  dependencies:
+    "@owlui/theme" "^0.0.21"
+    "@owlui/typings" "^0.0.21"
+    "@owlui/utils" "^0.0.20"
 
 "@owlui/textfield@^0.0.19":
   version "0.0.19"
@@ -1482,12 +1547,29 @@
     "@owlui/theme" "^0.0.19"
     "@owlui/typings" "^0.0.19"
 
+"@owlui/textfield@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/textfield/-/textfield-0.0.21.tgz#351819cfa6d0ae66d558d66f8098327b55b84cbc"
+  integrity sha512-l6P2DCIQA6J9iHTkHP3RPaXWkio7iu8+jZsHupPWybEKphWIvTioNwPPAtB/sowJt5dpuRRgJN+gdth5CVA+0Q==
+  dependencies:
+    "@owlui/theme" "^0.0.21"
+    "@owlui/typings" "^0.0.21"
+    "@owlui/utils" "^0.0.20"
+
 "@owlui/theme@^0.0.19":
   version "0.0.19"
   resolved "https://registry.yarnpkg.com/@owlui/theme/-/theme-0.0.19.tgz#9c8a62d5d17af2e2b73564f205a5bfaa28cec515"
   integrity sha512-HcKPwJsQvaUhanpNeyNvZa5a4xxZgVOp+E7M4lAQ9UUc190/j4m717cmD2jJVePbWBnk+oRHwMT5m3alrXZ0gQ==
   dependencies:
     "@owlui/typings" "^0.0.1"
+    material-design-icons "^3.0.1"
+
+"@owlui/theme@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/theme/-/theme-0.0.21.tgz#40c3642bbabdd67bb38387766e69a4a31aae6e7e"
+  integrity sha512-icnM87c8uV1WB6xssbk3GEVLyL9NOfhFlF9FmHyWIRIAxJIuq2hML7ksMRjZKoTKoHIXLbzZSp3kSY40exKOYQ==
+  dependencies:
+    "@owlui/design" "^0.0.21"
     material-design-icons "^3.0.1"
 
 "@owlui/typings@^0.0.1":
@@ -1500,10 +1582,27 @@
   resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.19.tgz#af140424d931d633c063596031864401a03cf6d3"
   integrity sha512-td0b52LhDjx3abVUQX88Ehi8S4EBU7KjgGArFD/eaI7e+5+w2XjHjvGSGRZJAGFTJ4NRfbzlCUe9gJ7LV/vCpA==
 
+"@owlui/typings@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.20.tgz#5459e00f13c652ca7ab90c3631762969c1fd6450"
+  integrity sha512-OU+ls5D1DtZGgn5QKpYisxiKgnOrI5GJGUNreXiQQYD2w5mLFHx//728LSobj5i+aLIMQCkVV52qi5W1pfcArg==
+
+"@owlui/typings@^0.0.21":
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.21.tgz#ecd557c0211f57fc05ab6fcc043b894dc6979d25"
+  integrity sha512-cK/omaNTOV77K34RA0BmyzND6AWdIaIc2Ko0lPmdoVQMV8DiAiwyKQbHI7BZ+Scf2IAc5ZqEh9dJLW4exEhOTg==
+
 "@owlui/utils@^0.0.19":
   version "0.0.19"
   resolved "https://registry.yarnpkg.com/@owlui/utils/-/utils-0.0.19.tgz#08a80e3ad88dfcdc395e9d91bf5381a94600b89e"
   integrity sha512-7Wx9GS7dJQzB4dTd0x7ji9nH7U2koxlpcx+RjvHKAGPOyKEHUZlXoCDRDy1hd1ecuaKr3WYLY9L0tlZER8BpPg==
+
+"@owlui/utils@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@owlui/utils/-/utils-0.0.20.tgz#b695c46243748e0b8450d9fce3e519536f94cf9f"
+  integrity sha512-KASXoNyAnwT+h60N/UULcoR/DaL80tVGub7M4erZYu9dp4B1icfZxS26o0Rw7ANmecjMG15DGXP1ZCAO/5mEog==
+  dependencies:
+    "@owlui/typings" "^0.0.20"
 
 "@parcel/bundler-default@2.5.0":
   version "2.5.0"
