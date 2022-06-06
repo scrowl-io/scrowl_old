@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EEBOS/SCROWL.git",
+    "url": "git+https://github.com/scrowl-io/scrowl.git",
     "directory": "apps/course-authoring"
   },
   "bugs": {
-    "url": "https://github.com/EEBOS/SCROWL/issues"
+    "url": "https://github.com/scrowl-io/scrowl/issues"
   },
-  "homepage": "https://github.com/EEBOS/SCROWL/apps/course-authoring#readme",
+  "homepage": "https://github.com/scrowl-io/scrowl/apps/course-authoring#readme",
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
     "prebuild": "yarn run clean",
@@ -85,7 +85,7 @@
     "extends": "@scrowl/eslint-config/stylelint"
   },
   "build": {
-    "appId": "org.eebos.scrowl",
+    "appId": "org.scrowl-io.scrowl",
     "productName": "Scrowl",
     "files": [
       "dist/*",
@@ -155,7 +155,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "EEBOS/scorm-packager": "git+https://git@github.com/EEBOS/scorm-packager.git",
+    "scrowl-io/scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",
     "@owlui/components": "^0.0.19",
     "@scrowl/parcel-resolver-asset-path": "^0.0.0",
     "@scrowl/parcel-transformer-asset-path": "^0.0.0",

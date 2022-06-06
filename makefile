@@ -4,7 +4,7 @@
 THIS_FILE := $(abspath $(lastword $(MAKEFILE_LIST)))
 BASE_DIR := $(shell pwd)
 ### Unique variables per project
-PROJECT_NAME = "SCROWL"
+PROJECT_NAME = "scrowl"
 DOCKERHUB_PROJECT_ID = sezarosg
 DOCKERHUB_REGISTRY_ID = sezarosg.io
 DOCKERHUB_HOSTNAME = docker.io

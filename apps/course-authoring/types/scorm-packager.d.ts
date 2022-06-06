@@ -1,1 +1,1 @@
-declare module 'EEBOS/scorm-packager';
+declare module 'scrowl-io/scorm-packager';

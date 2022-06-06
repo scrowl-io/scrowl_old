@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EEBOS/SCROWL.git",
+    "url": "git+https://github.com/scrowl-io/scrowl.git",
     "directory": "packages/parcel-resolver-asset-path"
   },
   "isLibrary": true,
