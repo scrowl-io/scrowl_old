@@ -28,9 +28,7 @@ export const NavigationBar = ({ pages, exportPackage }: NavigationBarProps) => {
           return <NavigationItem key={index} page={page} />;
         })}
       </ul>
-      <Btn size="Sm" onClick={exportPackage}>
-        Export
-      </Btn>
+      <Btn onClick={exportPackage}>Export</Btn>
     </div>
   );
 };

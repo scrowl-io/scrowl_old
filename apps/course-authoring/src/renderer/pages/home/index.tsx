@@ -21,12 +21,10 @@ const Header = (
     </div>
     <div className={style.navActions}>
       <div>
-        <Btn size="Sm">New Project</Btn>
+        <Btn>New Project</Btn>
       </div>
       <div>
-        <Btn size="Sm" appearance="Link">
-          Open
-        </Btn>
+        <Btn variant="link">Open</Btn>
       </div>
     </div>
     <div className={style.navDivider} />
