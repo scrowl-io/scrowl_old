@@ -20,7 +20,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
     "prebuild": "yarn run clean",
-    "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist",
+    "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist --no-optimize",
     "start:frontend": "parcel serve --target frontend --no-cache --port 5001",
     "prestart:backend": "parcel build --target backend --target preload --no-cache",
     "start:backend": "wait-on http://localhost:5001 && nodemon --exec electron ./dist/main.js",
@@ -166,7 +166,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
-    "scrowl-io/scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",
+    "scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",
     "typescript": "^4.6.3"
   },
   "peerDependencies": {

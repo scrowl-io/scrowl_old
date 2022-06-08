@@ -1,1 +1,1 @@
-declare module 'scrowl-io/scorm-packager';
+declare module 'scorm-packager';
