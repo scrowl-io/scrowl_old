@@ -7,19 +7,19 @@
   "author": {
     "name": "OSG"
   },
-  "homepage": "https://eebos.github.io/SCROWL",
+  "homepage": "https://scrowl-io.github.io/scrowl",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EEBOS/SCROWL.git",
+    "url": "git+https://github.com/scrowl-io/scrowl.git",
     "directory": "apps/app-downloads"
   },
   "bugs": {
-    "url": "https://github.com/EEBOS/SCROWL/issues"
+    "url": "https://github.com/scrowl-io/scrowl/issues"
   },
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache",
     "prebuild": "npm run clean",
-    "build": "parcel build --no-cache --public-url ../SCROWL",
+    "build": "parcel build --no-cache --public-url ../scrowl",
     "prestart": "npm run clean",
     "start": "parcel serve --open"
   },
@@ -64,7 +64,7 @@
     "typescript": "^4.4.2"
   },
   "dependencies": {
-    "@owlui/components": "^0.0.19",
+    "@owlui/lib": "^0.0.22",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",

@@ -10,17 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EEBOS/SCROWL.git",
+    "url": "git+https://github.com/scrowl-io/scrowl.git",
     "directory": "apps/course-authoring"
   },
   "bugs": {
-    "url": "https://github.com/EEBOS/SCROWL/issues"
+    "url": "https://github.com/scrowl-io/scrowl/issues"
   },
-  "homepage": "https://github.com/EEBOS/SCROWL/apps/course-authoring#readme",
+  "homepage": "https://github.com/scrowl-io/scrowl/apps/course-authoring#readme",
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
     "prebuild": "yarn run clean",
-    "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist",
+    "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist --no-optimize",
     "start:frontend": "parcel serve --target frontend --no-cache --port 5001",
     "prestart:backend": "parcel build --target backend --target preload --no-cache",
     "start:backend": "wait-on http://localhost:5001 && nodemon --exec electron ./dist/main.js",
@@ -85,7 +85,7 @@
     "extends": "@scrowl/eslint-config/stylelint"
   },
   "build": {
-    "appId": "org.eebos.scrowl",
+    "appId": "org.scrowl-io.scrowl",
     "productName": "Scrowl",
     "files": [
       "dist/*",
@@ -155,8 +155,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "EEBOS/scorm-packager": "git+https://git@github.com/EEBOS/scorm-packager.git",
-    "@owlui/components": "^0.0.19",
+    "@owlui/lib": "^0.0.22",
     "@scrowl/parcel-resolver-asset-path": "^0.0.0",
     "@scrowl/parcel-transformer-asset-path": "^0.0.0",
     "electron-debug": "^3.2.0",
@@ -167,6 +166,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
+    "scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",
     "typescript": "^4.6.3"
   },
   "peerDependencies": {

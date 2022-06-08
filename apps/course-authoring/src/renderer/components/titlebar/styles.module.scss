@@ -5,8 +5,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: theme.$owl-sys-color-primary;
-  border-bottom: 2px solid theme.$owl-ref-palette-primary-highlight;
+  color: vars(--bs-primary);
+  border-bottom: 2px solid vars(--bs-border-color);
 
   &__title {
     user-select: none;

@@ -10,11 +10,7 @@ export const CardGrid = ({ cards }: CardsProps) => {
     let btnElement;
 
     if (!card.btnRoute) {
-      btnElement = (
-        <Btn className={style.cardBtn} size="Sm">
-          {card.btnTitle}
-        </Btn>
-      );
+      btnElement = <Btn className={style.cardBtn}>{card.btnTitle}</Btn>;
     } else {
       btnElement = (
         <Link className={style.cardBtn} to={card.btnRoute}>

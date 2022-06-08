@@ -50,3 +50,4 @@ src/main/services/exporter/course-template/*/
 !src/main/services/exporter/course-template/content/
 # testing reports
 tests/reports
+tests/screenshots

@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
 
@@ -49,7 +49,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
 
@@ -94,7 +94,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
 
@@ -133,51 +133,3 @@ jobs:
 
       - name: Test
         run: yarn run test:unit:tool:course
-
-  test-e2e-course-authoring:
-    needs: create-cache
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest]
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.13.2 # matching Elctron's version of node
-
-      - name: Get Cache Directory Path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache Lockfile
-        uses: actions/cache@v3
-        id: yarn-cache-lockfile
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Cache Modules
-        uses: actions/cache@v3
-        id: yarn-cache-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-
-      - name: Install Dependencies
-        if: |
-          steps.yarn-cache-lockfile.outputs.cache-hit != 'true' ||
-          steps.yarn-cache-modules.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
-
-      - name: Install Playwright Dependencies
-        run: npx playwright install --with-deps chromium
-
-      - name: Test
-        run: yarn run test:e2e:tool:course

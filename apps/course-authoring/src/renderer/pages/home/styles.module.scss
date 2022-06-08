@@ -18,7 +18,7 @@
   &__divider {
     margin-top: 0.5rem;
     height: 1px;
-    background-color: #d4d4d4;
+    background-color: vars(--bs-border-color);
   }
 }
 
@@ -32,7 +32,7 @@
 
 .section-title {
   font-weight: bold;
-  color: theme.$owl-sys-color-primary;
+  color: vars(--bs-primary);
   margin-bottom: 1rem;
 }
 
@@ -42,6 +42,6 @@
   }
 
   thead {
-    background-color: #dae2f4;
+    background-color: vars(--bs-border-color);
   }
 }
