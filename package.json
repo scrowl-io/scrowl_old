@@ -36,11 +36,9 @@
     "fs-extra": "^10.0.1",
     "prettier": "^2.6.2",
     "process": "^0.11.10",
+    "@scrowl/eslint-config": "^1.0.0",
     "stylelint": "^14.7.1",
     "wait-on": "^6.0.1"
   },
-  "packageManager": "yarn@1.22.17",
-  "dependencies": {
-    "@scrowl/eslint-config": "^1.0.0"
-  }
+  "packageManager": "yarn@1.22.17"
 }
