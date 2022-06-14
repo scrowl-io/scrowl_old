@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Default as Btn } from '@owlui/button';
-import style from './styles.module.scss';
 import {
   Appearance,
   Preferences,
@@ -57,7 +56,7 @@ export const PageElement = () => {
 
   return (
     <>
-      <main className={style.main}>
+      <main>
         <section style={{ padding: '1rem' }}>
           <h1>Settings</h1>
           <h2>Appearance</h2>
