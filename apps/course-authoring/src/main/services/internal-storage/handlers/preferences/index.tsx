@@ -13,7 +13,7 @@ const getPreference = async (column: keyof Preferences) => {
   return data[0];
 };
 
-const setPreferences = (args: unknown) => {
+const setPreferences = (args: Preferences) => {
   return database(table).update(args);
 };
 
