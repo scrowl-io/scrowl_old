@@ -21,7 +21,7 @@ export const getPreference = (
 
 export const setPreferences = (
   event: Electron.IpcMainInvokeEvent,
-  args: unknown
+  args: Preferences
 ) => {
   return PreferencesHandler.setPreferences(args);
 };
