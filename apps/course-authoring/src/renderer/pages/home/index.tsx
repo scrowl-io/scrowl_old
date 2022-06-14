@@ -12,14 +12,6 @@ import { Link } from 'react-router-dom';
 export const PageRoute = '/';
 export const PageName = 'Home';
 
-const getPreferences = () => {
-  window.electronAPI.ipcRenderer
-    .invoke('get-preferences')
-    .then((msg: string) => {
-      console.log(`preferences: ${msg}`);
-    });
-};
-
 const Header = (
   <>
     <div>
@@ -30,9 +22,6 @@ const Header = (
     </div>
     <div className={style.navActions}>
       <div>
-        <Btn variant="primary" onClick={getPreferences}>
-          Load Preferences
-        </Btn>
         <Btn variant="link">
           <Link to="/settings">Settings</Link>
         </Btn>

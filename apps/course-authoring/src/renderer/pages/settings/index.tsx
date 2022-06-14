@@ -1,31 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Default as Btn } from '@owlui/button';
 import style from './styles.module.scss';
+import { Appearance, Preferences } from './index.types';
 
 export const PageRoute = '/settings';
 export const PageName = 'Settings';
 
 export const PageElement = () => {
-  const [appearance, setAppearance] = useState('light');
+  const [preferences, setPreferences] = useState<Preferences>();
+
+  useEffect(() => {
+    window.electronAPI.ipcRenderer.invoke('get-preferences-list').then(data => {
+      setPreferences(data);
+    });
+  }, []);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPreferences({ appearance: event.target.value });
+  };
 
   const handleSave = () => {
-    console.log('Data persisted successfully');
+    window.electronAPI.ipcRenderer.invoke('set-preferences', {
+      appearance: preferences?.appearance,
+    });
   };
 
   const RadioButton = ({
     label,
     value,
+    checked,
     onChange,
   }: {
     label: string;
-    value: boolean;
-    onChange: () => void;
+    value: Appearance;
+    checked: boolean;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   }) => {
     return (
       <div className="radio">
         <label>
-          <input type="radio" checked={value} onChange={onChange} />
+          <input
+            type="radio"
+            value={value}
+            checked={checked}
+            onChange={onChange}
+          />
           {label}
         </label>
       </div>
@@ -35,29 +55,33 @@ export const PageElement = () => {
   return (
     <>
       <main className={style.main}>
-        <h1>Settings</h1>
-        <h2>Appearance</h2>
-        <fieldset>
-          <legend>Change the appearance of Scrowl's workspace:</legend>
-          <RadioButton
-            label="Light"
-            value={appearance === 'light'}
-            onChange={() => setAppearance('light')}
-          />
-          <RadioButton
-            label="Dark"
-            value={appearance === 'dark'}
-            onChange={() => setAppearance('dark')}
-          />
-        </fieldset>
-        <div>
-          <Btn variant="primary" onClick={handleSave}>
-            Save
-          </Btn>
-          <Btn variant="link">
-            <Link to="/">Back to Home</Link>
-          </Btn>
-        </div>
+        <section style={{ padding: '1rem' }}>
+          <h1>Settings</h1>
+          <h2>Appearance</h2>
+          <fieldset>
+            <legend>Change the appearance of Scrowl's workspace:</legend>
+            <RadioButton
+              label="Light"
+              value="light"
+              checked={preferences?.appearance === 'light'}
+              onChange={handleChange}
+            />
+            <RadioButton
+              label="Dark"
+              value="dark"
+              checked={preferences?.appearance === 'dark'}
+              onChange={handleChange}
+            />
+          </fieldset>
+          <div>
+            <Btn variant="primary" onClick={handleSave}>
+              Save
+            </Btn>
+            <Btn variant="link">
+              <Link to="/">Back to Home</Link>
+            </Btn>
+          </div>
+        </section>
       </main>
     </>
   );
