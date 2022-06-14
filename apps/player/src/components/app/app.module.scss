@@ -1,0 +1,10 @@
+@use '~@owlui/theme/src' as theme;
+
+.app {
+  display: flex;
+  height: 100vh;
+
+  &-main {
+    padding: var(--spacer);
+  }
+}
