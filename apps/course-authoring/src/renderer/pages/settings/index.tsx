@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Default as Btn } from '@owlui/button';
 import style from './styles.module.scss';
-import { Appearance, Preferences } from './index.types';
+import {
+  Appearance,
+  Preferences,
+} from '../../../main/services/internal-storage/handlers/preferences/index.types';
 
 export const PageRoute = '/settings';
 export const PageName = 'Settings';
@@ -17,7 +20,7 @@ export const PageElement = () => {
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPreferences({ appearance: event.target.value });
+    setPreferences({ appearance: event.target.value as Appearance });
   };
 
   const handleSave = () => {

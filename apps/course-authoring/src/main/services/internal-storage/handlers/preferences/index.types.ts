@@ -1,3 +1,4 @@
+export type Appearance = 'light' | 'dark';
 export interface Preferences {
-  appearance: 'light' | 'dark';
+  appearance: Appearance;
 }
