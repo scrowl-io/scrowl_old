@@ -1,16 +1,6 @@
-import database from './database';
-import { ipcMain } from 'electron';
+import * as Preferences from './handlers/preferences';
 
-const getPreferences = () => {
-  return database.select('appearance').from('preferences');
-};
+export const preferencesEvents = Preferences.events;
+export const preferencesInit = Preferences.init;
 
-export const EVENTS = {
-  preferences: 'get-preferences',
-};
-
-export const init = () => {
-  ipcMain.on(EVENTS.preferences, getPreferences);
-};
-
-export default { getPreferences, EVENTS };
+export default { preferencesEvents, preferencesInit };
