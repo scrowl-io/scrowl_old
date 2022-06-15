@@ -2,21 +2,33 @@ import React from 'react';
 import {
   HashRouter as Router,
   Routes,
-  Route as Path,
+  Route,
   Navigate,
 } from 'react-router-dom';
 import * as appStyles from './app.module.scss';
-import { createPage } from '../page';
+import { project } from './test-project';
+import { createLayout } from '../project';
 import { Element as Nav } from '../navigation';
+import { NavigationDrawerContentTypes } from '@owlui/navigationdrawer/src/Default/Default.types';
+import { LayoutItemProps } from '../project/project.types';
 
-const pages = [createPage('/', 'Hello World')];
+const navItems: Array<NavigationDrawerContentTypes> = [];
+const layout = createLayout(project);
 
 const createRoutes = () => {
   const routes: Array<JSX.Element> = [];
 
-  pages.forEach((page, index) => {
+  layout.forEach((layoutItem: LayoutItemProps, index: number) => {
+    navItems.push({
+      label: layoutItem.name,
+      // url: layoutItem.Route,
+    });
     routes.push(
-      <Path key={index} path={`${page.Route}`} element={<page.Element />} />
+      <Route
+        key={index}
+        path={`${layoutItem.Route}`}
+        element={<layoutItem.Element />}
+      />
     );
   });
 
@@ -25,15 +37,15 @@ const createRoutes = () => {
 
 export const Element = () => {
   const AppRoutes = createRoutes();
-  console.log(appStyles);
+
   return (
     <Router>
       <div className={appStyles.app}>
-        <Nav />
+        <Nav items={navItems} />
         <main className={appStyles.appMain}>
           <Routes>
             {AppRoutes}
-            <Path path="*" element={<Navigate to={pages[0].Route} />} />
+            <Route path="*" element={<Navigate to={layout[0].Route} />} />
           </Routes>
         </main>
       </div>

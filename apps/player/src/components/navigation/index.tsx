@@ -1,9 +1,9 @@
 import React from 'react';
 import { Default as NavDrawer } from '@owlui/navigationdrawer';
+import { NavigationDrawerElementProps } from '@owlui/navigationdrawer/src/Default/Default.types';
 
-export const Element = () => {
-  const navItems = [{ label: 'Lesson 1' }, { label: 'Lesson 2' }];
-  return <NavDrawer items={navItems} />;
+export const Element = (props: NavigationDrawerElementProps) => {
+  return <NavDrawer items={props.items} />;
 };
 
 export default {
