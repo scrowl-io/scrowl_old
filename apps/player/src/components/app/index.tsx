@@ -5,7 +5,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
-import * as appStyles from './app.module.scss';
+import * as styles from './app.module.scss';
 import { project } from './test-project';
 import { createLayout } from '../project';
 import { Element as Nav } from '../navigation';
@@ -40,9 +40,9 @@ export const Element = () => {
 
   return (
     <Router>
-      <div className={appStyles.app}>
+      <div className={styles.app}>
         <Nav items={navItems} />
-        <main className={appStyles.appMain}>
+        <main className={styles.appMain}>
           <Routes>
             {AppRoutes}
             <Route path="*" element={<Navigate to={layout[0].Route} />} />

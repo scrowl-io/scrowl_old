@@ -11,10 +11,24 @@ export const project: ProjectConfig = {
             {
               type: 'button',
               props: {
-                children: 'Hello World',
+                children: 'Slide One',
                 style: {
                   top: '100px',
                   left: '200px',
+                },
+              },
+            },
+          ],
+        },
+        {
+          elements: [
+            {
+              type: 'button',
+              props: {
+                children: 'Slide Two',
+                style: {
+                  top: '50px',
+                  left: '50px',
                 },
               },
             },

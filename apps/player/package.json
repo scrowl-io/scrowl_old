@@ -20,9 +20,9 @@
     "clean": "rimraf dist && rimraf ../.parcel-cache",
     "prebuild": "yarn run clean",
     "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist --no-optimize",
-    "start": "parcel serve --no-cache --no-source-maps --open"
+    "prestart": "yarn run clean",
+    "start": "parcel serve --no-cache --open"
   },
-  "main": "./dist/main.js",
   "source": "./src/index.html",
   "type": "module",
   "eslintConfig": {
