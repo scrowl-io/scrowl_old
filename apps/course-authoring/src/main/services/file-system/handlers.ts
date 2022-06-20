@@ -1,4 +1,5 @@
 import { dialog, IpcMainInvokeEvent } from 'electron';
+import fs from 'fs-extra';
 import { FileTypes } from './types';
 
 const FileFilters: FileTypes = {
@@ -29,7 +30,7 @@ export const openFileDialog = async (
 };
 
 export const saveProject = async () => {
-  const filePath = dialog
+  const file = await dialog
     .showSaveDialog({
       title: 'Save Scrowl project as...',
       filters: [
@@ -40,18 +41,22 @@ export const saveProject = async () => {
       ],
     })
     .then(res => {
-      console.log(res);
+      const filePath = res.filePath;
 
-      // if (!fileName) return;
+      if (!filePath) return;
 
-      // fs.writeFile(fileName, 'test', err => {
-      //   if (err) {
-      //     alert('An error ocurred creating the file ' + err.message);
-      //   }
+      fs.writeFile(filePath, 'test', err => {
+        if (err) {
+          console.log('An error ocurred creating the file ' + err.message);
+        }
 
-      //   alert('The file has been succesfully saved');
-      // });
+        // TODO: Validate error and user closing the save file dialog
+
+        console.log('The file has been succesfully saved');
+      });
+
+      return filePath;
     });
 
-  return filePath;
+  return file;
 };
