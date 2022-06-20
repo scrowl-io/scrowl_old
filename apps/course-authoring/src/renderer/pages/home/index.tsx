@@ -9,13 +9,22 @@ import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 import { Link } from 'react-router-dom';
 import { FileType } from '../../../main/services/file-system/types';
+import { events as FileSystemEvents } from '../../../main/services/file-system/file-system';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
 
 const handleOpenFile = (fileType: FileType[]) => {
   window.electronAPI.ipcRenderer
-    .invoke('find-and-open-file', fileType)
+    .invoke(FileSystemEvents.findAndOpenFile, fileType)
+    .then((file: string) => {
+      if (file) console.log(file);
+    });
+};
+
+const handleSaveProject = () => {
+  window.electronAPI.ipcRenderer
+    .invoke(FileSystemEvents.saveProject)
     .then((file: string) => {
       if (file) console.log(file);
     });
@@ -39,6 +48,11 @@ const Header = (
         <Btn variant="link" onClick={() => handleOpenFile(['image'])}>
           Open
         </Btn>
+      </div>
+      <div>
+        {/* <Btn variant="link" onClick={handleSaveProject}>
+          Save Project
+        </Btn> */}
       </div>
     </div>
     <div className={style.navDivider} />

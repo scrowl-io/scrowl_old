@@ -7,7 +7,7 @@ const FileFilters: FileTypes = {
   scrowl: { name: 'Scrowl Project', extensions: ['scrowl'] },
 };
 
-export const opanFileDialog = async (
+export const openFileDialog = async (
   event: IpcMainInvokeEvent,
   args: string[]
 ) => {
@@ -23,6 +23,34 @@ export const opanFileDialog = async (
       if (!res.canceled) {
         return res.filePaths[0];
       }
+    });
+
+  return filePath;
+};
+
+export const saveProject = async () => {
+  const filePath = dialog
+    .showSaveDialog({
+      title: 'Save Scrowl project as...',
+      filters: [
+        {
+          name: 'Scrowl Project',
+          extensions: ['scrowl'],
+        },
+      ],
+    })
+    .then(res => {
+      console.log(res);
+
+      // if (!fileName) return;
+
+      // fs.writeFile(fileName, 'test', err => {
+      //   if (err) {
+      //     alert('An error ocurred creating the file ' + err.message);
+      //   }
+
+      //   alert('The file has been succesfully saved');
+      // });
     });
 
   return filePath;
