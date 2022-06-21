@@ -40,7 +40,7 @@ const Header = (
         </Btn>
       </div>
       <div>
-        <Btn variant="link" onClick={() => handleOpenFile(['image'])}>
+        <Btn variant="link" onClick={() => handleOpenFile(['image', 'video'])}>
           Open
         </Btn>
       </div>

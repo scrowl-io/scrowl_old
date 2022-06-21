@@ -47,7 +47,7 @@ export const saveProject = async () => {
 
       if (!filePath) return;
 
-      fs.writeFile(filePath, 'test', err => {
+      fs.writeFile(filePath, 'File content or files...', err => {
         if (err) {
           fileData.error = `An error ocurred creating the file: ${err.message}`;
         }
@@ -59,8 +59,10 @@ export const saveProject = async () => {
   if (!fileData.error)
     dialog
       .showMessageBox({
+        title: 'Success',
         message: 'Project saved successfully.',
         buttons: ['Show in finder', 'Ok'],
+        defaultId: 1,
       })
       .then(res => {
         if (res.response === 0 && fileData.file)
