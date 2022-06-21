@@ -22,7 +22,7 @@ const handleOpenFile = (fileType: AllowedFiles[]) => {
 };
 
 const handleSaveProject = () => {
-  window.electronAPI.ipcRenderer.invoke('save-project');
+  window.electronAPI.ipcRenderer.send('save-project');
 };
 
 const Header = (

@@ -8,7 +8,7 @@ export const events = {
 
 export const init = () => {
   ipcMain.handle(events.findAndOpenFile, openFileDialog);
-  ipcMain.handle(events.saveProject, saveProject);
+  ipcMain.on(events.saveProject, saveProject);
 };
 
 export default {

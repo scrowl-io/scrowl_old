@@ -12,10 +12,15 @@ contextBridge.exposeInMainWorld('electronAPI', {
         preferencesEvents.getPreference,
         preferencesEvents.setPreferences,
         fileSystemEvents.findAndOpenFile,
-        fileSystemEvents.saveProject,
       ];
       if (validChannels.includes(channel)) {
         return ipcRenderer.invoke(channel, ...args);
+      }
+    },
+    send(channel: string, ...args: unknown[]) {
+      const validChannels = [fileSystemEvents.saveProject];
+      if (validChannels.includes(channel)) {
+        return ipcRenderer.send(channel, ...args);
       }
     },
   },

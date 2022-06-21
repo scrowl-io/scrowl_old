@@ -45,7 +45,11 @@ export const saveProject = async () => {
     .then(res => {
       const filePath = res.filePath;
 
-      if (!filePath) return;
+      if (!filePath || res.canceled) {
+        fileData.error = `USer closed the saving dialog.`;
+
+        return;
+      }
 
       fs.writeFile(filePath, 'File content or files...', err => {
         if (err) {
