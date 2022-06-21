@@ -8,12 +8,12 @@ import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 import { Link } from 'react-router-dom';
-import { FileType } from '../../../main/services/file-system/types';
+import { AllowedFiles } from '../../../main/services/file-system/types';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
 
-const handleOpenFile = (fileType: FileType[]) => {
+const handleOpenFile = (fileType: AllowedFiles[]) => {
   window.electronAPI.ipcRenderer
     .invoke('find-and-open-file', fileType)
     .then((file: string) => {
@@ -22,9 +22,7 @@ const handleOpenFile = (fileType: FileType[]) => {
 };
 
 const handleSaveProject = () => {
-  window.electronAPI.ipcRenderer.invoke('save-project').then((file: string) => {
-    console.log(file);
-  });
+  window.electronAPI.ipcRenderer.invoke('save-project');
 };
 
 const Header = (

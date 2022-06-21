@@ -1,7 +1,12 @@
 import { FileFilter } from 'electron';
 
-export interface FileTypes {
+export interface FileFilters {
   [key: string]: FileFilter;
 }
 
-export type FileType = 'image' | 'video' | 'scrowl';
+export type AllowedFiles = 'image' | 'video' | 'scrowl';
+
+export interface FileData {
+  file: string | undefined;
+  error: string;
+}

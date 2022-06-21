@@ -1,8 +1,8 @@
-import { dialog, IpcMainInvokeEvent } from 'electron';
+import { dialog, IpcMainInvokeEvent, shell } from 'electron';
 import fs from 'fs-extra';
-import { FileTypes } from './types';
+import { FileData, FileFilters } from './types';
 
-const FileFilters: FileTypes = {
+const FileFilters: FileFilters = {
   image: { name: 'Image', extensions: ['jpg', 'jpeg', 'png'] },
   video: { name: 'Video', extensions: ['mp4', 'mkv', 'avi'] },
   scrowl: { name: 'Scrowl Project', extensions: ['scrowl'] },
@@ -30,9 +30,11 @@ export const openFileDialog = async (
 };
 
 export const saveProject = async () => {
-  const file = await dialog
+  const fileData = {} as FileData;
+
+  fileData.file = await dialog
     .showSaveDialog({
-      title: 'Save Scrowl project as...',
+      title: 'Scrowl - Save Project',
       filters: [
         {
           name: 'Scrowl Project',
@@ -47,16 +49,23 @@ export const saveProject = async () => {
 
       fs.writeFile(filePath, 'test', err => {
         if (err) {
-          console.log('An error ocurred creating the file ' + err.message);
+          fileData.error = `An error ocurred creating the file: ${err.message}`;
         }
-
-        // TODO: Validate error and user closing the save file dialog
-
-        console.log('The file has been succesfully saved');
       });
 
       return filePath;
     });
 
-  return file;
+  if (!fileData.error)
+    dialog
+      .showMessageBox({
+        message: 'Project saved successfully.',
+        buttons: ['Show in finder', 'Ok'],
+      })
+      .then(res => {
+        if (res.response === 0 && fileData.file)
+          shell.showItemInFolder(fileData.file);
+      });
+
+  return fileData;
 };
