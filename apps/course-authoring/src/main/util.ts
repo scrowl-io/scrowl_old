@@ -1,5 +1,7 @@
 /* eslint import/prefer-default-export: off, import/no-mutable-exports: off */
 import { URL } from 'url';
+import fs from 'fs-extra';
+import os from 'os';
 import path from 'path';
 import AdmZip from 'adm-zip';
 
@@ -24,4 +26,19 @@ export const createZipFile = (src: string, dest: string) => {
   zip.addLocalFolder(src);
 
   zip.writeZip(dest);
+};
+
+export const createTempDir = () => {
+  let tmpDir;
+  const prefix = 'scrowl';
+
+  try {
+    tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), `${prefix}_`));
+  } catch (err) {
+    console.log(err);
+
+    return;
+  }
+
+  return tmpDir;
 };

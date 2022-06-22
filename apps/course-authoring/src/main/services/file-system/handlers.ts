@@ -1,8 +1,10 @@
 import { IpcMainInvokeEvent } from 'electron';
-import { createZipFile } from '../../util';
+import fs from 'fs-extra';
+import path from 'path';
+import { createTempDir, createZipFile } from '../../util';
 import { getOpenFilePath, getSaveFilePath } from './handlers/dialog';
 
-import { FileData, FileFilters } from './types';
+import { FileFilters, OpenFileData, SaveFileData } from './types';
 
 const FileFilters: FileFilters = {
   image: { name: 'Image', extensions: ['jpg', 'jpeg', 'png'] },
@@ -26,15 +28,32 @@ const zipProject = (projectSrc: string, filePath: string) => {
   }
 };
 
-export const openFile = async (event: IpcMainInvokeEvent, args: string[]) => {
-  const filters = args.map(arg => FileFilters[arg]);
+const copyFile = (src: string, dest: string) => {
+  const destFile = `${dest}/${path.basename(src)}`;
+
+  fs.copy(src, destFile, err => {
+    if (err) console.log(err);
+    console.log('copied to destination');
+  });
+};
+
+export const openFile = async (
+  event: IpcMainInvokeEvent,
+  fileTypes: string[],
+  projectDir: string
+) => {
+  const filters = fileTypes.map(type => FileFilters[type]);
 
   const dialogOptions = {
     title: 'Scrowl - Open File',
     filters: filters,
   };
 
-  const fileData = await getOpenFilePath(dialogOptions);
+  const fileData: OpenFileData = await getOpenFilePath(dialogOptions);
+
+  if (fileData.filePaths.length) {
+    copyFile(fileData.filePaths[0], projectDir);
+  }
 
   return fileData;
 };
@@ -52,7 +71,7 @@ export const saveProject = async () => {
     ],
   };
 
-  const fileData: FileData = await getSaveFilePath(dialogOptions);
+  const fileData: SaveFileData = await getSaveFilePath(dialogOptions);
 
   if (fileData.error) {
     return fileData;
@@ -64,5 +83,9 @@ export const saveProject = async () => {
 };
 
 export const newProject = () => {
-  console.log('New Project...');
+  const tempDir = createTempDir();
+
+  console.log(tempDir);
+
+  return tempDir;
 };
