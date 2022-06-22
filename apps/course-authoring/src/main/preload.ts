@@ -13,6 +13,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
         preferencesEvents.setPreferences,
         fileSystemEvents.openFile,
         fileSystemEvents.saveProject,
+        fileSystemEvents.newProject,
       ];
       if (validChannels.includes(channel)) {
         return ipcRenderer.invoke(channel, ...args);

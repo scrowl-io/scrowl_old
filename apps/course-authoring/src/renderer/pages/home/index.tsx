@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import style from './styles.module.scss';
 import { Default as Nav } from '@owlui/navigationdrawer';
 import { Default as Btn } from '@owlui/button';
@@ -7,7 +8,6 @@ import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
-import { Link } from 'react-router-dom';
 import {
   AllowedFiles,
   FileData,
@@ -19,6 +19,14 @@ export const PageName = 'Home';
 const handleOpenFile = (fileType: AllowedFiles[]) => {
   window.electronAPI.ipcRenderer
     .invoke('open-file', fileType)
+    .then((file: FileData) => {
+      console.log(file);
+    });
+};
+
+const handleNewProject = () => {
+  window.electronAPI.ipcRenderer
+    .invoke('new-project')
     .then((file: FileData) => {
       console.log(file);
     });
@@ -48,7 +56,12 @@ const Header = (
       </div>
       <div>
         <Btn variant="link" onClick={() => handleOpenFile(['image', 'video'])}>
-          Open
+          Open File
+        </Btn>
+      </div>
+      <div>
+        <Btn variant="link" onClick={handleNewProject}>
+          New Project
         </Btn>
       </div>
       <div>

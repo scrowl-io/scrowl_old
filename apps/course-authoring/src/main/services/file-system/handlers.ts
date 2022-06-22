@@ -62,3 +62,7 @@ export const saveProject = async () => {
     return zipProject(projectSrc, fileData.filePath);
   }
 };
+
+export const newProject = () => {
+  console.log('New Project...');
+};
