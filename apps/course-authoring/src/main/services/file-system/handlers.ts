@@ -1,5 +1,7 @@
-import { dialog, IpcMainInvokeEvent, shell } from 'electron';
-import fs from 'fs-extra';
+import { IpcMainInvokeEvent } from 'electron';
+import { createZipFile } from '../../util';
+import { getOpenFilePath, getSaveFilePath } from './handlers/dialog';
+
 import { FileData, FileFilters } from './types';
 
 const FileFilters: FileFilters = {
@@ -8,70 +10,55 @@ const FileFilters: FileFilters = {
   scrowl: { name: 'Scrowl Project', extensions: ['scrowl'] },
 };
 
-export const openFileDialog = async (
-  event: IpcMainInvokeEvent,
-  args: string[]
-) => {
+const zipProject = (projectSrc: string, filePath: string) => {
+  try {
+    createZipFile(projectSrc, filePath);
+
+    return {
+      message: 'Project saved successfully',
+      error: false,
+    };
+  } catch (err) {
+    return {
+      message: err,
+      error: true,
+    };
+  }
+};
+
+export const openFile = async (event: IpcMainInvokeEvent, args: string[]) => {
   const filters = args.map(arg => FileFilters[arg]);
 
-  const filePath = await dialog
-    .showOpenDialog({
-      properties: ['openFile'],
-      message: 'Scrowl - Open File',
-      filters: filters,
-    })
-    .then(res => {
-      if (!res.canceled) {
-        return res.filePaths[0];
-      }
-    });
+  const dialogOptions = {
+    title: 'Scrowl - Open File',
+    filters: filters,
+  };
 
-  return filePath;
+  const fileData = await getOpenFilePath(dialogOptions);
+
+  return fileData;
 };
 
 export const saveProject = async () => {
-  const fileData = {} as FileData;
+  const projectSrc = '/Users/cicerofonseca/Desktop/course-example';
 
-  fileData.file = await dialog
-    .showSaveDialog({
-      title: 'Scrowl - Save Project',
-      filters: [
-        {
-          name: 'Scrowl Project',
-          extensions: ['scrowl'],
-        },
-      ],
-    })
-    .then(res => {
-      const filePath = res.filePath;
+  const dialogOptions = {
+    title: 'Scrowl - Save Project',
+    filters: [
+      {
+        name: 'Scrowl Project',
+        extensions: ['scrowl'],
+      },
+    ],
+  };
 
-      if (!filePath || res.canceled) {
-        fileData.error = `USer closed the saving dialog.`;
+  const fileData: FileData = await getSaveFilePath(dialogOptions);
 
-        return;
-      }
+  if (fileData.error) {
+    return fileData;
+  }
 
-      fs.writeFile(filePath, 'File content or files...', err => {
-        if (err) {
-          fileData.error = `An error ocurred creating the file: ${err.message}`;
-        }
-      });
-
-      return filePath;
-    });
-
-  if (!fileData.error)
-    dialog
-      .showMessageBox({
-        title: 'Success',
-        message: 'Project saved successfully.',
-        buttons: ['Show in finder', 'Ok'],
-        defaultId: 1,
-      })
-      .then(res => {
-        if (res.response === 0 && fileData.file)
-          shell.showItemInFolder(fileData.file);
-      });
-
-  return fileData;
+  if (fileData.filePath) {
+    return zipProject(projectSrc, fileData.filePath);
+  }
 };

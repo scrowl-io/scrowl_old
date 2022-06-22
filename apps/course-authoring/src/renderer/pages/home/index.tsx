@@ -8,21 +8,28 @@ import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 import { Link } from 'react-router-dom';
-import { AllowedFiles } from '../../../main/services/file-system/types';
+import {
+  AllowedFiles,
+  FileData,
+} from '../../../main/services/file-system/types';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
 
 const handleOpenFile = (fileType: AllowedFiles[]) => {
   window.electronAPI.ipcRenderer
-    .invoke('find-and-open-file', fileType)
-    .then((file: string) => {
-      if (file) console.log(file);
+    .invoke('open-file', fileType)
+    .then((file: FileData) => {
+      console.log(file);
     });
 };
 
 const handleSaveProject = () => {
-  window.electronAPI.ipcRenderer.send('save-project');
+  window.electronAPI.ipcRenderer
+    .invoke('save-project')
+    .then((file: FileData) => {
+      console.log(file);
+    });
 };
 
 const Header = (

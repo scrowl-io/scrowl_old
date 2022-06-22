@@ -1,4 +1,4 @@
-import { FileFilter } from 'electron';
+import { FileFilter, SaveDialogReturnValue } from 'electron';
 
 export interface FileFilters {
   [key: string]: FileFilter;
@@ -6,7 +6,7 @@ export interface FileFilters {
 
 export type AllowedFiles = 'image' | 'video' | 'scrowl';
 
-export interface FileData {
-  file: string | undefined;
-  error: string;
+export interface FileData extends SaveDialogReturnValue {
+  error?: boolean;
+  message?: unknown;
 }

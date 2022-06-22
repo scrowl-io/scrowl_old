@@ -1,18 +1,18 @@
 import { ipcMain } from 'electron';
-import { openFileDialog, saveProject } from './handlers';
+import { openFile, saveProject } from './handlers';
 
 export const events = {
-  findAndOpenFile: 'find-and-open-file',
+  openFile: 'open-file',
   saveProject: 'save-project',
 };
 
 export const init = () => {
-  ipcMain.handle(events.findAndOpenFile, openFileDialog);
-  ipcMain.on(events.saveProject, saveProject);
+  ipcMain.handle(events.openFile, openFile);
+  ipcMain.handle(events.saveProject, saveProject);
 };
 
 export default {
   events,
   init,
-  openFileDialog,
+  openFile,
 };
