@@ -11,7 +11,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
         preferencesEvents.getPreferencesList,
         preferencesEvents.getPreference,
         preferencesEvents.setPreferences,
-        fileSystemEvents.openFile,
+        fileSystemEvents.importFile,
         fileSystemEvents.saveProject,
         fileSystemEvents.newProject,
       ];

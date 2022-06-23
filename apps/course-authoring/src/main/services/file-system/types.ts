@@ -10,12 +10,12 @@ export interface FileFilters {
 
 export type AllowedFiles = 'image' | 'video' | 'scrowl';
 
-export interface OpenFileData extends OpenDialogReturnValue {
+export interface FileData {
   error?: boolean;
   message?: unknown;
+  dirPath?: string;
 }
 
-export interface SaveFileData extends SaveDialogReturnValue {
-  error?: boolean;
-  message?: unknown;
-}
+export type OpenFileData = FileData & OpenDialogReturnValue;
+
+export type SaveFileData = FileData & SaveDialogReturnValue;

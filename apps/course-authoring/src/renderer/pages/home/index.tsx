@@ -10,6 +10,7 @@ import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 import {
   AllowedFiles,
+  FileData,
   OpenFileData,
   SaveFileData,
 } from '../../../main/services/file-system/types';
@@ -34,29 +35,29 @@ const TemplatesList = () => {
 
 export const PageElement = () => {
   const [projectDir, setprojectDir] = useState<string | undefined>(undefined);
+  const [projectFile, setprojectFile] = useState<string | undefined>(undefined);
 
   const handleNewProject = () => {
     window.electronAPI.ipcRenderer
       .invoke('new-project')
-      .then((tempDir: string) => {
-        setprojectDir(tempDir);
+      .then((tempDir: FileData) => {
+        setprojectDir(tempDir.dirPath);
       });
   };
 
   const handleOpenFile = (fileType: AllowedFiles[]) => {
     window.electronAPI.ipcRenderer
-      .invoke('open-file', fileType, projectDir)
-      .then((file: OpenFileData) => {
-        console.log(projectDir);
-        console.log(file);
+      .invoke('import-file', fileType, projectDir)
+      .then((fileData: OpenFileData) => {
+        console.log(fileData);
       });
   };
 
   const handleSaveProject = () => {
     window.electronAPI.ipcRenderer
-      .invoke('save-project')
-      .then((file: SaveFileData) => {
-        console.log(file);
+      .invoke('save-project', projectDir, projectFile)
+      .then((fileData: SaveFileData) => {
+        setprojectFile(fileData.filePath);
       });
   };
 
@@ -87,7 +88,7 @@ export const PageElement = () => {
             onClick={() => handleOpenFile(['image', 'video'])}
             disabled={projectDir ? false : true}
           >
-            Open File
+            Import Media
           </Btn>
         </div>
         <div className={style.navDivider} />
