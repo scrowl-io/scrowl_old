@@ -66,6 +66,8 @@ export const PageElement = () => {
       });
   };
 
+  if (projectDir) console.log(projectDir);
+
   const Header = (
     <>
       <div>
@@ -85,7 +87,9 @@ export const PageElement = () => {
           </Btn>
         </div>
         <div>
-          <Btn onClick={handleNewProject}>New Project</Btn>
+          <Btn onClick={handleNewProject} disabled={!projectDir ? false : true}>
+            New Project
+          </Btn>
         </div>
         <div className={style.navDivider} />
         <div>
