@@ -53,7 +53,7 @@ export const PageElement = () => {
       .invoke('import-file', fileType, projectDir)
       .then((fileData: OpenFileData) => {
         if (fileData.filePaths.length) {
-          setImgFileExample(`file://${fileData.filePaths[0]}`);
+          setImgFileExample(`scrowl-file://${fileData.filePaths[0]}`);
         }
       });
   };
