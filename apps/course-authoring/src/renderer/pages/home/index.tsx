@@ -14,6 +14,7 @@ import {
   OpenFileData,
   SaveFileData,
 } from '../../../main/services/file-system/types';
+import { newProjectModel } from './newProjectModel';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -34,12 +35,14 @@ const TemplatesList = () => {
 };
 
 export const PageElement = () => {
-  const [projectDir, setprojectDir] = useState<string | undefined>(undefined);
-  const [projectFile, setprojectFile] = useState<string | undefined>(undefined);
+  const [projectDir, setprojectDir] = useState<string | undefined>();
+  const [projectFile, setprojectFile] = useState<string | undefined>();
+  const [courseJson] = useState(newProjectModel);
+  const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
   const handleNewProject = () => {
     window.electronAPI.ipcRenderer
-      .invoke('new-project')
+      .invoke('new-project', courseJson)
       .then((tempDir: FileData) => {
         setprojectDir(tempDir.dirPath);
       });
@@ -49,7 +52,9 @@ export const PageElement = () => {
     window.electronAPI.ipcRenderer
       .invoke('import-file', fileType, projectDir)
       .then((fileData: OpenFileData) => {
-        console.log(fileData);
+        if (fileData.filePaths.length) {
+          setImgFileExample(`file://${fileData.filePaths[0]}`);
+        }
       });
   };
 
@@ -85,11 +90,21 @@ export const PageElement = () => {
         <div className={style.navDivider} />
         <div>
           <Btn
-            onClick={() => handleOpenFile(['image', 'video'])}
+            onClick={() => handleOpenFile(['image'])}
             disabled={projectDir ? false : true}
           >
-            Import Media
+            Import Image
           </Btn>
+          {imgFileExample && (
+            <>
+              <div className={style.navDivider} />
+              <img
+                src={imgFileExample}
+                alt="Example"
+                style={{ width: 'auto', height: '100px' }}
+              />
+            </>
+          )}
         </div>
         <div className={style.navDivider} />
         <div>

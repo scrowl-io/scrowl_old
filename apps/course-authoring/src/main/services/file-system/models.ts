@@ -3,6 +3,7 @@ import { getOpenFilePath, getSaveFilePath } from './handlers/dialog';
 import {
   checkFileExists,
   copyFileToTempDir,
+  createFile,
   createTempDir,
   zipFile,
 } from './handlers/file-system';
@@ -14,9 +15,16 @@ const FileFilters: FileFilters = {
   scrowl: { name: 'Scrowl Project', extensions: ['scrowl'] },
 };
 
-export const newProject = () => {
+export const newProject = (event: IpcMainInvokeEvent, courseJson: unknown) => {
   const dirPrefix = 'scrowl';
+  const projectFileName = 'scrowl.project';
   const tempDir = createTempDir(dirPrefix);
+
+  if (tempDir.dirPath)
+    createFile(
+      `${tempDir.dirPath}/${projectFileName}`,
+      JSON.stringify(courseJson)
+    );
 
   return tempDir;
 };
@@ -36,7 +44,10 @@ export const importFile = async (
   const fileData: OpenFileData = await getOpenFilePath(dialogOptions);
 
   if (fileData.filePaths.length) {
-    copyFileToTempDir(fileData.filePaths[0], projectDir);
+    fileData.filePaths[0] = await copyFileToTempDir(
+      fileData.filePaths[0],
+      projectDir
+    );
   }
 
   return fileData;

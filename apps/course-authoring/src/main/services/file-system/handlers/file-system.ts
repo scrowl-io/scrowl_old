@@ -3,6 +3,10 @@ import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
 
+export const createFile = (path: string, content: any) => {
+  fs.writeFile(path, content);
+};
+
 export const createTempDir = (prefix: string) => {
   let tmpDir;
 
@@ -29,6 +33,8 @@ export const copyFileToTempDir = (src: string, dest: string) => {
   fs.copy(src, destFile, err => {
     if (err) throw err;
   });
+
+  return destFile;
 };
 
 export const zipFile = (projectSrc: string, filePath: string) => {
