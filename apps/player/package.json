@@ -19,7 +19,7 @@
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache",
     "prebuild": "yarn run clean",
-    "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist --no-optimize",
+    "build": "parcel build --no-cache --no-source-maps --public-url ../dist --no-optimize",
     "prestart": "yarn run clean",
     "start": "parcel serve --no-cache --open"
   },
@@ -46,7 +46,6 @@
     "eslint": "^8.13.0",
     "parcel": "2.5.0",
     "postcss": "^8.4.12",
-    "postcss-import": "^14.1.0",
     "postcss-modules": "^4.3.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",

@@ -4,13 +4,6 @@
     "@scrowl/parcel-resolver-asset-path",
     "..."
   ],
-  "transformers": {
-    "*.{css,scss}": [
-      "@scrowl/parcel-transformer-asset-path",
-      "@parcel/transformer-postcss",
-      "@parcel/transformer-css"
-    ]
-  },
   "validators": {
     "*.{ts,tsx}": [
       "@parcel/validator-typescript"

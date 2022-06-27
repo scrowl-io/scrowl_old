@@ -28,7 +28,8 @@
     "start:downloads": "concurrently \"yarn workspace @scrowl/appdownloads run start\" \"wait-on http://localhost:1234 && yarn run move:apps\"",
     "build:downloads": "yarn workspace @scrowl/appdownloads run build",
     "deploy": "yarn run package:tool:course && yarn run build:downloads",
-    "start:player": "yarn workspace @scrowl/player run start"
+    "start:player": "yarn workspace @scrowl/player run start",
+    "build:player": "yarn workspace @scrowl/player run build"
   },
   "devDependencies": {
     "chalk": "^5.0.1",

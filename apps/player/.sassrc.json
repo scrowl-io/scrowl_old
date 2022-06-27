@@ -1,8 +1,8 @@
 {
   "outFile": "./dist/[folder].css",
   "includePaths": [
-    "../../node_modules/",
     "./node_modules/",
+    "../../node_modules/",
     "../../",
     "./"
   ]

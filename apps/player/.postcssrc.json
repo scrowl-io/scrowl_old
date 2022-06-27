@@ -1,7 +1,6 @@
 {
   "modules": true,
   "plugins": {
-    "postcss-import": true,
     "postcss-modules": {
       "generateScopedName": "[local]",
       "localsConvention": "camelCase"
