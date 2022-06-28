@@ -27,7 +27,6 @@
     "watch:backend": "parcel watch ./src/main/index.ts ./src/main/preload.ts --no-cache --port 5000",
     "prestart": "yarn run clean",
     "start": "cross-env NODE_ENV=development PORT=5001 concurrently \"yarn run start:frontend\" \"yarn run start:backend\" \"yarn run watch:backend\"",
-    "postinstall": "npx electron-builder install-app-deps",
     "package:test": "npx electron-builder build --dir",
     "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
     "prepackage": "yarn run build",
@@ -165,11 +164,13 @@
     "electron-devtools-installer": "^3.2.0",
     "electron-reload": "^2.0.0-alpha.1",
     "electron-squirrel-startup": "^1.0.0",
+    "knex": "^2.1.0",
     "path-browserify": "^1.0.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
     "scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",
+    "sqlite3": "^5.0.8",
     "typescript": "^4.6.3"
   }
 }
