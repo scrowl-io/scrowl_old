@@ -6,7 +6,8 @@ import { Default as Btn } from '@owlui/button';
 import { Default as Icon } from '@owlui/icons';
 import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
-import { sidebarItems, cards, filesList } from './data';
+import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
+import * as projectModel from '../../models/project-models';
 import { CardGrid } from '../../components/cardgrid';
 import {
   AllowedFiles,
@@ -14,7 +15,6 @@ import {
   OpenFileData,
   SaveFileData,
 } from '../../../main/services/file-system/types';
-import { newProjectModel } from './newProjectModel';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -35,35 +35,58 @@ const TemplatesList = () => {
 };
 
 export const PageElement = () => {
-  const [projectDir, setprojectDir] = useState<string | undefined>();
-  const [projectFile, setprojectFile] = useState<string | undefined>();
-  const [courseJson] = useState(newProjectModel);
+  const [projectDir, setProjectDir] = useState<string | undefined>();
+  const [projectFile, setProjectFile] = useState<string | undefined>();
+  const [projectData] = useState(EXAMPLE_PROJECT);
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
-  const handleNewProject = () => {
-    window.electronAPI.ipcRenderer
-      .invoke('new-project', courseJson)
-      .then((tempDir: FileData) => {
-        setprojectDir(tempDir.dirPath);
-      });
+  const createProject = () => {
+    const resolveProjectCreate = (createResult: FileData) => {
+      if (createResult.error) {
+        console.error(createResult.message);
+        return;
+      }
+
+      setProjectDir(createResult.dir);
+    };
+
+    projectModel.create(projectData).then(resolveProjectCreate);
   };
 
-  const handleOpenFile = (fileType: AllowedFiles[]) => {
-    window.electronAPI.ipcRenderer
-      .invoke('import-file', fileType, projectDir)
-      .then((fileData: OpenFileData) => {
-        if (fileData.filePaths.length) {
-          setImgFileExample(`scrowl-file://${fileData.filePaths[0]}`);
-        }
-      });
+  const importFile = (fileTypes: AllowedFiles[]) => {
+    const resolveImportFile = (importResult: OpenFileData) => {
+      if (importResult.error) {
+        console.error(importResult.message);
+        return;
+      }
+
+      if (importResult.filename) {
+        setImgFileExample(`scrowl-file://${importResult.filename}`);
+      }
+    };
+
+    if (!projectDir) {
+      return;
+    }
+
+    projectModel.importFile(fileTypes, projectDir).then(resolveImportFile);
   };
 
-  const handleSaveProject = () => {
-    window.electronAPI.ipcRenderer
-      .invoke('save-project', projectDir, projectFile)
-      .then((fileData: SaveFileData) => {
-        setprojectFile(fileData.filePath);
-      });
+  const saveProject = () => {
+    const resolveProjecetSave = function (saveResult: SaveFileData) {
+      if (saveResult.error) {
+        console.error(saveResult.message);
+        return;
+      }
+
+      setProjectFile(saveResult.filePath);
+    };
+
+    if (!projectDir) {
+      return;
+    }
+
+    projectModel.save(projectDir, projectFile).then(resolveProjecetSave);
   };
 
   if (projectDir) console.log(projectDir);
@@ -87,14 +110,14 @@ export const PageElement = () => {
           </Btn>
         </div>
         <div>
-          <Btn onClick={handleNewProject} disabled={!projectDir ? false : true}>
+          <Btn onClick={createProject} disabled={!projectDir ? false : true}>
             New Project
           </Btn>
         </div>
         <div className={style.navDivider} />
         <div>
           <Btn
-            onClick={() => handleOpenFile(['image'])}
+            onClick={() => importFile(['image'])}
             disabled={projectDir ? false : true}
           >
             Import Image
@@ -112,7 +135,7 @@ export const PageElement = () => {
         </div>
         <div className={style.navDivider} />
         <div>
-          <Btn onClick={handleSaveProject} disabled={projectDir ? false : true}>
+          <Btn onClick={saveProject} disabled={projectDir ? false : true}>
             Save Project
           </Btn>
         </div>

@@ -18,7 +18,7 @@ import installExtension, {
 import { resolveHtmlPath } from './util';
 import { init as exporterInit } from './services/exporter';
 import { preferencesInit } from './services/internal-storage';
-import { fileSystemInit } from './services/file-system';
+import { init as modelsInit } from './models/index';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -76,7 +76,7 @@ const createWindow = async () => {
 
   exporterInit();
   preferencesInit();
-  fileSystemInit();
+  modelsInit();
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
 

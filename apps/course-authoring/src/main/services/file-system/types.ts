@@ -13,9 +13,11 @@ export type AllowedFiles = 'image' | 'video' | 'scrowl';
 export interface FileData {
   error?: boolean;
   message?: unknown;
-  dirPath?: string;
+  filename?: string;
+  canceled?: boolean;
+  dir?: string;
 }
 
 export type OpenFileData = FileData & OpenDialogReturnValue;
 
-export type SaveFileData = FileData & SaveDialogReturnValue;
+export type SaveFileData = FileData & Partial<SaveDialogReturnValue>;
