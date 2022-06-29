@@ -16,28 +16,6 @@ import { Project } from './data.types';
 export const PageRoute = '/';
 export const PageName = 'Home';
 
-const Header = (
-  <>
-    <div>
-      <h1 className={style.navTitle}>
-        <Icon className={style.navTitleIcon} icon="school" aria-hidden="true" />
-        <span>Scrowl</span>
-      </h1>
-    </div>
-    <div className={style.navActions}>
-      <div>
-        <Button variant="link">
-          <Link to="/settings">Settings</Link>
-        </Button>
-      </div>
-      <div>
-        <Button variant="link">Open</Button>
-      </div>
-    </div>
-    <div className={style.navDivider} />
-  </>
-);
-
 const TemplatesList = () => {
   const tempTemplatesQty = 6;
 
