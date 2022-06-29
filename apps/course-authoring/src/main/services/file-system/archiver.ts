@@ -1,6 +1,7 @@
 import AdmZip from 'adm-zip';
+import { SaveFileData } from './types';
 
-export const archive = (source: string, dest: string) => {
+export const archive = (source: string, dest: string): SaveFileData => {
   try {
     const zip = new AdmZip();
 

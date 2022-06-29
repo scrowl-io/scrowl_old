@@ -1,4 +1,5 @@
 import { IpcMainInvokeEvent } from 'electron';
+import { ModelEventProps } from '../index';
 import {
   dialogSave,
   archive,
@@ -8,6 +9,7 @@ import {
   AllowedFiles,
   getDialogMediaFilters,
   dialogOpen,
+  FileData,
 } from '../../services/file-system/index';
 
 export const create = function (event: IpcMainInvokeEvent, project: unknown) {
@@ -23,7 +25,7 @@ export const create = function (event: IpcMainInvokeEvent, project: unknown) {
   return fileWriteSync(filename, project);
 };
 
-const write = function (source: string, filename: string) {
+const write = function (source: string, filename: string): FileData {
   if (!source) {
     return {
       error: true,
@@ -81,7 +83,7 @@ export const importFile = async function (
   if (!filters.length) {
     return {
       error: true,
-      message: 'vaild file types need to be declared for importing',
+      message: 'valid file types need to be declared for importing',
     };
   }
 
@@ -105,18 +107,18 @@ export const importFile = async function (
   return fileTempSync(dialogResult.filePaths[0], projectTempPath);
 };
 
-export const EVENTS = [
+export const EVENTS: ModelEventProps[] = [
   {
     name: 'project-create',
-    fn: 'create',
+    fn: create,
   },
   {
     name: 'project-save',
-    fn: 'save',
+    fn: save,
   },
   {
     name: 'project-import',
-    fn: 'importFile',
+    fn: importFile,
   },
 ];
 

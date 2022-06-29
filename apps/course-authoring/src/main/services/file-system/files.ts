@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
+import { FileData } from './types';
 
 const normalize = (pathName: string) => {
   return path.normalize(pathName);
@@ -107,7 +108,10 @@ export const fileReadSync = (
   }
 };
 
-export const fileWriteSync = (pathName: string, contents: any) => {
+export const fileWriteSync = (
+  pathName: string,
+  contents: unknown
+): FileData => {
   const filename = normalize(pathName);
 
   if (!contents) {
@@ -142,7 +146,7 @@ export const fileWriteSync = (pathName: string, contents: any) => {
   }
 };
 
-export const fileCopySync = (source: string, dest: string) => {
+export const fileCopySync = (source: string, dest: string): FileData => {
   const sourcePath = normalize(source);
   const destPath = normalize(dest);
 
@@ -161,7 +165,7 @@ export const fileCopySync = (source: string, dest: string) => {
   }
 };
 
-export const fileTempSync = (source: string, dest: string) => {
+export const fileTempSync = (source: string, dest: string): FileData => {
   const destFile = `${dest}/${path.basename(source)}`;
 
   return fileCopySync(source, destFile);

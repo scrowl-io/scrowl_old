@@ -8,22 +8,14 @@ export const MEDIA_TYPES: FileFilters = {
 };
 
 export const getDialogMediaFilters = (filters: Array<AllowedFiles>) => {
-  const dialogFilters = [];
-
-  for (let i = 0, ii = filters.length; i < ii; i++) {
-    if (MEDIA_TYPES[filters[i]]) {
-      dialogFilters.push(MEDIA_TYPES[filters[i]]);
-    }
-  }
-
-  return dialogFilters;
+  return filters.map(filter => MEDIA_TYPES[filter]);
 };
 
 export const dialogOpen = (options: OpenDialogOptions) => {
   return new Promise<OpenFileData>((resolve, reject) => {
     dialog
       .showOpenDialog(options)
-      .then(({ canceled, filePaths }) => {
+      .then(({ canceled, filePaths }: OpenFileData) => {
         resolve({
           error: false,
           canceled,
@@ -45,7 +37,7 @@ export const dialogSave = (options: SaveDialogOptions) => {
   return new Promise<SaveFileData>((resolve, reject) => {
     dialog
       .showSaveDialog(options)
-      .then(({ canceled, filePath }) => {
+      .then(({ canceled, filePath }: SaveFileData) => {
         resolve({
           error: false,
           canceled,

@@ -15,6 +15,7 @@ import {
   OpenFileData,
   SaveFileData,
 } from '../../../main/services/file-system/types';
+import { Project } from './data.types';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -37,7 +38,7 @@ const TemplatesList = () => {
 export const PageElement = () => {
   const [projectDir, setProjectDir] = useState<string | undefined>();
   const [projectFile, setProjectFile] = useState<string | undefined>();
-  const [projectData] = useState(EXAMPLE_PROJECT);
+  const [projectData] = useState<Project>(EXAMPLE_PROJECT);
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
   const createProject = () => {
@@ -54,6 +55,11 @@ export const PageElement = () => {
   };
 
   const importFile = (fileTypes: AllowedFiles[]) => {
+    if (!projectDir) {
+      console.error('you must create a new project to import files.');
+      return;
+    }
+
     const resolveImportFile = (importResult: OpenFileData) => {
       if (importResult.error) {
         console.error(importResult.message);
@@ -65,14 +71,15 @@ export const PageElement = () => {
       }
     };
 
-    if (!projectDir) {
-      return;
-    }
-
     projectModel.importFile(fileTypes, projectDir).then(resolveImportFile);
   };
 
   const saveProject = () => {
+    if (!projectDir) {
+      console.error('you must create a new project before saving the project.');
+      return;
+    }
+
     const resolveProjecetSave = function (saveResult: SaveFileData) {
       if (saveResult.error) {
         console.error(saveResult.message);
@@ -81,10 +88,6 @@ export const PageElement = () => {
 
       setProjectFile(saveResult.filePath);
     };
-
-    if (!projectDir) {
-      return;
-    }
 
     projectModel.save(projectDir, projectFile).then(resolveProjecetSave);
   };
