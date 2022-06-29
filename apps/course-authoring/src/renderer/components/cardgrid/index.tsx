@@ -1,6 +1,5 @@
 import React from 'react';
-import { Default as Card, CardHeader, CardBody, CardFooter } from '@owlui/card';
-import { Default as Btn } from '@owlui/button';
+import { Button, Card, CardHeader, CardBody, CardFooter } from '@owlui/lib';
 import { CardProps, CardsProps } from './index.types';
 import style from './styles.module.scss';
 import { Link } from 'react-router-dom';
@@ -10,7 +9,7 @@ export const CardGrid = ({ cards }: CardsProps) => {
     let btnElement;
 
     if (!card.btnRoute) {
-      btnElement = <Btn className={style.cardBtn}>{card.btnTitle}</Btn>;
+      btnElement = <Button className={style.cardBtn}>{card.btnTitle}</Button>;
     } else {
       btnElement = (
         <Link className={style.cardBtn} to={card.btnRoute}>

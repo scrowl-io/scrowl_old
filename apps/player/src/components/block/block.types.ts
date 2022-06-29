@@ -1,9 +1,9 @@
 import React from 'react';
-import { button } from '@owlui/lib';
+import { ButtonDefaultProps } from '@owlui/lib';
 export interface BlockElement {
   id?: string;
   type: string;
-  props: typeof button.DefaultTypes;
+  props: ButtonDefaultProps;
 }
 
 export interface BlockConfig {

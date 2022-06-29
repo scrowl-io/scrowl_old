@@ -1,6 +1,6 @@
 import React from 'react';
 import * as style from './styles.module.scss';
-import { Default as Nav } from '@owlui/navigationdrawer';
+import { NavigationDrawer } from '@owlui/lib';
 import { CourseData } from '../course.types';
 import { CourseTemplate } from '../templates/course';
 
@@ -85,7 +85,7 @@ export const PageElement = () => {
 
   return (
     <section className={style.structure}>
-      <Nav header={SidebarContent} />
+      <NavigationDrawer header={SidebarContent} />
       <main></main>
     </section>
   );

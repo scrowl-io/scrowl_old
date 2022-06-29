@@ -1,9 +1,9 @@
 import React from 'react';
-import { navigationdrawer } from '@owlui/lib';
-import { NavigationDrawerElementProps } from '@owlui/navigationdrawer/src/Default/Default.types';
+import {
+  NavigationDrawer as NavDrawer,
+  NavigationDrawerElementProps,
+} from '@owlui/lib';
 import * as styles from './nav.module.scss';
-
-const NavDrawer = navigationdrawer.Default;
 
 export const Element = (props: NavigationDrawerElementProps) => {
   return (

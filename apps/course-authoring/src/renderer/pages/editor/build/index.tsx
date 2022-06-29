@@ -1,6 +1,6 @@
 import React from 'react';
 import * as style from './styles.module.scss';
-import { Default as Nav } from '@owlui/navigationdrawer';
+import { NavigationDrawer } from '@owlui/lib';
 
 export const PageRoute = '/build';
 export const PageName = 'Build';
@@ -8,9 +8,9 @@ export const PageName = 'Build';
 export const PageElement = () => {
   return (
     <div className={style.build}>
-      <Nav />
+      <NavigationDrawer />
       <main></main>
-      <Nav />
+      <NavigationDrawer />
     </div>
   );
 };

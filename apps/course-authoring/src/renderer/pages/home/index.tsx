@@ -1,10 +1,6 @@
 import React from 'react';
 import style from './styles.module.scss';
-import { Default as Nav } from '@owlui/navigationdrawer';
-import { Default as Btn } from '@owlui/button';
-import { Default as Icon } from '@owlui/icons';
-import { Default as Table } from '@owlui/table';
-import { Default as Card } from '@owlui/card';
+import { Button, Card, Icon, NavigationDrawer, Table } from '@owlui/lib';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
 import { Link } from 'react-router-dom';
@@ -22,12 +18,12 @@ const Header = (
     </div>
     <div className={style.navActions}>
       <div>
-        <Btn variant="link">
+        <Button variant="link">
           <Link to="/settings">Settings</Link>
-        </Btn>
+        </Button>
       </div>
       <div>
-        <Btn variant="link">Open</Btn>
+        <Button variant="link">Open</Button>
       </div>
     </div>
     <div className={style.navDivider} />
@@ -52,7 +48,11 @@ const TemplatesList = () => {
 export const PageElement = () => {
   return (
     <>
-      <Nav className={style.nav} header={Header} items={sidebarItems} />
+      <NavigationDrawer
+        className={style.nav}
+        header={Header}
+        items={sidebarItems}
+      />
       <main className={style.main}>
         <section>
           <div>
@@ -62,7 +62,7 @@ export const PageElement = () => {
         <section className={style.filesList}>
           <div>
             <h2 className={style.sectionTitle}>Your Files</h2>
-            <Table columns={filesList.columns} items={filesList.items} />
+            <Table tableData={filesList} />
           </div>
         </section>
         <section className={style.templatesList}>

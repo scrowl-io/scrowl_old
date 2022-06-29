@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Default as Btn } from '@owlui/button';
+import { Button } from '@owlui/lib';
 import {
   Appearance,
   Preferences,
@@ -76,12 +76,12 @@ export const PageElement = () => {
             />
           </fieldset>
           <div>
-            <Btn variant="primary" onClick={handleSave}>
+            <Button variant="primary" onClick={handleSave}>
               Save
-            </Btn>
-            <Btn variant="link">
+            </Button>
+            <Button variant="link">
               <Link to="/">Back to Home</Link>
-            </Btn>
+            </Button>
           </div>
         </section>
       </main>
