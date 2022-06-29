@@ -14,18 +14,28 @@ export const project: ProjectConfig = {
                 children: 'Lesson 1 - Slide One',
                 style: {
                   top: '100px',
-                  left: '200px',
+                  left: '3rem',
                 },
               },
             },
             {
               type: 'heading',
               props: {
-                children: 'Hellow World',
+                children: 'Hello World',
                 type: 'h1',
                 style: {
-                  top: '16px',
-                  left: '16px',
+                  top: '1.5rem',
+                  left: '2.5rem',
+                },
+              },
+            },
+            {
+              type: 'textbox',
+              props: {
+                children: 'The future is now',
+                style: {
+                  top: '150px',
+                  left: '3rem',
                 },
               },
             },
