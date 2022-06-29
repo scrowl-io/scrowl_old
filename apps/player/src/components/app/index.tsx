@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -9,7 +9,7 @@ import * as styles from './app.module.scss';
 import { project } from './test-project';
 import { createLayout } from '../project';
 import { Element as Nav } from '../navigation';
-import { NavigationDrawerContentTypes } from '@owlui/navigationdrawer/src/Default/Default.types';
+import { NavigationDrawerContentTypes } from '@owlui/lib';
 import { LayoutItemProps } from '../project/project.types';
 
 const navItems: Array<NavigationDrawerContentTypes> = [];
@@ -21,7 +21,7 @@ const createRoutes = () => {
   layout.forEach((layoutItem: LayoutItemProps, index: number) => {
     navItems.push({
       label: layoutItem.name,
-      // url: layoutItem.Route,
+      url: layoutItem.Route,
     });
     routes.push(
       <Route
