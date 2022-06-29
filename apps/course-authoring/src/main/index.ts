@@ -9,6 +9,7 @@ import {
   BrowserWindow,
   shell,
   BrowserWindowConstructorOptions,
+  protocol,
 } from 'electron';
 import electronDebug from 'electron-debug';
 import installExtension, {
@@ -17,6 +18,7 @@ import installExtension, {
 import { resolveHtmlPath } from './util';
 import { init as exporterInit } from './services/exporter';
 import { preferencesInit } from './services/internal-storage';
+import { init as modelsInit } from './models/index';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -74,6 +76,7 @@ const createWindow = async () => {
 
   exporterInit();
   preferencesInit();
+  modelsInit();
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
 
@@ -101,6 +104,29 @@ const createWindow = async () => {
 };
 
 /**
+ * Register a custom protocol to load files from local disk
+ * Using the protocol will avoid the Chromium security error: " Not allowed to load local resource"
+ * due to the webPreferences: { webSecurity: true } when creating the window.
+ * More info: https://github.com/electron/electron/issues/23757#issuecomment-640146333
+ * Do not disable websecurity: https://www.electronjs.org/docs/latest/tutorial/security#6-do-not-disable-websecurity
+ *
+ * Using the custom protocol:
+ * <img src='scrowl-file:///User/Images/img.jpeg' />
+ */
+const registerScrowlFileProtocol = () => {
+  const protocolName = 'scrowl-file';
+
+  protocol.registerFileProtocol(protocolName, (request, callback) => {
+    const url = request.url.replace(`${protocolName}://`, '');
+    try {
+      return callback(decodeURIComponent(url));
+    } catch (error) {
+      console.error(error);
+    }
+  });
+};
+
+/**
  * Add event listeners...
  */
 
@@ -115,6 +141,7 @@ app.on('window-all-closed', () => {
 app
   .whenReady()
   .then(() => {
+    registerScrowlFileProtocol();
     createWindow();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
