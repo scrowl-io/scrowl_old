@@ -7,6 +7,7 @@ import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList } from './data';
 import { CardGrid } from '../../components/cardgrid';
+import { Link } from 'react-router-dom';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -21,7 +22,9 @@ const Header = (
     </div>
     <div className={style.navActions}>
       <div>
-        <Btn>New Project</Btn>
+        <Btn variant="link">
+          <Link to="/settings">Settings</Link>
+        </Btn>
       </div>
       <div>
         <Btn variant="link">Open</Btn>

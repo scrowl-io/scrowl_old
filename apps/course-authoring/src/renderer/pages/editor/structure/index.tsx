@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as style from './styles.module.scss';
 import { Default as Nav } from '@owlui/navigationdrawer';
-import { Default as Btn } from '@owlui/button';
 import { CourseData } from '../course.types';
 import { CourseTemplate } from '../templates/course';
 

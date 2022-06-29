@@ -16,6 +16,7 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
 import { init as exporterInit } from './services/exporter';
+import { preferencesInit } from './services/internal-storage';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -72,6 +73,8 @@ const createWindow = async () => {
   }
 
   exporterInit();
+  preferencesInit();
+
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
 
   mainWindow.on('ready-to-show', () => {
