@@ -18,6 +18,17 @@ export const project: ProjectConfig = {
                 },
               },
             },
+            {
+              type: 'heading',
+              props: {
+                children: 'Hellow World',
+                type: 'h1',
+                style: {
+                  top: '16px',
+                  left: '16px',
+                },
+              },
+            },
           ],
         },
         {
