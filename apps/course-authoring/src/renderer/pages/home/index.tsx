@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import style from './styles.module.scss';
 import { Default as Nav } from '@owlui/navigationdrawer';
@@ -16,6 +16,7 @@ import {
   SaveFileData,
 } from '../../../main/services/file-system/types';
 import { Project } from './data.types';
+import * as requester from '../../services/requester/requester';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -91,6 +92,10 @@ export const PageElement = () => {
 
     projectModel.save(projectDir, projectFile).then(resolveProjecetSave);
   };
+
+  useEffect(() => {
+    requester.on('menu-project-create', createProject);
+  }, []);
 
   if (projectDir) console.log(projectDir);
 

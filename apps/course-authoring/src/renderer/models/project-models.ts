@@ -1,10 +1,10 @@
 import { AllowedFiles, FileData } from '../../main/services/file-system';
 import { Project } from '../pages/home/data.types';
-import { send } from '../services/requester/requester';
+import { invoke } from '../services/requester/requester';
 
 export const create = (project: Project) => {
   return new Promise<FileData>((resolve, reject) => {
-    send('project-create', project)
+    invoke('project-create', project)
       .then((res: FileData) => {
         if (res.error) {
           resolve(res);
@@ -22,11 +22,11 @@ export const create = (project: Project) => {
 };
 
 export const save = (project: string, source?: string) => {
-  return send('project-save', project, source);
+  return invoke('project-save', project, source);
 };
 
 export const importFile = (fileTypes: AllowedFiles[], source: string) => {
-  return send('project-import', fileTypes, source);
+  return invoke('project-import', fileTypes, source);
 };
 
 export default {

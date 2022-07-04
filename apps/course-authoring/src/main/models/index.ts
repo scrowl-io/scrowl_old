@@ -4,6 +4,7 @@ import * as projects from './project/project-model';
 export type ModelEventProps = {
   name: string;
   fn: HandleListenerProps;
+  type: 'send' | 'handle' | 'invoke' | 'on';
 };
 
 type HandleListenerProps = (event: IpcMainInvokeEvent, ...args: any[]) => void;
@@ -18,7 +19,13 @@ const models = [projects];
 const registerEvents = (model: ModelProps) => {
   model.EVENTS.forEach((ev: ModelEventProps) => {
     if (ev.fn && typeof ev.fn === 'function') {
-      ipcMain.handle(ev.name, ev.fn);
+      if (ev.type === 'handle') {
+        ipcMain.handle(ev.name, ev.fn);
+      }
+
+      if (ev.type === 'on') {
+        ipcMain.on(ev.name, ev.fn);
+      }
     }
   });
 };

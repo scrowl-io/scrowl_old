@@ -22,6 +22,7 @@ export const create = function (event: IpcMainInvokeEvent, project: unknown) {
   }
 
   const filename = `${tempDir.pathName}/${projectFileName}`;
+
   return fileWriteSync(filename, project);
 };
 
@@ -111,14 +112,22 @@ export const EVENTS: ModelEventProps[] = [
   {
     name: 'project-create',
     fn: create,
+    type: 'handle',
+  },
+  {
+    name: 'menu-project-create',
+    fn: create,
+    type: 'on',
   },
   {
     name: 'project-save',
     fn: save,
+    type: 'handle',
   },
   {
     name: 'project-import',
     fn: importFile,
+    type: 'handle',
   },
 ];
 
