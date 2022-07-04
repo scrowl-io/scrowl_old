@@ -19,6 +19,7 @@ import { resolveHtmlPath } from './util';
 import { init as exporterInit } from './services/exporter';
 import { preferencesInit } from './services/internal-storage';
 import { init as modelsInit } from './models/index';
+import { init as menuInit } from './menu/index';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -143,6 +144,8 @@ app
   .then(() => {
     registerScrowlFileProtocol();
     createWindow();
+    menuInit();
+
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
