@@ -158,7 +158,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.23",
+    "@owlui/lib": "^0.0.27",
     "@scrowl/parcel-resolver-asset-path": "^0.0.0",
     "@scrowl/parcel-transformer-asset-path": "^0.0.0",
     "adm-zip": "^0.5.9",
@@ -169,6 +169,7 @@
     "knex": "^2.1.0",
     "path-browserify": "^1.0.1",
     "react": "^18.0.0",
+    "react-bootstrap": "^2.4.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
     "scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",

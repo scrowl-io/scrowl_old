@@ -1,9 +1,5 @@
 {
   "extends": "@parcel/config-default",
-  "resolvers": [
-    "@scrowl/parcel-resolver-asset-path",
-    "..."
-  ],
   "validators": {
     "*.{ts,tsx}": [
       "@parcel/validator-typescript"

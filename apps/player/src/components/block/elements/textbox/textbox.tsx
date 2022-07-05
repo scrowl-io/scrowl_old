@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextboxProps } from './types';
 import * as styleMod from './textbox.module.scss';
-import { createLocalProps } from '@owlui/utils';
+import { createLocalProps } from '@owlui/lib';
 
 export const Textbox = (props: TextboxProps) => {
   const baseClass = 'textbox';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { HeadingProps } from './types';
 import * as styleMod from './heading.module.scss';
-import { createLocalProps } from '@owlui/utils';
+import { createLocalProps } from '@owlui/lib';
 
 export const Heading = (props: HeadingProps) => {
   const baseClass = 'heading';
