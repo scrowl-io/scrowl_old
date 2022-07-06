@@ -42,6 +42,7 @@ release/build/*
 
 # build output
 dist/
+dev/
 
 # SCORM exporter folders
 src/main/services/exporter/course-packs

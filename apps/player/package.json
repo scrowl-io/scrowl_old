@@ -17,15 +17,28 @@
   },
   "homepage": "https://github.com/scrowl-io/scrowl/apps/player#readme",
   "scripts": {
-    "clean": "rimraf dist && rimraf ../.parcel-cache",
-    "prebuild": "yarn run clean",
-    "build": "parcel build --no-cache --public-url ../dist",
-    "prestart": "yarn run clean",
-    "start": "parcel serve --no-cache --open"
+    "clean": "rimraf ../.parcel-cache",
+    "prebuild": "yarn run clean && rimraf dist",
+    "build": "parcel build --target production --no-cache --public-url ../dist",
+    "prestart": "yarn run clean && rimraf dev",
+    "start": "parcel serve --target development --open --dist-dir dev"
   },
-  "source": "./src/index.html",
-  "type": "module",
-  "isLibrary": true,
+  "main": "./dist/scrowl-player.js",
+  "production": "./dist/scrowl-player.js",
+  "development": "./dev/player.html",
+  "targets": {
+    "production": {
+      "context": "browser",
+      "source": "./src/index.tsx",
+      "outputFormat": "global",
+      "distDir": "./dist"
+    },
+    "development": {
+      "context": "browser",
+      "source": "./src/index.html",
+      "distDir": "./dev"
+    }
+  },
   "eslintConfig": {
     "extends": "@scrowl/eslint-config"
   },
