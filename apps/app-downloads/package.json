@@ -45,8 +45,6 @@
     "@parcel/transformer-typescript-types": "2.5.0",
     "@parcel/validator-typescript": "2.5.0",
     "@scrowl/eslint-config": "^1.0.0",
-    "@scrowl/parcel-resolver-asset-path": "^0.0.0",
-    "@scrowl/parcel-transformer-asset-path": "^0.0.0",
     "@testing-library/dom": "^8.13.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.1.1",

@@ -55,8 +55,6 @@
   },
   "dependencies": {
     "@owlui/lib": "^0.0.27",
-    "@scrowl/parcel-resolver-asset-path": "^0.0.0",
-    "@scrowl/parcel-transformer-asset-path": "^0.0.0",
     "react": "^18.0.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.0.0",
