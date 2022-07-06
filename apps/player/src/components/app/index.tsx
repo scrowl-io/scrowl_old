@@ -6,17 +6,17 @@ import {
   Navigate,
 } from 'react-router-dom';
 import * as styles from './app.module.scss';
-import { project } from './test-project';
+import { get as getManifest } from './manifest';
+import { ProjectConfig } from '../project/project.types';
 import { createLayout } from '../project';
 import { Element as Nav } from '../navigation';
 import { NavigationDrawerContentTypes } from '@owlui/lib';
 import { LayoutItemProps } from '../project/project.types';
 
-const navItems: Array<NavigationDrawerContentTypes> = [];
-const layout = createLayout(project);
-
-const createRoutes = () => {
+const createRoutes = (manifestData: ProjectConfig) => {
+  const layout = createLayout(manifestData);
   const routes: Array<JSX.Element> = [];
+  const navItems: Array<NavigationDrawerContentTypes> = [];
 
   layout.forEach((layoutItem: LayoutItemProps, index: number) => {
     navItems.push({
@@ -32,11 +32,30 @@ const createRoutes = () => {
     );
   });
 
-  return routes;
+  return {
+    layout,
+    routes,
+    navItems,
+  };
+};
+
+const appError = (message: string) => {
+  console.error(message);
+  return <div>{message}</div>;
 };
 
 export const Element = () => {
-  const AppRoutes = createRoutes();
+  const manifest = getManifest();
+
+  if (manifest.error) {
+    return appError(manifest.message);
+  }
+
+  if (!manifest.data) {
+    return appError('Manifest does not have data');
+  }
+
+  const { layout, routes, navItems } = createRoutes(manifest.data);
 
   return (
     <Router>
@@ -44,7 +63,7 @@ export const Element = () => {
         <Nav items={navItems} />
         <main className={styles.appMain}>
           <Routes>
-            {AppRoutes}
+            {routes}
             <Route path="*" element={<Navigate to={layout[0].Route} />} />
           </Routes>
         </main>
