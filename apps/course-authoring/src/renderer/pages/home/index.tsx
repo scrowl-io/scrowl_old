@@ -51,7 +51,11 @@ export const PageElement = () => {
 
       setProjectDir(createResult.dir);
 
-      if (projectDir) projectModel.menuToggleEnabledItemById('new-project');
+      if (projectDir)
+        projectModel.menuEventWithData(
+          'menu-toggle-enable-item-by-id',
+          'new-project'
+        );
     };
 
     projectModel.create(projectData).then(resolveProjectCreate);
@@ -83,7 +87,7 @@ export const PageElement = () => {
       return;
     }
 
-    const resolveProjecetSave = function (saveResult: SaveFileData) {
+    const resolveProjectSave = function (saveResult: SaveFileData) {
       if (saveResult.error) {
         console.error(saveResult.message);
         return;
@@ -92,15 +96,24 @@ export const PageElement = () => {
       setProjectFile(saveResult.filePath);
     };
 
-    projectModel.save(projectDir, projectFile).then(resolveProjecetSave);
+    projectModel.save(projectDir, projectFile).then(resolveProjectSave);
   };
 
-  useEffect(() => {
-    // register IPC listeners
-    projectModel.menuNewProject(createProject);
-  }, []);
-
+  // log project dir for dev purposes
   if (projectDir) console.log(projectDir);
+
+  useEffect(() => {
+    // Register ipc menu events
+    projectModel.menuEventWithCallback('menu-project-create', createProject);
+    projectModel.menuEventWithCallback('menu-project-save', saveProject);
+
+    // Clean the listener after the component is dismounted.
+    // The save method must be remoded in order to use the updated version of
+    // projectDir added to the dependency array.
+    return () => {
+      window.electronAPI.ipcRenderer.removeAllListeners('menu-project-save');
+    };
+  }, [projectDir, projectFile]);
 
   const Header = (
     <>

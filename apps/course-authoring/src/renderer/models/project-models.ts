@@ -29,18 +29,21 @@ export const importFile = (fileTypes: AllowedFiles[], source: string) => {
   return invoke('project-import', fileTypes, source);
 };
 
-export const menuToggleEnabledItemById = (menuItemId: string) => {
-  send('menu-toggle-enable-item-by-id', menuItemId);
+export const menuEventWithData = (channel: string, ...args: unknown[]) => {
+  send(channel, ...args);
 };
 
-export const menuNewProject = (callback: (...args: unknown[]) => void) => {
-  on('menu-project-create', callback);
+export const menuEventWithCallback = (
+  channel: string,
+  callback: (...args: unknown[]) => void
+) => {
+  on(channel, callback);
 };
 
 export default {
   create,
   save,
   importFile,
-  menuToggleEnabledItemById,
-  menuNewProject,
+  menuEventWithData,
+  menuEventWithCallback,
 };

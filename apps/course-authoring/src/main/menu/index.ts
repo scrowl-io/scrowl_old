@@ -3,6 +3,7 @@ import { buildDefaultMenu } from './menu-template';
 
 export const menuEvents = {
   toggleEnableItemById: 'menu-toggle-enable-item-by-id',
+  saveProject: 'menu-project-save',
 };
 
 export const toggleEnableItemById = (

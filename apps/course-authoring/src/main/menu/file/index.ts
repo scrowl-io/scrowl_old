@@ -9,17 +9,21 @@ export const menuFile: MenuItemConstructorOptions = {
     {
       label: 'New Project...',
       id: 'new-project',
-      click: () => newProject(),
+      click: menuEventEmit('menu-project-create'),
       accelerator: 'CmdOrCtrl+N',
     },
     separator,
+    {
+      label: 'Save',
+      id: 'save-project',
+      click: menuEventEmit('menu-project-save'),
+      accelerator: 'CmdOrCtrl+S',
+    },
+    {
+      label: 'Save As...',
+      id: 'save-as-project',
+      click: menuEventEmit('menu-project-create'),
+      accelerator: 'CmdOrCtrl+Shift+S',
+    },
   ],
-};
-
-const newProject = () => {
-  try {
-    menuEventEmit('menu-project-create');
-  } catch (err) {
-    console.log(err);
-  }
 };

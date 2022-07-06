@@ -10,6 +10,7 @@ const validChannels = [
   preferencesEvents.getPreference,
   preferencesEvents.setPreferences,
   menuEvents.toggleEnableItemById,
+  menuEvents.saveProject,
 ].concat(getModelEvents());
 
 contextBridge.exposeInMainWorld('electronAPI', {
@@ -21,8 +22,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     on(channel: string, func: (...args: unknown[]) => void) {
       if (validChannels.includes(channel)) {
-        const subscription = (_event: IpcRendererEvent, ...args: unknown[]) =>
+        const subscription = (_event: IpcRendererEvent, ...args: unknown[]) => {
           func(...args);
+        };
 
         ipcRenderer.on(channel, subscription);
 
@@ -30,6 +32,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
       }
 
       return undefined;
+    },
+    removeAllListeners(channel: string) {
+      ipcRenderer.removeAllListeners(channel);
     },
   },
 });

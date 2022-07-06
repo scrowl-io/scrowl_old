@@ -121,6 +121,11 @@ export const EVENTS: ModelEventProps[] = [
     type: 'on',
   },
   {
+    name: 'menu-project-save',
+    fn: save,
+    type: 'on',
+  },
+  {
     name: 'menu-toggle-enable-item-by-id',
     fn: toggleEnableItemById,
     type: 'on',
