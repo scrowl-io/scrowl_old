@@ -37,7 +37,7 @@ jobs:
       - name: Build Executables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: yarn run package:tool:course
+        run: yarn run package:course
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:

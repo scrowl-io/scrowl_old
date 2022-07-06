@@ -56,7 +56,7 @@ The Course Authoring Tool is the primary application being built in this repo. I
 
 **Default**
 
-`yarn run start:tool:course`
+`yarn run start:course`
 
 ## Useful Commands
 
@@ -66,13 +66,13 @@ The Course Authoring Tool is the primary application being built in this repo. I
 
 `yarn run lint:fix:course` - Rewrites files within the Course Authoring Tool in accordance to our style rules.
 
-`yarn run test:unit:tool:course` - Runs all Course Authoring Tool unit tests
+`yarn run test:unit:course` - Runs all Course Authoring Tool unit tests
 
-`yarn run test:e2e:tool:course` - Runs all Course Authoring Tool end-to-end tests
+`yarn run test:e2e:course` - Runs all Course Authoring Tool end-to-end tests
 
-`yarn run test:tool:course` - Runs all Course Authoring Tool unit and end-to-end tests
+`yarn run test:course` - Runs all Course Authoring Tool unit and end-to-end tests
 
-`yarn run package:tool:course` - Builds the executables for the Course Authoring Tool. Output can be found at _./apps/course-authoring/release/build_
+`yarn run package:course` - Builds the executables for the Course Authoring Tool. Output can be found at _./apps/course-authoring/release/build_
 
 ## Contributing
 

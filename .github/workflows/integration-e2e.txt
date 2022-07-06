@@ -44,4 +44,4 @@ test-e2e-course-authoring:
       run: npx playwright install --with-deps chromium
 
     - name: Test
-      run: yarn run test:e2e:tool:course
+      run: yarn run test:e2e:course
