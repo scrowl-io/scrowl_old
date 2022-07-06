@@ -1,65 +1,15 @@
-import { BrowserWindow, Menu, MenuItemConstructorOptions } from 'electron';
-import { MenuEvent } from './menu-event';
+import { IpcMainInvokeEvent, Menu } from 'electron';
+import { buildDefaultMenu } from './menu-template';
 
-const DARWIN = process.platform === 'darwin';
+export const disableMenuItemById = (
+  event: IpcMainInvokeEvent,
+  menuItemId: string,
+  menuItemStatus: boolean
+) => {
+  const applicationMenu = Menu.getApplicationMenu();
+  const disabledMenu = applicationMenu?.getMenuItemById(menuItemId);
 
-const buildDefaultMenu = () => {
-  const template: MenuItemConstructorOptions[] = [];
-  const separator: Electron.MenuItemConstructorOptions = { type: 'separator' };
-
-  if (DARWIN) {
-    template.push({
-      label: 'Scrowl',
-      submenu: [
-        {
-          label: 'About Scrowl',
-          click: () => menuItemEmit('menu-show-about'),
-          id: 'about',
-        },
-        separator,
-        {
-          label: 'Preferences…',
-          id: 'preferences',
-          accelerator: 'CmdOrCtrl+,',
-          click: () => menuItemEmit('menu-show-preferences'),
-        },
-        separator,
-        {
-          role: 'services',
-          submenu: [],
-        },
-        separator,
-        { role: 'hide' },
-        { role: 'hideOthers' },
-        { role: 'unhide' },
-        separator,
-        { role: 'quit' },
-      ],
-    });
-  }
-
-  const fileMenu: MenuItemConstructorOptions = {
-    label: 'File',
-    submenu: [
-      {
-        label: 'New Project...',
-        id: 'new-project',
-        click: () => menuItemEmit('menu-project-create'),
-        accelerator: 'CmdOrCtrl+N',
-      },
-      separator,
-    ],
-  };
-
-  template.push(fileMenu);
-
-  return template;
-};
-
-const menuItemEmit = (name: MenuEvent) => {
-  const window = BrowserWindow.getAllWindows()[0];
-
-  window.webContents.send(name);
+  if (disabledMenu) disabledMenu.enabled = menuItemStatus;
 };
 
 export const init = () => {
