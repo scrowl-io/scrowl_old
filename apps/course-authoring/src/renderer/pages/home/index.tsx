@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import style from './styles.module.scss';
@@ -50,6 +51,10 @@ export const PageElement = () => {
       }
 
       setProjectDir(createResult.dir);
+
+      // disable "New Project..." menu item
+      if (projectDir)
+        requester.send('menu-toggle-enable-item-by-id', 'new-project');
     };
 
     projectModel.create(projectData).then(resolveProjectCreate);

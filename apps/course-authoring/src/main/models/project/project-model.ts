@@ -11,6 +11,7 @@ import {
   dialogOpen,
   FileData,
 } from '../../services/file-system/index';
+import { toggleEnableItemById } from '../../menu';
 
 export const create = function (event: IpcMainInvokeEvent, project: unknown) {
   const dirPrefix = 'scrowl';
@@ -117,6 +118,11 @@ export const EVENTS: ModelEventProps[] = [
   {
     name: 'menu-project-create',
     fn: create,
+    type: 'on',
+  },
+  {
+    name: 'menu-toggle-enable-item-by-id',
+    fn: toggleEnableItemById,
     type: 'on',
   },
   {

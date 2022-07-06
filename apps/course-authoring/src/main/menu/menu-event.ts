@@ -1,6 +1,7 @@
 import { BrowserWindow } from 'electron';
 
 export type MenuEvent =
+  | 'menu-toggle-enable-item-by-id'
   | 'menu-open-working-directory'
   | 'menu-project-create'
   | 'menu-project-save'
@@ -8,7 +9,8 @@ export type MenuEvent =
   | 'menu-show-preferences'
   | 'menu-show-about';
 
-export const menuEventEmit = (name: MenuEvent) => {
+export const menuEventEmit = (name: MenuEvent, ...args: unknown[]) => {
   const window = BrowserWindow.getAllWindows()[0];
-  window.webContents.send(name);
+
+  window.webContents.send(name, ...args);
 };

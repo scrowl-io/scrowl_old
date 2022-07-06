@@ -1,15 +1,18 @@
 import { IpcMainInvokeEvent, Menu } from 'electron';
 import { buildDefaultMenu } from './menu-template';
 
-export const disableMenuItemById = (
+export const menuEvents = {
+  toggleEnableItemById: 'menu-toggle-enable-item-by-id',
+};
+
+export const toggleEnableItemById = (
   event: IpcMainInvokeEvent,
-  menuItemId: string,
-  menuItemStatus: boolean
+  menuItemId: string
 ) => {
   const applicationMenu = Menu.getApplicationMenu();
   const disabledMenu = applicationMenu?.getMenuItemById(menuItemId);
 
-  if (disabledMenu) disabledMenu.enabled = menuItemStatus;
+  if (disabledMenu) disabledMenu.enabled = !disabledMenu.enabled;
 };
 
 export const init = () => {

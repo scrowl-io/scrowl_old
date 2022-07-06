@@ -9,9 +9,17 @@ export const menuFile: MenuItemConstructorOptions = {
     {
       label: 'New Project...',
       id: 'new-project',
-      click: () => menuEventEmit('menu-project-create'),
+      click: () => newProject(),
       accelerator: 'CmdOrCtrl+N',
     },
     separator,
   ],
+};
+
+const newProject = () => {
+  try {
+    menuEventEmit('menu-project-create');
+  } catch (err) {
+    console.log(err);
+  }
 };
