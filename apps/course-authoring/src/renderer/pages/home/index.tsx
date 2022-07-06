@@ -17,7 +17,6 @@ import {
   SaveFileData,
 } from '../../../main/services/file-system/types';
 import { Project } from './data.types';
-import * as requester from '../../services/requester/requester';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -52,9 +51,7 @@ export const PageElement = () => {
 
       setProjectDir(createResult.dir);
 
-      // disable "New Project..." menu item
-      if (projectDir)
-        requester.send('menu-toggle-enable-item-by-id', 'new-project');
+      if (projectDir) projectModel.menuToggleEnabledItemById('new-project');
     };
 
     projectModel.create(projectData).then(resolveProjectCreate);
@@ -99,7 +96,8 @@ export const PageElement = () => {
   };
 
   useEffect(() => {
-    requester.on('menu-project-create', createProject);
+    // register IPC listeners
+    projectModel.menuNewProject(createProject);
   }, []);
 
   if (projectDir) console.log(projectDir);
