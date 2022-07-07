@@ -51,8 +51,6 @@ export const PageElement = () => {
       }
 
       setProjectDir(createResult.dir);
-
-      if (projectDir) menuModel.menuDisableItemById('new-project');
     };
 
     projectModel.create(projectData).then(resolveProjectCreate);
@@ -104,8 +102,11 @@ export const PageElement = () => {
     menuModel.menuNewProject(createProject);
     menuModel.menuSaveProject(saveProject);
 
+    // Disable New Project... option from menu after creating a new project
+    if (projectDir) menuModel.menuDisableItemById('new-project');
+
     // Clean listeners after the component is dismounted.
-    // The save method must be remoded in order to use the updated version of
+    // The save method must be removed in order to use the updated version of
     // state added to the dependency array.
     return () => {
       window.electronAPI.ipcRenderer.removeAllListeners('menu:save');

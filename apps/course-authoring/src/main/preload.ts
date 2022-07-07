@@ -13,8 +13,6 @@ const validInvokeChannels = [
 
 const validOnChannels = getModelEvents('on');
 
-console.log(validOnChannels);
-
 contextBridge.exposeInMainWorld('electronAPI', {
   ipcRenderer: {
     invoke(channel: string, ...args: unknown[]) {
@@ -34,6 +32,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
       }
 
       return undefined;
+    },
+    send(channel: string, ...args: unknown[]): void {
+      // same channel used to "send" will listen "on" and vice-versa
+      if (validOnChannels.includes(channel)) {
+        ipcRenderer.send(channel, ...args);
+      }
     },
     removeAllListeners(channel: string) {
       // same valid channels from "on" registerd because the same

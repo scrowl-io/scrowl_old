@@ -125,11 +125,6 @@ export const EVENTS: ModelEventProps[] = [
     fn: importFile,
     type: 'invoke',
   },
-  {
-    name: 'menu:toggle-enable',
-    fn: menu.toggleEnableItemById,
-    type: 'on',
-  },
 ];
 
 export default {

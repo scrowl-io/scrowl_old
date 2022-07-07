@@ -62,10 +62,6 @@ export const initMenu = () => {
 
 export const EVENTS: ModelEventProps[] = [
   {
-    name: 'menu:toggle-enable',
-    type: 'on',
-  },
-  {
     name: 'menu:new-project',
     type: 'on',
   },
