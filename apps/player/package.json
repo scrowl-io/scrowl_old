@@ -20,13 +20,16 @@
     "clean": "rimraf ../.parcel-cache",
     "prebuild": "yarn run clean && rimraf dist",
     "build": "parcel build --target production --no-cache --public-url ../dist",
+    "postbuild": "tsc",
     "prestart": "yarn run clean && rimraf dev",
     "start": "parcel serve --target development --open --dist-dir dev"
   },
-  "main": "./dist/scrowl-player.js",
-  "production": "./dist/scrowl-player.js",
-  "development": "./dev/player.html",
+  "main": "./dist/scrowl.player.js",
+  "production": "./dist/scrowl.player.js",
+  "development": "./dev/scrowl.player.html",
+  "types": "./dist/scrowl.player.d.ts",
   "targets": {
+    "main": false,
     "production": {
       "context": "browser",
       "source": "./src/index.tsx",
@@ -38,6 +41,10 @@
       "source": "./src/index.html",
       "distDir": "./dev"
     }
+  },
+  "exports": {
+    ".": "./dist/scrowl-player.js",
+    "./elements": "./src/components/block/elements/index.ts"
   },
   "eslintConfig": {
     "extends": "@scrowl/eslint-config"
