@@ -29,7 +29,8 @@
     "build:downloads": "yarn workspace @scrowl/appdownloads run build",
     "deploy": "yarn run package:course && yarn run build:downloads",
     "start:player": "yarn workspace @scrowl/player run start",
-    "build:player": "yarn workspace @scrowl/player run build"
+    "build:player": "yarn workspace @scrowl/player run build",
+    "postinstall": "yarn build:player"
   },
   "devDependencies": {
     "chalk": "^5.0.1",
