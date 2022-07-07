@@ -18,6 +18,7 @@ export function menuEventEmit(
     // Since desktop only supports one window at a time we can assume
     // that the first BrowserWindow we find is the one we want.
     const window = focusedWindow ?? BrowserWindow.getAllWindows()[0];
+
     if (window !== undefined) {
       window.webContents.send(name, ...args);
     }
