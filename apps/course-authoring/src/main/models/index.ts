@@ -39,14 +39,18 @@ export const init = () => {
   });
 };
 
-export const getEvents = () => {
+export const getEvents = (
+  eventType: 'invoke' | 'on' | 'removeAllListeners'
+) => {
   const getEventNames = (ev: ModelEventProps) => {
     return ev.name;
   };
 
   return models
     .map(model => {
-      return model.EVENTS ? model.EVENTS.map(getEventNames) : [];
+      return model.EVENTS
+        ? model.EVENTS.filter(ev => ev.type === eventType).map(getEventNames)
+        : [];
     })
     .flat();
 };

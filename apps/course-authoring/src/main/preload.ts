@@ -3,24 +3,27 @@ import { EVENTS as exporterEvents } from './services/exporter';
 import { preferencesEvents } from './services/internal-storage';
 import { getEvents as getModelEvents } from './models/index';
 
-const validChannels = [
+const validInvokeChannels = [
   exporterEvents.package,
   preferencesEvents.getPreferencesList,
   preferencesEvents.getPreference,
   preferencesEvents.setPreferences,
-].concat(getModelEvents());
+  getModelEvents('invoke'),
+].flat();
 
-console.log(validChannels);
+const validOnChannels = getModelEvents('on');
+
+console.log(validOnChannels);
 
 contextBridge.exposeInMainWorld('electronAPI', {
   ipcRenderer: {
     invoke(channel: string, ...args: unknown[]) {
-      if (validChannels.includes(channel)) {
+      if (validInvokeChannels.includes(channel)) {
         return ipcRenderer.invoke(channel, ...args);
       }
     },
     on(channel: string, func: (...args: unknown[]) => void) {
-      if (validChannels.includes(channel)) {
+      if (validOnChannels.includes(channel)) {
         const subscription = (_event: IpcRendererEvent, ...args: unknown[]) => {
           func(...args);
         };
@@ -33,7 +36,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
       return undefined;
     },
     removeAllListeners(channel: string) {
-      ipcRenderer.removeAllListeners(channel);
+      // same valid channels from "on" registerd because the same
+      // channels which can be registered can also be removed
+      if (validOnChannels.includes(channel)) {
+        ipcRenderer.removeAllListeners(channel);
+      }
     },
   },
 });
