@@ -19,7 +19,7 @@ import { resolveHtmlPath } from './util';
 import { init as exporterInit } from './services/exporter';
 import { preferencesInit } from './services/internal-storage';
 import { init as modelsInit } from './models/index';
-import { init as menuInit } from './menu/index';
+import { initMenu } from './models/menu/menu-models';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -144,7 +144,7 @@ app
   .then(() => {
     registerScrowlFileProtocol();
     createWindow();
-    menuInit();
+    initMenu();
 
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

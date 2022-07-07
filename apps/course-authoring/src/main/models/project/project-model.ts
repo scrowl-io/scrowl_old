@@ -11,7 +11,7 @@ import {
   dialogOpen,
   FileData,
 } from '../../services/file-system/index';
-import { toggleEnableItemById } from '../../menu';
+import * as menu from '../menu/menu-models';
 
 export const create = function (event: IpcMainInvokeEvent, project: unknown) {
   const dirPrefix = 'scrowl';
@@ -111,34 +111,24 @@ export const importFile = async function (
 
 export const EVENTS: ModelEventProps[] = [
   {
-    name: 'project-create',
+    name: 'project:new',
     fn: create,
-    type: 'handle',
+    type: 'invoke',
   },
   {
-    name: 'menu-project-create',
-    fn: create,
-    type: 'on',
-  },
-  {
-    name: 'menu-project-save',
+    name: 'project:save',
     fn: save,
-    type: 'on',
+    type: 'invoke',
   },
   {
-    name: 'menu-toggle-enable-item-by-id',
-    fn: toggleEnableItemById,
-    type: 'on',
-  },
-  {
-    name: 'project-save',
-    fn: save,
-    type: 'handle',
-  },
-  {
-    name: 'project-import',
+    name: 'project:import-file',
     fn: importFile,
-    type: 'handle',
+    type: 'invoke',
+  },
+  {
+    name: 'menu:toggle-enable',
+    fn: menu.toggleEnableItemById,
+    type: 'on',
   },
 ];
 
@@ -146,4 +136,5 @@ export default {
   EVENTS,
   create,
   save,
+  importFile,
 };

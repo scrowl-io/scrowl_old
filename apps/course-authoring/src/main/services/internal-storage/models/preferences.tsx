@@ -3,9 +3,9 @@ import { default as PreferencesHandler } from '../handlers/preferences';
 import { Preferences } from '../handlers/preferences/index.types';
 
 export const events = {
-  getPreferencesList: 'get-preferences-list',
-  getPreference: 'get-preference',
-  setPreferences: 'set-preferences',
+  getPreferencesList: 'preferences:get-list',
+  getPreference: 'preferences:get',
+  setPreferences: 'preferences:set',
 };
 
 export const getPreferencesList = () => {

@@ -9,20 +9,20 @@ export const menuFile: MenuItemConstructorOptions = {
     {
       label: 'New Project...',
       id: 'new-project',
-      click: menuEventEmit('menu-project-create'),
+      click: menuEventEmit('menu:new-project'),
       accelerator: 'CmdOrCtrl+N',
     },
     separator,
     {
       label: 'Save',
       id: 'save-project',
-      click: menuEventEmit('menu-project-save'),
+      click: menuEventEmit('menu:save'),
       accelerator: 'CmdOrCtrl+S',
     },
     {
       label: 'Save As...',
       id: 'save-as-project',
-      click: menuEventEmit('menu-project-create'),
+      click: menuEventEmit('menu:save'),
       accelerator: 'CmdOrCtrl+Shift+S',
     },
   ],

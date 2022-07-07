@@ -1,7 +1,6 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { EVENTS as exporterEvents } from './services/exporter';
 import { preferencesEvents } from './services/internal-storage';
-import { menuEvents } from './menu';
 import { getEvents as getModelEvents } from './models/index';
 
 const validChannels = [
@@ -9,9 +8,9 @@ const validChannels = [
   preferencesEvents.getPreferencesList,
   preferencesEvents.getPreference,
   preferencesEvents.setPreferences,
-  menuEvents.toggleEnableItemById,
-  menuEvents.saveProject,
 ].concat(getModelEvents());
+
+console.log(validChannels);
 
 contextBridge.exposeInMainWorld('electronAPI', {
   ipcRenderer: {

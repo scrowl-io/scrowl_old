@@ -1,9 +1,10 @@
 import { ipcMain, IpcMainInvokeEvent } from 'electron';
 import * as projects from './project/project-model';
+import * as menu from './menu/menu-models';
 
 export type ModelEventProps = {
   name: string;
-  fn: HandleListenerProps;
+  fn?: HandleListenerProps;
   type: 'send' | 'handle' | 'invoke' | 'on';
 };
 
@@ -14,12 +15,12 @@ interface ModelProps {
   [key: string]: unknown;
 }
 
-const models = [projects];
+const models = [projects, menu];
 
 const registerEvents = (model: ModelProps) => {
   model.EVENTS.forEach((ev: ModelEventProps) => {
     if (ev.fn && typeof ev.fn === 'function') {
-      if (ev.type === 'handle') {
+      if (ev.type === 'invoke') {
         ipcMain.handle(ev.name, ev.fn);
       }
 

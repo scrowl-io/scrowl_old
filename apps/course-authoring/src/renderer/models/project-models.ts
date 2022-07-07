@@ -1,10 +1,10 @@
 import { AllowedFiles, FileData } from '../../main/services/file-system';
 import { Project } from '../pages/home/data.types';
-import { invoke, on, send } from '../services/requester/requester';
+import { invoke } from '../services/requester/requester';
 
 export const create = (project: Project) => {
   return new Promise<FileData>((resolve, reject) => {
-    invoke('project-create', project)
+    invoke('project:new', project)
       .then((res: FileData) => {
         if (res.error) {
           resolve(res);
@@ -22,28 +22,15 @@ export const create = (project: Project) => {
 };
 
 export const save = (project: string, source?: string) => {
-  return invoke('project-save', project, source);
+  return invoke('project:save', project, source);
 };
 
 export const importFile = (fileTypes: AllowedFiles[], source: string) => {
-  return invoke('project-import', fileTypes, source);
-};
-
-export const menuEventWithData = (channel: string, ...args: unknown[]) => {
-  send(channel, ...args);
-};
-
-export const menuEventWithCallback = (
-  channel: string,
-  callback: (...args: unknown[]) => void
-) => {
-  on(channel, callback);
+  return invoke('project:import-file', fileTypes, source);
 };
 
 export default {
   create,
   save,
   importFile,
-  menuEventWithData,
-  menuEventWithCallback,
 };

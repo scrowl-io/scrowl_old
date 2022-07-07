@@ -9,6 +9,7 @@ import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
 import * as projectModel from '../../models/project-models';
+import * as menuModel from '../../models/menu-models';
 import { CardGrid } from '../../components/cardgrid';
 import {
   AllowedFiles,
@@ -51,11 +52,7 @@ export const PageElement = () => {
 
       setProjectDir(createResult.dir);
 
-      if (projectDir)
-        projectModel.menuEventWithData(
-          'menu-toggle-enable-item-by-id',
-          'new-project'
-        );
+      if (projectDir) menuModel.menuDisableItemById('new-project');
     };
 
     projectModel.create(projectData).then(resolveProjectCreate);
@@ -104,14 +101,14 @@ export const PageElement = () => {
 
   useEffect(() => {
     // Register ipc menu events
-    projectModel.menuEventWithCallback('menu-project-create', createProject);
-    projectModel.menuEventWithCallback('menu-project-save', saveProject);
+    menuModel.menuNewProject(createProject);
+    menuModel.menuSaveProject(saveProject);
 
-    // Clean the listener after the component is dismounted.
+    // Clean listeners after the component is dismounted.
     // The save method must be remoded in order to use the updated version of
-    // projectDir added to the dependency array.
+    // state added to the dependency array.
     return () => {
-      window.electronAPI.ipcRenderer.removeAllListeners('menu-project-save');
+      window.electronAPI.ipcRenderer.removeAllListeners('menu:save');
     };
   }, [projectDir, projectFile]);
 
@@ -133,11 +130,6 @@ export const PageElement = () => {
             <Link to="/settings">Settings</Link>
           </Btn>
         </div>
-        <div>
-          <Btn onClick={createProject} disabled={!projectDir ? false : true}>
-            New Project
-          </Btn>
-        </div>
         <div className={style.navDivider} />
         <div>
           <Btn
@@ -157,14 +149,7 @@ export const PageElement = () => {
             </>
           )}
         </div>
-        <div className={style.navDivider} />
-        <div>
-          <Btn onClick={saveProject} disabled={projectDir ? false : true}>
-            Save Project
-          </Btn>
-        </div>
       </div>
-      <div className={style.navDivider} />
     </>
   );
 
