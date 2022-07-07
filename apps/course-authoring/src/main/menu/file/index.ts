@@ -16,13 +16,13 @@ export const menuFile: MenuItemConstructorOptions = {
     {
       label: 'Save',
       id: 'save-project',
-      click: menuEventEmit('menu:save'),
+      click: menuEventEmit('menu:save', false),
       accelerator: 'CmdOrCtrl+S',
     },
     {
       label: 'Save As...',
-      id: 'save-as-project',
-      click: menuEventEmit('menu:save'),
+      id: 'save-project-as',
+      click: menuEventEmit('menu:save', true),
       accelerator: 'CmdOrCtrl+Shift+S',
     },
   ],

@@ -76,7 +76,7 @@ export const PageElement = () => {
     projectModel.importFile(fileTypes, projectDir).then(resolveImportFile);
   };
 
-  const saveProject = () => {
+  const saveProject = (isSaveAs: boolean) => {
     if (!projectDir) {
       console.error('you must create a new project before saving the project.');
       return;
@@ -91,7 +91,9 @@ export const PageElement = () => {
       setProjectFile(saveResult.filePath);
     };
 
-    projectModel.save(projectDir, projectFile).then(resolveProjectSave);
+    projectModel
+      .save(projectDir, isSaveAs, projectFile)
+      .then(resolveProjectSave);
   };
 
   // log project dir for dev purposes
@@ -100,7 +102,7 @@ export const PageElement = () => {
   useEffect(() => {
     // Register ipc menu events
     menuModel.menuNewProject(createProject);
-    menuModel.menuSaveProject(saveProject);
+    menuModel.menuSaveProject(value => saveProject(value ? true : false));
 
     // Disable New Project... option from menu after creating a new project
     if (projectDir) menuModel.menuDisableItemById('new-project');
@@ -109,7 +111,7 @@ export const PageElement = () => {
     // The save method must be removed in order to use the updated version of
     // state added to the dependency array.
     return () => {
-      window.electronAPI.ipcRenderer.removeAllListeners('menu:save');
+      menuModel.menuRemoveListeners(['menu:save']);
     };
   }, [projectDir, projectFile]);
 

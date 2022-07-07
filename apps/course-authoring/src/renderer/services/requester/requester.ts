@@ -12,3 +12,7 @@ export const on = (
 export const send = (endpoint: string, ...args: unknown[]) => {
   return window.electronAPI.ipcRenderer.send(endpoint, ...args);
 };
+
+export const removeAllListeners = (channel: string) => {
+  return window.electronAPI.ipcRenderer.removeAllListeners(channel);
+};

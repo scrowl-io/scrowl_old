@@ -21,8 +21,8 @@ export const create = (project: Project) => {
   });
 };
 
-export const save = (project: string, source?: string) => {
-  return invoke('project:save', project, source);
+export const save = (project: string, isSaveAs: boolean, source?: string) => {
+  return invoke('project:save', project, isSaveAs, source);
 };
 
 export const importFile = (fileTypes: AllowedFiles[], source: string) => {

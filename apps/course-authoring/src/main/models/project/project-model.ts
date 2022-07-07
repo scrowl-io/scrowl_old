@@ -48,6 +48,7 @@ const write = function (source: string, filename: string): FileData {
 export const save = async function (
   event: IpcMainInvokeEvent,
   projectTempPath: string,
+  isSaveAs: boolean,
   projectPath: string
 ) {
   const dialogOptions = {
@@ -60,7 +61,7 @@ export const save = async function (
     ],
   };
 
-  if (!projectPath) {
+  if (!projectPath || isSaveAs) {
     const dialogResult = await dialogSave(dialogOptions);
 
     if (dialogResult.error) {
