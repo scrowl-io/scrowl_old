@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+import { ErrorProps } from './app.types';
 import * as styles from './app.module.scss';
 import { get as getManifest } from './manifest';
 import { ProjectConfig } from '../project/project.types';
@@ -72,6 +73,18 @@ export const Element = () => {
   );
 };
 
+export const Error = (props: ErrorProps) => {
+  const { msg } = props;
+
+  return (
+    <div>
+      <h1>Error</h1>
+      <p>{msg}</p>
+    </div>
+  );
+};
+
 export default {
   Element,
+  Error,
 };
