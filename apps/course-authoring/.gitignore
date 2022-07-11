@@ -44,10 +44,11 @@ release/build/*
 dist/
 
 # SCORM exporter folders
-src/main/services/exporter/course-packs
-src/main/services/exporter/course-template/*
-src/main/services/exporter/course-template/*/
-!src/main/services/exporter/course-template/content/
+src/main/services/exporter/course/dist
+src/main/services/exporter/course/package/*
+src/main/services/exporter/course/package/*/
+!src/main/services/exporter/course/package/content/
+src/main/services/exporter/course/package/content/index.html
 # testing reports
 tests/reports
 tests/screenshots

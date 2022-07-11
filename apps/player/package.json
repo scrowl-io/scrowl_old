@@ -42,10 +42,6 @@
       "distDir": "./dev"
     }
   },
-  "exports": {
-    ".": "./dist/scrowl-player.js",
-    "./elements": "./src/components/block/elements/index.ts"
-  },
   "eslintConfig": {
     "extends": "@scrowl/eslint-config"
   },

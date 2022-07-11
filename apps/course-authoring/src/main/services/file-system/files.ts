@@ -76,7 +76,10 @@ export const fileReadSync = (
   const exists = fileExistsSync(pathName);
 
   if (exists.error) {
-    return exists;
+    return {
+      error: true,
+      message: exists.message,
+    };
   }
 
   if (media === undefined) {
@@ -102,7 +105,6 @@ export const fileReadSync = (
   } catch (err) {
     return {
       error: true,
-      contents: null,
       message: err,
     };
   }
