@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -22,7 +22,7 @@ const createRoutes = (manifestData: ProjectConfig) => {
   layout.forEach((layoutItem: LayoutItemProps, index: number) => {
     navItems.push({
       label: layoutItem.name,
-      url: layoutItem.Route,
+      url: layoutItem.Route.replace('/', '#/'),
     });
     routes.push(
       <Route
