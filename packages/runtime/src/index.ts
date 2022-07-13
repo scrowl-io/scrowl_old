@@ -1,3 +1,3 @@
 import { service } from './runtime';
 
-window.scrolwRuntime = service;
+window.__SCROWL_RUNTIME = service;

@@ -132,23 +132,36 @@ export const service: RUNTIME_SERVICE = {
     let retryCnt = 0;
     const retryLimit = 7;
 
+    if (source.API) {
+      return {
+        error: false,
+        API: source.API,
+      }
+    }
+
+    if (source.parent === source) {
+      return {
+        error: true,
+        message: 'Error: unable to find API - top level reached'
+      }
+    }
+
     while (
       source.API == null &&
       source.parent != null &&
-      source.parent != source &&
       retryCnt < retryLimit
     ) {
       retryCnt++;
       source = source.parent;
     }
-
-    if (retryCnt > retryLimit) {
+    
+    if (retryCnt >= retryLimit) {
       return {
         error: true,
         message: 'Error: unable to find API - nested to deep'
       }
     }
-
+    
     return {
       error: false,
       API: source.API,
@@ -156,16 +169,15 @@ export const service: RUNTIME_SERVICE = {
   },
   start: () => {
     const resFind = service._findAPI(window);
-
+    
     if (resFind.error) {
-      alert(resFind.message);
       return resFind;
     }
-
+    
     service.API = resFind.API;
     service._time.start = new Date();
     service.init = true;
-
+    
     const resInit = service.API.LMSInitialize();
 
     if (resInit === service.STATUSES.update.false) {

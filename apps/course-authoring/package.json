@@ -20,10 +20,10 @@
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
     "setup": "node ./scripts/pipeline/setup.mjs",
-    "prebuild": "yarn run clean && yarn run setup",
+    "prebuild": "yarn run clean",
     "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist --no-optimize",
     "start:frontend": "parcel serve --target frontend --no-cache --port 5001",
-    "prestart:backend": "parcel build --target backend --target preload --no-cache",
+    "prestart:backend": "yarn run setup && parcel build --target backend --target preload --no-cache",
     "start:backend": "wait-on http://localhost:5001 && nodemon --exec electron ./dist/main.js",
     "watch:backend": "parcel watch ./src/main/index.ts ./src/main/preload.ts --no-cache --port 5000",
     "prestart": "yarn run clean",

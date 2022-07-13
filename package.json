@@ -16,6 +16,8 @@
   "scripts": {
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start:course": "yarn workspace @scrowl/courseauthoring run start",
+    "update:course": "yarn build:runtime && yarn build:player && yarn workspace @scrowl/courseauthoring run setup",
+    "start:course:rebuild": "yarn update:course && yarn start:course",
     "build:course": "yarn workspace @scrowl/courseauthoring run build",
     "package:course": "yarn workspace @scrowl/courseauthoring run package",
     "test:course": "yarn workspace @scrowl/courseauthoring run test",
@@ -30,8 +32,7 @@
     "deploy": "yarn run package:course && yarn run build:downloads",
     "start:player": "yarn workspace @scrowl/player run start",
     "build:player": "yarn workspace @scrowl/player run build",
-    "build:runtime": "yarn workspace @scrowl/runtime run build",
-    "postinstall": "yarn build:runtime && yarn build:player"
+    "build:runtime": "yarn workspace @scrowl/runtime run build"
   },
   "devDependencies": {
     "chalk": "^5.0.1",
