@@ -16,10 +16,8 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
-import { init as exporterInit } from './services/exporter';
-import { preferencesInit } from './services/internal-storage';
 import { init as modelsInit } from './models/index';
-import { initMenu } from './models/menu/menu-models';
+import { menu, exporter, internalStorage } from './services';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -27,6 +25,8 @@ let mainWindow: BrowserWindow | null = null;
 
 const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+
+const DARWIN = process.platform === 'darwin';
 
 const installExtensions = () => {
   return Promise.all([installExtension(REACT_DEVELOPER_TOOLS)]);
@@ -75,8 +75,8 @@ const createWindow = async () => {
     throw 'Unable to create Browser Window';
   }
 
-  exporterInit();
-  preferencesInit();
+  exporter.init();
+  internalStorage.preferencesInit();
   modelsInit();
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
@@ -144,7 +144,7 @@ app
   .then(() => {
     registerScrowlFileProtocol();
     createWindow();
-    initMenu();
+    menu.init(DARWIN);
 
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the

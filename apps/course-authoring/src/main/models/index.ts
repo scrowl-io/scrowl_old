@@ -1,6 +1,6 @@
 import { ipcMain, IpcMainInvokeEvent } from 'electron';
 import * as projects from './project/project-model';
-import * as menu from './menu/menu-models';
+import * as menu from '../services/menu';
 
 export type ModelEventProps = {
   name: string;
@@ -15,18 +15,31 @@ interface ModelProps {
   [key: string]: unknown;
 }
 
+const EVENT_TYPES = {
+  invoke: 'invoke',
+  on: 'on',
+};
+
 const models = [projects, menu];
 
 const registerEvents = (model: ModelProps) => {
   model.EVENTS.forEach((ev: ModelEventProps) => {
-    if (ev.fn && typeof ev.fn === 'function') {
-      if (ev.type === 'invoke') {
-        ipcMain.handle(ev.name, ev.fn);
-      }
+    if (!ev.fn || typeof ev.fn !== 'function') {
+      return;
+    }
 
-      if (ev.type === 'on') {
+    switch (ev.type) {
+      case EVENT_TYPES.invoke:
+        ipcMain.handle(ev.name, ev.fn);
+        break;
+      case EVENT_TYPES.on:
         ipcMain.on(ev.name, ev.fn);
-      }
+        break;
+      default:
+        console.log(
+          `Event type: ${ev.type} not found. IPC event: ${ev.name} has not been registered. `
+        );
+        break;
     }
   });
 };

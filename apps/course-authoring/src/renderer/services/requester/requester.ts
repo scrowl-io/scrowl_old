@@ -6,13 +6,13 @@ export const on = (
   endpoint: string,
   callback: (...args: unknown[]) => void
 ) => {
-  return window.electronAPI.ipcRenderer.on(endpoint, callback);
+  window.electronAPI.ipcRenderer.on(endpoint, callback);
 };
 
 export const send = (endpoint: string, ...args: unknown[]) => {
-  return window.electronAPI.ipcRenderer.send(endpoint, ...args);
+  window.electronAPI.ipcRenderer.send(endpoint, ...args);
 };
 
 export const removeAllListeners = (channel: string) => {
-  return window.electronAPI.ipcRenderer.removeAllListeners(channel);
+  window.electronAPI.ipcRenderer.removeAllListeners(channel);
 };

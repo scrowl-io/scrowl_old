@@ -8,8 +8,7 @@ import { Default as Icon } from '@owlui/icons';
 import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
-import * as projectModel from '../../models/project-models';
-import * as menuModel from '../../models/menu-models';
+import { menu as menuModel, project as projectModel } from '../../models';
 import { CardGrid } from '../../components/cardgrid';
 import {
   AllowedFiles,
@@ -18,6 +17,8 @@ import {
   SaveFileData,
 } from '../../../main/services/file-system/types';
 import { Project } from './data.types';
+import { MENU_IPC_EVENTS } from '../../../main/services/menu/events';
+import { menuIds as fileMenuIds } from '../../../main/services/menu/templates/file-menu';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -105,13 +106,13 @@ export const PageElement = () => {
     menuModel.menuSaveProject(value => saveProject(value ? true : false));
 
     // Disable New Project... option from menu after creating a new project
-    if (projectDir) menuModel.menuDisableItemById('new-project');
+    if (projectDir) menuModel.menuDisableItemById(fileMenuIds.saveProject);
 
     // Clean listeners after the component is dismounted.
     // The save method must be removed in order to use the updated version of
     // state added to the dependency array.
     return () => {
-      menuModel.menuRemoveListeners(['menu:save']);
+      menuModel.menuRemoveListeners([MENU_IPC_EVENTS.save]);
     };
   }, [projectDir, projectFile]);
 

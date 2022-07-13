@@ -1,15 +1,20 @@
-import { on, send, removeAllListeners } from '../services/requester/requester';
+import { MENU_IPC_EVENTS } from '../../../main/services/menu/events';
+import {
+  on,
+  send,
+  removeAllListeners,
+} from '../../services/requester/requester';
 
 export const menuNewProject = (callback: (...args: unknown[]) => void) => {
-  on('menu:new-project', callback);
+  on(MENU_IPC_EVENTS.newProject, callback);
 };
 
 export const menuSaveProject = (callback: (...args: unknown[]) => void) => {
-  on('menu:save', callback);
+  on(MENU_IPC_EVENTS.saveProject, callback);
 };
 
 export const menuDisableItemById = (...args: unknown[]) => {
-  send('menu:toggle-enable', ...args);
+  send(MENU_IPC_EVENTS.toggleItem, ...args);
 };
 
 export const menuRemoveListeners = (listeners: string[]) => {

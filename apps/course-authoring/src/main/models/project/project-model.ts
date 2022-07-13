@@ -11,7 +11,7 @@ import {
   dialogOpen,
   FileData,
 } from '../../services/file-system/index';
-import * as menu from '../menu/menu-models';
+import { PROJECT_IPC_EVENTS } from './events';
 
 export const create = function (event: IpcMainInvokeEvent, project: unknown) {
   const dirPrefix = 'scrowl';
@@ -112,17 +112,17 @@ export const importFile = async function (
 
 export const EVENTS: ModelEventProps[] = [
   {
-    name: 'project:new',
+    name: PROJECT_IPC_EVENTS.new,
     fn: create,
     type: 'invoke',
   },
   {
-    name: 'project:save',
+    name: PROJECT_IPC_EVENTS.save,
     fn: save,
     type: 'invoke',
   },
   {
-    name: 'project:import-file',
+    name: PROJECT_IPC_EVENTS.importFile,
     fn: importFile,
     type: 'invoke',
   },
