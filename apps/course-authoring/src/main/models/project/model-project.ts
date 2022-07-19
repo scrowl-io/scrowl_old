@@ -1,6 +1,6 @@
 import { IpcMainInvokeEvent } from 'electron';
 import { Model } from '../model.types';
-import { ProjectEvents } from './model-project.types';
+import { ProjectEventNames, ProjectEvents } from './model-project.types';
 import {
   FileSystem as fs,
   Requester,
@@ -103,23 +103,23 @@ export const importFile = async function (
   return fs.fileTempSync(dialogResult.filePaths[0], projectTempPath);
 };
 
-export const EVENTS:ProjectEvents = [
-  {
+export const EVENTS:ProjectEvents = {
+  new: {
     name: 'project/new',
     type: 'invoke',
     fn: create,
   },
-  {
+  save: {
     name: 'project/save',
     type: 'invoke',
     fn: save,
   },
-  {
+  import: {
     name: 'project/import-file',
     type: 'invoke',
     fn: importFile,
   },
-];
+};
 
 export const init = () => {
   Requester.registerAll(EVENTS);

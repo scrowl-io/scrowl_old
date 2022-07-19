@@ -36,23 +36,23 @@ const handlerSetPreference = (
   return set(data);
 }
 
-export const EVENTS:PreferenceEvents = [
-  {
+export const EVENTS:PreferenceEvents = {
+  list: {
     name: 'preferences/get',
     type: 'handle',
     fn: handlerGetPreference,
   },
-  {
+  get: {
     name: 'preferences/get/preference',
     type: 'handle',
     fn: handlerGetPreference,
   },
-  {
+  set: {
     name: 'preferences/set',
     type: 'handle',
     fn: handlerSetPreference,
   },
-];
+};
 
 export const init = () => {
   Requester.registerAll(EVENTS);

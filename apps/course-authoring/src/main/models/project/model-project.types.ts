@@ -22,4 +22,8 @@ export type ProjectEvent =
   | ProjectEventSave
   | ProjectEventImport
 
-export type ProjectEvents = Array<ProjectEvent>;
+export type ProjectEvents = {
+  new: ProjectEventNew;
+  save: ProjectEventSave;
+  import: ProjectEventImport;
+};

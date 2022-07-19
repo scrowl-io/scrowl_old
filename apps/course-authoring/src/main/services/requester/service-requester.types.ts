@@ -15,3 +15,7 @@ export interface RegisterEvent {
   type: RegisterEventType;
   fn?: EventCallback;
 }
+
+export interface RegisterEvents {
+  [key: string]: RegisterEvent
+}

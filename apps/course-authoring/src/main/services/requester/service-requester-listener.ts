@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { RegisterEvent } from './service-requester.types';
+import { RegisterEvent, RegisterEvents } from './service-requester.types';
 
 export const register = (event: RegisterEvent) => {
   if (!event.fn || typeof event.fn !== 'function') {
@@ -22,8 +22,11 @@ export const register = (event: RegisterEvent) => {
   }
 };
 
-export const registerAll = (events: Array<RegisterEvent>) => {
-  events.forEach(register);
+export const registerAll = (events: RegisterEvents) => {
+
+  for (let key in events) {
+    register(events[key]);
+  }
 };
 
 export default {

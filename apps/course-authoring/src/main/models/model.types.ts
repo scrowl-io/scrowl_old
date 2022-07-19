@@ -1,7 +1,7 @@
 import { Requester } from '../services';
 
 export interface Model {
-  EVENTS?: Array<Requester.RegisterEvent>;
+  EVENTS?: Requester.RegisterEvents;
   init: () => void;
   [key: string]: unknown;
 }

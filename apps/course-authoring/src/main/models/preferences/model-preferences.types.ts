@@ -28,4 +28,8 @@ export type PreferenceEvent =
 | PreferenceEventGet
 | PreferenceEventSet;
 
-export type PreferenceEvents = Array<PreferenceEvent>;
+export type PreferenceEvents = {
+  'list': PreferenceEventList;
+  'get': PreferenceEventGet;
+  'set': PreferenceEventSet;
+};

@@ -2,7 +2,7 @@ import {
   AllowedFiles,
   FileData,
 } from '../../../main/services/file-system/service-fs.types';
-import { PROJECT_IPC_EVENTS } from '../../../main/models/project/events';
+import { Project as ProjectModel } from '../../../main/models/';
 import { Project } from '../../pages/home/data.types';
 import { requester } from '../../services';
 
@@ -34,11 +34,11 @@ export const init = (projectData) => {
 };
 
 export const save = (project: string, isSaveAs: boolean, source?: string) => {
-  return requester.invoke(PROJECT_IPC_EVENTS.save, project, isSaveAs, source);
+  return requester.invoke(ProjectModel.EVENTS.save.name, project, isSaveAs, source);
 };
 
 export const importFile = (fileTypes: AllowedFiles[], source: string) => {
-  return requester.invoke(PROJECT_IPC_EVENTS.importFile, fileTypes, source);
+  return requester.invoke(ProjectModel.EVENTS.import.name, fileTypes, source);
 };
 
 export default {
