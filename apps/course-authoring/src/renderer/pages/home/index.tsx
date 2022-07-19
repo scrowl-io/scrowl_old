@@ -8,17 +8,10 @@ import { Default as Icon } from '@owlui/icons';
 import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
-import { menuService } from '../../services';
+import * as fsTypes from '../../../main/services/file-system/service-fs.types';
 import { projectModel } from '../../models';
 import { CardGrid } from '../../components/cardgrid';
-import {
-  AllowedFiles,
-  FileData,
-  OpenFileData,
-  SaveFileData,
-} from '../../../main/services/file-system/service-fs.types';
 import { Project } from './data.types';
-import { Menu } from '../../../main/services';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -45,7 +38,7 @@ export const PageElement = () => {
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
   // const createProject = () => {
-  //   const resolveProjectCreate = (createResult: FileData) => {
+  //   const resolveProjectCreate = (createResult: fsTypes.FileData) => {
   //     if (createResult.error) {
   //       console.error(createResult.message);
   //       return;
@@ -57,13 +50,13 @@ export const PageElement = () => {
   //   projectModel.create(projectData).then(resolveProjectCreate);
   // };
 
-  const importFile = (fileTypes: AllowedFiles[]) => {
+  const importFile = (fileTypes: fsTypes.AllowedFiles[]) => {
     if (!projectDir) {
       console.error('you must create a new project to import files.');
       return;
     }
 
-    const resolveImportFile = (importResult: OpenFileData) => {
+    const resolveImportFile = (importResult: fsTypes.OpenFileData) => {
       if (importResult.error) {
         console.error(importResult.message);
         return;
@@ -83,7 +76,7 @@ export const PageElement = () => {
       return;
     }
 
-    const resolveProjectSave = function (saveResult: SaveFileData) {
+    const resolveProjectSave = function (saveResult: fsTypes.SaveFileData) {
       if (saveResult.error) {
         console.error(saveResult.message);
         return;
