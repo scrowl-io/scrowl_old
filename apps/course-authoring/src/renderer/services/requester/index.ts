@@ -1,2 +1,1 @@
-export * from './requests-global';
-export * from './requests-menu';
+export * from './service-requester';

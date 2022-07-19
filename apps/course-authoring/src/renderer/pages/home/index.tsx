@@ -7,11 +7,11 @@ import { Default as Btn } from '@owlui/button';
 import { Default as Icon } from '@owlui/icons';
 import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
+import { CardGrid } from '../../components/cardgrid';
 import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
 import * as fsTypes from '../../../main/services/file-system/service-fs.types';
-import { projectModel } from '../../models';
-import { CardGrid } from '../../components/cardgrid';
-import { Project } from './data.types';
+import { Project } from '../../models';
+import { ProjectData, ProjectDataNew } from '../../../main/models/project';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -34,7 +34,7 @@ const TemplatesList = () => {
 export const PageElement = () => {
   const [projectDir, setProjectDir] = useState<string | undefined>();
   const [projectFile, setProjectFile] = useState<string | undefined>();
-  const [projectData] = useState<Project>(EXAMPLE_PROJECT);
+  const [projectData] = useState<ProjectDataNew | ProjectData>(EXAMPLE_PROJECT);
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
   // const createProject = () => {
@@ -47,7 +47,7 @@ export const PageElement = () => {
   //     setProjectDir(createResult.dir);
   //   };
 
-  //   projectModel.create(projectData).then(resolveProjectCreate);
+  //   Project.create(projectData).then(resolveProjectCreate);
   // };
 
   const importFile = (fileTypes: fsTypes.AllowedFiles[]) => {
@@ -67,7 +67,7 @@ export const PageElement = () => {
       }
     };
 
-    projectModel.importFile(fileTypes, projectDir).then(resolveImportFile);
+    Project.importFile(fileTypes, projectDir).then(resolveImportFile);
   };
 
   const saveProject = (isSaveAs: boolean) => {
@@ -85,7 +85,7 @@ export const PageElement = () => {
       setProjectFile(saveResult.filePath);
     };
 
-    projectModel
+    Project
       .save(projectDir, isSaveAs, projectFile)
       .then(resolveProjectSave);
   };
@@ -94,6 +94,7 @@ export const PageElement = () => {
   if (projectDir) console.log(projectDir);
 
   useEffect(() => {
+    Project.create();
     // // Register ipc menu events
     // menuModel.newProject(createProject);
     // menuModel.saveProject(value => saveProject(value ? true : false));

@@ -4,9 +4,9 @@ import { getEvents as getModelEvents } from './models';
 import { getEvents as getMenuEvents } from './services/menu'
 
 const validInvokeChannels = [
-  getExporterEvents('invoke'),
+  getExporterEvents(),
   getModelEvents('invoke'),
-  getMenuEvents('on'),
+  getMenuEvents(),
 ].flat();
 
 const validOnChannels = getModelEvents('on');

@@ -27,3 +27,22 @@ export type ProjectEvents = {
   save: ProjectEventSave;
   import: ProjectEventImport;
 };
+
+/**
+ * This interface should be updated once
+ * define the actual project structure.
+ */
+ export interface ProjectData {
+  id: string;
+  createdAt: string;
+  modifiedAt: string;
+  name: string;
+  description: string;
+  theme: string;
+};
+
+export interface ProjectDataNew {
+  name: string;
+  description?: string;
+  theme?: string;
+};

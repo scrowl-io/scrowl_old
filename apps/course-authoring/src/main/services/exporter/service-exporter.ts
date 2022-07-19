@@ -54,13 +54,13 @@ export const init = () => {
 };
 
 export const getEvents = (
-  type: RegisterEventType
+  type?: RegisterEventType
 ) => {
   const eventList: Array<string> = [];
 
   for (const [key, event] of Object.entries(EVENTS)) {
 
-    if (event.type === type) {
+    if (!type || event.type === type) {
       eventList.push(event.name);
     }
   }

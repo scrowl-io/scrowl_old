@@ -19,3 +19,20 @@ export interface RegisterEvent {
 export interface RegisterEvents {
   [key: string]: RegisterEvent
 }
+
+export interface ApiResultError {
+  error: true;
+  message: string;
+  [key: string]: any;
+}
+
+export interface ApiResultSuccess {
+  error: false;
+  message?: string;
+  data: {
+    [key: string]: any;  
+  }
+  [key: string]: any;
+}
+
+export type ApiResult = ApiResultError | ApiResultSuccess;

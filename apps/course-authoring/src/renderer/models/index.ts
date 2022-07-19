@@ -1,1 +1,1 @@
-export * as projectModel from './project';
+export * from './project';

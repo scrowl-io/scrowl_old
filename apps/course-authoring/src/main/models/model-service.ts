@@ -11,7 +11,7 @@ export const init = () => {
 };
 
 export const getEvents = (
-  type: Requester.RegisterEventType
+  type?: Requester.RegisterEventType
 ) => {
   const eventList: Array<string> = [];
 
@@ -23,7 +23,7 @@ export const getEvents = (
 
     for (const [key, event] of Object.entries(models[i].EVENTS)) {
 
-      if (event.type === type) {
+      if (!type || event.type === type) {
         eventList.push(event.name);
       }
     }
