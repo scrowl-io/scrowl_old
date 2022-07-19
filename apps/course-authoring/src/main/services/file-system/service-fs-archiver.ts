@@ -1,5 +1,5 @@
 import AdmZip from 'adm-zip';
-import { SaveFileData } from './types';
+import { SaveFileData } from './service-fs-types';
 
 export const archive = (source: string, dest: string): SaveFileData => {
   try {

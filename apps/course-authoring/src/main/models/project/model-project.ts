@@ -1,22 +1,15 @@
 import { IpcMainInvokeEvent } from 'electron';
-import { ModelEventProps } from '../index';
+import { Model } from '../model-types';
+import { ProjectEvents } from './model-project-types';
 import {
-  dialogSave,
-  archive,
-  dirTempSync,
-  fileWriteSync,
-  fileTempSync,
-  AllowedFiles,
-  getDialogMediaFilters,
-  dialogOpen,
-  FileData,
-} from '../../services/file-system/index';
-import { PROJECT_IPC_EVENTS } from './events';
+  FileSystem as fs,
+  Requester,
+} from '../../services';
 
 export const create = function (event: IpcMainInvokeEvent, project: unknown) {
   const dirPrefix = 'scrowl';
   const projectFileName = 'scrowl.project';
-  const tempDir = dirTempSync(dirPrefix);
+  const tempDir = fs.dirTempSync(dirPrefix);
 
   if (tempDir.error) {
     return tempDir;
@@ -24,10 +17,10 @@ export const create = function (event: IpcMainInvokeEvent, project: unknown) {
 
   const filename = `${tempDir.pathName}/${projectFileName}`;
 
-  return fileWriteSync(filename, project);
+  return fs.fileWriteSync(filename, project);
 };
 
-const write = function (source: string, filename: string): FileData {
+const write = function (source: string, filename: string): fs.FileData {
   if (!source) {
     return {
       error: true,
@@ -42,7 +35,7 @@ const write = function (source: string, filename: string): FileData {
     };
   }
 
-  return archive(source, filename);
+  return fs.archive(source, filename);
 };
 
 export const save = async function (
@@ -62,7 +55,7 @@ export const save = async function (
   };
 
   if (!projectPath || isSaveAs) {
-    const dialogResult = await dialogSave(dialogOptions);
+    const dialogResult = await fs.dialogSave(dialogOptions);
 
     if (dialogResult.error) {
       return dialogResult;
@@ -78,10 +71,10 @@ export const save = async function (
 
 export const importFile = async function (
   event: IpcMainInvokeEvent,
-  fileTypes: Array<AllowedFiles>,
+  fileTypes: Array<fs.AllowedFiles>,
   projectTempPath: string
 ) {
-  const filters = getDialogMediaFilters(fileTypes);
+  const filters = fs.getDialogMediaFilters(fileTypes);
 
   if (!filters.length) {
     return {
@@ -94,7 +87,7 @@ export const importFile = async function (
     title: 'Scrowl - Import File',
     filters,
   };
-  const dialogResult = await dialogOpen(dialogOptions);
+  const dialogResult = await fs.dialogOpen(dialogOptions);
 
   if (dialogResult.error) {
     return dialogResult;
@@ -107,30 +100,37 @@ export const importFile = async function (
     };
   }
 
-  return fileTempSync(dialogResult.filePaths[0], projectTempPath);
+  return fs.fileTempSync(dialogResult.filePaths[0], projectTempPath);
 };
 
-export const EVENTS: ModelEventProps[] = [
+export const EVENTS:ProjectEvents = [
   {
-    name: PROJECT_IPC_EVENTS.new,
+    name: 'project/new',
+    type: 'invoke',
     fn: create,
-    type: 'invoke',
   },
   {
-    name: PROJECT_IPC_EVENTS.save,
+    name: 'project/save',
+    type: 'invoke',
     fn: save,
-    type: 'invoke',
   },
   {
-    name: PROJECT_IPC_EVENTS.importFile,
-    fn: importFile,
+    name: 'project/import-file',
     type: 'invoke',
+    fn: importFile,
   },
 ];
 
-export default {
+export const init = () => {
+  Requester.registerAll(EVENTS);
+};
+
+export const Project:Model = {
   EVENTS,
+  init,
   create,
   save,
   importFile,
-};
+}
+
+export default Project;

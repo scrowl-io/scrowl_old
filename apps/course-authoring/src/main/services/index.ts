@@ -1,4 +1,5 @@
-export * as exporter from './exporter';
-export * as fileSystem from './file-system';
-export * as internalStorage from './internal-storage';
-export * as menu from './menu';
+export * as Exporter from './exporter';
+export * as FileSystem from './file-system';
+export * as InternalStorage from './internal-storage';
+export * as Menu from './menu';
+export * as Requester from './requester';

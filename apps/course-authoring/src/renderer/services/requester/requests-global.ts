@@ -9,10 +9,10 @@ export const on = (
   window.electronAPI.ipcRenderer.on(endpoint, callback);
 };
 
-export const send = (endpoint: string, ...args: unknown[]) => {
-  window.electronAPI.ipcRenderer.send(endpoint, ...args);
+export const off = (endpoint: string) => {
+  window.electronAPI.ipcRenderer.removeAllListeners(endpoint);
 };
 
-export const removeAllListeners = (channel: string) => {
-  window.electronAPI.ipcRenderer.removeAllListeners(channel);
+export const send = (endpoint: string, ...args: unknown[]) => {
+  window.electronAPI.ipcRenderer.send(endpoint, ...args);
 };

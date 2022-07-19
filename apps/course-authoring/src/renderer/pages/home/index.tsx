@@ -8,17 +8,17 @@ import { Default as Icon } from '@owlui/icons';
 import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
-import { menu as menuModel, project as projectModel } from '../../models';
+import { menuService } from '../../services';
+import { projectModel } from '../../models';
 import { CardGrid } from '../../components/cardgrid';
 import {
   AllowedFiles,
   FileData,
   OpenFileData,
   SaveFileData,
-} from '../../../main/services/file-system/types';
+} from '../../../main/services/file-system/service-fs-types';
 import { Project } from './data.types';
-import { MENU_IPC_EVENTS } from '../../../main/services/menu/events';
-import { menuIds as fileMenuIds } from '../../../main/services/menu/templates/file-menu';
+import { Menu } from '../../../main/services';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -44,18 +44,18 @@ export const PageElement = () => {
   const [projectData] = useState<Project>(EXAMPLE_PROJECT);
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
-  const createProject = () => {
-    const resolveProjectCreate = (createResult: FileData) => {
-      if (createResult.error) {
-        console.error(createResult.message);
-        return;
-      }
+  // const createProject = () => {
+  //   const resolveProjectCreate = (createResult: FileData) => {
+  //     if (createResult.error) {
+  //       console.error(createResult.message);
+  //       return;
+  //     }
 
-      setProjectDir(createResult.dir);
-    };
+  //     setProjectDir(createResult.dir);
+  //   };
 
-    projectModel.create(projectData).then(resolveProjectCreate);
-  };
+  //   projectModel.create(projectData).then(resolveProjectCreate);
+  // };
 
   const importFile = (fileTypes: AllowedFiles[]) => {
     if (!projectDir) {
@@ -101,19 +101,19 @@ export const PageElement = () => {
   if (projectDir) console.log(projectDir);
 
   useEffect(() => {
-    // Register ipc menu events
-    menuModel.menuNewProject(createProject);
-    menuModel.menuSaveProject(value => saveProject(value ? true : false));
+    // // Register ipc menu events
+    // menuModel.newProject(createProject);
+    // menuModel.saveProject(value => saveProject(value ? true : false));
 
-    // Disable New Project... option from menu after creating a new project
-    if (projectDir) menuModel.menuDisableItemById(fileMenuIds.saveProject);
+    // // Disable New Project... option from menu after creating a new project
+    // if (projectDir) menuService.toggleItem(Menu.ITEMS.saveProject.id);
 
-    // Clean listeners after the component is dismounted.
-    // The save method must be removed in order to use the updated version of
-    // state added to the dependency array.
-    return () => {
-      menuModel.menuRemoveListeners([MENU_IPC_EVENTS.save]);
-    };
+    // // Clean listeners after the component is dismounted.
+    // // The save method must be removed in order to use the updated version of
+    // // state added to the dependency array.
+    // return () => {
+    //   menuService.disableItem(Menu.ITEMS.saveProject.event);
+    // };
   }, [projectDir, projectFile]);
 
   const Header = (
