@@ -1,19 +1,8 @@
 import { MenuItemConstructorOptions, IpcMainInvokeEvent } from 'electron';
-import { send } from '../../requester';
-import { MenuEvents, MenuItems } from '../service-menu.types';
+import { send, registerAll } from '../../requester';
+import { MenuItemEventsApp } from '../service-menu.types';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
-
-export const ITEMS: MenuItems = {
-  about: {
-    id: 'about',
-    event: 'menu/about'
-  },
-  preferences: {
-    id: 'preferences',
-    event: 'menu/preferences'
-  }
-};
 
 const aboutHandler = (event: IpcMainInvokeEvent) => {
   console.log('Open about Scrowl window...');
@@ -23,32 +12,34 @@ const preferencesHandler = (event: IpcMainInvokeEvent) => {
   console.log('Open preferences window...');
 };
 
-export const events:MenuEvents = [
-  {
-    name: ITEMS.about.event,
+export const EVENTS: MenuItemEventsApp = {
+  aboutOpen: {
+    id: 'about-open',
+    name: 'menu/about/open',
     type: 'on',
-    fn: aboutHandler
+    fn: aboutHandler,
   },
-  {
-    name: ITEMS.preferences.event,
+  preferencesOpen: {
+    id: 'preferences-open',
+    name: 'menu/preferences/open',
     type: 'on',
-    fn: preferencesHandler
-  },
-];
+    fn: preferencesHandler,
+  }
+};
 
 export const template: MenuItemConstructorOptions = {
   label: 'Scrowl',
   submenu: [
     {
       label: 'About Scrowl',
-      id:  ITEMS.about.id,
-      click: send(ITEMS.about.event),
+      id:  EVENTS.aboutOpen.id,
+      click: send(EVENTS.aboutOpen.name),
     },
     separator,
     {
       label: 'Preferences…',
-      id: ITEMS.preferences.id,
-      click: send(ITEMS.preferences.event),
+      id: EVENTS.preferencesOpen.id,
+      click: send(EVENTS.preferencesOpen.name),
       accelerator: 'CmdOrCtrl+,',
     },
     separator,
@@ -63,4 +54,14 @@ export const template: MenuItemConstructorOptions = {
     separator,
     { role: 'quit' },
   ],
+};
+
+export const init = () => {
+  registerAll(EVENTS);
+};
+
+export default {
+  EVENTS,
+  init,
+  template,
 };

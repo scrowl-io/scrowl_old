@@ -1,37 +1,32 @@
 import { MenuItemConstructorOptions } from 'electron';
-import { MenuEvents } from '../service-menu.types';
-import {
-  template as menuTempApp,
-  ITEMS as appItems,
-  events as appItemEvents,
-} from './service-menu-items-app';
-import {
-  template as menuTempFile,
-  ITEMS as fileItems,
-  events as fileItemEvents,
-} from './service-menu-items-file';
-
-export const menu: MenuItemConstructorOptions[] = [];
-
-export const ITEMS = Object.assign({}, appItems, fileItems);
-
-export const events:MenuEvents = appItemEvents.concat(fileItemEvents);
+import { MenuItemEventsFile, MenuItemEventsApp } from '../service-menu.types';
+import * as menuApp from './service-menu-items-app';
+import * as menuFile from './service-menu-items-file';
 
 export const createMenu = (
   isMacOs: boolean
-): MenuItemConstructorOptions[] => {
+): {
+  template: MenuItemConstructorOptions[],
+  EVENTS: Partial<MenuItemEventsFile> & Partial<MenuItemEventsApp>
+} => {
+  let EVENTS = {};
+  const template = [];
+
   if (isMacOs) {
-    menu.push(menuTempApp);
+    template.push(menuApp.template);
+    menuApp.init();
+    EVENTS = Object.assign(EVENTS, menuApp.EVENTS);
   }
 
-  menu.push(menuTempFile);
-
-  return menu;
+  template.push(menuFile.template);
+  menuFile.init();
+  EVENTS = Object.assign(EVENTS, menuFile.EVENTS);
+  return {
+    template,
+    EVENTS,
+  };
 };
 
 export default {
-  menu,
-  ITEMS,
-  events,
   createMenu,
 };

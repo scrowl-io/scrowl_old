@@ -1,63 +1,67 @@
-export type MenuItemNewProject = {
+import { Requester } from '../../services';
+
+export interface MenuEventNewProject extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'new-project';
-  event: 'menu/new-project';
-}
+  name: 'menu/project/new';
+};
 
-export type MenuItemSaveProject = {
+export interface MenuEventSaveProject extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'save-project';
-  event: 'menu/save-project';
-}
+  name: 'menu/project/save';
+};
 
-export type MenuItemSaveProjectAs = {
+export interface MenuEventSaveProjectAs extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'save-project-as';
-  event: 'menu/save-project';
-}
+  name: 'menu/project/save';
+};
 
-export type MenuItemToggleItem = {
-  id: 'toggle-itme';
-  event: 'menu/toggle-item';
-}
+export interface MenuEventToggleItem extends Omit<Requester.RegisterEvent, 'name'> {
+  id: 'toggle-item';
+  name: 'menu/item/toggle';
+};
 
-export type MenuItemAbout = {
-  id: 'about';
-  event: 'menu/about';
-}
+export interface MenuEventAboutOpen extends Omit<Requester.RegisterEvent, 'name'> {
+  id: 'about-open';
+  name: 'menu/about/open';
+};
 
-export type MenuItemPreferences = {
-  id: 'preferences';
-  event: 'menu/preferences';
-}
+export interface MenuEventPreferencesOpen extends Omit<Requester.RegisterEvent, 'name'> {
+  id: 'preferences-open';
+  name: 'menu/preferences/open';
+};
 
-export type MenuItemEvents =
-  | MenuItemNewProject["event"]
-  | MenuItemSaveProject["event"]
-  | MenuItemSaveProjectAs["event"]
-  | MenuItemToggleItem["event"]
-  | MenuItemAbout["event"]
-  | MenuItemPreferences["event"];
+export type MenuItemEventNames =
+  | MenuEventNewProject["name"]
+  | MenuEventSaveProject["name"]
+  | MenuEventSaveProjectAs["name"]
+  | MenuEventToggleItem["name"]
+  | MenuEventAboutOpen["name"]
+  | MenuEventPreferencesOpen["name"];
   
-export type MenuItemIds =
-  | MenuItemNewProject["id"]
-  | MenuItemSaveProject["id"]
-  | MenuItemSaveProjectAs["id"]
-  | MenuItemToggleItem["id"]
-  | MenuItemAbout["id"]
-  | MenuItemPreferences["id"];
+export type MenuItemEvent =
+  | MenuEventNewProject
+  | MenuEventSaveProject
+  | MenuEventSaveProjectAs
+  | MenuEventToggleItem
+  | MenuEventAboutOpen
+  | MenuEventPreferencesOpen;
 
-export interface MenuItems {
-  [key: string]:
-    | MenuItemNewProject
-    | MenuItemSaveProject
-    | MenuItemSaveProjectAs
-    | MenuItemToggleItem
-    | MenuItemAbout
-    | MenuItemPreferences;
+export type MenuItemEventsFile = {
+  'projectNew': MenuEventNewProject;
+  'projectSave': MenuEventSaveProject;
+  'projectSaveAs': MenuEventSaveProjectAs;
 }
 
-export interface MenuEvent {
-  name: MenuItemEvents;
-  type: 'on';
-  fn?: Function;
-}
+export type MenuItemEventsApp = {
+  'aboutOpen': MenuEventAboutOpen;
+  'preferencesOpen': MenuEventPreferencesOpen;
+};
 
-export type MenuEvents = Array<MenuEvent>;
+export type MenuEventsGlobal = {
+  'itemToggle': MenuEventToggleItem;
+};
+
+export type MenuEvents =
+  Partial<MenuEventsGlobal>
+  & Partial<MenuItemEventsApp>
+  & Partial<MenuItemEventsFile>;

@@ -17,14 +17,14 @@ export const getEvents = (
 
   for (let i = 0, ii = models.length; i < ii; i++) {
 
-    if (!models[i].EVENTS || !models[i].EVENTS.length) {
+    if (!models[i].EVENTS) {
       continue;
     }
 
-    for (let j = 0, jj = models[i].EVENTS.length; j < jj; j++) {
+    for (const [key, event] of Object.entries(models[i].EVENTS)) {
 
-      if (models[i].EVENTS[j].type === type) {
-        eventList.push(models[i].EVENTS[j].name);
+      if (event.type === type) {
+        eventList.push(event.name);
       }
     }
   }

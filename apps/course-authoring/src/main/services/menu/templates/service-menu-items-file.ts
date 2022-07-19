@@ -1,62 +1,58 @@
 import { MenuItemConstructorOptions } from 'electron';
-import { send } from '../../requester';
-import { MenuItems, MenuEvents } from '../service-menu.types';
+import { send, registerAll } from '../../requester';
+import { MenuItemEventsFile } from '../service-menu.types';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
-export const ITEMS: MenuItems = {
-  newProject: {
+export const EVENTS: MenuItemEventsFile = {
+  projectNew: {
     id: 'new-project',
-    event: 'menu/new-project',
+    name: 'menu/project/new',
+    type: 'on'
   },
-  saveProject: {
+  projectSave: {
     id: 'save-project',
-    event: 'menu/save-project',
+    name: 'menu/project/save',
+    type: 'on'
   },
-  saveProjectAs: {
+  projectSaveAs: {
     id: 'save-project-as',
-    event: 'menu/save-project',
-  },
-}
-
-export const events:MenuEvents = [
-  {
-    name: ITEMS.newProject.event,
-    type: 'on',
-  },
-  {
-    name: ITEMS.saveProject.event,
-    type: 'on',
+    name: 'menu/project/save',
+    type: 'on'
   }
-];
+};
 
 export const template: MenuItemConstructorOptions = {
   label: 'File',
   submenu: [
     {
       label: 'New Project...',
-      id: ITEMS.newProject.id,
-      click: send(ITEMS.newProject.event),
+      id: EVENTS.projectNew?.id,
+      click: send(EVENTS.projectNew.name),
       accelerator: 'CmdOrCtrl+N',
     },
     separator,
     {
       label: 'Save',
-      id: ITEMS.saveProject.id,
-      click: send(ITEMS.saveProject.event, false),
+      id: EVENTS.projectSave?.id,
+      click: send(EVENTS.projectSave.name, false),
       accelerator: 'CmdOrCtrl+S',
     },
     {
       label: 'Save As...',
-      id: ITEMS.saveProjectAs.id,
-      click: send(ITEMS.saveProjectAs.event, true),
+      id: EVENTS.projectSaveAs?.id,
+      click: send(EVENTS.projectSaveAs.name, true),
       accelerator: 'CmdOrCtrl+Shift+S',
     },
   ],
 };
 
+export const init = () => {
+  registerAll(EVENTS);
+};
+
 export default {
-  ITEMS,
-  events,
+  EVENTS,
+  init,
   template,
 };
