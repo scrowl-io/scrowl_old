@@ -1,6 +1,6 @@
 import { MenuItemConstructorOptions, IpcMainInvokeEvent } from 'electron';
 import { send } from '../../requester';
-import { MenuEvents, MenuItems } from '../service-menu-types';
+import { MenuEvents, MenuItems } from '../service-menu.types';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 

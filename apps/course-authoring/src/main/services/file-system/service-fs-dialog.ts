@@ -1,5 +1,5 @@
 import { dialog, OpenDialogOptions, SaveDialogOptions } from 'electron';
-import { OpenFileData, SaveFileData, FileFilters, AllowedFiles } from './service-fs-types';
+import { OpenFileData, SaveFileData, FileFilters, AllowedFiles } from './service-fs.types';
 
 export const MEDIA_TYPES: FileFilters = {
   image: { name: 'Image', extensions: ['jpg', 'jpeg', 'png'] },

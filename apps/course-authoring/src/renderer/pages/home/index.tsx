@@ -16,7 +16,7 @@ import {
   FileData,
   OpenFileData,
   SaveFileData,
-} from '../../../main/services/file-system/service-fs-types';
+} from '../../../main/services/file-system/service-fs.types';
 import { Project } from './data.types';
 import { Menu } from '../../../main/services';
 

@@ -1,6 +1,6 @@
 import { IpcMainInvokeEvent } from 'electron';
-import { Model } from '../model-types';
-import { ProjectEvents } from './model-project-types';
+import { Model } from '../model.types';
+import { ProjectEvents } from './model-project.types';
 import {
   FileSystem as fs,
   Requester,

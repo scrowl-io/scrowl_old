@@ -1,7 +1,7 @@
 import {
   AllowedFiles,
   FileData,
-} from '../../../main/services/file-system/service-fs-types';
+} from '../../../main/services/file-system/service-fs.types';
 import { PROJECT_IPC_EVENTS } from '../../../main/models/project/events';
 import { Project } from '../../pages/home/data.types';
 import { requester } from '../../services';

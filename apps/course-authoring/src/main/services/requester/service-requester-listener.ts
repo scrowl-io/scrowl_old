@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { RegisterEvent } from './service-requester-types';
+import { RegisterEvent } from './service-requester.types';
 
 export const register = (event: RegisterEvent) => {
   if (!event.fn || typeof event.fn !== 'function') {

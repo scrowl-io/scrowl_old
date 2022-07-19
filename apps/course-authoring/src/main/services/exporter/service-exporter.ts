@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import { ipcMain } from 'electron';
 import packager from 'scorm-packager';
-import { PathingProps, PathingKey } from './service-exporter-types';
+import { PathingProps, PathingKey } from './service-exporter.types';
 
 const pathing: PathingProps = {
   source: path.join(__dirname, 'course-template'),

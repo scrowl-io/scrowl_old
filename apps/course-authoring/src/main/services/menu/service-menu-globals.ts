@@ -1,5 +1,5 @@
 import { IpcMainInvokeEvent, Menu } from 'electron';
-import { MenuItemIds, MenuEvents } from './service-menu-types';
+import { MenuItemIds, MenuEvents } from './service-menu.types';
 
 const toggleItemHandler = (
   event: IpcMainInvokeEvent,

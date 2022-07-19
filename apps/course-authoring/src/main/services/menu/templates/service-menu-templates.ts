@@ -1,5 +1,5 @@
 import { MenuItemConstructorOptions } from 'electron';
-import { MenuEvents } from '../service-menu-types';
+import { MenuEvents } from '../service-menu.types';
 import {
   template as menuTempApp,
   ITEMS as appItems,

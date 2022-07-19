@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import { FileData } from './service-fs-types';
+import { FileData } from './service-fs.types';
 
 const normalize = (pathName: string) => {
   return path.normalize(pathName);
