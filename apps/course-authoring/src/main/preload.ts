@@ -1,10 +1,10 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { EVENTS as exporterEvents } from './services/exporter';
+import { getEvents as getExporterEvents } from './services/exporter';
 import { getEvents as getModelEvents } from './models';
 import { getEvents as getMenuEvents } from './services/menu'
 
 const validInvokeChannels = [
-  exporterEvents.package,
+  getExporterEvents('invoke'),
   getModelEvents('invoke'),
   getMenuEvents('on'),
 ].flat();

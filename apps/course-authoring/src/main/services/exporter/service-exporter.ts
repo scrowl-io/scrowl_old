@@ -1,8 +1,8 @@
 import path from 'path';
 import fs from 'fs-extra';
-import { ipcMain } from 'electron';
 import packager from 'scorm-packager';
-import { PathingProps, PathingKey } from './service-exporter.types';
+import { PathingProps, PathingKey, ExporterEvents } from './service-exporter.types';
+import { registerAll, RegisterEventType } from '../requester';
 
 const pathing: PathingProps = {
   source: path.join(__dirname, 'course-template'),
@@ -41,13 +41,32 @@ export const pack = () => {
   });
 };
 
-export const EVENTS = {
-  package: 'package-course',
+export const EVENTS:ExporterEvents = {
+  package: {
+    name: 'package-course',
+    type: 'invoke',
+    fn: pack,
+  },
 };
 
 export const init = () => {
-  ipcMain.handle(EVENTS.package, pack);
+  registerAll(EVENTS);
 };
+
+export const getEvents = (
+  type: RegisterEventType
+) => {
+  const eventList: Array<string> = [];
+
+  for (const [key, event] of Object.entries(EVENTS)) {
+
+    if (event.type === type) {
+      eventList.push(event.name);
+    }
+  }
+
+  return eventList;
+}
 
 export default {
   EVENTS,
