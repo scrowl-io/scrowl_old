@@ -8,6 +8,7 @@ export const register = (event: RegisterEvent) => {
 
   switch (event.type) {
     case 'invoke':
+    case 'handle':
       ipcMain.handle(event.name, event.fn);
       break;
     case 'on':

@@ -1,7 +1,8 @@
-import * as project from './project';
 import { Requester } from '../services';
+import * as Project from './project';
+import * as Preferences from './preferences';
 
-const models = [project];
+const models = [Preferences, Project];
 
 export const init = () => {
   models.forEach(model => {
@@ -12,17 +13,23 @@ export const init = () => {
 export const getEvents = (
   type: Requester.RegisterEventType
 ) => {
-  const getEventNames = (ev: Requester.RegisterEvent) => {
-    return ev.name;
-  };
+  const eventList: Array<string> = [];
 
-  return models
-    .map(model => {
-      return model.EVENTS
-        ? model.EVENTS.filter(ev => ev.type === type).map(getEventNames)
-        : [];
-    })
-    .flat();
+  for (let i = 0, ii = models.length; i < ii; i++) {
+
+    if (!models[i].EVENTS || !models[i].EVENTS.length) {
+      continue;
+    }
+
+    for (let j = 0, jj = models[i].EVENTS.length; j < jj; j++) {
+
+      if (models[i].EVENTS[j].type === type) {
+        eventList.push(models[i].EVENTS[j].name);
+      }
+    }
+  }
+
+  return eventList;
 };
 
 export default {
