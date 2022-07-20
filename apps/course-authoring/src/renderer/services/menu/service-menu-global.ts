@@ -12,13 +12,17 @@ export const ENDPOINTS:MenuEventGlobalApi = {
 export let ITEMS:MenuItems = {};
 
 export const init = () => {
-  requester.invoke(ENDPOINTS.itemList).then((result: ApiResult) => {
-
-    if (result.error) {
-      console.error(result);
-    }
-
-    ITEMS = result.data.items;
+  return new Promise((resolve) => {
+    requester.invoke(ENDPOINTS.itemList).then((result: ApiResult) => {
+      if (result.error) {
+        console.error(result);
+        resolve(result);
+        return;
+      }
+  
+      ITEMS = result.data.items;
+      resolve(result);
+    });
   });
 };
 

@@ -1,47 +1,67 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
-import { getEvents as getExporterEvents } from './services/exporter';
-import { getEvents as getModelEvents } from './models';
-import { getEvents as getMenuEvents } from './services/menu'
+import { RegisterEventType, RegisterEvent } from './services/requester';
 
-const validInvokeChannels = [
-  getExporterEvents(),
-  getModelEvents('invoke'),
-  getMenuEvents(),
-].flat();
+let eventList: Array<RegisterEvent> = [];
 
-const validOnChannels = getModelEvents('on');
+const updateEventList = async ():Promise<{
+  events: RegisterEvent[]
+}>  => {
+  const result = await ipcRenderer.invoke('events-all');
+
+  if (!result.error) {
+    eventList = result.data.events;
+  }
+
+  return {
+    events: eventList
+  };
+};
+
+const getValidEvents = async (type?: RegisterEventType) => {
+  const { events } = await updateEventList();
+  
+  return events
+    .filter((event: RegisterEvent) => {
+      return (!type || type === event.type);
+    })
+    .map((event: RegisterEvent) => {
+      return event.name;
+    });
+}
 
 contextBridge.exposeInMainWorld('electronAPI', {
   ipcRenderer: {
-    invoke(channel: string, ...args: unknown[]) {
-      if (validInvokeChannels.includes(channel)) {
-        return ipcRenderer.invoke(channel, ...args);
+    async invoke(endpoint: string, ...args: unknown[]) {
+      // sends an 'invoke' event to the backend
+      const validEvents = await getValidEvents('invoke');
+
+      if (validEvents.indexOf(endpoint) !== -1) {
+        return ipcRenderer.invoke(endpoint, ...args);
       }
     },
-    on(channel: string, func: (...args: unknown[]) => void) {
-      if (validOnChannels.includes(channel)) {
-        const subscription = (_event: IpcRendererEvent, ...args: unknown[]) => {
-          func(...args);
-        };
+    async on(endpoint: string, listener: (...args: unknown[]) => void) {
+      // listens to a 'send' event from the backend
+      const validEvents = await getValidEvents('send');
 
-        ipcRenderer.on(channel, subscription);
-
-        return () => ipcRenderer.removeListener(channel, subscription);
-      }
-
-      return undefined;
-    },
-    send(channel: string, ...args: unknown[]): void {
-      // same channel used to "send" will listen "on" and vice-versa
-      if (validOnChannels.includes(channel)) {
-        ipcRenderer.send(channel, ...args);
+      if (validEvents.indexOf(endpoint) !== -1) {
+        ipcRenderer.on(endpoint, listener);
       }
     },
-    removeAllListeners(channel: string) {
-      // same valid channels from "on" registerd because the same
-      // channels which can be registered can also be removed
-      if (validOnChannels.includes(channel)) {
-        ipcRenderer.removeAllListeners(channel);
+    async send(endpoint: string, ...args: unknown[]) {
+      // sends an 'on' event to the backend
+      const validEvents = await getValidEvents('on');
+
+      if (validEvents.indexOf(endpoint) !== -1) {
+        ipcRenderer.send(endpoint, ...args);
+      }
+    },
+    async removeAllListeners(endpoint: string) {
+      // removes all callbacks from an endpoint
+      // DANGREROUS //
+      const validEvents = await getValidEvents();
+      
+      if (validEvents.indexOf(endpoint) !== -1) {
+        ipcRenderer.removeAllListeners(endpoint);
       }
     },
   },

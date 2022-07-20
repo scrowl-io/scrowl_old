@@ -1,22 +1,13 @@
 import { IpcMainInvokeEvent, Menu } from 'electron';
 import { MenuItemEvent, MenuEventsGlobal, MenuItems } from './service-menu.types';
-import { ApiResult } from '../requester';
+import { ApiResult, registerAll } from '../requester';
 
 const itemListHandler = (event: IpcMainInvokeEvent) => {
   return new Promise<ApiResult>(resolve => {
-
-    if (!Object.keys(ITEMS).length) {
-      resolve({
-        error: true,
-        message: 'Menu has not been initialized'
-      });
-      return;
-    }
-
     resolve({
       error: false,
       data: {
-        items: ITEMS
+        items: JSON.parse(JSON.stringify(ITEMS))
       }
     });
   });
@@ -158,25 +149,21 @@ const itemEnableHandler = (
 
 export const EVENTS:MenuEventsGlobal = {
   itemList: {
-    id: 'item-list',
     name: 'menu/items',
     type: 'invoke',
     fn: itemListHandler,
   },
   itemToggle: {
-    id: 'item-toggle',
     name: 'menu/item/toggle',
     type: 'on',
     fn: itemToggleHandler,
   },
   itemDisable: {
-    id: 'item-disable',
     name: 'menu/item/disable',
     type: 'on',
     fn: itemDisableHandler,
   },
   itemEnable: {
-    id: 'item-enable',
     name: 'menu/item/enable',
     type: 'on',
     fn: itemEnableHandler,
@@ -186,6 +173,7 @@ export const EVENTS:MenuEventsGlobal = {
 export let ITEMS: MenuItems = {};
 
 export const init = (items: MenuItems) => {
+  registerAll(EVENTS);
   ITEMS = items;
 };
 

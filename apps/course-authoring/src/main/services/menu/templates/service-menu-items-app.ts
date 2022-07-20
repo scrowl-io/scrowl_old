@@ -33,13 +33,17 @@ export const template: MenuItemConstructorOptions = {
     {
       label: 'About Scrowl',
       id:  EVENTS.aboutOpen.id,
-      click: send(EVENTS.aboutOpen.name),
+      click: () => {
+        send(EVENTS.aboutOpen.name)
+      },
     },
     separator,
     {
       label: 'Preferences…',
       id: EVENTS.preferencesOpen.id,
-      click: send(EVENTS.preferencesOpen.name),
+      click: () => {
+        send(EVENTS.preferencesOpen.name)
+      },
       accelerator: 'CmdOrCtrl+,',
     },
     separator,

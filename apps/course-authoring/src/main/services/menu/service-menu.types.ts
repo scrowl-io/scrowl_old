@@ -31,22 +31,18 @@ export interface MenuEventPreferencesOpen extends Omit<Requester.RegisterEvent, 
 };
 
 export interface MenuEventItemList extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'item-list';
   name: 'menu/items';
 };
 
 export interface MenuEventItemToggle extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'item-toggle';
   name: 'menu/item/toggle';
 };
 
 export interface MenuEventItemDisable extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'item-disable';
   name: 'menu/item/disable';
 };
 
 export interface MenuEventItemEnable extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'item-enable';
   name: 'menu/item/enable';
 };
 

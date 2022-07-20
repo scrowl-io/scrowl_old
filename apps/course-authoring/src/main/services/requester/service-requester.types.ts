@@ -8,7 +8,7 @@ export type ClickHandler = (
 
 export type EventCallback = (event: IpcMainInvokeEvent, ...args: any[]) => any;
 
-export type RegisterEventType = 'send' | 'handle' | 'invoke' | 'on';
+export type RegisterEventType = 'send' | 'invoke' | 'on';
 
 export interface RegisterEvent {
   name: string;

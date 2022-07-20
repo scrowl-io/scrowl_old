@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs-extra';
 import packager from 'scorm-packager';
 import { PathingProps, PathingKey, ExporterEvents } from './service-exporter.types';
-import { registerAll, RegisterEventType } from '../requester';
+import { registerAll } from '../requester';
 
 const pathing: PathingProps = {
   source: path.join(__dirname, 'course-template'),
@@ -52,21 +52,6 @@ export const EVENTS:ExporterEvents = {
 export const init = () => {
   registerAll(EVENTS);
 };
-
-export const getEvents = (
-  type?: RegisterEventType
-) => {
-  const eventList: Array<string> = [];
-
-  for (const [key, event] of Object.entries(EVENTS)) {
-
-    if (!type || event.type === type) {
-      eventList.push(event.name);
-    }
-  }
-
-  return eventList;
-}
 
 export default {
   EVENTS,

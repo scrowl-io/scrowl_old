@@ -17,7 +17,7 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
 import { init as initModels } from './models';
-import { Menu, Exporter } from './services';
+import { Menu, Exporter, Requester } from './services';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -26,7 +26,7 @@ let mainWindow: BrowserWindow | null = null;
 const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
-const DARWIN = process.platform === 'darwin';
+const isDARWIN = process.platform === 'darwin';
 
 const installExtensions = () => {
   return Promise.all([installExtension(REACT_DEVELOPER_TOOLS)]);
@@ -142,8 +142,9 @@ app
   .whenReady()
   .then(() => {
     registerScrowlFileProtocol();
+    Menu.init(isDARWIN);
+    Requester.init();
     createWindow();
-    Menu.init(DARWIN);
 
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
