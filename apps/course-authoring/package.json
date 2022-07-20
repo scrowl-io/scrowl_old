@@ -158,7 +158,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.22",
+    "@owlui/lib": "^0.0.27",
     "@scrowl/parcel-resolver-asset-path": "^0.0.0",
     "@scrowl/parcel-transformer-asset-path": "^0.0.0",
     "adm-zip": "^0.5.9",
