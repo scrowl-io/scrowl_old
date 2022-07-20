@@ -2,11 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import style from './styles.module.scss';
-import { Default as Nav } from '@owlui/navigationdrawer';
-import { Default as Btn } from '@owlui/button';
-import { Default as Icon } from '@owlui/icons';
-import { Default as Table } from '@owlui/table';
-import { Default as Card } from '@owlui/card';
+import { Button, Card, Icon, NavigationDrawer as Nav, Table } from '@owlui/lib';
 import { CardGrid } from '../../components/cardgrid';
 import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
 import { Menu } from '../../services';
@@ -33,7 +29,9 @@ const TemplatesList = () => {
 };
 
 export const PageElement = () => {
-  const [projectData, setProjectData] = useState<ProjectDataNew | ProjectData>(EXAMPLE_PROJECT);
+  const [projectData, setProjectData] = useState<ProjectDataNew | ProjectData>(
+    EXAMPLE_PROJECT
+  );
   const [projectDir, setProjectDir] = useState<string>();
   const activeProject = new Project(projectData);
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
@@ -56,7 +54,7 @@ export const PageElement = () => {
     }
 
     activeProject.importFile(['image']).then(updatePlaceholderImage);
-  }
+  };
 
   useEffect(() => {
     const updateProject = (createResult: FileData) => {
@@ -64,10 +62,10 @@ export const PageElement = () => {
         console.error(createResult.message);
         return;
       }
-  
+
       setProjectData(activeProject.data);
       setProjectDir(activeProject.workingDir);
-    }
+    };
 
     Menu.File.onProjectNew(() => {
       if (projectDir) {
@@ -77,13 +75,13 @@ export const PageElement = () => {
 
       activeProject.create(projectData).then(updateProject);
     });
-    
+
     Menu.File.onProjectSave(() => {
       if (!projectDir) {
         console.error('Unable to save project - project not created');
         return;
       }
-  
+
       activeProject.save().then(updateProject);
     });
 
@@ -92,7 +90,7 @@ export const PageElement = () => {
         console.error('Unable to save project - project not created');
         return;
       }
-  
+
       activeProject.saveAs().then(updateProject);
     });
 
@@ -125,18 +123,15 @@ export const PageElement = () => {
       </div>
       <div className={style.navActions}>
         <div>
-          <Btn variant="link">
+          <Button variant="link">
             <Link to="/settings">Settings</Link>
-          </Btn>
+          </Button>
         </div>
         <div className={style.navDivider} />
         <div>
-          <Btn
-            onClick={importFile}
-            disabled={projectDir ? false : true}
-          >
+          <Button onClick={importFile} disabled={projectDir ? false : true}>
             Import Image
-          </Btn>
+          </Button>
           {imgFileExample && (
             <>
               <div className={style.navDivider} />
@@ -164,7 +159,7 @@ export const PageElement = () => {
         <section className={style.filesList}>
           <div>
             <h2 className={style.sectionTitle}>Your Files</h2>
-            <Table columns={filesList.columns} items={filesList.items} />
+            <Table tableData={filesList} />
           </div>
         </section>
         <section className={style.templatesList}>

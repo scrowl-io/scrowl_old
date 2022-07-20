@@ -1496,111 +1496,193 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@owlui/button@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/button/-/button-0.0.22.tgz#59d0ea5f0ee1446e4cbf6a7ae665975287d50a0a"
-  integrity sha512-8gbFII7VTjdGlffs818Oop8k/S0NVVjz9MKoRBOdOLWyrHv6abyUDaI6McahFPtyBF/tjYPdJEiCpQ0T0HV+pg==
+"@owlui/accordion@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/accordion/-/accordion-0.0.27.tgz#d69f82c85a6eb7244dce6f13544c4326c5bf0f09"
+  integrity sha512-mxFCX8JhDLzxV9OKytxzHQ1cEjp6JYNMc25l88IwooEe+QIBeWSwdKa3+5zYs72Q4wQtjmOgud98ZFPsUSkjag==
   dependencies:
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.22"
-    "@owlui/utils" "^0.0.22"
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
     react-bootstrap "2.4.0"
 
-"@owlui/card@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/card/-/card-0.0.22.tgz#96e7d8bd0b3a4e00db8f35d6265f49c0e1090a66"
-  integrity sha512-+DH05IaHFdiRCQXClHeqBQui/9s0uCEFp3v/6kCtAF/KAlLQnnSrxnAVaKUbl43jEkQc6DYKiEIhxxGjBQep7w==
+"@owlui/badge@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/badge/-/badge-0.0.27.tgz#6adfb429b10bd3c640950c85026c27627c75f8fd"
+  integrity sha512-YEriaiN9pbtKaK7FstcqObqI+Vi0KX/ptcAlUJ/tpo/wyS6jhyuYSxZyH8x0qlI2WVx366LvYJPe7U4bgGnvRQ==
   dependencies:
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.22"
-    "@owlui/utils" "^0.0.22"
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
     react-bootstrap "2.4.0"
 
-"@owlui/design@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/design/-/design-0.0.22.tgz#fe0184a58705d6b196a8489bc0b05fb1fe2acb48"
-  integrity sha512-a4Ga+qsO7a5SdOZq2ORrTPshTDx8QsH/nOxO1oa464bNSRf2n/zDrNZP33KRpi4dY9HFaVodXiObrcB9g2h/8Q==
-
-"@owlui/icons@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/icons/-/icons-0.0.22.tgz#b3664963f62c269002f1a2390a7b075481193d66"
-  integrity sha512-5ZTdFYNDoviMOMR5cSQOtvjnr4nbl2Wkk1F/iyBZSnyIr8HiuOecQq8qw53Ygd2T2LUoCZva0eNJOkUin20Kfg==
+"@owlui/button@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/button/-/button-0.0.27.tgz#26d238a50987b8afca83966e85329a8cead00be8"
+  integrity sha512-Cm29Gilo1vb3/inErYY3FgOjX5/1nIVulezfzshRFquwoAj401chUoY8Vp45bI6Tc0KfpQvMmPY/mMy0zc2vYg==
   dependencies:
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.22"
-    "@owlui/utils" "^0.0.22"
-
-"@owlui/lib@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/lib/-/lib-0.0.22.tgz#1b982215a074a12e5b9853c2628ee79372819f10"
-  integrity sha512-33V+qQJSAt8vQylqLha0/FsXJGCBxL9CnGzi4zvBXZAZ4kZ9HgcTg1UqDIR1SadaqACbUzX0gitk9vRRx4z/QA==
-  dependencies:
-    "@owlui/button" "^0.0.22"
-    "@owlui/card" "^0.0.22"
-    "@owlui/icons" "^0.0.22"
-    "@owlui/navigationdrawer" "^0.0.22"
-    "@owlui/table" "^0.0.22"
-    "@owlui/textfield" "^0.0.22"
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.22"
-    "@owlui/utils" "^0.0.22"
-
-"@owlui/navigationdrawer@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/navigationdrawer/-/navigationdrawer-0.0.22.tgz#c6e7b318cfd26dafccdd293068f912de70833d84"
-  integrity sha512-KfGhbQvuRE+lPJHvB9/bwlyvmcS2FppkpIdXk/mqxNSI/aEwdYGymSFZkqjKOOm6cycjL+SCJSOoHgyct+Qmrg==
-  dependencies:
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.22"
-    "@owlui/utils" "^0.0.22"
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
     react-bootstrap "2.4.0"
 
-"@owlui/table@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/table/-/table-0.0.22.tgz#158827a09586beb783663da94db0ee3abb1ad6f5"
-  integrity sha512-pz2ychEXv4CCFO9axXsa5Eq6BbhghYO2aw3TgRY5luxVC7LMa9fXJgRj6G0x9YwKGpNH+B2JB+1+gYcqY20VkQ==
+"@owlui/card@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/card/-/card-0.0.27.tgz#e9a1c8b6109c3dc04cef5ff10bf1b361d57c1e21"
+  integrity sha512-/bnKfIe/J2DdH9SGWFypEz7bzO32bOD0N2sTDmIxCzEINbqGWiDmqSAIO+rLRB4Y7H/34PcBkUpfhotTOtXs1A==
   dependencies:
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.22"
-    "@owlui/utils" "^0.0.22"
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
     react-bootstrap "2.4.0"
 
-"@owlui/textfield@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/textfield/-/textfield-0.0.22.tgz#385be6b6f1b2f1bd40589e6b5fa059c9a609fbe0"
-  integrity sha512-jx3Q4XqX6Nvgw0QYpHc5TJj64Cg5VwltmBuFB+eoYqPYGhScoCbTX6YIUO+4kKaKYAw+0wwV5qdzTMxy6ACsXQ==
+"@owlui/carousel@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/carousel/-/carousel-0.0.27.tgz#98ed0cf86efd08eac15c86a14c94249fd7bfaba3"
+  integrity sha512-9H1Fug32Dc4aAFcRxWQyEPVwOxt42H/n76Z5R51k3HqM1pJ8ppk5YYjjnvgM86l7rtAWtxeHwZBIt/N/Is2pNw==
   dependencies:
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.22"
-    "@owlui/utils" "^0.0.22"
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
     react-bootstrap "2.4.0"
 
-"@owlui/theme@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/theme/-/theme-0.0.22.tgz#43458e99d89c1a73ed4df0a15578b0c29c10d062"
-  integrity sha512-Y1370AC0sQclZ79CAb5zMpehqvicr25p8JOn9UQkPDFJ174d8Z/JQeyyr+n/Zrwxy/aEgL97dsIPblJx4ghbVw==
+"@owlui/closebutton@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/closebutton/-/closebutton-0.0.27.tgz#f438b1b59e8a6e8d73a074055f95a9d7ab24334b"
+  integrity sha512-R1UPiuScXOaEa0iBwMHipjNJgN6W7Iu9NSWePKVabI1W2JrUhdkRnxE182cq/aCguhl/qwm4eYqui36VDmsAYA==
   dependencies:
-    "@owlui/design" "^0.0.22"
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/design@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/design/-/design-0.0.27.tgz#70b3872a391c51a0f12d61ea42d9774104f839e5"
+  integrity sha512-YmqaQk/Dn/siI6ebK4ZvBLcS7FQTzOZtI2AK9okN9vjC9fJ21QJYvgLXmqsnaAH+IrjIJrhD5dQ2f3q50mmxXw==
+
+"@owlui/drawer@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/drawer/-/drawer-0.0.27.tgz#f2c95313a023d50e876b58d84be0eb33c9c81907"
+  integrity sha512-rtWYqVhW0aEq2yIwx6Z237pfc10MJGx/4o7s7mfo+8pLP4S4UWOTVqA8zwAYGxzz+MzC5wwchqu4caT1RzPUrQ==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/dropdown@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/dropdown/-/dropdown-0.0.27.tgz#c59d272ced5d9f8d06694c4c3904fa770e178ba8"
+  integrity sha512-bqnh9YFKZAFu3D6l8Iz0tADtQ2103WwJjwEM2sWMzODMnxUvVXc4OkIt+6hFwPhBwQhojpr51VDJf6uphFmjPw==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "^2.4.0"
+
+"@owlui/icons@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/icons/-/icons-0.0.27.tgz#6a561c09d38d53d6debbec47e186dd80ec9ec827"
+  integrity sha512-7AsAKjmSxOug0Z3vrM2AM+ESgXSRGOVT5lWU2uohzNDCXWIk8UfpfWs/0XdygUWTWvFAhy5rz3gXG2WZr1marw==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+
+"@owlui/lib@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/lib/-/lib-0.0.27.tgz#6083da002aff27c82f63c163b245a2081043adec"
+  integrity sha512-vVXiYqsYbD193RAWYLrfinnGzPNJdRsOaMWk7RBk4KLoC6UU8ihkhtib6XV8IMC73X6S0ok81uBBZNzyi/tR7Q==
+  dependencies:
+    "@owlui/accordion" "^0.0.27"
+    "@owlui/badge" "^0.0.27"
+    "@owlui/button" "^0.0.27"
+    "@owlui/card" "^0.0.27"
+    "@owlui/carousel" "^0.0.27"
+    "@owlui/closebutton" "^0.0.27"
+    "@owlui/design" "^0.0.27"
+    "@owlui/drawer" "^0.0.27"
+    "@owlui/dropdown" "^0.0.27"
+    "@owlui/icons" "^0.0.27"
+    "@owlui/navigationdrawer" "^0.0.27"
+    "@owlui/progressbar" "^0.0.27"
+    "@owlui/spinner" "^0.0.27"
+    "@owlui/switchtoggle" "^0.0.27"
+    "@owlui/table" "^0.0.27"
+    "@owlui/tabs" "^0.0.27"
+    "@owlui/textfield" "^0.0.27"
+    "@owlui/toast" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
     bootstrap "5.2.0-beta1"
-    material-design-icons "^3.0.1"
 
-"@owlui/typings@^0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.20.tgz#5459e00f13c652ca7ab90c3631762969c1fd6450"
-  integrity sha512-OU+ls5D1DtZGgn5QKpYisxiKgnOrI5GJGUNreXiQQYD2w5mLFHx//728LSobj5i+aLIMQCkVV52qi5W1pfcArg==
-
-"@owlui/typings@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.22.tgz#38e494d07dffe00ba0355c1ec5f9f6094237057b"
-  integrity sha512-esj0vuRC/xIuQO3xO4NRvbm8m3drwUL+Aq/RiOFV0FypDli8GNY2S7e6yVApgwLw3ylM+bfor30kph+569Guow==
-
-"@owlui/utils@^0.0.22":
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/@owlui/utils/-/utils-0.0.22.tgz#b5c7003bc6d9e59f95bb2d6c36c0281f6324ba98"
-  integrity sha512-Afw/JN+4CffL6G3pLRtXc2U900F1WtuFq06QieLxrKDT8SybQj9eNNP4A1DThn1gZz1kIrVEKGtjL+OJmD/RZw==
+"@owlui/navigationdrawer@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/navigationdrawer/-/navigationdrawer-0.0.27.tgz#0379c14e15097dd6faaf421ea6955c125549dc3c"
+  integrity sha512-Q5fjKLAs7mF9aI0CxV0yh9H89i+pJ8OlByGumwPLAiydM4gQHQ7GxSgBAlPGtf4/H+a6WszVK/mPVBbjOcw3yQ==
   dependencies:
-    "@owlui/theme" "^0.0.22"
-    "@owlui/typings" "^0.0.20"
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/progressbar@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/progressbar/-/progressbar-0.0.27.tgz#fdaf4d3c6788554b821ceb73167f69a2892f83eb"
+  integrity sha512-CXtNdWV2b04QEoUMCWFUGqYnHxZ7chQKHw6ggtK8sok8oCOUKUHSVobeACj8zlOwfmX0SQuCVmOXYsYC2mjFkA==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/spinner@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/spinner/-/spinner-0.0.27.tgz#cfab272236e831a8df8c4ffffc7d9393261fdbdb"
+  integrity sha512-vKgUtFW4PPaEoiOyD4EwKSMc2XuPI1WXFKMKUX2I8JdR5VEMYqd1cHy7RKeIKWD30vOspNuDxlfU7Y5tXUoXDg==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/switchtoggle@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/switchtoggle/-/switchtoggle-0.0.27.tgz#45918ce45d88d88bd8868d7e4bc13dc7001bae6a"
+  integrity sha512-38bd86CUhVS0Ngsqj3Mg1BJ7GRJOMDovJXopCA/Ajbo6NDSdkgcbef5ZhZQwRtmvmP2+CmwrPGmYg9mHbJiazQ==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/table@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/table/-/table-0.0.27.tgz#807072b6587b73e86b062f340ab2d09ed45dae08"
+  integrity sha512-0ilFOLuG7QM0qklc8EyZYNzKdprIXORuVyg6L5o5J4nc+ETA/4Fi0OmJTlclxhKpS2qbcTwOQ1MAX9T8lGmOxw==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/tabs@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/tabs/-/tabs-0.0.27.tgz#962bb4559dc1452779602dbbd09cc893afe113e5"
+  integrity sha512-mqdbz+HegPfnPncNj1NpMdgi18pE+Y4SEK1tAsrseeqlH+SAb/QjglFmUBFo8Jq+2J7O1QxjifDxxffP4QWNJg==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "^2.4.0"
+
+"@owlui/textfield@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/textfield/-/textfield-0.0.27.tgz#73fd934f981b9b4979f737064bcc665fd2dc8547"
+  integrity sha512-XjyXG7TGQej/t63Sa25h+V4FY4T2EnvoQKKTJAsApdtrH/9oISRJy0OinXnmom8UI6jfO59J+D9p4lREyMRsaA==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/toast@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/toast/-/toast-0.0.27.tgz#896403c73089ff0c0c52973bd0f44527352db783"
+  integrity sha512-JjPLZhACYJtQeMnODl4uzX9N3ZDMeddirFA2gCXzEGodmwN96patshUIbWyqYe0BAdG930mktcwC4RM0tktURQ==
+  dependencies:
+    "@owlui/lib" "^0.0.27"
+    "@owlui/typings" "^0.0.27"
+    react-bootstrap "2.4.0"
+
+"@owlui/typings@^0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@owlui/typings/-/typings-0.0.27.tgz#5ce5243f62e38e01265e1f00261972b8a28a2f8b"
+  integrity sha512-fCPY3k2LkRDqu/FEYaNGqu3ZOlsO7JnJFIW5BBMPGQEK74Exh3k4OBB1B8/kOKmICiledU4krDVswwEbm8uxOw==
 
 "@parcel/bundler-default@2.5.0":
   version "2.5.0"
@@ -6962,11 +7044,6 @@ matcher@^3.0.0:
   dependencies:
     escape-string-regexp "^4.0.0"
 
-material-design-icons@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/material-design-icons/-/material-design-icons-3.0.1.tgz#9a71c48747218ebca51e51a66da682038cdcb7bf"
-  integrity sha512-t19Z+QZBwSZulxptEu05kIm+UyfIdJY1JDwI+nx02j269m6W414whiQz9qfvQIiLrdx71RQv+T48nHhuQXOCIQ==
-
 mathml-tag-names@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/mathml-tag-names/-/mathml-tag-names-2.1.3.tgz#4ddadd67308e780cf16a47685878ee27b736a0a3"
@@ -8007,7 +8084,7 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-bootstrap@2.4.0:
+react-bootstrap@2.4.0, react-bootstrap@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/react-bootstrap/-/react-bootstrap-2.4.0.tgz#99bf9656e2e7a23ae1ae135d18fd5ad7c344b416"
   integrity sha512-dn599jNK1Fg5GGjJH+lQQDwELVzigh/MdusKpB/0el+sCjsO5MZDH5gRMmBjRhC+vb7VlCDr6OXffPIDSkNMLw==
