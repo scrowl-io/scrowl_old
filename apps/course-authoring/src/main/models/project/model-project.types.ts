@@ -12,6 +12,12 @@ export interface ProjectEventImport extends Omit<Requester.RegisterEvent, 'name'
   name: 'project/import-file';
 }
 
+export type ProjectEventApi = {
+  'new': ProjectEventNew['name'];
+  'save': ProjectEventSave['name'];
+  'import': ProjectEventImport['name'];
+};
+
 export type ProjectEventNames = 
   | ProjectEventNew['name']
   | ProjectEventSave['name']

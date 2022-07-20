@@ -3,9 +3,14 @@ import {
   FileData,
   OpenFileData,
 } from '../../../main/services/file-system';
-import { EVENTS, ProjectData, ProjectDataNew } from '../../../main/models/project';
-import { requester } from '../../services';
+import { ProjectData, ProjectDataNew, ProjectEventApi } from '../../../main/models/project';
+import { requester, Menu } from '../../services';
 
+export const ENDPOINTS:ProjectEventApi = {
+  new: 'project/new',
+  save: 'project/save',
+  import: 'project/import-file'
+}
 export class Project {
   workingDir: string;
   data: ProjectData | ProjectDataNew;
@@ -17,7 +22,7 @@ export class Project {
     const self = this;
     
     return new Promise<FileData>((resolve, reject) => {
-      requester.invoke(EVENTS.new.name, data)
+      requester.invoke(ENDPOINTS.new, data)
         .then((result: FileData) => {
           if (result.error) {
             resolve(result);
@@ -40,7 +45,7 @@ export class Project {
     const self = this;
 
     return new Promise<FileData>((resolve, reject) => {
-      requester.invoke(EVENTS.save.name, this.data, saveAs, self.workingDir)
+      requester.invoke(ENDPOINTS.save, this.data, saveAs, self.workingDir)
         .then((result: FileData) => {
           if (result.error) {
             resolve(result);
@@ -69,7 +74,7 @@ export class Project {
     const self = this;
 
     return new Promise<OpenFileData>((resolve, reject) => {
-      requester.invoke(EVENTS.import.name, fileTypes, self.workingDir)
+      requester.invoke(ENDPOINTS.import, fileTypes, self.workingDir)
         .then((result: OpenFileData) => {
           if (result.error) {
             resolve(result);

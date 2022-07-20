@@ -17,7 +17,7 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
 import { init as initModels } from './models';
-import { Menu, Exporter, InternalStorage } from './services';
+import { Menu, Exporter } from './services';
 
 const __rootdir = path.join(__dirname, '../../');
 
