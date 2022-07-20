@@ -1,6 +1,11 @@
 import React from 'react';
-import { Default as Card, CardHeader, CardBody, CardFooter } from '@owlui/card';
-import { Default as Btn } from '@owlui/button';
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Button as Btn,
+} from '@owlui/lib';
 import { CardProps, CardsProps } from './index.types';
 import style from './styles.module.scss';
 import { Link } from 'react-router-dom';

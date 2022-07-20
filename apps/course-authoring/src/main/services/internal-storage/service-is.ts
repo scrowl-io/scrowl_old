@@ -11,7 +11,12 @@ const DB = knex({
 });
 
 export const get = (tableName: string, column?: string) => {
-  return DB.select(column).from(tableName);
+
+  if (column) {
+    return DB.select(column).from(tableName);
+  }
+
+  return DB.select().from(tableName);
 };
 
 export const set = (tableName: string, data: DatabaseData) => {

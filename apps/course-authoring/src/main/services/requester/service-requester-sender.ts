@@ -1,9 +1,9 @@
 import { BrowserWindow } from 'electron';
 import { ClickHandler } from './service-requester.types';
-import { MenuItemEvents } from '../menu/service-menu.types';
+import { MenuItemEventNames } from '../menu/service-menu.types';
 
 export function send(
-  name: MenuItemEvents,
+  name: MenuItemEventNames,
   ...args: unknown[]
 ): ClickHandler {
   return (_, focusedWindow) => {

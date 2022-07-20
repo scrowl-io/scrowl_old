@@ -76,7 +76,6 @@ const createWindow = async () => {
   }
 
   Exporter.init();
-  InternalStorage.preferencesInit();
   initModels();
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));

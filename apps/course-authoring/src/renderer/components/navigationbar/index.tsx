@@ -2,7 +2,7 @@ import React from 'react';
 import style from './styles.module.scss';
 import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 import { PageNavItem } from '../../pages/index.types';
-import { Default as Btn } from '@owlui/button';
+import { Button as Btn } from '@owlui/lib';
 import { NavigationBarProps } from './index.types';
 
 const NavigationItem = ({ page }: { page: PageNavItem }) => {
