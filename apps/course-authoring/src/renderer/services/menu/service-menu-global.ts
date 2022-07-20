@@ -6,6 +6,7 @@ export const ENDPOINTS:MenuEventGlobalApi = {
   itemList: 'menu/items',
   itemDisable: 'menu/item/disable',
   itemToggle: 'menu/item/toggle',
+  itemEnable: 'menu/item/enable',
 };
 
 export let ITEMS:MenuItems = {};
@@ -25,21 +26,13 @@ const isMenuInitialized = () => {
   return Object.keys(ITEMS).length > 0;
 }
 
-export const disable = (item: keyof typeof ITEMS) => {
+export const enable = (item: typeof ITEMS[keyof typeof ITEMS]) => {
   return new Promise<ApiResult>(resolve => {
 
-    if (!isMenuInitialized) {
+    if (!item) {
       resolve({
         error: true,
-        message: `Unable to disable item: ${item} - Menu not initialized`
-      });
-      return;
-    }
-
-    if (!ITEMS[item]) {
-      resolve({
-        error: true,
-        message: `Unable to disable item: ${item} - Item not found`,
+        message: `Unable to enable item - No item to process`,
         data: {
           items: ITEMS
         }
@@ -47,25 +40,25 @@ export const disable = (item: keyof typeof ITEMS) => {
       return;
     }
 
-    requester.invoke(ENDPOINTS.itemDisable, ITEMS[item]).then(resolve);
+    if (!isMenuInitialized) {
+      resolve({
+        error: true,
+        message: `Unable to enable item: ${item.name} - Menu not initialized`
+      });
+      return;
+    }
+
+    requester.invoke(ENDPOINTS.itemEnable, item).then(resolve);
   });
 };
 
-export const toggle = (item: keyof typeof ITEMS) => {
+export const disable = (item: typeof ITEMS[keyof typeof ITEMS]) => {
   return new Promise<ApiResult>(resolve => {
 
-    if (!isMenuInitialized) {
+    if (!item) {
       resolve({
         error: true,
-        message: `Unable to toggle item: ${item} - Menu not initialized`
-      });
-      return;
-    }
-
-    if (!ITEMS[item]) {
-      resolve({
-        error: true,
-        message: `Unable to toggle item: ${item} - Item not found`,
+        message: `Unable to disable item - No item to process`,
         data: {
           items: ITEMS
         }
@@ -73,7 +66,41 @@ export const toggle = (item: keyof typeof ITEMS) => {
       return;
     }
 
-    requester.invoke(ENDPOINTS.itemToggle, ITEMS[item]).then(resolve);
+    if (!isMenuInitialized) {
+      resolve({
+        error: true,
+        message: `Unable to disable item: ${item.name} - Menu not initialized`
+      });
+      return;
+    }
+
+    requester.invoke(ENDPOINTS.itemDisable, item).then(resolve);
+  });
+};
+
+export const toggle = (item: typeof ITEMS[keyof typeof ITEMS]) => {
+  return new Promise<ApiResult>(resolve => {
+
+    if (!item) {
+      resolve({
+        error: true,
+        message: `Unable to toggle item - No item to process`,
+        data: {
+          items: ITEMS
+        }
+      });
+      return;
+    }
+
+    if (!isMenuInitialized) {
+      resolve({
+        error: true,
+        message: `Unable to toggle item: ${item.name} - Menu not initialized`
+      });
+      return;
+    }
+
+    requester.invoke(ENDPOINTS.itemToggle, item).then(resolve);
   });
 };
 

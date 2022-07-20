@@ -9,8 +9,9 @@ import { Default as Table } from '@owlui/table';
 import { Default as Card } from '@owlui/card';
 import { CardGrid } from '../../components/cardgrid';
 import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
-import * as fsTypes from '../../../main/services/file-system/service-fs.types';
+import { Menu } from '../../services';
 import { Project } from '../../models';
+import { FileData, OpenFileData } from '../../../main/services/file-system';
 import { ProjectData, ProjectDataNew } from '../../../main/models/project';
 
 export const PageRoute = '/';
@@ -32,31 +33,32 @@ const TemplatesList = () => {
 };
 
 export const PageElement = () => {
-  const [projectDir, setProjectDir] = useState<string | undefined>();
-  const [projectFile, setProjectFile] = useState<string | undefined>();
-  const [projectData] = useState<ProjectDataNew | ProjectData>(EXAMPLE_PROJECT);
+  const [projectData, setProjectData] = useState<ProjectDataNew | ProjectData>(EXAMPLE_PROJECT);
+  const [projectDir, setProjectDir] = useState<string>();
+  const activeProject = new Project(projectData);
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
-  // const createProject = () => {
-  //   const resolveProjectCreate = (createResult: fsTypes.FileData) => {
-  //     if (createResult.error) {
-  //       console.error(createResult.message);
-  //       return;
-  //     }
-
-  //     setProjectDir(createResult.dir);
-  //   };
-
-  //   Project.create(projectData).then(resolveProjectCreate);
-  // };
-
-  const importFile = (fileTypes: fsTypes.AllowedFiles[]) => {
-    if (!projectDir) {
-      console.error('you must create a new project to import files.');
+  const updateProject = (createResult: FileData) => {
+    if (createResult.error) {
+      console.error(createResult.message);
       return;
     }
 
-    const resolveImportFile = (importResult: fsTypes.OpenFileData) => {
+    setProjectData(activeProject.data);
+    setProjectDir(activeProject.workingDir);
+  }
+
+  const saveProject = () => {
+    if (!projectDir) {
+      console.error('Unable to save project - project not created');
+      return;
+    }
+
+    activeProject.save().then(updateProject);
+  }
+
+  const importFile = () => {
+    function updatePlaceholderImage(importResult: OpenFileData) {
       if (importResult.error) {
         console.error(importResult.message);
         return;
@@ -65,50 +67,34 @@ export const PageElement = () => {
       if (importResult.filename) {
         setImgFileExample(`scrowl-file://${importResult.filename}`);
       }
-    };
+    }
 
-    Project.importFile(fileTypes, projectDir).then(resolveImportFile);
-  };
-
-  const saveProject = (isSaveAs: boolean) => {
     if (!projectDir) {
-      console.error('you must create a new project before saving the project.');
+      console.error('Unable to import file - project not created');
       return;
     }
 
-    const resolveProjectSave = function (saveResult: fsTypes.SaveFileData) {
-      if (saveResult.error) {
-        console.error(saveResult.message);
-        return;
-      }
-
-      setProjectFile(saveResult.filePath);
-    };
-
-    Project
-      .save(projectDir, isSaveAs, projectFile)
-      .then(resolveProjectSave);
-  };
-
-  // log project dir for dev purposes
-  if (projectDir) console.log(projectDir);
+    activeProject.importFile(['image']).then(updatePlaceholderImage);
+  }
 
   useEffect(() => {
-    Project.create();
-    // // Register ipc menu events
-    // menuModel.newProject(createProject);
-    // menuModel.saveProject(value => saveProject(value ? true : false));
+    Menu.File.onProjectNew(() => {
+      activeProject.create(projectData).then(updateProject);
+    });
+    
+    Menu.File.onProjectSave(saveProject);
+    Menu.File.onImportFile(importFile);
 
-    // // Disable New Project... option from menu after creating a new project
-    // if (projectDir) menuService.toggleItem(Menu.ITEMS.saveProject.id);
-
-    // // Clean listeners after the component is dismounted.
-    // // The save method must be removed in order to use the updated version of
-    // // state added to the dependency array.
-    // return () => {
-    //   menuService.disableItem(Menu.ITEMS.saveProject.event);
-    // };
-  }, [projectDir, projectFile]);
+    if (activeProject.workingDir) {
+      Menu.Global.disable(Menu.Global.ITEMS.projectNew);
+      Menu.Global.enable(Menu.Global.ITEMS.projectSave);
+      Menu.Global.enable(Menu.Global.ITEMS.importFile);
+    } else {
+      Menu.Global.enable(Menu.Global.ITEMS.projectNew);
+      Menu.Global.disable(Menu.Global.ITEMS.projectSave);
+      Menu.Global.disable(Menu.Global.ITEMS.importFile);
+    }
+  }, [projectData, projectDir]);
 
   const Header = (
     <>
@@ -131,7 +117,7 @@ export const PageElement = () => {
         <div className={style.navDivider} />
         <div>
           <Btn
-            onClick={() => importFile(['image'])}
+            onClick={importFile}
             disabled={projectDir ? false : true}
           >
             Import Image

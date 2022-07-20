@@ -19,6 +19,11 @@ export const EVENTS: MenuItemEventsFile = {
     id: 'save-project-as',
     name: 'menu/project/save',
     type: 'on'
+  },
+  importFile: {
+    id: 'import-file',
+    name: 'menu/project/import',
+    type: 'on'
   }
 };
 
@@ -27,23 +32,29 @@ export const template: MenuItemConstructorOptions = {
   submenu: [
     {
       label: 'New Project...',
-      id: EVENTS.projectNew?.id,
+      id: EVENTS.projectNew.id,
       click: send(EVENTS.projectNew.name),
       accelerator: 'CmdOrCtrl+N',
     },
     separator,
     {
       label: 'Save',
-      id: EVENTS.projectSave?.id,
+      id: EVENTS.projectSave.id,
       click: send(EVENTS.projectSave.name, false),
       accelerator: 'CmdOrCtrl+S',
     },
     {
       label: 'Save As...',
-      id: EVENTS.projectSaveAs?.id,
+      id: EVENTS.projectSaveAs.id,
       click: send(EVENTS.projectSaveAs.name, true),
       accelerator: 'CmdOrCtrl+Shift+S',
     },
+    {
+      label: 'Import File',
+      id: EVENTS.importFile.id,
+      click: send(EVENTS.importFile.name, true),
+      accelerator: 'CmdOrCtrl+I'
+    }
   ],
 };
 

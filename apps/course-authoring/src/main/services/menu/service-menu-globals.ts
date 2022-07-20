@@ -101,7 +101,7 @@ const itemDisableHandler = (
       return;
     }
 
-    //TODO disable item here
+    menuItem.enabled = false;
 
     resolve({
       error: false,
@@ -111,6 +111,50 @@ const itemDisableHandler = (
     })
   });
 }
+
+const itemEnableHandler = (
+  event: IpcMainInvokeEvent,
+  item: MenuItemEvent
+) => {
+  return new Promise<ApiResult>(resolve => {
+    if (!item) {
+      resolve({
+        error: true,
+        message: `Unable to enable item - No item`
+      });
+      return;
+    }
+
+    const appMenu = Menu.getApplicationMenu();
+
+    if (!appMenu) {
+      resolve({
+        error: true,
+        message: `Unable to enable item: ${item.name} - Menu not initialized`
+      })
+      return;
+    }
+
+    const menuItem = appMenu.getMenuItemById(item.id);
+    
+    if (!menuItem) {
+      resolve({
+        error: true,
+        message: `Unable to enable item: ${item.name} - Item not found`
+      });
+      return;
+    }
+
+    menuItem.enabled = true;
+
+    resolve({
+      error: false,
+      data: {
+        item,
+      }
+    })
+  });
+};
 
 export const EVENTS:MenuEventsGlobal = {
   itemList: {
@@ -131,6 +175,12 @@ export const EVENTS:MenuEventsGlobal = {
     type: 'on',
     fn: itemDisableHandler,
   },
+  itemEnable: {
+    id: 'item-enable',
+    name: 'menu/item/enable',
+    type: 'on',
+    fn: itemEnableHandler,
+  }
 };
 
 export let ITEMS: MenuItems = {};

@@ -1,51 +1,87 @@
 import {
   AllowedFiles,
   FileData,
+  OpenFileData,
 } from '../../../main/services/file-system';
 import { EVENTS, ProjectData, ProjectDataNew } from '../../../main/models/project';
-import { Menu } from '../../services';
+import { requester } from '../../services';
 
-// export const create = (project: Project) => {
-//   return new Promise<FileData>((resolve, reject) => {
-//     requester.invoke(EVENTS.new.save, project)
-//       .then((res: FileData) => {
-//         if (res.error) {
-//           resolve(res);
-//           return;
-//         }
+export class Project {
+  workingDir: string;
+  data: ProjectData | ProjectDataNew;
+  constructor(data: ProjectDataNew) {
+    this.workingDir = '';
+    this.data = data;
+  }
+  create(data:ProjectDataNew) {
+    const self = this;
+    
+    return new Promise<FileData>((resolve, reject) => {
+      requester.invoke(EVENTS.new.name, data)
+        .then((result: FileData) => {
+          if (result.error) {
+            resolve(result);
+            return;
+          }
 
-//         if (res.filename) {
-//           res.dir = res.filename.split('/').slice(0, -1).join('/');
-//         }
+          if (result.filename) {
+            self.workingDir = result.filename.split('/').slice(0, -1).join('/');
+          }
 
-//         resolve(res);
-//       })
-//       .catch(reject);
-//   });
-// };
+          // TODO: backend should return data
+          // update data here
 
-function create(data: ProjectDataNew) {
-  return new Promise((resolve, reject) => {
+          resolve(result);
+        })
+        .catch(reject);
+    });
+  }
+  update(saveAs?: boolean, source?: string) {
+    const self = this;
 
-  });
-}
+    return new Promise<FileData>((resolve, reject) => {
+      requester.invoke(EVENTS.save.name, this.data, saveAs, source)
+        .then((result: FileData) => {
+          if (result.error) {
+            resolve(result);
+            return;
+          }
 
-export const init = (projectData: ProjectData) => {
-  // requester.newProject(create);
+          if (result.filename) {
+            self.workingDir = result.filename.split('/').slice(0, -1).join('/');
+          }
+
+          // TODO: backend should return data
+          // update data here
+
+          resolve(result);
+        })
+        .catch(reject);
+    })
+  }
+  save() {
+    return this.update();
+  }
+  saveAs(source: string) {
+    return this.update(true, source);
+  }
+  importFile(fileTypes: AllowedFiles[]) {
+    const self = this;
+
+    return new Promise<OpenFileData>((resolve, reject) => {
+      requester.invoke(EVENTS.import.name, fileTypes, self.workingDir)
+        .then((result: OpenFileData) => {
+          if (result.error) {
+            resolve(result);
+            return;
+          }
+
+          // TODO: backend should return data
+          // update data here
+          // data should be keeping track of all imported files
+
+          resolve(result)
+        })
+    });
+  }
 };
-
-export const save = (project: string, isSaveAs: boolean, source?: string) => {
-  // return requester.invoke(EVENTS.save.name, project, isSaveAs, source);
-};
-
-export const importFile = (fileTypes: AllowedFiles[], source: string) => {
-  // return requester.invoke(EVENTS.import.name, fileTypes, source);
-};
-
-export const Project = {
-  create,
-  save,
-  importFile,
-};
-
-export default Project;
