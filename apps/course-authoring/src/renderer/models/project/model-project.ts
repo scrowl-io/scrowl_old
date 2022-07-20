@@ -36,11 +36,11 @@ export class Project {
         .catch(reject);
     });
   }
-  update(saveAs?: boolean, source?: string) {
+  update(saveAs?: boolean) {
     const self = this;
 
     return new Promise<FileData>((resolve, reject) => {
-      requester.invoke(EVENTS.save.name, this.data, saveAs, source)
+      requester.invoke(EVENTS.save.name, this.data, saveAs, self.workingDir)
         .then((result: FileData) => {
           if (result.error) {
             resolve(result);
@@ -62,8 +62,8 @@ export class Project {
   save() {
     return this.update();
   }
-  saveAs(source: string) {
-    return this.update(true, source);
+  saveAs() {
+    return this.update(true);
   }
   importFile(fileTypes: AllowedFiles[]) {
     const self = this;

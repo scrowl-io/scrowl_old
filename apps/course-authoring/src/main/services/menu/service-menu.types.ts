@@ -12,7 +12,7 @@ export interface MenuEventSaveProject extends Omit<Requester.RegisterEvent, 'nam
 
 export interface MenuEventSaveProjectAs extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'save-project-as';
-  name: 'menu/project/save';
+  name: 'menu/project/save-as';
 };
 
 export interface MenuEventImportFile extends Omit<Requester.RegisterEvent, 'name'> {

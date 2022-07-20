@@ -17,7 +17,7 @@ export const EVENTS: MenuItemEventsFile = {
   },
   projectSaveAs: {
     id: 'save-project-as',
-    name: 'menu/project/save',
+    name: 'menu/project/save-as',
     type: 'on'
   },
   importFile: {

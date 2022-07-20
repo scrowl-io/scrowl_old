@@ -38,25 +38,6 @@ export const PageElement = () => {
   const activeProject = new Project(projectData);
   const [imgFileExample, setImgFileExample] = useState<string | undefined>();
 
-  const updateProject = (createResult: FileData) => {
-    if (createResult.error) {
-      console.error(createResult.message);
-      return;
-    }
-
-    setProjectData(activeProject.data);
-    setProjectDir(activeProject.workingDir);
-  }
-
-  const saveProject = () => {
-    if (!projectDir) {
-      console.error('Unable to save project - project not created');
-      return;
-    }
-
-    activeProject.save().then(updateProject);
-  }
-
   const importFile = () => {
     function updatePlaceholderImage(importResult: OpenFileData) {
       if (importResult.error) {
@@ -78,20 +59,54 @@ export const PageElement = () => {
   }
 
   useEffect(() => {
+    const updateProject = (createResult: FileData) => {
+      if (createResult.error) {
+        console.error(createResult.message);
+        return;
+      }
+  
+      setProjectData(activeProject.data);
+      setProjectDir(activeProject.workingDir);
+    }
+
     Menu.File.onProjectNew(() => {
+      if (projectDir) {
+        console.error('Unbale to create project - project already created');
+        return;
+      }
+
       activeProject.create(projectData).then(updateProject);
     });
     
-    Menu.File.onProjectSave(saveProject);
+    Menu.File.onProjectSave(() => {
+      if (!projectDir) {
+        console.error('Unable to save project - project not created');
+        return;
+      }
+  
+      activeProject.save().then(updateProject);
+    });
+
+    Menu.File.onProjectSaveAs(() => {
+      if (!projectDir) {
+        console.error('Unable to save project - project not created');
+        return;
+      }
+  
+      activeProject.saveAs().then(updateProject);
+    });
+
     Menu.File.onImportFile(importFile);
 
     if (activeProject.workingDir) {
       Menu.Global.disable(Menu.Global.ITEMS.projectNew);
       Menu.Global.enable(Menu.Global.ITEMS.projectSave);
+      Menu.Global.enable(Menu.Global.ITEMS.projectSaveAs);
       Menu.Global.enable(Menu.Global.ITEMS.importFile);
     } else {
       Menu.Global.enable(Menu.Global.ITEMS.projectNew);
       Menu.Global.disable(Menu.Global.ITEMS.projectSave);
+      Menu.Global.disable(Menu.Global.ITEMS.projectSaveAs);
       Menu.Global.disable(Menu.Global.ITEMS.importFile);
     }
   }, [projectData, projectDir]);
