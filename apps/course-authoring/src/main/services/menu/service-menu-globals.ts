@@ -98,6 +98,7 @@ const itemDisableHandler = (
       error: false,
       data: {
         item,
+        enabled: menuItem.enabled
       }
     })
   });
@@ -142,6 +143,7 @@ const itemEnableHandler = (
       error: false,
       data: {
         item,
+        enabled: menuItem.enabled
       }
     })
   });
@@ -155,17 +157,17 @@ export const EVENTS:MenuEventsGlobal = {
   },
   itemToggle: {
     name: 'menu/item/toggle',
-    type: 'on',
+    type: 'invoke',
     fn: itemToggleHandler,
   },
   itemDisable: {
     name: 'menu/item/disable',
-    type: 'on',
+    type: 'invoke',
     fn: itemDisableHandler,
   },
   itemEnable: {
     name: 'menu/item/enable',
-    type: 'on',
+    type: 'invoke',
     fn: itemEnableHandler,
   }
 };

@@ -45,10 +45,12 @@ export type ProjectEvents = {
   name: string;
   description: string;
   theme: string;
+  workingDir?: string;
 };
 
 export interface ProjectDataNew {
-  name: string;
+  name?: string;
   description?: string;
   theme?: string;
+  workingDir?: string;
 };

@@ -1,14 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import style from './styles.module.scss';
 import { Button, Card, Icon, NavigationDrawer as Nav, Table } from '@owlui/lib';
 import { CardGrid } from '../../components/cardgrid';
-import { sidebarItems, cards, filesList, EXAMPLE_PROJECT } from './data';
-import { Menu } from '../../services';
+import { sidebarItems, cards, filesList } from './data';
 import { Project } from '../../models';
-import { FileData, OpenFileData } from '../../../main/services/file-system';
-import { ProjectData, ProjectDataNew } from '../../../main/models/project';
 
 export const PageRoute = '/';
 export const PageName = 'Home';
@@ -28,86 +25,18 @@ const TemplatesList = () => {
   });
 };
 
+const project = new Project();
+
 export const PageElement = () => {
-  const [projectData, setProjectData] = useState<ProjectDataNew | ProjectData>(
-    EXAMPLE_PROJECT
-  );
-  const [projectDir, setProjectDir] = useState<string>();
-  const activeProject = new Project(projectData);
-  const [imgFileExample, setImgFileExample] = useState<string | undefined>();
+  project.ready();
+
+  const isProcessing = project.useProcessing();
+  const activeProject = project.useProjectData();
+  const lastImport = project.useLastImport();
 
   const importFile = () => {
-    function updatePlaceholderImage(importResult: OpenFileData) {
-      if (importResult.error) {
-        console.error(importResult.message);
-        return;
-      }
-
-      if (importResult.filename) {
-        setImgFileExample(`scrowl-file://${importResult.filename}`);
-      }
-    }
-
-    if (!projectDir) {
-      console.error('Unable to import file - project not created');
-      return;
-    }
-
-    activeProject.importFile(['image']).then(updatePlaceholderImage);
+    project.importFile(['image']);
   };
-
-  useEffect(() => {
-    const updateProject = (createResult: FileData) => {
-      if (createResult.error) {
-        console.error(createResult.message);
-        return;
-      }
-
-      setProjectData(activeProject.data);
-      setProjectDir(activeProject.workingDir);
-    };
-
-    Menu.File.onProjectNew(() => {
-      if (projectDir) {
-        console.error('Unbale to create project - project already created');
-        return;
-      }
-
-      activeProject.create(projectData).then(updateProject);
-    });
-
-    Menu.File.onProjectSave(() => {
-      if (!projectDir) {
-        console.error('Unable to save project - project not created');
-        return;
-      }
-
-      activeProject.save().then(updateProject);
-    });
-
-    Menu.File.onProjectSaveAs(() => {
-      if (!projectDir) {
-        console.error('Unable to save project - project not created');
-        return;
-      }
-
-      activeProject.saveAs().then(updateProject);
-    });
-
-    Menu.File.onImportFile(importFile);
-
-    if (activeProject.workingDir) {
-      Menu.Global.disable(Menu.Global.ITEMS.projectNew);
-      Menu.Global.enable(Menu.Global.ITEMS.projectSave);
-      Menu.Global.enable(Menu.Global.ITEMS.projectSaveAs);
-      Menu.Global.enable(Menu.Global.ITEMS.importFile);
-    } else {
-      Menu.Global.enable(Menu.Global.ITEMS.projectNew);
-      Menu.Global.disable(Menu.Global.ITEMS.projectSave);
-      Menu.Global.disable(Menu.Global.ITEMS.projectSaveAs);
-      Menu.Global.disable(Menu.Global.ITEMS.importFile);
-    }
-  }, [projectData, projectDir]);
 
   const Header = (
     <>
@@ -129,14 +58,17 @@ export const PageElement = () => {
         </div>
         <div className={style.navDivider} />
         <div>
-          <Button onClick={importFile} disabled={projectDir ? false : true}>
+          <Button
+            onClick={importFile}
+            disabled={activeProject && activeProject.workingDir ? false : true}
+          >
             Import Image
           </Button>
-          {imgFileExample && (
+          {lastImport && (
             <>
               <div className={style.navDivider} />
               <img
-                src={imgFileExample}
+                src={lastImport}
                 alt="Example"
                 style={{ width: 'auto', height: '100px' }}
               />
@@ -152,6 +84,7 @@ export const PageElement = () => {
       <Nav className={style.nav} header={Header} items={sidebarItems} />
       <main className={style.main}>
         <section>
+          <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
           <div>
             <CardGrid cards={cards} />
           </div>
