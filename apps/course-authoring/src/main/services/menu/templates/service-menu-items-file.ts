@@ -24,7 +24,7 @@ export const EVENTS: MenuItemEventsFile = {
     id: 'import-file',
     name: 'menu/project/import',
     type: 'send',
-  }
+  },
 };
 
 export const template: MenuItemConstructorOptions = {
@@ -43,7 +43,7 @@ export const template: MenuItemConstructorOptions = {
       label: 'Save',
       id: EVENTS.projectSave.id,
       click: () => {
-        send(EVENTS.projectSave.name, false)
+        send(EVENTS.projectSave.name, false);
       },
       accelerator: 'CmdOrCtrl+S',
     },
@@ -51,7 +51,7 @@ export const template: MenuItemConstructorOptions = {
       label: 'Save As...',
       id: EVENTS.projectSaveAs.id,
       click: () => {
-        send(EVENTS.projectSaveAs.name, true)
+        send(EVENTS.projectSaveAs.name, true);
       },
       accelerator: 'CmdOrCtrl+Shift+S',
     },
@@ -59,10 +59,10 @@ export const template: MenuItemConstructorOptions = {
       label: 'Import File',
       id: EVENTS.importFile.id,
       click: () => {
-        send(EVENTS.importFile.name, true)
+        send(EVENTS.importFile.name, true);
       },
-      accelerator: 'CmdOrCtrl+I'
-    }
+      accelerator: 'CmdOrCtrl+I',
+    },
   ],
 };
 

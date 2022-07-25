@@ -1,7 +1,7 @@
 import { requester } from '..';
-import { MenuEventsFileApi } from '../../../main/services/menu'
+import { MenuEventsFileApi } from '../../../main/services/menu';
 
-export const ENDPOINTS:MenuEventsFileApi = {
+export const ENDPOINTS: MenuEventsFileApi = {
   projectNew: 'menu/project/new',
   projectSave: 'menu/project/save',
   projectSaveAs: 'menu/project/save-as',
@@ -9,8 +9,8 @@ export const ENDPOINTS:MenuEventsFileApi = {
 };
 
 const registerListener = (
-    endpoint: typeof ENDPOINTS[keyof typeof ENDPOINTS],
-    listener: requester.Listener
+  endpoint: typeof ENDPOINTS[keyof typeof ENDPOINTS],
+  listener: requester.Listener
 ) => {
   requester.on(endpoint, listener);
 };
@@ -36,4 +36,4 @@ export default {
   onProjectSave,
   onProjectSaveAs,
   onImportFile,
-}
+};

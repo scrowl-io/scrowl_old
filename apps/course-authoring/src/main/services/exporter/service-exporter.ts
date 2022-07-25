@@ -1,7 +1,11 @@
 import path from 'path';
 import fs from 'fs-extra';
 import packager from 'scorm-packager';
-import { PathingProps, PathingKey, ExporterEvents } from './service-exporter.types';
+import {
+  PathingProps,
+  PathingKey,
+  ExporterEvents,
+} from './service-exporter.types';
 import { registerAll } from '../requester';
 
 const pathing: PathingProps = {
@@ -41,7 +45,7 @@ export const pack = () => {
   });
 };
 
-export const EVENTS:ExporterEvents = {
+export const EVENTS: ExporterEvents = {
   package: {
     name: 'package-course',
     type: 'invoke',

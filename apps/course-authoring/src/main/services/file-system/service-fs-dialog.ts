@@ -1,5 +1,10 @@
 import { dialog, OpenDialogOptions, SaveDialogOptions } from 'electron';
-import { DialogOpenResult, DialogSaveResult, FileFilters, AllowedFiles } from './service-fs.types';
+import {
+  DialogOpenResult,
+  DialogSaveResult,
+  FileFilters,
+  AllowedFiles,
+} from './service-fs.types';
 
 export const MEDIA_TYPES: FileFilters = {
   image: { name: 'Image', extensions: ['jpg', 'jpeg', 'png'] },
@@ -21,11 +26,14 @@ export const dialogOpen = (options: OpenDialogOptions) => {
           data: {
             canceled,
             filePaths,
-          }
+          },
         });
       })
       .catch(err => {
-        const message = err && typeof err === 'string' ? err : `Unable to open dialog - unknown reason`;
+        const message =
+          err && typeof err === 'string'
+            ? err
+            : `Unable to open dialog - unknown reason`;
 
         reject({
           error: true,
@@ -45,11 +53,14 @@ export const dialogSave = (options: SaveDialogOptions) => {
           data: {
             canceled,
             filePath,
-          }
+          },
         });
       })
       .catch(err => {
-        const message = err && typeof err === 'string' ? err : `Unable to save dialog - unknown reason`;
+        const message =
+          err && typeof err === 'string'
+            ? err
+            : `Unable to save dialog - unknown reason`;
 
         reject({
           error: true,

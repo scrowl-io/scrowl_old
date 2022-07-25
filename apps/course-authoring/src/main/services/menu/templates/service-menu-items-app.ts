@@ -1,14 +1,14 @@
-import { MenuItemConstructorOptions, IpcMainInvokeEvent } from 'electron';
+import { MenuItemConstructorOptions } from 'electron';
 import { send, registerAll } from '../../requester';
 import { MenuItemEventsApp } from '../service-menu.types';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
-const aboutHandler = (event: IpcMainInvokeEvent) => {
+const aboutHandler = () => {
   console.log('Open about Scrowl window...');
 };
 
-const preferencesHandler = (event: IpcMainInvokeEvent) => {
+const preferencesHandler = () => {
   console.log('Open preferences window...');
 };
 
@@ -24,7 +24,7 @@ export const EVENTS: MenuItemEventsApp = {
     name: 'menu/preferences/open',
     type: 'on',
     fn: preferencesHandler,
-  }
+  },
 };
 
 export const template: MenuItemConstructorOptions = {
@@ -32,9 +32,9 @@ export const template: MenuItemConstructorOptions = {
   submenu: [
     {
       label: 'About Scrowl',
-      id:  EVENTS.aboutOpen.id,
+      id: EVENTS.aboutOpen.id,
       click: () => {
-        send(EVENTS.aboutOpen.name)
+        send(EVENTS.aboutOpen.name);
       },
     },
     separator,
@@ -42,7 +42,7 @@ export const template: MenuItemConstructorOptions = {
       label: 'Preferences…',
       id: EVENTS.preferencesOpen.id,
       click: () => {
-        send(EVENTS.preferencesOpen.name)
+        send(EVENTS.preferencesOpen.name);
       },
       accelerator: 'CmdOrCtrl+,',
     },

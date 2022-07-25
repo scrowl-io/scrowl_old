@@ -1,24 +1,26 @@
-import { Requester, FileSystem } from "../../services";
+import { Requester, FileSystem } from '../../services';
 
 export interface ProjectEventNew extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'project/new';
 }
 
-export interface ProjectEventSave extends Omit<Requester.RegisterEvent, 'name'> {
+export interface ProjectEventSave
+  extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'project/save';
 }
 
-export interface ProjectEventImport extends Omit<Requester.RegisterEvent, 'name'> {
+export interface ProjectEventImport
+  extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'project/import-file';
 }
 
 export type ProjectEventApi = {
-  'new': ProjectEventNew['name'];
-  'save': ProjectEventSave['name'];
-  'import': ProjectEventImport['name'];
+  new: ProjectEventNew['name'];
+  save: ProjectEventSave['name'];
+  import: ProjectEventImport['name'];
 };
 
-export type ProjectEventNames = 
+export type ProjectEventNames =
   | ProjectEventNew['name']
   | ProjectEventSave['name']
   | ProjectEventImport['name'];
@@ -26,7 +28,7 @@ export type ProjectEventNames =
 export type ProjectEvent =
   | ProjectEventNew
   | ProjectEventSave
-  | ProjectEventImport
+  | ProjectEventImport;
 
 export type ProjectEvents = {
   new: ProjectEventNew;
@@ -38,7 +40,7 @@ export type ProjectEvents = {
  * This interface should be updated once
  * define the actual project structure.
  */
- export interface ProjectData {
+export interface ProjectData {
   id: string;
   createdAt: string;
   modifiedAt: string;
@@ -50,7 +52,7 @@ export type ProjectEvents = {
   workingImports?: Array<string>;
   saveFile?: string;
   saveDir?: string;
-};
+}
 
 export interface ProjectDataNew {
   name?: string;
@@ -61,31 +63,43 @@ export interface ProjectDataNew {
   workingImports?: Array<string>;
   saveFile?: string;
   saveDir?: string;
-};
+}
 
-interface CreateResultSuccess extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
+interface CreateResultSuccess
+  extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
     project: ProjectData | ProjectDataNew;
-  }
-};
+  };
+}
 
-export type CreateResult = CreateResultSuccess | FileSystem.DirectoryTempResult | FileSystem.FileDataResult;
+export type CreateResult =
+  | CreateResultSuccess
+  | FileSystem.DirectoryTempResult
+  | FileSystem.FileDataResult;
 
-export interface SaveResultSuccess extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
+export interface SaveResultSuccess
+  extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
     project: ProjectData | ProjectDataNew;
-  }
-};
+  };
+}
 
-export type SaveResult = SaveResultSuccess | FileSystem.DialogSaveResult | FileSystem.FileDataResult;
+export type SaveResult =
+  | SaveResultSuccess
+  | FileSystem.DialogSaveResult
+  | FileSystem.FileDataResult;
 
-export interface ImportResultSuccess extends Omit<FileSystem.DialogOpenResultSuccess, 'data'> {
+export interface ImportResultSuccess
+  extends Omit<FileSystem.DialogOpenResultSuccess, 'data'> {
   data: {
     import: string;
     project: ProjectData | ProjectDataNew;
-  }
+  };
 }
 
-export type ImportResult = ImportResultSuccess | FileSystem.DialogOpenResult | FileSystem.FileDataResult;
+export type ImportResult =
+  | ImportResultSuccess
+  | FileSystem.DialogOpenResult
+  | FileSystem.FileDataResult;

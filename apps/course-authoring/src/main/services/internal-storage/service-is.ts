@@ -11,7 +11,6 @@ const DB = knex({
 });
 
 export const get = (tableName: string, column?: string) => {
-
   if (column) {
     return DB.select(column).from(tableName);
   }

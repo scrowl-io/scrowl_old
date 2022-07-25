@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { IpcMainInvokeEvent } from 'electron';
 
 export type ClickHandler = (
@@ -5,6 +7,12 @@ export type ClickHandler = (
   browserWindow: Electron.BrowserWindow | undefined,
   event: Electron.KeyboardEvent
 ) => void;
+
+export type JsonArray = Array<any | JsonResult | JsonArray>;
+
+export type JsonResult = {
+  [key: string]: any | JsonResult | JsonArray;
+};
 
 export type EventCallback = (event: IpcMainInvokeEvent, ...args: any[]) => any;
 
@@ -17,22 +25,18 @@ export interface RegisterEvent {
 }
 
 export interface RegisterEvents {
-  [key: string]: RegisterEvent
+  [key: string]: RegisterEvent;
 }
 
-export interface ApiResultError {
+export interface ApiResultError extends JsonResult {
   error: true;
   message: string;
-  [key: string]: any;
 }
 
-export interface ApiResultSuccess {
+export interface ApiResultSuccess extends JsonResult {
   error: false;
   message?: string;
-  data: {
-    [key: string]: any;  
-  }
-  [key: string]: any;
+  data: JsonResult;
 }
 
 export type ApiResult = ApiResultError | ApiResultSuccess;

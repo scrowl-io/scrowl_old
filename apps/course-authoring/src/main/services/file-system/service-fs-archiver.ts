@@ -13,10 +13,13 @@ export const archive = (source: string, dest: string): FileDataResult => {
       error: false,
       data: {
         filename: dest,
-      }
+      },
     };
   } catch (err) {
-    const message = err && typeof err === 'string' ? err : `Unable to archive: ${source} to ${dest} - unknown reason`;
+    const message =
+      err && typeof err === 'string'
+        ? err
+        : `Unable to archive: ${source} to ${dest} - unknown reason`;
 
     return {
       error: true,

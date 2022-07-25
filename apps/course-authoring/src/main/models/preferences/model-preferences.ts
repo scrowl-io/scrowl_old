@@ -1,9 +1,6 @@
 import { Model } from '../model.types';
 import { PreferenceData, PreferenceEvents } from './model-preferences.types';
-import {
-  InternalStorage as IS,
-  Requester,
-} from '../../services';
+import { InternalStorage as IS, Requester } from '../../services';
 
 const TABLE_NAME = 'preferences';
 
@@ -21,22 +18,21 @@ const handlerGetPreference = (
   event: Electron.IpcMainInvokeEvent,
   preferenceName?: keyof PreferenceData
 ) => {
-
   if (typeof preferenceName === 'number') {
     return;
   }
 
   return get(preferenceName);
-}
+};
 
 const handlerSetPreference = (
   event: Electron.IpcMainInvokeEvent,
-  data: PreferenceData,
+  data: PreferenceData
 ) => {
   return set(data);
-}
+};
 
-export const EVENTS:PreferenceEvents = {
+export const EVENTS: PreferenceEvents = {
   list: {
     name: 'preferences/get',
     type: 'invoke',
@@ -56,7 +52,7 @@ export const EVENTS:PreferenceEvents = {
 
 export const init = () => {
   Requester.registerAll(EVENTS);
-}
+};
 
 export const Preferences: Model = {
   EVENTS,

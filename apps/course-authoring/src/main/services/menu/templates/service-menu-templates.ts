@@ -6,8 +6,8 @@ import * as menuFile from './service-menu-items-file';
 export const createMenu = (
   isMacOs: boolean
 ): {
-  template: MenuItemConstructorOptions[],
-  EVENTS: Partial<MenuItemEventsFile> & Partial<MenuItemEventsApp>
+  template: MenuItemConstructorOptions[];
+  EVENTS: Partial<MenuItemEventsFile> & Partial<MenuItemEventsApp>;
 } => {
   let EVENTS = {};
   const template = [];
@@ -21,7 +21,7 @@ export const createMenu = (
   template.push(menuFile.template);
   menuFile.init();
   EVENTS = Object.assign(EVENTS, menuFile.EVENTS);
-  
+
   return {
     template,
     EVENTS,

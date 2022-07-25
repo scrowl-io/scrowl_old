@@ -1,11 +1,11 @@
-import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
+import { contextBridge, ipcRenderer } from 'electron';
 import { RegisterEventType, RegisterEvent } from './services/requester';
 
 let eventList: Array<RegisterEvent> = [];
 
-const updateEventList = async ():Promise<{
-  events: RegisterEvent[]
-}>  => {
+const updateEventList = async (): Promise<{
+  events: RegisterEvent[];
+}> => {
   const result = await ipcRenderer.invoke('events-all');
 
   if (!result.error) {
@@ -13,21 +13,21 @@ const updateEventList = async ():Promise<{
   }
 
   return {
-    events: eventList
+    events: eventList,
   };
 };
 
 const getValidEvents = async (type?: RegisterEventType) => {
   const { events } = await updateEventList();
-  
+
   return events
     .filter((event: RegisterEvent) => {
-      return (!type || type === event.type);
+      return !type || type === event.type;
     })
     .map((event: RegisterEvent) => {
       return event.name;
     });
-}
+};
 
 contextBridge.exposeInMainWorld('electronAPI', {
   ipcRenderer: {
@@ -59,7 +59,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
       // removes all callbacks from an endpoint
       // DANGREROUS //
       const validEvents = await getValidEvents();
-      
+
       if (validEvents.indexOf(endpoint) !== -1) {
         ipcRenderer.removeAllListeners(endpoint);
       }

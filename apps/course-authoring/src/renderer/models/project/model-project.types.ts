@@ -1,7 +1,8 @@
-import { ReadVResult } from 'fs';
 import { ProjectData, ProjectDataNew } from '../../../main/models/project';
 
-export type ProjectObserverDataFn = React.Dispatch<ProjectData | ProjectDataNew>;
+export type ProjectObserverDataFn = React.Dispatch<
+  ProjectData | ProjectDataNew
+>;
 
 export type ProjectObserverProcessFn = React.Dispatch<boolean>;
 

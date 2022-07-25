@@ -1,4 +1,3 @@
-import { Requester } from '../services';
 import * as Project from './project';
 import * as Preferences from './preferences';
 

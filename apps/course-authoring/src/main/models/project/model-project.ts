@@ -1,12 +1,19 @@
 import { IpcMainInvokeEvent } from 'electron';
 import { Model } from '../model.types';
-import { ProjectEvents, CreateResult, SaveResult, ImportResult, ProjectData, ProjectDataNew } from './model-project.types';
 import {
-  FileSystem as fs,
-  Requester,
-} from '../../services';
+  ProjectEvents,
+  CreateResult,
+  SaveResult,
+  ImportResult,
+  ProjectData,
+  ProjectDataNew,
+} from './model-project.types';
+import { FileSystem as fs, Requester } from '../../services';
 
-export const create = function (event: IpcMainInvokeEvent, project: ProjectData | ProjectDataNew): CreateResult {
+export const create = function (
+  event: IpcMainInvokeEvent,
+  project: ProjectData | ProjectDataNew
+): CreateResult {
   const dirPrefix = 'scrowl';
   const projectFileName = 'scrowl.project';
   const tempDir: fs.DirectoryTempResult = fs.dirTempSync(dirPrefix);
@@ -30,8 +37,8 @@ export const create = function (event: IpcMainInvokeEvent, project: ProjectData 
     data: {
       filename: filename,
       project: project,
-    }
-  }
+    },
+  };
 };
 
 const write = function (source: string, filename: string): fs.FileDataResult {
@@ -55,15 +62,14 @@ const write = function (source: string, filename: string): fs.FileDataResult {
 export const save = (
   event: IpcMainInvokeEvent,
   project: ProjectData | ProjectDataNew,
-  isSaveAs: boolean,
+  isSaveAs: boolean
 ) => {
-  return new Promise<SaveResult>((resolve, reject) => {
+  return new Promise<SaveResult>(resolve => {
     const updateProject = (res: fs.DialogSaveResult) => {
-
       if (!project.workingDir) {
         resolve({
           error: true,
-          message: 'Unable to save project - working directory required'
+          message: 'Unable to save project - working directory required',
         });
         return;
       }
@@ -81,26 +87,31 @@ export const save = (
       }
 
       try {
-        console.log('writeRes', writeRes);
         project.saveFile = writeRes.data.filename;
-        project.saveDir = writeRes.data.filename.split('/').slice(0, -1).join('/');
+        project.saveDir = writeRes.data.filename
+          .split('/')
+          .slice(0, -1)
+          .join('/');
 
         resolve({
           error: false,
           data: {
             filename: writeRes.data.filename,
             project: project,
-          }
+          },
         });
       } catch (err) {
-        const message = err && typeof err === 'string' ? err : 'Unable to save project - unknown reason';
+        const message =
+          err && typeof err === 'string'
+            ? err
+            : 'Unable to save project - unknown reason';
 
         resolve({
           error: true,
           message,
         });
       }
-    }
+    };
     const dialogOptions = {
       title: 'Scrowl - Save Project',
       filters: [
@@ -126,15 +137,15 @@ export const save = (
     }
 
     if (!project.saveDir || isSaveAs) {
-      fs.dialogSave(dialogOptions).then(updateProject)
+      fs.dialogSave(dialogOptions).then(updateProject);
     } else {
       updateProject({
         error: false,
         data: {
           canceled: false,
-          filePath: project.saveDir
-        }
-      })
+          filePath: project.saveDir,
+        },
+      });
     }
   });
 };
@@ -142,13 +153,13 @@ export const save = (
 export const importFile = (
   event: IpcMainInvokeEvent,
   fileTypes: Array<fs.AllowedFiles>,
-  project: ProjectData | ProjectDataNew,
+  project: ProjectData | ProjectDataNew
 ) => {
-  return new Promise<ImportResult>((resolve, reject) => {
+  return new Promise<ImportResult>(resolve => {
     if (!project) {
       resolve({
         error: true,
-        message: 'Unable to import a file - project required'
+        message: 'Unable to import a file - project required',
       });
       return;
     }
@@ -156,7 +167,7 @@ export const importFile = (
     if (!project.workingDir) {
       resolve({
         error: true,
-        message: 'Unable to import a file - project working directory required'
+        message: 'Unable to import a file - project working directory required',
       });
       return;
     }
@@ -164,7 +175,7 @@ export const importFile = (
     if (!fileTypes || !fileTypes.length) {
       resolve({
         error: true,
-        message: 'Unable to import a file - file types required'
+        message: 'Unable to import a file - file types required',
       });
       return;
     }
@@ -174,7 +185,9 @@ export const importFile = (
     if (!filters.length) {
       resolve({
         error: true,
-        message: `Unable to import a file: ${fileTypes.join(', ')} - not supported`,
+        message: `Unable to import a file: ${fileTypes.join(
+          ', '
+        )} - not supported`,
       });
       return;
     }
@@ -184,7 +197,7 @@ export const importFile = (
       filters,
     };
 
-    fs.dialogOpen(dialogOptions).then((openRes) => {
+    fs.dialogOpen(dialogOptions).then(openRes => {
       if (openRes.error) {
         resolve(openRes);
         return;
@@ -193,7 +206,7 @@ export const importFile = (
       if (!openRes.data.filePaths.length) {
         resolve({
           error: true,
-          message: 'Unable to import file - no file selected'
+          message: 'Unable to import file - no file selected',
         });
         return;
       }
@@ -203,13 +216,13 @@ export const importFile = (
       if (!project.workingDir) {
         resolve({
           error: true,
-          message: 'Unable to import a file - project working directory required'
+          message:
+            'Unable to import a file - project working directory required',
         });
         return;
       }
 
       const copyRes = fs.fileTempSync(importSource, project.workingDir);
-
 
       if (copyRes.error) {
         resolve(copyRes);
@@ -224,13 +237,13 @@ export const importFile = (
         data: {
           project: project,
           import: workingImport,
-        }
-      })
-    })
+        },
+      });
+    });
   });
 };
 
-export const EVENTS:ProjectEvents = {
+export const EVENTS: ProjectEvents = {
   new: {
     name: 'project/new',
     type: 'invoke',
@@ -252,12 +265,12 @@ export const init = () => {
   Requester.registerAll(EVENTS);
 };
 
-export const Project:Model = {
+export const Project: Model = {
   EVENTS,
   init,
   create,
   save,
   importFile,
-}
+};
 
 export default Project;

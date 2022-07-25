@@ -1,28 +1,28 @@
 import { IpcMainInvokeEvent, Menu } from 'electron';
-import { MenuItemEvent, MenuEventsGlobal, MenuItems } from './service-menu.types';
+import {
+  MenuItemEvent,
+  MenuEventsGlobal,
+  MenuItems,
+} from './service-menu.types';
 import { ApiResult, registerAll } from '../requester';
 
-const itemListHandler = (event: IpcMainInvokeEvent) => {
+const itemListHandler = () => {
   return new Promise<ApiResult>(resolve => {
     resolve({
       error: false,
       data: {
-        items: JSON.parse(JSON.stringify(ITEMS))
-      }
+        items: JSON.parse(JSON.stringify(ITEMS)),
+      },
     });
   });
-}
+};
 
-const itemToggleHandler = (
-  event: IpcMainInvokeEvent,
-  item: MenuItemEvent
-) => {
+const itemToggleHandler = (event: IpcMainInvokeEvent, item: MenuItemEvent) => {
   return new Promise<ApiResult>(resolve => {
-
     if (!item) {
       resolve({
         error: true,
-        message: `Unable to toggle item - No item`
+        message: `Unable to toggle item - No item`,
       });
       return;
     }
@@ -32,17 +32,17 @@ const itemToggleHandler = (
     if (!appMenu) {
       resolve({
         error: true,
-        message: `Unable to toggle item: ${item.name} - Menu not initialized`
-      })
+        message: `Unable to toggle item: ${item.name} - Menu not initialized`,
+      });
       return;
     }
 
     const menuItem = appMenu.getMenuItemById(item.id);
-    
+
     if (!menuItem) {
       resolve({
         error: true,
-        message: `Unable to toggle item: ${item.name} - Item not found`
+        message: `Unable to toggle item: ${item.name} - Item not found`,
       });
       return;
     }
@@ -53,21 +53,18 @@ const itemToggleHandler = (
       error: false,
       data: {
         item,
-        enabled: menuItem.enabled
-      }
-    })
+        enabled: menuItem.enabled,
+      },
+    });
   });
 };
 
-const itemDisableHandler = (
-  event: IpcMainInvokeEvent,
-  item: MenuItemEvent
-) => {
+const itemDisableHandler = (event: IpcMainInvokeEvent, item: MenuItemEvent) => {
   return new Promise<ApiResult>(resolve => {
     if (!item) {
       resolve({
         error: true,
-        message: `Unable to disable item - No item`
+        message: `Unable to disable item - No item`,
       });
       return;
     }
@@ -77,17 +74,17 @@ const itemDisableHandler = (
     if (!appMenu) {
       resolve({
         error: true,
-        message: `Unable to disable item: ${item.name} - Menu not initialized`
-      })
+        message: `Unable to disable item: ${item.name} - Menu not initialized`,
+      });
       return;
     }
 
     const menuItem = appMenu.getMenuItemById(item.id);
-    
+
     if (!menuItem) {
       resolve({
         error: true,
-        message: `Unable to disable item: ${item.name} - Item not found`
+        message: `Unable to disable item: ${item.name} - Item not found`,
       });
       return;
     }
@@ -98,21 +95,18 @@ const itemDisableHandler = (
       error: false,
       data: {
         item,
-        enabled: menuItem.enabled
-      }
-    })
+        enabled: menuItem.enabled,
+      },
+    });
   });
-}
+};
 
-const itemEnableHandler = (
-  event: IpcMainInvokeEvent,
-  item: MenuItemEvent
-) => {
+const itemEnableHandler = (event: IpcMainInvokeEvent, item: MenuItemEvent) => {
   return new Promise<ApiResult>(resolve => {
     if (!item) {
       resolve({
         error: true,
-        message: `Unable to enable item - No item`
+        message: `Unable to enable item - No item`,
       });
       return;
     }
@@ -122,17 +116,17 @@ const itemEnableHandler = (
     if (!appMenu) {
       resolve({
         error: true,
-        message: `Unable to enable item: ${item.name} - Menu not initialized`
-      })
+        message: `Unable to enable item: ${item.name} - Menu not initialized`,
+      });
       return;
     }
 
     const menuItem = appMenu.getMenuItemById(item.id);
-    
+
     if (!menuItem) {
       resolve({
         error: true,
-        message: `Unable to enable item: ${item.name} - Item not found`
+        message: `Unable to enable item: ${item.name} - Item not found`,
       });
       return;
     }
@@ -143,13 +137,13 @@ const itemEnableHandler = (
       error: false,
       data: {
         item,
-        enabled: menuItem.enabled
-      }
-    })
+        enabled: menuItem.enabled,
+      },
+    });
   });
 };
 
-export const EVENTS:MenuEventsGlobal = {
+export const EVENTS: MenuEventsGlobal = {
   itemList: {
     name: 'menu/items',
     type: 'invoke',
@@ -169,7 +163,7 @@ export const EVENTS:MenuEventsGlobal = {
     name: 'menu/item/enable',
     type: 'invoke',
     fn: itemEnableHandler,
-  }
+  },
 };
 
 export let ITEMS: MenuItems = {};

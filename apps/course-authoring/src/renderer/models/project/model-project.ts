@@ -8,15 +8,19 @@ import {
   SaveResult,
   ImportResult,
 } from '../../../main/models/project';
-import { ProjectObserverDataFn, ProjectObserverProcessFn, ProjectObserverImportFn } from './model-project.types';
+import {
+  ProjectObserverDataFn,
+  ProjectObserverProcessFn,
+  ProjectObserverImportFn,
+} from './model-project.types';
 import { requester, Menu } from '../../services';
 import EXAMPLE_DATA from './model-project-data';
 
-export const ENDPOINTS:ProjectEventApi = {
+export const ENDPOINTS: ProjectEventApi = {
   new: 'project/new',
   save: 'project/save',
-  import: 'project/import-file'
-}
+  import: 'project/import-file',
+};
 export class Project {
   data?: ProjectData | ProjectDataNew;
   isProcessing: boolean;
@@ -44,7 +48,7 @@ export class Project {
         console.error('Unbale to create project - project already created');
         return;
       }
-    
+
       this.create(EXAMPLE_DATA);
     });
 
@@ -53,7 +57,7 @@ export class Project {
         console.error('Unable to save project - project not created');
         return;
       }
-      
+
       this.save();
     });
 
@@ -62,7 +66,7 @@ export class Project {
         console.error('Unable to save project - project not created');
         return;
       }
-      
+
       this.saveAs();
     });
 
@@ -76,7 +80,7 @@ export class Project {
     });
 
     this.isReady = true;
-  }
+  };
   __setData = (data: ProjectData | ProjectDataNew) => {
     if (!this.__observerData) {
       return;
@@ -84,19 +88,19 @@ export class Project {
 
     this.__observerData(data);
     this.__setProcessing(false);
-  }
+  };
   __setProcessing = (state: boolean) => {
     if (!this.__observerProcess) {
       return;
     }
 
     this.__observerProcess(state);
-  }
+  };
   __update = (data: ProjectData | ProjectDataNew) => {
     if (!this.__observerData) {
       return;
     }
-    
+
     this.__setProcessing(true);
 
     if (data && data.workingDir) {
@@ -105,7 +109,7 @@ export class Project {
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
         Menu.Global.enable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
-      ]).then(res => {
+      ]).then(() => {
         this.__setData(data);
       });
     } else {
@@ -114,16 +118,17 @@ export class Project {
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
         Menu.Global.disable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),
-      ]).then(res => {
+      ]).then(() => {
         this.__setData(data);
       });
     }
-  }
-  create = (data:ProjectDataNew) => {
+  };
+  create = (data: ProjectDataNew) => {
     this.__setProcessing(true);
 
     return new Promise<CreateResult>((resolve, reject) => {
-      requester.invoke(ENDPOINTS.new, data)
+      requester
+        .invoke(ENDPOINTS.new, data)
         .then((result: CreateResult) => {
           if (result.error) {
             resolve(result);
@@ -137,12 +142,13 @@ export class Project {
         })
         .catch(reject);
     });
-  }
+  };
   update = (saveAs?: boolean) => {
     this.__setProcessing(true);
 
     return new Promise<SaveResult>((resolve, reject) => {
-      requester.invoke(ENDPOINTS.save, this.data, saveAs)
+      requester
+        .invoke(ENDPOINTS.save, this.data, saveAs)
         .then((result: SaveResult) => {
           if (result.error) {
             resolve(result);
@@ -155,8 +161,8 @@ export class Project {
           resolve(result);
         })
         .catch(reject);
-    })
-  }
+    });
+  };
   save() {
     return this.update();
   }
@@ -166,19 +172,20 @@ export class Project {
   importFile = (fileTypes: AllowedFiles[]) => {
     this.__setProcessing(true);
 
-    return new Promise<ImportResult>((resolve, reject) => {
+    return new Promise<ImportResult>(resolve => {
       if (!this.data || !this.data.workingDir) {
         this.__setProcessing(false);
         resolve({
           error: true,
           message: 'Unable to import file - project has no working directory',
           canceled: false,
-          filePaths: []
+          filePaths: [],
         });
         return;
       }
 
-      requester.invoke(ENDPOINTS.import, fileTypes, this.data)
+      requester
+        .invoke(ENDPOINTS.import, fileTypes, this.data)
         .then((result: ImportResult) => {
           if (result.error) {
             this.__setProcessing(false);
@@ -186,7 +193,7 @@ export class Project {
             console.error(result);
             return;
           }
-          
+
           if (!result.data.import) {
             this.__setProcessing(false);
             resolve({
@@ -196,19 +203,19 @@ export class Project {
             });
             return;
           }
-          
+
           const url = `scrowl-file://${result.data.import}`;
 
           if (this.__observerImport) {
             this.__update(result.data.project);
             this.__observerImport(url);
           }
-          
+
           this.__setProcessing(false);
-          resolve(result)
-        })
+          resolve(result);
+        });
     });
-  }
+  };
   useProcessing = () => {
     const [isProcessing, setProcessState] = useState<boolean>(false);
 
@@ -219,13 +226,15 @@ export class Project {
 
       return () => {
         this.__observerProcess = undefined;
-      }
-    });
+      };
+    }, [isProcessing]);
 
     return this.isProcessing;
-  }
+  };
   useProjectData = () => {
-    const [activeData, setActiveData] = useState<ProjectData | ProjectDataNew>();
+    const [activeData, setActiveData] = useState<
+      ProjectData | ProjectDataNew
+    >();
 
     this.data = activeData;
 
@@ -234,11 +243,11 @@ export class Project {
 
       return () => {
         this.__observerData = undefined;
-      }
-    });
+      };
+    }, [activeData]);
 
     return this.data;
-  }
+  };
   useLastImport = () => {
     const [lastImport, setLastImport] = useState<string>('');
 
@@ -249,9 +258,9 @@ export class Project {
 
       return () => {
         this.__observerImport = undefined;
-      }
-    });
+      };
+    }, [lastImport]);
 
     return this.lastImport;
-  }
-};
+  };
+}

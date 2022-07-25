@@ -1,7 +1,7 @@
 import { Menu } from 'electron';
 import {
-    EVENTS as globalEvents,
-    init as globalInit,
+  EVENTS as globalEvents,
+  init as globalInit,
 } from './service-menu-globals';
 import { createMenu } from './templates';
 
