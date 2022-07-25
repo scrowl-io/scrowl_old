@@ -3,6 +3,7 @@ import {
   OpenDialogReturnValue,
   SaveDialogReturnValue,
 } from 'electron';
+import { ApiResultSuccess, ApiResultError  } from '../requester';
 
 export interface FileFilters {
   [key: string]: FileFilter;
@@ -10,14 +11,39 @@ export interface FileFilters {
 
 export type AllowedFiles = 'image' | 'video' | 'scrowl';
 
-export interface FileData {
-  error?: boolean;
-  message?: unknown;
-  filename?: string;
-  canceled?: boolean;
-  dir?: string;
-}
+export interface DirectoryTempResultSuccess extends Omit<ApiResultSuccess, 'data'> {
+  data: {
+    pathname: string;
+  }
+};
 
-export type OpenFileData = FileData & OpenDialogReturnValue;
+export type DirectoryTempResult = DirectoryTempResultSuccess | ApiResultError;
 
-export type SaveFileData = FileData & Partial<SaveDialogReturnValue>;
+export interface FileExistsResultSuccess extends Omit<ApiResultSuccess, 'data'> {
+  data: {
+    exists: boolean;
+  }
+};
+
+export type FileExistsResult = FileExistsResultSuccess | ApiResultError;
+
+export interface FileDataResultSuccess extends Omit<ApiResultSuccess, 'data'> {
+  data: {
+    filename: string;
+    contents?: string | {};
+  }
+};
+
+export type FileDataResult = FileDataResultSuccess | ApiResultError;
+
+export interface DialogSaveResultSuccess extends Omit<ApiResultSuccess, 'data'> {
+  data: SaveDialogReturnValue;
+};
+
+export type DialogSaveResult = DialogSaveResultSuccess | ApiResultError;
+
+export interface DialogOpenResultSuccess extends Omit<ApiResultSuccess, 'data'> {
+  data: OpenDialogReturnValue;
+};
+
+export type DialogOpenResult = DialogOpenResultSuccess | ApiResultError;

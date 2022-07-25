@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import { FileData } from './service-fs.types';
+import { FileExistsResult, DirectoryTempResult, FileDataResult } from './service-fs.types';
 
-const normalize = (pathName: string) => {
-  return path.normalize(pathName);
+const normalize = (pathname: string) => {
+  return path.normalize(pathname);
 };
 
 const isJSON = (name: string) => {
@@ -15,26 +15,29 @@ export const join = (...paths: Array<string>) => {
   return path.join.apply(null, paths);
 };
 
-export const ext = (pathName: string) => {
-  return path.extname(pathName);
+export const ext = (pathname: string) => {
+  return path.extname(pathname);
 };
 
-export const dirExistsSync = (pathName: string) => {
+export const dirExistsSync = (pathname: string): FileExistsResult => {
   try {
     return {
       error: false,
-      exists: fs.existsSync(normalize(pathName)),
+      data: {
+        exists: fs.existsSync(normalize(pathname))
+      },
     };
   } catch (err) {
+    const message = err && typeof err === 'string' ? err : `Unable to check directory existance: ${pathname} - unknown reason`;
+
     return {
       error: true,
-      exists: false,
-      message: err,
+      message,
     };
   }
 };
 
-export const dirTempSync = (prefix: string) => {
+export const dirTempSync = (prefix: string): DirectoryTempResult => {
   let tmpDir;
 
   try {
@@ -44,36 +47,43 @@ export const dirTempSync = (prefix: string) => {
 
     return {
       error: false,
-      pathName: tmpDir,
+      data: {
+        pathname: tmpDir,
+      }
     };
   } catch (err) {
+    const message = err && typeof err === 'string' ? err : `Unable to create temp directory: ${prefix} - unknown reason`;
+
     return {
       error: true,
-      message: err,
+      message,
     };
   }
 };
 
-export const fileExistsSync = (pathName: string) => {
+export const fileExistsSync = (pathname: string): FileExistsResult => {
   try {
     return {
       error: false,
-      exists: fs.pathExistsSync(pathName),
+      data: {
+        exists: fs.pathExistsSync(pathname),
+      }
     };
   } catch (err) {
+    const message = err && typeof err === 'string' ? err : `Unable to check file existance: ${pathname} - unknown reason`;
+
     return {
       error: true,
-      exists: false,
-      message: err,
+      message,
     };
   }
 };
 
 export const fileReadSync = (
-  pathName: string,
+  pathname: string,
   media: BufferEncoding = 'utf8'
-) => {
-  const exists = fileExistsSync(pathName);
+): FileDataResult | FileExistsResult => {
+  const exists = fileExistsSync(pathname);
 
   if (exists.error) {
     return exists;
@@ -83,7 +93,7 @@ export const fileReadSync = (
     media = 'utf8';
   }
 
-  const filename = normalize(pathName);
+  const filename = normalize(pathname);
 
   try {
     let contents;
@@ -97,33 +107,36 @@ export const fileReadSync = (
 
     return {
       error: false,
-      contents,
+      data: {
+        filename,
+        contents,
+      }
     };
   } catch (err) {
+    const message = err && typeof err === 'string' ? err : `Unable to read file: ${pathname} - unknown reason`;
+
     return {
       error: true,
-      contents: null,
-      message: err,
-    };
+      message,
+    }
   }
 };
 
 export const fileWriteSync = (
-  pathName: string,
+  pathname: string,
   contents: unknown
-): FileData => {
-  const filename = normalize(pathName);
+): FileDataResult => {
+  const filename = normalize(pathname);
 
   if (!contents) {
     return {
       error: true,
-      filename,
-      message: 'no contents to write',
+      message: `Unable to write file: ${pathname} - contents required`,
     };
   }
 
   try {
-    if (isJSON(pathName)) {
+    if (isJSON(pathname)) {
       if (typeof contents !== 'string') {
         contents = JSON.stringify(contents, null, 2);
       } else {
@@ -135,18 +148,21 @@ export const fileWriteSync = (
 
     return {
       error: false,
-      filename,
+      data: {
+        filename,
+      }
     };
   } catch (err) {
+    const message = err && typeof err === 'string' ? err : `Unable to write file: ${pathname} - unknown reason`;
+
     return {
       error: true,
-      filename,
-      message: err,
-    };
+      message,
+    }
   }
 };
 
-export const fileCopySync = (source: string, dest: string): FileData => {
+export const fileCopySync = (source: string, dest: string): FileDataResult => {
   const sourcePath = normalize(source);
   const destPath = normalize(dest);
 
@@ -155,17 +171,21 @@ export const fileCopySync = (source: string, dest: string): FileData => {
 
     return {
       error: false,
-      filename: destPath,
+      data: {
+        filename: destPath,
+      }
     };
   } catch (err) {
+    const message = err && typeof err === 'string' ? err : `Unable to copy: ${source} to ${dest} - unknown reason`;
+
     return {
       error: true,
-      message: err,
-    };
+      message,
+    }
   }
 };
 
-export const fileTempSync = (source: string, dest: string): FileData => {
+export const fileTempSync = (source: string, dest: string): FileDataResult => {
   const destFile = `${dest}/${path.basename(source)}`;
 
   return fileCopySync(source, destFile);

@@ -1,7 +1,7 @@
 import AdmZip from 'adm-zip';
-import { SaveFileData } from './service-fs.types';
+import { FileDataResult } from './service-fs.types';
 
-export const archive = (source: string, dest: string): SaveFileData => {
+export const archive = (source: string, dest: string): FileDataResult => {
   try {
     const zip = new AdmZip();
 
@@ -11,12 +11,16 @@ export const archive = (source: string, dest: string): SaveFileData => {
 
     return {
       error: false,
-      filePath: dest,
+      data: {
+        filename: dest,
+      }
     };
   } catch (err) {
+    const message = err && typeof err === 'string' ? err : `Unable to archive: ${source} to ${dest} - unknown reason`;
+
     return {
       error: true,
-      message: err,
+      message,
     };
   }
 };
