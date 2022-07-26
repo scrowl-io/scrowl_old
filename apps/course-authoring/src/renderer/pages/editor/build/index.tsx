@@ -1,6 +1,6 @@
 import React from 'react';
 import * as style from './styles.module.scss';
-import { Default as Nav } from '@owlui/navigationdrawer';
+import { NavigationDrawer as Nav } from '@owlui/lib';
 
 export const PageRoute = '/build';
 export const PageName = 'Build';

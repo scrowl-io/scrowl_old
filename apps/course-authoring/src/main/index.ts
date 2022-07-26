@@ -16,9 +16,8 @@ import installExtension, {
   REACT_DEVELOPER_TOOLS,
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
-import { init as exporterInit } from './services/exporter';
-import { preferencesInit } from './services/internal-storage';
-import { init as modelsInit } from './models/index';
+import { init as initModels } from './models';
+import { Menu, Exporter, Requester } from './services';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -26,6 +25,8 @@ let mainWindow: BrowserWindow | null = null;
 
 const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
+
+const isDARWIN = process.platform === 'darwin';
 
 const installExtensions = () => {
   return Promise.all([installExtension(REACT_DEVELOPER_TOOLS)]);
@@ -74,9 +75,8 @@ const createWindow = async () => {
     throw 'Unable to create Browser Window';
   }
 
-  exporterInit();
-  preferencesInit();
-  modelsInit();
+  Exporter.init();
+  initModels();
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
 
@@ -142,7 +142,10 @@ app
   .whenReady()
   .then(() => {
     registerScrowlFileProtocol();
+    Menu.init(isDARWIN);
+    Requester.init();
     createWindow();
+
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

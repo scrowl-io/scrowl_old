@@ -99,9 +99,6 @@ export const filesList = {
 };
 
 export const EXAMPLE_PROJECT = {
-  id: '',
-  createdAt: '',
-  modifiedAt: '',
   name: '',
   description: '',
   theme: '',
