@@ -1,5 +1,10 @@
 import { dialog, OpenDialogOptions, SaveDialogOptions } from 'electron';
-import { OpenFileData, SaveFileData, FileFilters, AllowedFiles } from './types';
+import {
+  DialogOpenResult,
+  DialogSaveResult,
+  FileFilters,
+  AllowedFiles,
+} from './service-fs.types';
 
 export const MEDIA_TYPES: FileFilters = {
   image: { name: 'Image', extensions: ['jpg', 'jpeg', 'png'] },
@@ -12,44 +17,54 @@ export const getDialogMediaFilters = (filters: Array<AllowedFiles>) => {
 };
 
 export const dialogOpen = (options: OpenDialogOptions) => {
-  return new Promise<OpenFileData>((resolve, reject) => {
+  return new Promise<DialogOpenResult>((resolve, reject) => {
     dialog
       .showOpenDialog(options)
-      .then(({ canceled, filePaths }: OpenFileData) => {
+      .then(({ canceled, filePaths }) => {
         resolve({
           error: false,
-          canceled,
-          filePaths,
+          data: {
+            canceled,
+            filePaths,
+          },
         });
       })
       .catch(err => {
+        const message =
+          err && typeof err === 'string'
+            ? err
+            : `Unable to open dialog - unknown reason`;
+
         reject({
-          filePaths: [],
-          canceled: false,
           error: true,
-          message: err,
+          message,
         });
       });
   });
 };
 
 export const dialogSave = (options: SaveDialogOptions) => {
-  return new Promise<SaveFileData>((resolve, reject) => {
+  return new Promise<DialogSaveResult>((resolve, reject) => {
     dialog
       .showSaveDialog(options)
-      .then(({ canceled, filePath }: SaveFileData) => {
+      .then(({ canceled, filePath }) => {
         resolve({
           error: false,
-          canceled,
-          filePath,
+          data: {
+            canceled,
+            filePath,
+          },
         });
       })
       .catch(err => {
+        const message =
+          err && typeof err === 'string'
+            ? err
+            : `Unable to save dialog - unknown reason`;
+
         reject({
-          filePath: '',
-          canceled: false,
           error: true,
-          message: err,
+          message,
         });
       });
   });

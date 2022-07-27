@@ -35,14 +35,25 @@
     "build:runtime": "yarn workspace @scrowl/runtime run build"
   },
   "devDependencies": {
+    "@scrowl/eslint-config": "^1.0.0",
+    "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
     "chalk": "^5.0.1",
     "concurrently": "^7.1.0",
+    "constants-browserify": "^1.0.0",
+    "crypto-browserify": "^3.12.0",
     "eslint": "^8.13.0",
+    "events": "^3.3.0",
     "fs-extra": "^10.0.1",
+    "os-browserify": "^0.3.0",
     "prettier": "^2.6.2",
     "process": "^0.11.10",
-    "@scrowl/eslint-config": "^1.0.0",
+    "querystring-es3": "^0.2.1",
+    "stream-browserify": "^3.0.0",
     "stylelint": "^14.7.1",
+    "timers-browserify": "^2.0.12",
+    "tty-browserify": "^0.0.1",
+    "url": "^0.11.0",
     "wait-on": "^6.0.1"
   },
   "packageManager": "yarn@1.22.17"

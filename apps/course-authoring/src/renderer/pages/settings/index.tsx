@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@owlui/lib';
 import {
-  Appearance,
-  Preferences,
-} from '../../../main/services/internal-storage/handlers/preferences/index.types';
+  PreferenceData,
+  PreferenceAppearance,
+} from '../../../main/models/preferences';
 
 export const PageRoute = '/settings';
 export const PageName = 'Settings';
 
 export const PageElement = () => {
-  const [preferences, setPreferences] = useState<Preferences>();
+  const [preferences, setPreferences] = useState<PreferenceData>();
 
   useEffect(() => {
     window.electronAPI.ipcRenderer.invoke('get-preferences-list').then(data => {
@@ -19,7 +19,7 @@ export const PageElement = () => {
   }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPreferences({ appearance: event.target.value as Appearance });
+    setPreferences({ appearance: event.target.value as PreferenceAppearance });
   };
 
   const handleSave = () => {
@@ -35,7 +35,7 @@ export const PageElement = () => {
     onChange,
   }: {
     label: string;
-    value: Appearance;
+    value: PreferenceAppearance;
     checked: boolean;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   }) => {
