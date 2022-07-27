@@ -1,5 +1,5 @@
 {
-  "name": "@scrowl/appdownloads",
+  "name": "@scrowl/web",
   "version": "1.0.0",
   "description": "",
   "license": "MIT",
@@ -11,7 +11,7 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scrowl-io/scrowl.git",
-    "directory": "apps/app-downloads"
+    "directory": "apps/web"
   },
   "bugs": {
     "url": "https://github.com/scrowl-io/scrowl/issues"

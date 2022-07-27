@@ -1,9 +1,9 @@
-import fs from '../utils/file-system.js'
+import fs from "../utils/file-system.js"
 
 const fileMap = {
-  'apps/authoring/release/build/Scrowl-1.0.0.dmg': {
-    dest: 'apps/app-downloads/dist/scrowl.dmg'
-  }
+  "apps/authoring/release/build/Scrowl-1.0.0.dmg": {
+    dest: "apps/web/dist/scrowl.dmg",
+  },
 }
 
 const copy = () => {
