@@ -1,0 +1,20 @@
+{{#with . as | data |}}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <title>{{{data.title}}}</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="./scrowl.player.css">
+  <script type="text/javascript">
+    window.__SCROWL_MANIFEST = {{{data.manifest}}}
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="text/javascript" src="./scrowl.runtime.js"></script>
+  <script type="text/javascript" src="./scrowl.player.js"></script>
+</body>
+</html>
+{{/with}}
