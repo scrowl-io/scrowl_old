@@ -44,7 +44,7 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-  lint-course-authoring:
+  lint-authoring:
     needs: create-cache
     runs-on: ${{ matrix.os }}
     strategy:
@@ -87,9 +87,9 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Lint
-        run: yarn run lint:check:course
+        run: yarn run lint:check:authoring
 
-  test-unit-course-authoring:
+  test-unit-authoring:
     needs: create-cache
     runs-on: ${{ matrix.os }}
     strategy:
@@ -132,4 +132,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Test
-        run: yarn run test:unit:course
+        run: yarn run test:unit:authoring

@@ -1,4 +1,4 @@
-import { Requester } from '../../services';
+import { Requester } from '..';
 
 export interface MenuEventNewProject
   extends Omit<Requester.RegisterEvent, 'name'> {

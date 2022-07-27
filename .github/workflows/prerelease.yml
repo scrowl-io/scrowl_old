@@ -37,7 +37,7 @@ jobs:
       - name: Build Executables
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: yarn run package:course
+        run: yarn run package:authoring
 
       - uses: marvinpinto/action-automatic-releases@latest
         with:
@@ -46,4 +46,4 @@ jobs:
           prerelease: true
           title: Development Build
           files: |
-            ./apps/course-authoring/release/build/Scrowl-1.0.0.dmg
+            ./apps/authoring/release/build/Scrowl-1.0.0.dmg

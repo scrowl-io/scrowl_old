@@ -1,7 +1,7 @@
 import fs from '../utils/file-system.js'
 
 const fileMap = {
-  'apps/course-authoring/release/build/Scrowl-1.0.0.dmg': {
+  'apps/authoring/release/build/Scrowl-1.0.0.dmg': {
     dest: 'apps/app-downloads/dist/scrowl.dmg'
   }
 }

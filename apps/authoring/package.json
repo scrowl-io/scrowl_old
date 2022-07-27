@@ -1,6 +1,6 @@
 {
-  "name": "@scrowl/courseauthoring",
-  "productName": "course-authoring",
+  "name": "@scrowl/authoring",
+  "productName": "authoring",
   "version": "1.0.0",
   "description": "",
   "license": "MIT",
@@ -11,12 +11,12 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/scrowl-io/scrowl.git",
-    "directory": "apps/course-authoring"
+    "directory": "apps/authoring"
   },
   "bugs": {
     "url": "https://github.com/scrowl-io/scrowl/issues"
   },
-  "homepage": "https://github.com/scrowl-io/scrowl/apps/course-authoring#readme",
+  "homepage": "https://github.com/scrowl-io/scrowl/apps/authoring#readme",
   "scripts": {
     "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
     "setup": "node ./scripts/pipeline/setup.mjs",

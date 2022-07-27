@@ -1,10 +1,10 @@
-import { PageRoutesProps, PageNavProps } from '../';
+import { PageRoutesProps, PageNavProps } from '..';
 import { PageRoutes as HomeRoutes } from '../home'
 
 export const PageRoutes: PageRoutesProps = {
   base: {
-    url: '/settings',
-    label: 'Settings'
+    url: '/editor',
+    label: 'Editor'
   }
 };
 

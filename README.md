@@ -44,7 +44,7 @@ Next lets install our dependencies.
 
 ### Course Authoring
 
-The Course Authoring Tool is the primary application being built in this repo. It is an electron app and you can start it in docker container or without docker. You can find more information about the tool [here](./apps/course-authoring/README.md)
+The Course Authoring Tool is the primary application being built in this repo. It is an electron app and you can start it in docker container or without docker. You can find more information about the tool [here](./apps/authoring/README.md)
 
 > If you are on macOS you'll need to install [XQuartz](https://www.xquartz.org/) to overcome display port issues
 
@@ -56,23 +56,23 @@ The Course Authoring Tool is the primary application being built in this repo. I
 
 **Default**
 
-`yarn run start:course`
+`yarn run start:authoring`
 
 ## Useful Commands
 
 `lerna add <package> --scope=<local-package>` - The easiest way to add a package to a local package ([Documentation](https://github.com/lerna/lerna/tree/main/commands/add)).
 
-`yarn run lint:check:course` - A status check on the Course Authoring Tool to ensure style guides are met.
+`yarn run lint:check:authoring` - A status check on the Course Authoring Tool to ensure style guides are met.
 
-`yarn run lint:fix:course` - Rewrites files within the Course Authoring Tool in accordance to our style rules.
+`yarn run lint:fix:authoring` - Rewrites files within the Course Authoring Tool in accordance to our style rules.
 
-`yarn run test:unit:course` - Runs all Course Authoring Tool unit tests
+`yarn run test:unit:authoring` - Runs all Course Authoring Tool unit tests
 
-`yarn run test:e2e:course` - Runs all Course Authoring Tool end-to-end tests
+`yarn run test:e2e:authoring` - Runs all Course Authoring Tool end-to-end tests
 
-`yarn run test:course` - Runs all Course Authoring Tool unit and end-to-end tests
+`yarn run test:authoring` - Runs all Course Authoring Tool unit and end-to-end tests
 
-`yarn run package:course` - Builds the executables for the Course Authoring Tool. Output can be found at _./apps/course-authoring/release/build_
+`yarn run package:authoring` - Builds the executables for the Course Authoring Tool. Output can be found at _./apps/authoring/release/build_
 
 ## Contributing
 

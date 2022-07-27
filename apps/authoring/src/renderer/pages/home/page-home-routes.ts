@@ -1,4 +1,4 @@
-import { PageRoutesProps, PageNavProps } from '../';
+import { PageRoutesProps, PageNavProps } from '..';
 
 export const PageRoutes: PageRoutesProps = {
   base: {
