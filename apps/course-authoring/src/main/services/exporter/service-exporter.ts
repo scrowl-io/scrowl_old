@@ -72,7 +72,7 @@ export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
       title: packOptions.title ? packOptions.title : '',
       manifest: JSON.stringify(packOptions.manifest),
     }
-    const courseContents = compile(courseTemplate.contents, courseData);
+    const courseContents = compile(courseTemplate.data.contents, courseData);
 
     if (courseContents.error) {
       reject(courseContents);
