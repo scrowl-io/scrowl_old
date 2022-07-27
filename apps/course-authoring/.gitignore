@@ -44,11 +44,11 @@ release/build/*
 dist/
 
 # SCORM publisher folders
-src/main/services/publisher/course/dist
-src/main/services/publisher/course/package/*
-src/main/services/publisher/course/package/*/
-!src/main/services/publisher/course/package/content/
-src/main/services/publisher/course/package/content/index.html
+src/main/services/publisher/project/dist
+src/main/services/publisher/project/package/*
+src/main/services/publisher/project/package/*/
+!src/main/services/publisher/project/package/content/
+src/main/services/publisher/project/package/content/index.html
 # testing reports
 tests/reports
 tests/screenshots

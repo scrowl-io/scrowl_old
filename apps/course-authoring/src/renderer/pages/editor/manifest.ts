@@ -30,7 +30,7 @@ export const manifest = {
             {
               type: 'textbox',
               props: {
-                children: 'Welcome to a Scrowl packaged course',
+                children: 'Welcome to a Scrowl packaged project',
                 style: {
                   top: '150px',
                   left: '3rem',

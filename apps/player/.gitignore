@@ -44,11 +44,6 @@ release/build/*
 dist/
 dev/
 
-# SCORM publisher folders
-src/main/services/publisher/course-packs
-src/main/services/publisher/course-template/*
-src/main/services/publisher/course-template/*/
-!src/main/services/publisher/course-template/content/
 # testing reports
 tests/reports
 tests/screenshots

@@ -10,7 +10,7 @@ const routes = [
   },
   {
     url: '/create',
-    label: 'Create New Course',
+    label: 'Create New Project',
   },
 ];
 
@@ -30,7 +30,7 @@ test('A toolbar element is rendered', () => {
 });
 
 test('Should render title from route', () => {
-  const expectedText = 'Scrowl - Create New Course';
+  const expectedText = 'Scrowl - Create New Project';
 
   render(<TitleBar routes={routes} />);
 

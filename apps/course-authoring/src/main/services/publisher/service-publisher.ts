@@ -14,13 +14,13 @@ import { ProjectConfig } from '@scrowl/player/src/lib';
 const pathing: PathingProps = {
   files: {
     template: {
-      source: path.join(__dirname, 'course/templates/index.hbs'),
-      dest: path.join(__dirname, 'course/package/content/index.html'),
+      source: path.join(__dirname, 'project/templates/index.hbs'),
+      dest: path.join(__dirname, 'project/package/content/index.html'),
     },
   },
   dirs: {
-    source: path.join(__dirname, 'course/package'),
-    out: path.join(__dirname, 'course/dist'),
+    source: path.join(__dirname, 'project/package'),
+    out: path.join(__dirname, 'project/dist'),
   }
 };
 
@@ -51,10 +51,10 @@ export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
         outputFolder: pathing.dirs.out,
       },
     };
-    const courseTemplate = fileReadSync(pathing.files.template.source);
+    const projectTemplate = fileReadSync(pathing.files.template.source);
 
-    if (courseTemplate.error) {
-      reject(courseTemplate);
+    if (projectTemplate.error) {
+      reject(projectTemplate);
       return;
     }
 
@@ -68,18 +68,18 @@ export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
       return;
     }
 
-    const courseData = {
+    const projectData = {
       title: packOptions.title ? packOptions.title : '',
       manifest: JSON.stringify(packOptions.manifest),
     }
-    const courseContents = compile(courseTemplate.data.contents, courseData);
+    const projectContents = compile(projectTemplate.data.contents, projectData);
 
-    if (courseContents.error) {
-      reject(courseContents);
+    if (projectContents.error) {
+      reject(projectContents);
       return;
     }
 
-    const writeRes = fileWriteSync(pathing.files.template.dest, courseContents.data.contents);
+    const writeRes = fileWriteSync(pathing.files.template.dest, projectContents.data.contents);
 
     if (writeRes.error) {
       reject(writeRes);
