@@ -7,6 +7,7 @@ import {
   CreateResult,
   SaveResult,
   ImportResult,
+  OpenResult,
 } from '../../../main/models/project';
 import {
   ProjectObserverDataFn,
@@ -45,11 +46,20 @@ export class Project {
 
     Menu.File.onProjectNew(() => {
       if (this.data && this.data.workingDir) {
-        console.error('Unbale to create project - project already created');
+        console.error('Unable to create project - project already created');
         return;
       }
 
       this.create(EXAMPLE_DATA);
+    });
+
+    Menu.File.onProjectOpen((event, value: OpenResult) => {
+      console.log(value);
+      console.log(event);
+
+      if (!value.error && value.data) {
+        this.create(EXAMPLE_DATA);
+      }
     });
 
     Menu.File.onProjectSave(() => {
