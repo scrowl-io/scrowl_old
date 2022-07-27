@@ -59,6 +59,7 @@ export const template: MenuItemConstructorOptions = {
     {
       label: 'Save',
       id: EVENTS.projectSave.id,
+      enabled: false,
       click: () => {
         send(EVENTS.projectSave.name, false);
       },
@@ -67,6 +68,7 @@ export const template: MenuItemConstructorOptions = {
     {
       label: 'Save As...',
       id: EVENTS.projectSaveAs.id,
+      enabled: false,
       click: () => {
         send(EVENTS.projectSaveAs.name, true);
       },
@@ -75,6 +77,7 @@ export const template: MenuItemConstructorOptions = {
     {
       label: 'Import File',
       id: EVENTS.importFile.id,
+      enabled: false,
       click: () => {
         send(EVENTS.importFile.name, true);
       },

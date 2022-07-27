@@ -54,9 +54,6 @@ export class Project {
     });
 
     Menu.File.onProjectOpen((event, value: OpenResult) => {
-      console.log(value);
-      console.log(event);
-
       if (!value.error && value.data) {
         this.create(EXAMPLE_DATA);
       }
@@ -116,6 +113,7 @@ export class Project {
     if (data && data.workingDir) {
       Promise.allSettled([
         Menu.Global.disable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
         Menu.Global.enable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
@@ -125,6 +123,7 @@ export class Project {
     } else {
       Promise.allSettled([
         Menu.Global.enable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
         Menu.Global.disable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),

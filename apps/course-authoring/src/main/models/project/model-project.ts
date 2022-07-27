@@ -75,7 +75,12 @@ export const open = async function () {
     return tempDir;
   }
 
-  return fs.unarchive(dialogResult.data.filePaths[0], tempDir.data.pathname);
+  const projectData = fs.unarchive(
+    dialogResult.data.filePaths[0],
+    tempDir.data.pathname
+  );
+
+  return fs.fileReadSync(`${projectData.data.projectDir}/${PROJECT_FILE_NAME}`);
 };
 
 const write = function (source: string, filename: string): fs.FileDataResult {
