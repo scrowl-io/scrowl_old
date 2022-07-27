@@ -3,7 +3,6 @@ import { Requester, FileSystem } from '../../services';
 export interface ProjectEventNew extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'project/new';
 }
-
 export interface ProjectEventSave
   extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'project/save';
@@ -75,6 +74,19 @@ interface CreateResultSuccess
 
 export type CreateResult =
   | CreateResultSuccess
+  | FileSystem.DirectoryTempResult
+  | FileSystem.FileDataResult;
+
+interface OpenResultSuccess
+  extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
+  data: {
+    filename: string;
+    project: ProjectData | ProjectDataNew;
+  };
+}
+
+export type OpenResult =
+  | OpenResultSuccess
   | FileSystem.DirectoryTempResult
   | FileSystem.FileDataResult;
 

@@ -1,6 +1,7 @@
 import { MenuItemConstructorOptions } from 'electron';
 import { send, registerAll } from '../../requester';
 import { MenuItemEventsFile } from '../service-menu.types';
+import { Project as ProjectModel } from '../../../models/project';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
@@ -8,6 +9,11 @@ export const EVENTS: MenuItemEventsFile = {
   projectNew: {
     id: 'new-project',
     name: 'menu/project/new',
+    type: 'send',
+  },
+  projectOpen: {
+    id: 'open-project',
+    name: 'menu/project/open',
     type: 'send',
   },
   projectSave: {
@@ -37,6 +43,17 @@ export const template: MenuItemConstructorOptions = {
         send(EVENTS.projectNew.name);
       },
       accelerator: 'CmdOrCtrl+N',
+    },
+    separator,
+    {
+      label: 'Open...',
+      id: EVENTS.projectOpen.id,
+      click: async () => {
+        const openProjectData = await ProjectModel.open();
+
+        send(EVENTS.projectOpen.name, openProjectData);
+      },
+      accelerator: 'CmdOrCtrl+O',
     },
     separator,
     {
