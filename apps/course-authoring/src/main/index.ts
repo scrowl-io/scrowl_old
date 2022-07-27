@@ -17,7 +17,7 @@ import installExtension, {
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
 import { init as initModels } from './models';
-import { Menu, Exporter, Requester } from './services';
+import { Menu, Publisher, Requester } from './services';
 
 const __rootdir = path.join(__dirname, '../../');
 
@@ -75,7 +75,7 @@ const createWindow = async () => {
     throw 'Unable to create Browser Window';
   }
 
-  Exporter.init();
+  Publisher.init();
   initModels();
 
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));

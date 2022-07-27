@@ -1,5 +1,5 @@
 import engine from 'handlebars';
-import { TemplateData, TemplateResult } from '../exporter';
+import { TemplateData, TemplateResult } from '../publisher';
 
 engine.registerHelper('raw', options => {
   return options.fn();

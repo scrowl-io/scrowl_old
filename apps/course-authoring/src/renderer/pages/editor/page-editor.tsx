@@ -4,9 +4,9 @@ import { PageNavItems } from './page-editor-routes';
 import { NavigationBar } from '../../components/navigationbar';
 import { manifest } from './manifest';
 
-const exportPackage = () => {
+const publishProject = () => {
   window.electronAPI.ipcRenderer
-    .invoke('package-course', {
+    .invoke('publish-project', {
       title: 'Scrowl Player Test',
       manifest,
     })
@@ -18,7 +18,7 @@ const exportPackage = () => {
 export const PageElement = () => {
   return (
     <>
-      <NavigationBar pages={PageNavItems} exportPackage={exportPackage} />
+      <NavigationBar pages={PageNavItems} publishProject={publishProject} />
       <main className={styles.editor}>
         <h1>Editor Page</h1>
       </main>

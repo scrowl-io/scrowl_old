@@ -4,8 +4,8 @@ import packager from 'scorm-packager';
 import {
   PathingProps,
   PathingDirKey,
-  ExporterEvents,
-} from './service-exporter.types';
+  PublisherEvents,
+} from './service-publisher.types';
 import { registerAll } from '../requester';
 import { fileReadSync, fileWriteSync } from '../file-system';
 import { compile } from '../templater';
@@ -96,9 +96,9 @@ export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
   });
 };
 
-export const EVENTS: ExporterEvents = {
+export const EVENTS: PublisherEvents = {
   package: {
-    name: 'package-course',
+    name: 'publish-project',
     type: 'invoke',
     fn: pack,
   },

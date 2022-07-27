@@ -26,16 +26,16 @@ export type TemplateData = {
   [key: string]: string | number;
 }
 
-export interface ExporterEventPackage extends Omit<RegisterEvent, 'name'> {
-  name: 'package-course';
+export interface PublisherEventPackage extends Omit<RegisterEvent, 'name'> {
+  name: 'publish-project';
 }
 
-export type ExporterEventNames = ExporterEventPackage['name'];
+export type PublisherEventNames = PublisherEventPackage['name'];
 
-export type ExportEvent = ExporterEventPackage;
+export type ExportEvent = PublisherEventPackage;
 
-export type ExporterEvents = {
-  package: ExporterEventPackage;
+export type PublisherEvents = {
+  package: PublisherEventPackage;
 };
 
 export type TemplateResult = ApiResult;

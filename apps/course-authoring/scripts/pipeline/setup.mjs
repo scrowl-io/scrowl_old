@@ -3,15 +3,15 @@ import fs from '../utils/file-system.mjs';
 // This map uses the key to declare a path to the source file
 const sourceMap = {
   'node_modules/@scrowl/runtime/dist/scrowl.runtime.js': {
-    dest: './src/main/services/exporter/course/package/content/scrowl.runtime.js', // this is the target destination of the file to be copied to
+    dest: './src/main/services/publisher/course/package/content/scrowl.runtime.js', // this is the target destination of the file to be copied to
     includePaths: ['../../'], // because this is a mono-repo files may not be located at the project level, this allows the source file to be search in other locations
   },
   'node_modules/@scrowl/runtime/dist/scrowl.runtime.js.map': {
-    dest: './src/main/services/exporter/course/package/content/scrowl.runtime.js.map', // this is the target destination of the file to be copied to
+    dest: './src/main/services/publisher/course/package/content/scrowl.runtime.js.map', // this is the target destination of the file to be copied to
     includePaths: ['../../'], // because this is a mono-repo files may not be located at the project level, this allows the source file to be search in other locations
   },
   'node_modules/@scrowl/player/dist': {
-    dest: './src/main/services/exporter/course/package/content/',
+    dest: './src/main/services/publisher/course/package/content/',
     includePaths: ['../../'],
     options: {
       overwrite: true,

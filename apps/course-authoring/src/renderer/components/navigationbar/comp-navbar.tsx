@@ -20,7 +20,10 @@ const NavigationItem = ({ page }: { page: PageRouteProps }) => {
   );
 };
 
-export const NavigationBar = ({ pages, exportPackage }: NavigationBarProps) => {
+export const NavigationBar = ({
+  pages,
+  publishProject,
+}: NavigationBarProps) => {
   return (
     <div className={styles.topContainer}>
       <ul className={styles.navigationBar}>
@@ -28,7 +31,7 @@ export const NavigationBar = ({ pages, exportPackage }: NavigationBarProps) => {
           return <NavigationItem key={index} page={page} />;
         })}
       </ul>
-      {exportPackage ? <Button onClick={exportPackage}>Export</Button> : ''}
+      {publishProject ? <Button onClick={publishProject}>Publish</Button> : ''}
     </div>
   );
 };

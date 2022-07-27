@@ -43,12 +43,12 @@ release/build/*
 # build output
 dist/
 
-# SCORM exporter folders
-src/main/services/exporter/course/dist
-src/main/services/exporter/course/package/*
-src/main/services/exporter/course/package/*/
-!src/main/services/exporter/course/package/content/
-src/main/services/exporter/course/package/content/index.html
+# SCORM publisher folders
+src/main/services/publisher/course/dist
+src/main/services/publisher/course/package/*
+src/main/services/publisher/course/package/*/
+!src/main/services/publisher/course/package/content/
+src/main/services/publisher/course/package/content/index.html
 # testing reports
 tests/reports
 tests/screenshots
