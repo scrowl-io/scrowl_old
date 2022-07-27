@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { TitleBar } from './index';
+import { TitleBar } from './elements';
 
 // Create routes that will be used to render the component
 const routes = [
   {
-    PageRoute: '/',
-    PageName: 'Dashboard',
+    url: '/',
+    label: 'Dashboard',
   },
   {
-    PageRoute: '/create',
-    PageName: 'Create New Course',
+    url: '/create',
+    label: 'Create New Course',
   },
 ];
 
@@ -24,7 +24,7 @@ jest.mock('react-router', () => ({
 }));
 
 test('A toolbar element is rendered', () => {
-  render(<TitleBar pages={routes} />);
+  render(<TitleBar routes={routes} />);
   const toolBar = screen.getByTestId('toolbar');
   expect(toolBar).toBeTruthy;
 });
@@ -32,7 +32,7 @@ test('A toolbar element is rendered', () => {
 test('Should render title from route', () => {
   const expectedText = 'Scrowl - Create New Course';
 
-  render(<TitleBar pages={routes} />);
+  render(<TitleBar routes={routes} />);
 
   const toolBar = screen.getByText(expectedText);
 

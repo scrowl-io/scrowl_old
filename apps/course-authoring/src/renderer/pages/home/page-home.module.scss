@@ -16,21 +16,21 @@
   &__divider {
     margin-top: 0.5rem;
     height: 1px;
-    background-color: vars(--bs-border-color);
+    background-color: var(--bs-border-color);
   }
 }
 
 .main {
   height: calc(100vh - 40px);
   width: 100vw;
-  background-color: #dae2f4;
-  overflow-y: scroll;
+  background-color: var(--bs-gray-200);
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .section-title {
   font-weight: bold;
-  color: vars(--bs-primary);
+  color: var(--bs-primary);
   margin-bottom: 1rem;
 }
 
@@ -40,6 +40,6 @@
   }
 
   thead {
-    background-color: vars(--bs-border-color);
+    background-color: var(--bs-border-color);
   }
 }
