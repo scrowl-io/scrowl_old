@@ -1,0 +1,79 @@
+{
+  "name": "@scrowl/player",
+  "version": "0.0.1",
+  "description": "",
+  "license": "MIT",
+  "keywords": [],
+  "author": {
+    "name": "OSG"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scrowl-io/scrowl.git",
+    "directory": "apps/player"
+  },
+  "bugs": {
+    "url": "https://github.com/scrowl-io/scrowl/issues"
+  },
+  "homepage": "https://github.com/scrowl-io/scrowl/apps/player#readme",
+  "scripts": {
+    "clean": "rimraf ../.parcel-cache",
+    "prebuild": "yarn run clean && rimraf dist",
+    "build": "parcel build --target production --no-cache --public-url ../dist",
+    "postbuild": "tsc",
+    "prestart": "yarn run clean && rimraf dev",
+    "start": "parcel serve --target development --open --dist-dir dev"
+  },
+  "main": "./dist/scrowl.player.js",
+  "production": "./dist/scrowl.player.js",
+  "development": "./dev/scrowl.player.html",
+  "types": "./dist/scrowl.player.d.ts",
+  "targets": {
+    "main": false,
+    "production": {
+      "context": "browser",
+      "source": "./src/index.tsx",
+      "outputFormat": "global",
+      "distDir": "./dist"
+    },
+    "development": {
+      "context": "browser",
+      "source": "./src/index.html",
+      "distDir": "./dev"
+    }
+  },
+  "eslintConfig": {
+    "extends": "@scrowl/eslint-config"
+  },
+  "prettier": "@scrowl/eslint-config/prettier",
+  "stylelint": {
+    "extends": "@scrowl/eslint-config/stylelint"
+  },
+  "devDependencies": {
+    "@parcel/core": "2.5.0",
+    "@parcel/packager-ts": "2.5.0",
+    "@parcel/reporter-dev-server": "2.5.0",
+    "@parcel/runtime-react-refresh": "2.5.0",
+    "@parcel/transformer-sass": "2.5.0",
+    "@parcel/transformer-typescript-types": "2.5.0",
+    "@parcel/validator-typescript": "2.5.0",
+    "@scrowl/eslint-config": "^1.0.0",
+    "@types/react": "^18.0.7",
+    "@types/react-dom": "^18.0.0",
+    "eslint": "^8.13.0",
+    "parcel": "2.5.0",
+    "postcss": "^8.4.12",
+    "postcss-modules": "^4.3.1",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "stylelint": "^14.7.1",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@owlui/lib": "^0.0.27",
+    "react": "^18.0.0",
+    "react-bootstrap": "^2.4.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0"
+  }
+}

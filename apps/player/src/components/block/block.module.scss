@@ -1,0 +1,9 @@
+.block {
+  background-color: var(--bs-light);
+  position: relative;
+  height: calc(100vh - (var(--spacer) * 2));
+
+  & > * {
+    position: absolute;
+  }
+}

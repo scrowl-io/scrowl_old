@@ -1,0 +1,15 @@
+{
+  "extends": "@scrowl/eslint-config/tsconfig",
+  "compilerOptions": {
+    "types": ["@scrowl/eslint-config/src/typings", "jest"],
+    "noEmit": false,
+    "isolatedModules": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": true,
+    "outDir": "./dist",
+    "outFile": "./dist/scrowl.player.d.ts"
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", "./types/*.d.ts"],
+  "exclude": ["./scripts/**/*.js", ""]
+}
