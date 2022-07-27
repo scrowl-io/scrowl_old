@@ -3,44 +3,95 @@ import fs from 'fs-extra';
 import packager from 'scorm-packager';
 import {
   PathingProps,
-  PathingKey,
+  PathingDirKey,
   ExporterEvents,
 } from './service-exporter.types';
 import { registerAll } from '../requester';
+import { fileReadSync, fileWriteSync } from '../file-system';
+import { compile } from '../templater';
+import { ProjectConfig } from '@scrowl/player/src/lib';
 
 const pathing: PathingProps = {
-  source: path.join(__dirname, 'course-template'),
-  out: path.join(__dirname, 'course-packs'),
+  files: {
+    template: {
+      source: path.join(__dirname, 'course/templates/index.hbs'),
+      dest: path.join(__dirname, 'course/package/content/index.html'),
+    },
+  },
+  dirs: {
+    source: path.join(__dirname, 'course/package'),
+    out: path.join(__dirname, 'course/dist'),
+  }
 };
 
-const setPathing = () => {
-  let dest = '' as PathingKey;
+const setPathingDirs = () => {
+  let dest = '' as PathingDirKey;
 
-  for (dest in pathing) {
-    if (!fs.existsSync(pathing[dest])) {
-      fs.mkdirSync(pathing[dest]);
+  for (dest in pathing.dirs) {
+    if (!fs.existsSync(pathing.dirs[dest])) {
+      fs.mkdirSync(pathing.dirs[dest]);
     }
   }
 };
 
-export const pack = () => {
-  return new Promise(resolve => {
+export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
+  title?: string,
+  manifest?: ProjectConfig
+}) => {
+  return new Promise((resolve, reject) => {
     const config = {
       version: '1.2',
       organization: 'OSG',
       language: 'en-US',
       startingPage: 'content/index.html',
-      source: pathing.source,
+      source: pathing.dirs.source,
       package: {
         version: '0.0.1',
         zip: true,
-        outputFolder: pathing.out,
+        outputFolder: pathing.dirs.out,
       },
     };
+    const courseTemplate = fileReadSync(pathing.files.template.source);
 
-    setPathing();
+    if (courseTemplate.error) {
+      reject(courseTemplate);
+      return;
+    }
+
+    if (!packOptions.manifest) {
+      reject(
+        {
+          error: true,
+          message: 'Missing project manifest'
+        }
+      );
+      return;
+    }
+
+    const courseData = {
+      title: packOptions.title ? packOptions.title : '',
+      manifest: JSON.stringify(packOptions.manifest),
+    }
+    const courseContents = compile(courseTemplate.contents, courseData);
+
+    if (courseContents.error) {
+      reject(courseContents);
+      return;
+    }
+
+    const writeRes = fileWriteSync(pathing.files.template.dest, courseContents.data.contents);
+
+    if (writeRes.error) {
+      reject(writeRes);
+      return;
+    }
+
+    setPathingDirs();
     packager(config, (msg: string) => {
-      resolve(msg);
+      resolve({
+        error: false,
+        message: msg,
+      });
     });
   });
 };
