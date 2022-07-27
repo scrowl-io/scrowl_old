@@ -53,8 +53,8 @@ export class Project {
       this.create(EXAMPLE_DATA);
     });
 
-    Menu.File.onProjectOpen((event, value: OpenResult) => {
-      if (!value.error && value.data) {
+    Menu.File.onProjectOpen((event, result: OpenResult) => {
+      if (!result.error && result.data) {
         this.create(EXAMPLE_DATA);
       }
     });
@@ -134,7 +134,6 @@ export class Project {
   };
   create = (data: ProjectDataNew) => {
     this.__setProcessing(true);
-
     return new Promise<CreateResult>((resolve, reject) => {
       requester
         .invoke(ENDPOINTS.new, data)
