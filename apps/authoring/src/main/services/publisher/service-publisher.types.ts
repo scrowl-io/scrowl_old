@@ -7,7 +7,6 @@ interface PathingFiles {
   };
 }
 
-
 export type PathingFileKey = keyof PathingFiles;
 
 interface PathingDirs {
@@ -19,12 +18,12 @@ export type PathingDirKey = keyof PathingDirs;
 
 export interface PathingProps {
   files: PathingFiles;
-  dirs: PathingDirs
+  dirs: PathingDirs;
 }
 
 export type TemplateData = {
   [key: string]: string | number;
-}
+};
 
 export interface PublisherEventPackage extends Omit<RegisterEvent, 'name'> {
   name: 'publish-project';

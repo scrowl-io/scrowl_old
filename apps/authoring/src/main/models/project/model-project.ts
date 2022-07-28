@@ -10,19 +10,20 @@ import {
 } from './model-project.types';
 import { FileSystem as fs, Requester } from '../../services';
 
+const PROJECT_DIR_PREFIX = 'scrowl';
+const PROJECT_FILE_NAME = 'scrowl.project';
+
 export const create = function (
   event: IpcMainInvokeEvent,
   project: ProjectData | ProjectDataNew
 ): CreateResult {
-  const dirPrefix = 'scrowl';
-  const projectFileName = 'scrowl.project';
-  const tempDir: fs.DirectoryTempResult = fs.dirTempSync(dirPrefix);
+  const tempDir: fs.DirectoryTempResult = fs.dirTempSync(PROJECT_DIR_PREFIX);
 
   if (tempDir.error) {
     return tempDir;
   }
 
-  const filename = `${tempDir.data.pathname}/${projectFileName}`;
+  const filename = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
   const writeRes = fs.fileWriteSync(filename, project);
 
   if (writeRes.error) {
@@ -39,6 +40,47 @@ export const create = function (
       project: project,
     },
   };
+};
+
+export const open = async function () {
+  const dialogOptions = {
+    title: 'Scrowl - Open Project',
+    filters: [
+      {
+        name: 'Scrowl Project',
+        extensions: ['scrowl'],
+      },
+    ],
+  };
+
+  const dialogResult = await fs.dialogOpen(dialogOptions);
+
+  if (dialogResult.error) {
+    return {
+      error: true,
+      message: 'Unable to save project - working directory required',
+    };
+  }
+
+  if (dialogResult.data.canceled) {
+    return {
+      error: true,
+      message: 'No files found/selected',
+    };
+  }
+
+  const tempDir = fs.dirTempSync(PROJECT_DIR_PREFIX);
+
+  if (tempDir.error || !tempDir.data.pathname) {
+    return tempDir;
+  }
+
+  const projectData = fs.unarchive(
+    dialogResult.data.filePaths[0],
+    tempDir.data.pathname
+  );
+
+  return fs.fileReadSync(`${projectData.data.projectDir}/${PROJECT_FILE_NAME}`);
 };
 
 const write = function (source: string, filename: string): fs.FileDataResult {
@@ -269,6 +311,7 @@ export const Project: Model = {
   EVENTS,
   init,
   create,
+  open,
   save,
   importFile,
 };

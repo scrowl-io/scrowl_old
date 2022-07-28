@@ -7,6 +7,7 @@ import {
   CreateResult,
   SaveResult,
   ImportResult,
+  OpenResult,
 } from '../../../main/models/project';
 import {
   ProjectObserverDataFn,
@@ -45,11 +46,17 @@ export class Project {
 
     Menu.File.onProjectNew(() => {
       if (this.data && this.data.workingDir) {
-        console.error('Unbale to create project - project already created');
+        console.error('Unable to create project - project already created');
         return;
       }
 
       this.create(EXAMPLE_DATA);
+    });
+
+    Menu.File.onProjectOpen((event, result: OpenResult) => {
+      if (!result.error && result.data) {
+        this.create(EXAMPLE_DATA);
+      }
     });
 
     Menu.File.onProjectSave(() => {
@@ -106,6 +113,7 @@ export class Project {
     if (data && data.workingDir) {
       Promise.allSettled([
         Menu.Global.disable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
         Menu.Global.enable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
@@ -115,6 +123,7 @@ export class Project {
     } else {
       Promise.allSettled([
         Menu.Global.enable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
         Menu.Global.disable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),
@@ -125,7 +134,6 @@ export class Project {
   };
   create = (data: ProjectDataNew) => {
     this.__setProcessing(true);
-
     return new Promise<CreateResult>((resolve, reject) => {
       requester
         .invoke(ENDPOINTS.new, data)

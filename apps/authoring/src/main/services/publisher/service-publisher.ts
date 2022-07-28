@@ -21,7 +21,7 @@ const pathing: PathingProps = {
   dirs: {
     source: path.join(__dirname, 'project/package'),
     out: path.join(__dirname, 'project/dist'),
-  }
+  },
 };
 
 const setPathingDirs = () => {
@@ -34,10 +34,13 @@ const setPathingDirs = () => {
   }
 };
 
-export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
-  title?: string,
-  manifest?: ProjectConfig
-}) => {
+export const pack = (
+  ev: Electron.IpcMainInvokeEvent,
+  packOptions: {
+    title?: string;
+    manifest?: ProjectConfig;
+  }
+) => {
   return new Promise((resolve, reject) => {
     const config = {
       version: '1.2',
@@ -59,19 +62,17 @@ export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
     }
 
     if (!packOptions.manifest) {
-      reject(
-        {
-          error: true,
-          message: 'Missing project manifest'
-        }
-      );
+      reject({
+        error: true,
+        message: 'Missing project manifest',
+      });
       return;
     }
 
     const projectData = {
       title: packOptions.title ? packOptions.title : '',
       manifest: JSON.stringify(packOptions.manifest),
-    }
+    };
     const projectContents = compile(projectTemplate.data.contents, projectData);
 
     if (projectContents.error) {
@@ -79,7 +80,10 @@ export const pack = (ev: Electron.IpcMainInvokeEvent, packOptions: {
       return;
     }
 
-    const writeRes = fileWriteSync(pathing.files.template.dest, projectContents.data.contents);
+    const writeRes = fileWriteSync(
+      pathing.files.template.dest,
+      projectContents.data.contents
+    );
 
     if (writeRes.error) {
       reject(writeRes);

@@ -3,8 +3,8 @@ import { PageRoutesProps, PageNavProps } from '..';
 export const PageRoutes: PageRoutesProps = {
   base: {
     url: '/',
-    label: 'Home'
-  }
+    label: 'Home',
+  },
 };
 
 export const PageNavItems: PageNavProps = [
