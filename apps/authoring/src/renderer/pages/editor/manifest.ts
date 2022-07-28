@@ -38,9 +38,9 @@ export const manifest = {
               },
             },
           ],
-        }
+        },
       ],
-    }
+    },
   ],
 };
 
