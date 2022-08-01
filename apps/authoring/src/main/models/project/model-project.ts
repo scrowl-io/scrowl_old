@@ -9,14 +9,12 @@ import {
   ProjectDataNew,
 } from './model-project.types';
 import { FileSystem as fs, Requester } from '../../services';
+import { projectData as EXAMPLE_DATA } from './model-project-data';
 
 const PROJECT_DIR_PREFIX = 'scrowl';
 const PROJECT_FILE_NAME = 'scrowl.project';
 
-export const create = function (
-  event: IpcMainInvokeEvent,
-  project: ProjectData | ProjectDataNew
-): CreateResult {
+export const create = function (): CreateResult {
   const tempDir: fs.DirectoryTempResult = fs.dirTempSync(PROJECT_DIR_PREFIX);
 
   if (tempDir.error) {
@@ -24,20 +22,20 @@ export const create = function (
   }
 
   const filename = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
-  const writeRes = fs.fileWriteSync(filename, project);
+  const writeRes = fs.fileWriteSync(filename, EXAMPLE_DATA);
 
   if (writeRes.error) {
     return writeRes;
   }
 
-  project.workingFile = filename;
-  project.workingDir = filename.split('/').slice(0, -1).join('/');
+  EXAMPLE_DATA.workingFile = filename;
+  EXAMPLE_DATA.workingDir = filename.split('/').slice(0, -1).join('/');
 
   return {
     error: false,
     data: {
       filename: filename,
-      project: project,
+      project: EXAMPLE_DATA,
     },
   };
 };
@@ -286,11 +284,6 @@ export const importFile = (
 };
 
 export const EVENTS: ProjectEvents = {
-  new: {
-    name: 'project/new',
-    type: 'invoke',
-    fn: create,
-  },
   save: {
     name: 'project/save',
     type: 'invoke',

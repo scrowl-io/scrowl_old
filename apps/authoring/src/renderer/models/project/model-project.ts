@@ -4,7 +4,6 @@ import {
   ProjectData,
   ProjectDataNew,
   ProjectEventApi,
-  CreateResult,
   SaveResult,
   ImportResult,
   OpenResult,
@@ -15,10 +14,8 @@ import {
   ProjectObserverImportFn,
 } from './model-project.types';
 import { requester, Menu } from '../../services';
-import EXAMPLE_DATA from './model-project-data';
 
 export const ENDPOINTS: ProjectEventApi = {
-  new: 'project/new',
   save: 'project/save',
   import: 'project/import-file',
 };
@@ -44,18 +41,23 @@ export class Project {
       return;
     }
 
-    Menu.File.onProjectNew(() => {
+    Menu.File.onProjectNew((event, result) => {
       if (this.data && this.data.workingDir) {
         console.error('Unable to create project - project already created');
         return;
       }
 
-      this.create(EXAMPLE_DATA);
+      if (result.error || !result.data.filename || !result.data.project) {
+        console.error('Unable to create project - project not created');
+        return;
+      }
+
+      this.create(result.data.project);
     });
 
     Menu.File.onProjectOpen((event, result: OpenResult) => {
       if (!result.error && result.data) {
-        this.create(EXAMPLE_DATA);
+        // this.create(EXAMPLE_DATA);
       }
     });
 
@@ -134,22 +136,14 @@ export class Project {
   };
   create = (data: ProjectDataNew) => {
     this.__setProcessing(true);
-    return new Promise<CreateResult>((resolve, reject) => {
-      requester
-        .invoke(ENDPOINTS.new, data)
-        .then((result: CreateResult) => {
-          if (result.error) {
-            resolve(result);
-            this.__setProcessing(false);
-            console.error(result);
-            return;
-          }
 
-          this.__update(result.data.project);
-          resolve(result);
-        })
-        .catch(reject);
-    });
+    try {
+      this.__update(data);
+      this.__setProcessing(false);
+    } catch (error) {
+      console.log(error);
+      this.__setProcessing(false);
+    }
   };
   update = (saveAs?: boolean) => {
     this.__setProcessing(true);

@@ -1,8 +1,5 @@
 import { Requester, FileSystem } from '../../services';
 
-export interface ProjectEventNew extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'project/new';
-}
 export interface ProjectEventSave
   extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'project/save';
@@ -14,23 +11,17 @@ export interface ProjectEventImport
 }
 
 export type ProjectEventApi = {
-  new: ProjectEventNew['name'];
   save: ProjectEventSave['name'];
   import: ProjectEventImport['name'];
 };
 
 export type ProjectEventNames =
-  | ProjectEventNew['name']
   | ProjectEventSave['name']
   | ProjectEventImport['name'];
 
-export type ProjectEvent =
-  | ProjectEventNew
-  | ProjectEventSave
-  | ProjectEventImport;
+export type ProjectEvent = ProjectEventSave | ProjectEventImport;
 
 export type ProjectEvents = {
-  new: ProjectEventNew;
   save: ProjectEventSave;
   import: ProjectEventImport;
 };

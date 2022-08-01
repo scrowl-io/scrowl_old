@@ -40,7 +40,9 @@ export const template: MenuItemConstructorOptions = {
       label: 'New Project...',
       id: EVENTS.projectNew.id,
       click: () => {
-        send(EVENTS.projectNew.name);
+        const newProjectData = ProjectModel.create();
+
+        send(EVENTS.projectNew.name, newProjectData);
       },
       accelerator: 'CmdOrCtrl+N',
     },
