@@ -43,7 +43,6 @@ export class Project {
     }
 
     Menu.File.onProjectNew((event, result: CreateResult) => {
-      console.log(result);
       if (this.data && this.data.workingDir) {
         console.error('Unable to create project - project already created');
         return;
