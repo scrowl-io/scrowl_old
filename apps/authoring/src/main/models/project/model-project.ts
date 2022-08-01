@@ -275,7 +275,7 @@ export const importFile = (
       resolve({
         error: false,
         data: {
-          project: project,
+          contents: project,
           import: workingImport,
         },
       });

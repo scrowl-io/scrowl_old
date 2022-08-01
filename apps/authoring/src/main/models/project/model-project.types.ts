@@ -72,7 +72,7 @@ interface OpenResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    project: ProjectData | ProjectDataNew;
+    contents: ProjectData | ProjectDataNew;
   };
 }
 
@@ -85,7 +85,7 @@ export interface SaveResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    project: ProjectData | ProjectDataNew;
+    contents: ProjectData | ProjectDataNew;
   };
 }
 
@@ -98,7 +98,7 @@ export interface ImportResultSuccess
   extends Omit<FileSystem.DialogOpenResultSuccess, 'data'> {
   data: {
     import: string;
-    project: ProjectData | ProjectDataNew;
+    contents: ProjectData | ProjectDataNew;
   };
 }
 
