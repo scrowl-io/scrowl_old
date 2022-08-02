@@ -17,6 +17,7 @@ import {
 import { requester, Menu } from '../../services';
 
 export const ENDPOINTS: ProjectEventApi = {
+  new: 'project/new',
   save: 'project/save',
   import: 'project/import-file',
 };
@@ -71,15 +72,6 @@ export class Project {
       this.save();
     });
 
-    Menu.File.onProjectSaveAs(() => {
-      if (!this.data || !this.data.workingDir) {
-        console.error('Unable to save project - project not created');
-        return;
-      }
-
-      this.saveAs();
-    });
-
     Menu.File.onImportFile(() => {
       if (!this.data || !this.data.workingDir) {
         console.error('Unable to import file - project not created');
@@ -118,7 +110,6 @@ export class Project {
         Menu.Global.disable(Menu.Global.ITEMS.projectNew),
         Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
-        Menu.Global.enable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
       ]).then(() => {
         this.__setData(data);
@@ -128,7 +119,6 @@ export class Project {
         Menu.Global.enable(Menu.Global.ITEMS.projectNew),
         Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
-        Menu.Global.disable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),
       ]).then(() => {
         this.__setData(data);
@@ -138,13 +128,22 @@ export class Project {
   create = (data: ProjectDataNew) => {
     this.__setProcessing(true);
 
-    try {
-      this.__update(data);
-      this.__setProcessing(false);
-    } catch (error) {
-      console.log(error);
-      this.__setProcessing(false);
-    }
+    return new Promise<CreateResult>((resolve, reject) => {
+      requester
+        .invoke(ENDPOINTS.new, data)
+        .then((result: CreateResult) => {
+          if (result.error) {
+            resolve(result);
+            this.__setProcessing(false);
+            console.error(result);
+            return;
+          }
+
+          this.__update(result.data.project);
+          resolve(result);
+        })
+        .catch(reject);
+    });
   };
   update = (saveAs?: boolean) => {
     this.__setProcessing(true);
@@ -168,9 +167,6 @@ export class Project {
   };
   save() {
     return this.update();
-  }
-  saveAs() {
-    return this.update(true);
   }
   importFile = (fileTypes: AllowedFiles[]) => {
     this.__setProcessing(true);

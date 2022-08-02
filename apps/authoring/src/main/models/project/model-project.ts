@@ -101,8 +101,7 @@ const write = function (source: string, filename: string): fs.FileDataResult {
 
 export const save = (
   event: IpcMainInvokeEvent,
-  project: ProjectData | ProjectDataNew,
-  isSaveAs: boolean
+  project: ProjectData | ProjectDataNew
 ) => {
   return new Promise<SaveResult>(resolve => {
     const updateProject = (res: fs.DialogSaveResult) => {
@@ -152,15 +151,6 @@ export const save = (
         });
       }
     };
-    const dialogOptions = {
-      title: 'Scrowl - Save Project',
-      filters: [
-        {
-          name: 'Scrowl Project',
-          extensions: ['scrowl'],
-        },
-      ],
-    };
 
     if (!project) {
       resolve({
@@ -176,17 +166,13 @@ export const save = (
       });
     }
 
-    if (!project.saveDir || isSaveAs) {
-      fs.dialogSave(dialogOptions).then(updateProject);
-    } else {
-      updateProject({
-        error: false,
-        data: {
-          canceled: false,
-          filePath: project.saveDir,
-        },
-      });
-    }
+    updateProject({
+      error: false,
+      data: {
+        canceled: false,
+        filePath: project.saveDir,
+      },
+    });
   });
 };
 
@@ -284,6 +270,11 @@ export const importFile = (
 };
 
 export const EVENTS: ProjectEvents = {
+  new: {
+    name: 'project/new',
+    type: 'invoke',
+    fn: create,
+  },
   save: {
     name: 'project/save',
     type: 'invoke',

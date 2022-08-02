@@ -21,11 +21,6 @@ export const EVENTS: MenuItemEventsFile = {
     name: 'menu/project/save',
     type: 'send',
   },
-  projectSaveAs: {
-    id: 'save-project-as',
-    name: 'menu/project/save-as',
-    type: 'send',
-  },
   importFile: {
     id: 'import-file',
     name: 'menu/project/import',
@@ -66,15 +61,6 @@ export const template: MenuItemConstructorOptions = {
         send(EVENTS.projectSave.name, false);
       },
       accelerator: 'CmdOrCtrl+S',
-    },
-    {
-      label: 'Save As...',
-      id: EVENTS.projectSaveAs.id,
-      enabled: false,
-      click: () => {
-        send(EVENTS.projectSaveAs.name, true);
-      },
-      accelerator: 'CmdOrCtrl+Shift+S',
     },
     {
       label: 'Import File',

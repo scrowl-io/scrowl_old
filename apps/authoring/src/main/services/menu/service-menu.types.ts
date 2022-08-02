@@ -18,12 +18,6 @@ export interface MenuEventSaveProject
   name: 'menu/project/save';
 }
 
-export interface MenuEventSaveProjectAs
-  extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'save-project-as';
-  name: 'menu/project/save-as';
-}
-
 export interface MenuEventImportFile
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'import-file';
@@ -66,7 +60,6 @@ export type MenuItemEventNames =
   | MenuEventNewProject['name']
   | MenuEventOpenProject['name']
   | MenuEventSaveProject['name']
-  | MenuEventSaveProjectAs['name']
   | MenuEventImportFile['name']
   | MenuEventAboutOpen['name']
   | MenuEventPreferencesOpen['name'];
@@ -75,7 +68,6 @@ export type MenuItemEvent =
   | MenuEventNewProject
   | MenuEventOpenProject
   | MenuEventSaveProject
-  | MenuEventSaveProjectAs
   | MenuEventImportFile
   | MenuEventAboutOpen
   | MenuEventPreferencesOpen;
@@ -84,7 +76,6 @@ export type MenuItemEventsFile = {
   projectNew: MenuEventNewProject;
   projectOpen: MenuEventOpenProject;
   projectSave: MenuEventSaveProject;
-  projectSaveAs: MenuEventSaveProjectAs;
   importFile: MenuEventImportFile;
 };
 
@@ -92,7 +83,6 @@ export type MenuEventsFileApi = {
   projectNew: MenuEventNewProject['name'];
   projectOpen: MenuEventOpenProject['name'];
   projectSave: MenuEventSaveProject['name'];
-  projectSaveAs: MenuEventSaveProjectAs['name'];
   importFile: MenuEventImportFile['name'];
 };
 
