@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import * as styles from './styles/comp-app.module.scss';
 import { pageRoutes } from './comp-app-routes';
+import { Menu } from '../../services';
 import { Home, PageNavProps } from '../../pages';
 import { TitleBar } from './elements';
 
@@ -40,6 +41,10 @@ export const App = () => {
 
   //   setTitlesList(newTitles);
   // };
+
+  Menu.App.onPreferenceOpen(ev => {
+    console.log('preference open event', ev);
+  });
 
   return (
     <Router>
