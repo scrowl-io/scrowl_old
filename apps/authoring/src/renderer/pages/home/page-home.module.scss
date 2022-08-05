@@ -28,6 +28,33 @@
   overflow-y: auto;
 }
 
+.side-panel {
+  background-color: #ffffff;
+}
+
+.side-panel button {
+  font-size: 0.6em;
+}
+
+.side-panel label {
+  display: none;
+}
+
+.side-panel .resources li {
+  font-size: 0.6em;
+  padding: 1em;
+}
+
+.side-panel .owlui-accordion-body li {
+  font-size: 0.6em;
+  display: flex;
+  align-items: center;
+}
+
+.side-panel .owlui-accordion-body li span {
+  margin-right: 0.25em;
+}
+
 .section-title {
   font-weight: bold;
   color: var(--bs-primary);
