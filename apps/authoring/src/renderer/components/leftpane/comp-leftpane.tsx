@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Input, InputProps } from '@owlui/lib';
+import { Tabs, Input, InputProps, Button } from '@owlui/lib';
 import { Outline, topOutlineItems } from '../accordion';
 import { GlossaryCard } from '../card';
 
@@ -42,6 +42,24 @@ const cards = [
   },
 ];
 
+const AddGlossaryButton = () => {
+  return (
+    <Button id="add-glossary-button" className="tab-add-button">
+      Add a new term to the Glossary...
+      <span className="material-symbols-rounded">add_circle</span>
+    </Button>
+  );
+};
+
+const AddResourceButton = () => {
+  return (
+    <Button id="add-resource-button" className="tab-add-button">
+      Add a new resource to your project...
+      <span className="material-symbols-rounded">attach_file</span>
+    </Button>
+  );
+};
+
 const items = [
   {
     id: '1',
@@ -52,11 +70,16 @@ const items = [
     id: '2',
     title: 'Resources',
     view: (
-      <ul className="resources">
-        <li>Bill 168 Legislation</li>
-        <li>Harrassment Report.pdf</li>
-        <li>Harrassment Policy</li>
-      </ul>
+      <>
+        <ul className="resources">
+          <li>Bill 168 Legislation</li>
+          <li>Harrassment Report.pdf</li>
+          <li>Harrassment Policy</li>
+        </ul>
+        <div className="panel-footer">
+          <AddResourceButton />
+        </div>
+      </>
     ),
   },
   {
@@ -65,6 +88,9 @@ const items = [
     view: (
       <>
         <GlossaryCard cards={cards} />
+        <div className="panel-footer">
+          <AddGlossaryButton />
+        </div>
       </>
     ),
   },

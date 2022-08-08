@@ -55,6 +55,58 @@
   margin-right: 0.25em;
 }
 
+.side-panel .glossary-dropdown {
+  visibility: hidden;
+}
+
+.side-panel .dropdown-visible {
+  visibility: visible;
+}
+
+// .owlui-tab-content {
+//   position: relative;
+// }
+
+.panel-footer {
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid darkgray;
+  position: absolute;
+  bottom: 0;
+  width: 30%;
+  background-color: white;
+}
+
+#add-resource-button {
+  background-color: white;
+  color: black;
+  padding: 1em;
+  font-size: 0.4em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  border-radius: 50px;
+  border: 1px solid darkgray;
+  margin-bottom: 1.5em;
+  margin-top: 1.5em;
+}
+
+#add-glossary-button {
+  background-color: white;
+  color: black;
+  padding: 1em;
+  font-size: 0.4em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  border-radius: 50px;
+  border: 1px solid darkgray;
+  margin-bottom: 1.5em;
+  margin-top: 1.5em;
+}
+
 .section-title {
   font-weight: bold;
   color: var(--bs-primary);

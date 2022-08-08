@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react';
+import React, { BaseSyntheticEvent, ReactNode, useState } from 'react';
 // import { Card, CardDefaultProps } from '@owlui/lib';
 import { Card } from 'react-bootstrap';
 import { Dropdown } from '@owlui/lib';
+import { propTypes } from 'react-bootstrap/esm/Image';
 
 export interface CardItemProps {
   id: string;
@@ -36,6 +37,23 @@ const children = () => {
   );
 };
 
+const handleCardOff = (e: BaseSyntheticEvent) => {
+  const dropdowns = document.querySelectorAll('.glossary-dropdown');
+  dropdowns.forEach(dropdown => {
+    dropdown.classList.remove('dropdown-visible');
+  });
+};
+
+const handleHoverOff = (e: BaseSyntheticEvent) => {
+  const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
+  dropdown?.classList.remove('dropdown-visible');
+};
+
+const handleHoverOn = (e: BaseSyntheticEvent) => {
+  const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
+  dropdown?.classList.add('dropdown-visible');
+};
+
 export const GlossaryCard = ({ cards }: CardProps) => {
   const sortedCards = cards.sort((a, b) => {
     return a.header.localeCompare(b.header);
@@ -50,7 +68,12 @@ export const GlossaryCard = ({ cards }: CardProps) => {
     <>
       {firstLetters.map((letter: string) => {
         return (
-          <Card key={letter} style={{ borderRadius: '0', border: '0' }}>
+          <Card
+            key={letter}
+            style={{ borderRadius: '0', border: '0' }}
+            onMouseLeave={handleCardOff}
+            onScroll={handleCardOff}
+          >
             <Card.Header
               style={{
                 fontSize: '0.6em',
@@ -64,7 +87,13 @@ export const GlossaryCard = ({ cards }: CardProps) => {
             {sortedCards.map((card: CardItemProps) => {
               if (card.header[0] === letter) {
                 return (
-                  <Card.Body key={card.id}>
+                  <Card.Body
+                    className="glossary-item"
+                    onMouseOver={handleHoverOn}
+                    onMouseLeave={handleHoverOff}
+                    key={card.id}
+                    id={card.id}
+                  >
                     <Card.Title
                       style={{
                         display: 'flex',
@@ -78,8 +107,11 @@ export const GlossaryCard = ({ cards }: CardProps) => {
                       {card.header}
                       <Dropdown
                         title="title"
+                        align="start"
                         items={dropdownItems}
                         children={children as unknown as ReactNode}
+                        id={`dropdown-${card.id}`}
+                        className="glossary-dropdown"
                       />
                     </Card.Title>
                     <Card.Text style={{ fontSize: '0.4em' }}>
