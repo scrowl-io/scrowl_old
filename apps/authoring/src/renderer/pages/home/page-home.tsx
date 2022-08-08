@@ -10,6 +10,9 @@ export const PageElement = () => {
   project.ready();
 
   const isProcessing = project.useProcessing();
+  const projectData = project.useProjectData();
+
+  console.log(projectData);
 
   return (
     <>

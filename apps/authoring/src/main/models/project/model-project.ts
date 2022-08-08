@@ -6,7 +6,6 @@ import {
   SaveResult,
   ImportResult,
   ProjectData,
-  ProjectDataNew,
 } from './model-project.types';
 import { FileSystem as fs, Requester } from '../../services';
 import { projectData as EXAMPLE_DATA } from './model-project-data';
@@ -14,7 +13,10 @@ import { projectData as EXAMPLE_DATA } from './model-project-data';
 const PROJECT_DIR_PREFIX = 'scrowl';
 const PROJECT_FILE_NAME = 'scrowl.project';
 
-export const create = function (): CreateResult {
+export const create = function (
+  event: IpcMainInvokeEvent,
+  projectID: ProjectData
+): CreateResult {
   const tempDir: fs.DirectoryTempResult = fs.dirTempSync(PROJECT_DIR_PREFIX);
 
   if (tempDir.error) {
@@ -22,20 +24,31 @@ export const create = function (): CreateResult {
   }
 
   const filename = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
-  const writeRes = fs.fileWriteSync(filename, EXAMPLE_DATA);
+
+  // TODO: The tempProjectData will be replaced by the proper project data loaded from the project
+  // template file according to the projectID received from the frontend. The way the templates
+  // will be stored hasn't been defined yet so we'll use example data for now.
+  const currentDate = new Date().toJSON();
+  const tempProjectData: ProjectData = {
+    ...EXAMPLE_DATA,
+    workingFile: filename,
+    workingDir: filename.split('/').slice(0, -1).join('/'),
+    createdAt: currentDate,
+    modifiedAt: currentDate,
+    openedAt: currentDate,
+  };
+
+  const writeRes = fs.fileWriteSync(filename, tempProjectData);
 
   if (writeRes.error) {
     return writeRes;
   }
 
-  EXAMPLE_DATA.workingFile = filename;
-  EXAMPLE_DATA.workingDir = filename.split('/').slice(0, -1).join('/');
-
   return {
     error: false,
     data: {
       filename: filename,
-      project: EXAMPLE_DATA,
+      project: tempProjectData,
     },
   };
 };
@@ -99,10 +112,7 @@ const write = function (source: string, filename: string): fs.FileDataResult {
   return fs.archive(source, filename);
 };
 
-export const save = (
-  event: IpcMainInvokeEvent,
-  project: ProjectData | ProjectDataNew
-) => {
+export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
   return new Promise<SaveResult>(resolve => {
     const updateProject = (res: fs.DialogSaveResult) => {
       if (!project.workingDir) {
@@ -179,7 +189,7 @@ export const save = (
 export const importFile = (
   event: IpcMainInvokeEvent,
   fileTypes: Array<fs.AllowedFiles>,
-  project: ProjectData | ProjectDataNew
+  project: ProjectData
 ) => {
   return new Promise<ImportResult>(resolve => {
     if (!project) {
@@ -271,7 +281,7 @@ export const importFile = (
 
 export const EVENTS: ProjectEvents = {
   new: {
-    name: 'project/new',
+    name: '/projects/create',
     type: 'invoke',
     fn: create,
   },

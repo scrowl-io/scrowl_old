@@ -1,9 +1,12 @@
-import { ProjectDataNew } from './model-project.types';
+import { ProjectData } from './model-project.types';
 
-export const projectData: ProjectDataNew = {
+export const projectData: ProjectData = {
+  id: '',
+  createdAt: '',
+  modifiedAt: '',
+  openedAt: '',
   name: '',
   description: '',
-  theme: '',
 };
 
 export default {

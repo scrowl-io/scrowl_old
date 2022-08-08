@@ -4,6 +4,7 @@ export type PreferenceAppearance = 'light' | 'dark';
 
 export interface PreferenceData extends InternalStorage.DatabaseData {
   appearance: PreferenceAppearance;
+  save_folder_path: string;
 }
 
 export interface PreferenceEventList

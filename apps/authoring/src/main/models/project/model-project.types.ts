@@ -1,7 +1,7 @@
 import { Requester, FileSystem } from '../../services';
 
 export interface ProjectEventNew extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'project/new';
+  name: '/projects/create';
 }
 
 export interface ProjectEventSave
@@ -44,19 +44,9 @@ export interface ProjectData {
   id: string;
   createdAt: string;
   modifiedAt: string;
+  openedAt: string;
   name: string;
   description: string;
-  theme: string;
-  workingFile?: string;
-  workingDir?: string;
-  workingImports?: Array<string>;
-  saveFile?: string;
-  saveDir?: string;
-}
-
-export interface ProjectDataNew {
-  name?: string;
-  description?: string;
   theme?: string;
   workingFile?: string;
   workingDir?: string;
@@ -69,7 +59,7 @@ interface CreateResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    project: ProjectData | ProjectDataNew;
+    project: ProjectData;
   };
 }
 
@@ -82,7 +72,7 @@ interface OpenResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    contents: ProjectData | ProjectDataNew;
+    contents: ProjectData;
   };
 }
 
@@ -95,7 +85,7 @@ export interface SaveResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    contents: ProjectData | ProjectDataNew;
+    contents: ProjectData;
   };
 }
 
@@ -108,7 +98,7 @@ export interface ImportResultSuccess
   extends Omit<FileSystem.DialogOpenResultSuccess, 'data'> {
   data: {
     import: string;
-    contents: ProjectData | ProjectDataNew;
+    contents: ProjectData;
   };
 }
 

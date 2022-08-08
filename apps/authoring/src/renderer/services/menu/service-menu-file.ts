@@ -2,7 +2,7 @@ import { requester } from '..';
 import { MenuEventsFileApi } from '../../../main/services/menu';
 
 export const ENDPOINTS: MenuEventsFileApi = {
-  projectNew: 'menu/project/new',
+  projectsCreate: '/projects/create',
   projectOpen: 'menu/project/open',
   projectSave: 'menu/project/save',
   importFile: 'menu/project/import',
@@ -16,7 +16,7 @@ const registerListener = (
 };
 
 export const onProjectNew = (listener: requester.Listener) => {
-  registerListener(ENDPOINTS.projectNew, listener);
+  registerListener(ENDPOINTS.projectsCreate, listener);
 };
 
 export const onProjectOpen = (listener: requester.Listener) => {

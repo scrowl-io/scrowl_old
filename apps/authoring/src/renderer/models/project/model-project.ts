@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { AllowedFiles } from '../../../main/services/file-system';
 import {
   ProjectData,
-  ProjectDataNew,
   ProjectEventApi,
   SaveResult,
   ImportResult,
@@ -17,19 +16,19 @@ import {
 import { requester, Menu } from '../../services';
 
 export const ENDPOINTS: ProjectEventApi = {
-  new: 'project/new',
+  new: '/projects/create',
   save: 'project/save',
   import: 'project/import-file',
 };
 export class Project {
-  data?: ProjectData | ProjectDataNew;
+  data?: ProjectData;
   isProcessing: boolean;
   isReady: boolean;
   lastImport: string;
   __observerData?: ProjectObserverDataFn;
   __observerProcess?: ProjectObserverProcessFn;
   __observerImport?: ProjectObserverImportFn;
-  constructor(data?: ProjectDataNew) {
+  constructor(data?: ProjectData) {
     this.isProcessing = false;
     this.isReady = false;
     this.lastImport = '';
@@ -43,18 +42,17 @@ export class Project {
       return;
     }
 
-    Menu.File.onProjectNew((event, result: CreateResult) => {
+    Menu.File.onProjectNew(() => {
       if (this.data && this.data.workingDir) {
         console.error('Unable to create project - project already created');
         return;
       }
 
-      if (result.error || !result.data.filename || !result.data.project) {
-        console.error('Unable to create project - project not created');
-        return;
-      }
+      // TODO: Replace the alert with a modal containing a list ot templates. Choosing the template should return the projectID of the selected template
+      alert('Click OK to start a new empty project.');
 
-      this.create(result.data.project);
+      // TODO: The projectID from the template selection above will be passed by as argument to the create function.
+      this.create('example-id');
     });
 
     Menu.File.onProjectOpen((event, result: OpenResult) => {
@@ -83,7 +81,7 @@ export class Project {
 
     this.isReady = true;
   };
-  __setData = (data: ProjectData | ProjectDataNew) => {
+  __setData = (data: ProjectData) => {
     if (!this.__observerData) {
       return;
     }
@@ -98,7 +96,7 @@ export class Project {
 
     this.__observerProcess(state);
   };
-  __update = (data: ProjectData | ProjectDataNew) => {
+  __update = (data: ProjectData) => {
     if (!this.__observerData) {
       return;
     }
@@ -107,7 +105,7 @@ export class Project {
 
     if (data && data.workingDir) {
       Promise.allSettled([
-        Menu.Global.disable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.disable(Menu.Global.ITEMS.projectsCreate),
         Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
@@ -116,7 +114,7 @@ export class Project {
       });
     } else {
       Promise.allSettled([
-        Menu.Global.enable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.enable(Menu.Global.ITEMS.projectsCreate),
         Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),
@@ -125,15 +123,17 @@ export class Project {
       });
     }
   };
-  create = (data: ProjectDataNew) => {
+
+  // TODO: The projectID type needs to be updated to accept only the proper template IDs
+  create = (projectID: string) => {
     this.__setProcessing(true);
 
     return new Promise<CreateResult>((resolve, reject) => {
       requester
-        .invoke(ENDPOINTS.new, data)
+        .invoke(ENDPOINTS.new, projectID)
         .then((result: CreateResult) => {
           if (result.error) {
-            resolve(result);
+            reject(result);
             this.__setProcessing(false);
             console.error(result);
             return;
@@ -145,6 +145,7 @@ export class Project {
         .catch(reject);
     });
   };
+
   update = (saveAs?: boolean) => {
     this.__setProcessing(true);
 
@@ -153,7 +154,7 @@ export class Project {
         .invoke(ENDPOINTS.save, this.data, saveAs)
         .then((result: SaveResult) => {
           if (result.error) {
-            resolve(result);
+            reject(result);
             this.__setProcessing(false);
             console.error(result);
             return;
@@ -171,10 +172,10 @@ export class Project {
   importFile = (fileTypes: AllowedFiles[]) => {
     this.__setProcessing(true);
 
-    return new Promise<ImportResult>(resolve => {
+    return new Promise<ImportResult>((resolve, reject) => {
       if (!this.data || !this.data.workingDir) {
         this.__setProcessing(false);
-        resolve({
+        reject({
           error: true,
           message: 'Unable to import file - project has no working directory',
           canceled: false,
@@ -188,7 +189,7 @@ export class Project {
         .then((result: ImportResult) => {
           if (result.error) {
             this.__setProcessing(false);
-            resolve(result);
+            reject(result);
             console.error(result);
             return;
           }
@@ -231,9 +232,7 @@ export class Project {
     return this.isProcessing;
   };
   useProjectData = () => {
-    const [activeData, setActiveData] = useState<
-      ProjectData | ProjectDataNew
-    >();
+    const [activeData, setActiveData] = useState<ProjectData>();
 
     this.data = activeData;
 

@@ -6,9 +6,9 @@ import { Project as ProjectModel } from '../../../models/project';
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
 export const EVENTS: MenuItemEventsFile = {
-  projectNew: {
+  projectsCreate: {
     id: 'new-project',
-    name: 'menu/project/new',
+    name: '/projects/create',
     type: 'send',
   },
   projectOpen: {
@@ -33,11 +33,9 @@ export const template: MenuItemConstructorOptions = {
   submenu: [
     {
       label: 'New Project...',
-      id: EVENTS.projectNew.id,
+      id: EVENTS.projectsCreate.id,
       click: () => {
-        const newProjectData = ProjectModel.create();
-
-        send(EVENTS.projectNew.name, newProjectData);
+        send(EVENTS.projectsCreate.name);
       },
       accelerator: 'CmdOrCtrl+N',
     },

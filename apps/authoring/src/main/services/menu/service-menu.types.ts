@@ -1,9 +1,9 @@
 import { Requester } from '..';
 
-export interface MenuEventNewProject
+export interface MenuEventCreateProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'new-project';
-  name: 'menu/project/new';
+  name: '/projects/create';
 }
 
 export interface MenuEventOpenProject
@@ -57,7 +57,7 @@ export interface MenuEventItemEnable
 }
 
 export type MenuItemEventNames =
-  | MenuEventNewProject['name']
+  | MenuEventCreateProject['name']
   | MenuEventOpenProject['name']
   | MenuEventSaveProject['name']
   | MenuEventImportFile['name']
@@ -65,7 +65,7 @@ export type MenuItemEventNames =
   | MenuEventPreferencesOpen['name'];
 
 export type MenuItemEvent =
-  | MenuEventNewProject
+  | MenuEventCreateProject
   | MenuEventOpenProject
   | MenuEventSaveProject
   | MenuEventImportFile
@@ -73,14 +73,14 @@ export type MenuItemEvent =
   | MenuEventPreferencesOpen;
 
 export type MenuItemEventsFile = {
-  projectNew: MenuEventNewProject;
+  projectsCreate: MenuEventCreateProject;
   projectOpen: MenuEventOpenProject;
   projectSave: MenuEventSaveProject;
   importFile: MenuEventImportFile;
 };
 
 export type MenuEventsFileApi = {
-  projectNew: MenuEventNewProject['name'];
+  projectsCreate: MenuEventCreateProject['name'];
   projectOpen: MenuEventOpenProject['name'];
   projectSave: MenuEventSaveProject['name'];
   importFile: MenuEventImportFile['name'];
