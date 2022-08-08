@@ -1,4 +1,4 @@
-import { InternalStorage, Requester } from '../../services';
+import { InternalStorage, Requester, FileSystem } from '../../services';
 
 export type PreferenceAppearance = 'light' | 'dark';
 
@@ -36,3 +36,15 @@ export type PreferenceEvents = {
   get: PreferenceEventGet;
   set: PreferenceEventSet;
 };
+
+interface CreateResultSuccess
+  extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
+  data: {
+    preferences: PreferenceData | PreferenceData;
+  };
+}
+
+export type CreateResult =
+  | CreateResultSuccess
+  | FileSystem.DirectoryTempResult
+  | FileSystem.FileDataResult;

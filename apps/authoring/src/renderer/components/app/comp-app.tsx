@@ -8,7 +8,7 @@ import {
 import * as styles from './styles/comp-app.module.scss';
 import { pageRoutes } from './comp-app-routes';
 import { Home, PageNavProps } from '../../pages';
-import { TitleBar } from './elements';
+import { TitleBar, AppEvents } from './elements';
 
 const routeList: PageNavProps = [];
 
@@ -43,16 +43,18 @@ export const App = () => {
 
   return (
     <Router>
-      <TitleBar routes={routeList} />
-      <div className={styles.content}>
-        <Routes>
-          {appRoutes}
-          <Route
-            path="*"
-            element={<Navigate to={Home.PageRoutes.base.url} />}
-          />
-        </Routes>
-      </div>
+      <AppEvents>
+        <TitleBar routes={routeList} />
+        <div className={styles.content}>
+          <Routes>
+            {appRoutes}
+            <Route
+              path="*"
+              element={<Navigate to={Home.PageRoutes.base.url} />}
+            />
+          </Routes>
+        </div>
+      </AppEvents>
     </Router>
   );
 };

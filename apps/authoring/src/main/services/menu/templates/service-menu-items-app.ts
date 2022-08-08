@@ -4,26 +4,16 @@ import { MenuItemEventsApp } from '../service-menu.types';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
-const aboutHandler = () => {
-  console.log('Open about Scrowl window...');
-};
-
-const preferencesHandler = () => {
-  console.log('Open preferences window...');
-};
-
 export const EVENTS: MenuItemEventsApp = {
   aboutOpen: {
     id: 'about-open',
     name: 'menu/about/open',
-    type: 'on',
-    fn: aboutHandler,
+    type: 'send',
   },
   preferencesOpen: {
     id: 'preferences-open',
     name: 'menu/preferences/open',
-    type: 'on',
-    fn: preferencesHandler,
+    type: 'send',
   },
 };
 

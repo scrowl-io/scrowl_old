@@ -94,6 +94,7 @@ export type MenuEventsFileApi = {
   projectSave: MenuEventSaveProject['name'];
   projectSaveAs: MenuEventSaveProjectAs['name'];
   importFile: MenuEventImportFile['name'];
+  preferencesOpen: MenuEventPreferencesOpen['name'];
 };
 
 export type MenuItemEventsApp = {

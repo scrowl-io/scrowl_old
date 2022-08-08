@@ -3,7 +3,7 @@ import { PageRoutes as HomeRoutes } from '../home';
 
 export const PageRoutes: PageRoutesProps = {
   base: {
-    url: '/settings',
+    url: '/settings/*',
     label: 'Settings',
   },
 };
