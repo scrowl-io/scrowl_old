@@ -41,9 +41,9 @@ export type ProjectEvents = {
  * define the actual project structure.
  */
 export interface ProjectData {
-  id: string;
+  id: number | null;
   createdAt: string;
-  modifiedAt: string;
+  updatedAt: string;
   openedAt: string;
   name: string;
   description: string;

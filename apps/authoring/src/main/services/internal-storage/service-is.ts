@@ -22,7 +22,12 @@ export const set = (tableName: string, data: DatabaseData) => {
   return DB(tableName).update(data);
 };
 
+export const insert = (tableName: string, data: DatabaseData) => {
+  return DB(tableName).insert(data);
+};
+
 export default {
   get,
   set,
+  insert,
 };

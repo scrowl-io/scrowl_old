@@ -9,9 +9,12 @@ import {
 } from './model-project.types';
 import { FileSystem as fs, Requester } from '../../services';
 import { projectData as EXAMPLE_DATA } from './model-project-data';
+import { Preferences } from '../preferences';
+import { Projects } from '../projects';
 
 const PROJECT_DIR_PREFIX = 'scrowl';
 const PROJECT_FILE_NAME = 'scrowl.project';
+const PROJECT_SAVED_EXTENSION = 'scrowl';
 
 export const create = function (
   event: IpcMainInvokeEvent,
@@ -28,14 +31,15 @@ export const create = function (
   // TODO: The tempProjectData will be replaced by the proper project data loaded from the project
   // template file according to the projectID received from the frontend. The way the templates
   // will be stored hasn't been defined yet so we'll use example data for now.
-  const currentDate = new Date().toJSON();
+  const currentDate = new Date();
   const tempProjectData: ProjectData = {
     ...EXAMPLE_DATA,
+    id: currentDate.getTime(),
     workingFile: filename,
     workingDir: filename.split('/').slice(0, -1).join('/'),
-    createdAt: currentDate,
-    modifiedAt: currentDate,
-    openedAt: currentDate,
+    createdAt: currentDate.toJSON(),
+    updatedAt: currentDate.toJSON(),
+    openedAt: currentDate.toJSON(),
   };
 
   const writeRes = fs.fileWriteSync(filename, tempProjectData);
@@ -113,10 +117,10 @@ const write = function (source: string, filename: string): fs.FileDataResult {
 };
 
 export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
-  return new Promise<SaveResult>(resolve => {
+  return new Promise<SaveResult>((resolve, reject) => {
     const updateProject = (res: fs.DialogSaveResult) => {
       if (!project.workingDir) {
-        resolve({
+        reject({
           error: true,
           message: 'Unable to save project - working directory required',
         });
@@ -124,14 +128,17 @@ export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
       }
 
       if (res.error) {
-        resolve(res);
+        reject(res);
         return;
       }
 
-      const writeRes = write(project.workingDir, res.data.filePath);
+      const writeRes = write(
+        project.workingDir,
+        `${res.data.filePath}/${project.id}.${PROJECT_SAVED_EXTENSION}`
+      );
 
       if (writeRes.error) {
-        resolve(writeRes);
+        reject(writeRes);
         return;
       }
 
@@ -142,13 +149,25 @@ export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
           .slice(0, -1)
           .join('/');
 
-        resolve({
-          error: false,
-          data: {
-            filename: writeRes.data.filename,
-            project: project,
-          },
-        });
+        Projects.insert({
+          id: project.id,
+          name: project.name,
+        })
+          .then(() =>
+            resolve({
+              error: false,
+              data: {
+                filename: writeRes.data.filename,
+                project: project,
+              },
+            })
+          )
+          .catch((err: string) => {
+            reject({
+              error: true,
+              message: `Unable to save project - ${err}`,
+            });
+          });
       } catch (err) {
         const message =
           err && typeof err === 'string'
@@ -176,13 +195,15 @@ export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
       });
     }
 
-    updateProject({
-      error: false,
-      data: {
-        canceled: false,
-        filePath: project.saveDir,
-      },
-    });
+    Preferences.get('save_folder_path').then((savingDir: Model) =>
+      updateProject({
+        error: false,
+        data: {
+          canceled: false,
+          filePath: savingDir.save_folder_path,
+        },
+      })
+    );
   });
 };
 

@@ -1,11 +1,11 @@
 import { ProjectData } from './model-project.types';
 
 export const projectData: ProjectData = {
-  id: '',
+  id: null,
   createdAt: '',
-  modifiedAt: '',
+  updatedAt: '',
   openedAt: '',
-  name: '',
+  name: 'Untitled Project',
   description: '',
 };
 
