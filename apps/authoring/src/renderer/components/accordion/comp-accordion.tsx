@@ -10,9 +10,17 @@ import {
 const subOutlineItems: AccordionItemProps[] = [
   {
     id: '1',
-    label: 'Building a respectful workplace',
+    label: (
+      <div className="outline-item-header d-flex">
+        <span className="material-symbols-sharp dropdown-arrow interests">
+          arrow_drop_down
+        </span>
+        <span className="material-symbols-sharp interests">interests</span>
+        <p>Building a Respecful Workplace</p>
+      </div>
+    ),
     view: (
-      <ul style={{ borderLeft: '1px solid red' }}>
+      <ul style={{ borderLeft: '2px solid #e66f00' }}>
         <li>
           <span
             className="material-symbols-outlined scrowl-outline__detail-icon"
@@ -20,9 +28,7 @@ const subOutlineItems: AccordionItemProps[] = [
           >
             rectangle
           </span>
-          <a href="https://osg.ca" target="_blank">
-            Slide 1
-          </a>
+          <p>Slide 1</p>
         </li>
         <li>
           <span
@@ -31,9 +37,7 @@ const subOutlineItems: AccordionItemProps[] = [
           >
             rectangle
           </span>
-          <a href="https://osg.ca" target="_blank">
-            Slide 2
-          </a>
+          <p>Slide 2</p>
         </li>
         <li>
           <span
@@ -42,9 +46,7 @@ const subOutlineItems: AccordionItemProps[] = [
           >
             rectangle
           </span>
-          <a href="https://osg.ca" target="_blank">
-            Slide 3
-          </a>
+          <p>Slide 3</p>
         </li>
         <li style={{ marginTop: '1em' }}>
           <a href="https://osg.ca">Add new slide</a>
@@ -54,32 +56,43 @@ const subOutlineItems: AccordionItemProps[] = [
   },
   {
     id: '2',
-    label: 'What is harrassment?',
+    label: (
+      <div className="outline-item-header d-flex">
+        <span className="material-symbols-sharp dropdown-arrow interests">
+          arrow_drop_down
+        </span>
+        <span className="material-symbols-sharp interests">interests</span>
+        <p>What is Harassment?</p>
+      </div>
+    ),
     view: (
-      <ul style={{ borderLeft: '1px solid red' }}>
+      <ul style={{ borderLeft: '2px solid #e66f00' }}>
         <li>
-          <span className="material-symbols-outlined scrowl-outline__detail-icon">
+          <span
+            className="material-symbols-outlined scrowl-outline__detail-icon"
+            style={{ color: '#ffba00' }}
+          >
             rectangle
           </span>
-          <a href="https://osg.ca" target="_blank">
-            Slide 1
-          </a>
+          <p>Slide 1</p>
         </li>
         <li>
-          <span className="material-symbols-outlined scrowl-outline__detail-icon">
+          <span
+            className="material-symbols-outlined scrowl-outline__detail-icon"
+            style={{ color: '#ffba00' }}
+          >
             rectangle
           </span>
-          <a href="https://osg.ca" target="_blank">
-            Slide 2
-          </a>
+          <p>Slide 2</p>
         </li>
         <li>
-          <span className="material-symbols-outlined scrowl-outline__detail-icon">
+          <span
+            className="material-symbols-outlined scrowl-outline__detail-icon"
+            style={{ color: '#ffba00' }}
+          >
             rectangle
           </span>
-          <a href="https://osg.ca" target="_blank">
-            Slide 3
-          </a>
+          <p>Slide 3</p>
         </li>
       </ul>
     ),
@@ -89,25 +102,41 @@ const subOutlineItems: AccordionItemProps[] = [
 export const topOutlineItems: AccordionItemProps[] = [
   {
     id: '1',
-    label: 'Introduction to Harrassment',
+    label: (
+      <div className="outline-item-header d-flex">
+        <span className="material-symbols-sharp dropdown-arrow folder">
+          arrow_drop_down
+        </span>
+        <span className="material-symbols-sharp folder">folder</span>
+        <p>An Introduction to Harassment</p>
+      </div>
+    ),
     view: (
       <Accordion
         alwaysOpen
         flush
         items={subOutlineItems}
-        style={{ borderLeft: '1px solid blue' }}
+        style={{ borderLeft: '2px solid #9624fe' }}
       />
     ),
   },
   {
     id: '2',
-    label: 'Additional Training for Supervisors',
+    label: (
+      <div className="outline-item-header d-flex">
+        <span className="material-symbols-sharp dropdown-arrow folder">
+          arrow_drop_down
+        </span>
+        <span className="material-symbols-sharp folder">folder</span>
+        <p>Additional Training for Supervisors</p>
+      </div>
+    ),
     view: (
       <Accordion
         alwaysOpen
         flush
         items={subOutlineItems}
-        style={{ borderLeft: '1px solid blue' }}
+        style={{ borderLeft: '2px solid #9624fe' }}
       />
     ),
   },

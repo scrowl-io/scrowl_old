@@ -37,7 +37,13 @@ const children = () => {
   );
 };
 
-const handleCardOff = (e: BaseSyntheticEvent) => {
+const button = (
+  <div className="more-actions-button">
+    <span className="material-symbols-rounded">more_vert</span>
+  </div>
+);
+
+const handleCardOff = () => {
   const dropdowns = document.querySelectorAll('.glossary-dropdown');
   dropdowns.forEach(dropdown => {
     dropdown.classList.remove('dropdown-visible');
@@ -109,9 +115,11 @@ export const GlossaryCard = ({ cards }: CardProps) => {
                         title="title"
                         align="start"
                         items={dropdownItems}
+                        button={button}
                         children={children as unknown as ReactNode}
                         id={`dropdown-${card.id}`}
                         className="glossary-dropdown"
+                        variant="light"
                       />
                     </Card.Title>
                     <Card.Text style={{ fontSize: '0.4em' }}>

@@ -23,7 +23,7 @@ export const PageElement = () => {
           className="side-panel"
           style={{
             width: '30%',
-            height: '80%',
+            height: '100%',
             minWidth: '30%',
             maxWidth: '100vw',
             resize: 'horizontal',

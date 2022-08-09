@@ -1,7 +1,25 @@
 import React from 'react';
-import { Tabs, Input, InputProps, Button } from '@owlui/lib';
+import { Tabs, Input, InputProps, Button, Listgroup } from '@owlui/lib';
 import { Outline, topOutlineItems } from '../accordion';
 import { GlossaryCard } from '../card';
+
+const AddGlossaryButton = () => {
+  return (
+    <Button id="add-glossary-button" className="tab-add-button">
+      Add a new term to the Glossary...
+      <span className="material-symbols-rounded">add_circle</span>
+    </Button>
+  );
+};
+
+const AddResourceButton = () => {
+  return (
+    <Button id="add-resource-button" className="tab-add-button">
+      Add a new resource to your project...
+      <span className="material-symbols-rounded">attach_file</span>
+    </Button>
+  );
+};
 
 const cards = [
   {
@@ -42,25 +60,59 @@ const cards = [
   },
 ];
 
-const AddGlossaryButton = () => {
-  return (
-    <Button id="add-glossary-button" className="tab-add-button">
-      Add a new term to the Glossary...
-      <span className="material-symbols-rounded">add_circle</span>
-    </Button>
-  );
-};
+const resourcesItems = [
+  {
+    id: '1',
+    header: (
+      <div className="d-flex resource-header">
+        <span className="material-symbols-sharp">description</span>
+        <a className="resource-header-link" href="https://osg.ca">
+          Bill 168 Legistlation
+        </a>
+      </div>
+    ),
+  },
+  {
+    id: '2',
+    header: (
+      <div className="d-flex resource-header">
+        <span className="material-symbols-sharp">description</span>
+        <a className="resource-header-link" href="https://osg.ca">
+          Harassment Policy.pdf
+        </a>
+      </div>
+    ),
+    description: (
+      <p className="description">
+        Report from 2017 explaining the Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    ),
+  },
+  {
+    id: '3',
+    header: (
+      <div className="d-flex resource-header">
+        <span className="material-symbols-sharp">description</span>
+        <a className="resource-header-link" href="https://osg.ca">
+          Harassment Report.pdf
+        </a>
+      </div>
+    ),
+    description: (
+      <p className="description">
+        Report from 2017 explaining the Lorem ipsum dolor sit amet, consectetur
+        adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    ),
+  },
+];
 
-const AddResourceButton = () => {
-  return (
-    <Button id="add-resource-button" className="tab-add-button">
-      Add a new resource to your project...
-      <span className="material-symbols-rounded">attach_file</span>
-    </Button>
-  );
-};
-
-const items = [
+const tabItems = [
   {
     id: '1',
     title: 'Outline',
@@ -71,11 +123,7 @@ const items = [
     title: 'Resources',
     view: (
       <>
-        <ul className="resources">
-          <li>Bill 168 Legislation</li>
-          <li>Harrassment Report.pdf</li>
-          <li>Harrassment Policy</li>
-        </ul>
+        <Listgroup className="resources" items={resourcesItems} />
         <div className="panel-footer">
           <AddResourceButton />
         </div>
@@ -97,10 +145,6 @@ const items = [
 ];
 
 const inputProps: InputProps = {
-  label: {
-    content: 'Search...',
-    htmlFor: 'email',
-  },
   control: {
     id: 'search',
     type: 'text',
@@ -115,7 +159,7 @@ export const LeftPane = () => {
   return (
     <>
       <Input inputProps={inputProps} style={{ padding: '1em' }} />
-      <Tabs items={items} />
+      <Tabs items={tabItems} />
     </>
   );
 };
