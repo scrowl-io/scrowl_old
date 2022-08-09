@@ -34,6 +34,11 @@
   margin-bottom: 1rem;
 }
 
+.section-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;;
+}
+
 .files-list {
   table {
     font-size: 0.7rem;
