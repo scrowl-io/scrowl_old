@@ -1,4 +1,4 @@
-import { IpcMainInvokeEvent } from 'electron';
+import { app, IpcMainInvokeEvent } from 'electron';
 import { Model } from '../model.types';
 import {
   ProjectEvents,
@@ -132,10 +132,9 @@ export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
         return;
       }
 
-      const writeRes = write(
-        project.workingDir,
-        `${res.data.filePath}/${project.id}.${PROJECT_SAVED_EXTENSION}`
-      );
+      const filePath = `${res.data.filePath}/${project.id}.${PROJECT_SAVED_EXTENSION}`;
+
+      const writeRes = write(project.workingDir, filePath);
 
       if (writeRes.error) {
         reject(writeRes);
@@ -148,6 +147,8 @@ export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
           .split('/')
           .slice(0, -1)
           .join('/');
+
+        app.addRecentDocument(filePath);
 
         Projects.insert({
           id: project.id,
@@ -300,6 +301,38 @@ export const importFile = (
   });
 };
 
+const getScrowlFiles = async () => {
+  const savingDir = await Preferences.get('save_folder_path');
+
+  const dirReadRes = await fs.getSortedFilesFromDir(savingDir.save_folder_path);
+
+  if (dirReadRes.error) {
+    return dirReadRes;
+  }
+
+  if (!dirReadRes.data?.files.length) {
+    return {
+      ...dirReadRes,
+      message: 'No recent files have been saved. Saving directory is empty.',
+    };
+  }
+
+  return dirReadRes;
+};
+
+const getRecentScrowlFiles = async () => {
+  const scrowlFilesRes = await getScrowlFiles();
+
+  const recentFilesList = scrowlFilesRes.data?.files.slice(0, 10);
+
+  return {
+    ...scrowlFilesRes,
+    data: {
+      files: recentFilesList,
+    },
+  };
+};
+
 export const EVENTS: ProjectEvents = {
   new: {
     name: '/projects/create',
@@ -310,6 +343,11 @@ export const EVENTS: ProjectEvents = {
     name: 'project/save',
     type: 'invoke',
     fn: save,
+  },
+  recent: {
+    name: '/projects/list/recent',
+    type: 'invoke',
+    fn: getRecentScrowlFiles,
   },
   import: {
     name: 'project/import-file',
@@ -328,6 +366,7 @@ export const Project: Model = {
   create,
   open,
   save,
+  getRecentScrowlFiles,
   importFile,
 };
 

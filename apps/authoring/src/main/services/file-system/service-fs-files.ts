@@ -216,6 +216,39 @@ export const fileTempSync = (source: string, dest: string): FileDataResult => {
   return fileCopySync(source, destFile);
 };
 
+export const getSortedFilesFromDir = async (source: string) => {
+  try {
+    const filesList = await fs.promises.readdir(source);
+
+    return {
+      error: false,
+      data: {
+        files: filesList
+          .map(filename => ({
+            projectName: filename,
+            fileLocation: `${source}/${filename}`,
+            modifiedAt: fs.statSync(`${source}/${filename}`).mtime,
+            createdAt: fs.statSync(`${source}/${filename}`).birthtime,
+          }))
+          .sort(
+            (fileA, fileB) =>
+              fileB.modifiedAt.getTime() - fileA.modifiedAt.getTime()
+          ),
+      },
+    };
+  } catch (err) {
+    const message =
+      err && typeof err === 'string'
+        ? err
+        : `Unable to read files from: ${source} - unknown reason`;
+
+    return {
+      error: true,
+      message,
+    };
+  }
+};
+
 export default {
   join,
   ext,
@@ -226,4 +259,5 @@ export default {
   fileWriteSync,
   fileCopySync,
   fileTempSync,
+  getSortedFilesFromDir,
 };

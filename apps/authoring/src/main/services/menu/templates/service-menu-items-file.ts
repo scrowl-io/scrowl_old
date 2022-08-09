@@ -60,6 +60,18 @@ export const template: MenuItemConstructorOptions = {
       },
       accelerator: 'CmdOrCtrl+S',
     },
+    separator,
+    {
+      label: 'Open Recent',
+      role: 'recentDocuments',
+      submenu: [
+        {
+          label: 'Clear Recent',
+          role: 'clearRecentDocuments',
+        },
+      ],
+    },
+    separator,
     {
       label: 'Import File',
       id: EVENTS.importFile.id,
