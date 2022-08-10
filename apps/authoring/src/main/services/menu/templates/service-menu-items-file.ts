@@ -62,17 +62,6 @@ export const template: MenuItemConstructorOptions = {
     },
     separator,
     {
-      label: 'Open Recent',
-      role: 'recentDocuments',
-      submenu: [
-        {
-          label: 'Clear Recent',
-          role: 'clearRecentDocuments',
-        },
-      ],
-    },
-    separator,
-    {
       label: 'Import File',
       id: EVENTS.importFile.id,
       enabled: false,
