@@ -344,7 +344,12 @@ export const EVENTS: ProjectEvents = {
     type: 'invoke',
     fn: save,
   },
-  recent: {
+  getFiles: {
+    name: '/projects/list',
+    type: 'invoke',
+    fn: getScrowlFiles,
+  },
+  getRecentFiles: {
     name: '/projects/list/recent',
     type: 'invoke',
     fn: getRecentScrowlFiles,
