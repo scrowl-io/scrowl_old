@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import {
   Accordion,
   AccordionDefaultProps,
   AccordionItemProps,
   Listgroup,
+  Dropdown,
 } from '@owlui/lib';
+import {
+  moduleDropdownItems,
+  lessonDropdownItems,
+} from '../leftpane/leftpane-data';
 
 const slideItems = [
   {
@@ -53,16 +58,34 @@ const slideItems = [
   },
 ];
 
+const button = <span className="material-symbols-rounded">more_vert</span>;
+
+const placeholderChildren = <h1>Placeholder</h1>;
+
 const subOutlineItems: AccordionItemProps[] = [
   {
     id: '1',
     label: (
-      <div className="outline-item-header d-flex">
-        <span className="material-symbols-sharp dropdown-arrow interests">
-          arrow_drop_down
-        </span>
-        <span className="material-symbols-sharp interests">interests</span>
-        <p>Building a Respecful Workplace</p>
+      <div className="outline-header d-flex justify-content-between w-100">
+        <div className="outline-item-header-left d-flex align-items-center">
+          <span className="material-symbols-sharp dropdown-arrow folder">
+            arrow_drop_down
+          </span>
+          <span className="material-symbols-sharp folder">interests</span>
+          <p>Building a Respectful Workplace</p>
+        </div>
+
+        <div className="outline-item-header-right d-flex">
+          <Dropdown
+            title="title"
+            align="start"
+            items={lessonDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
       </div>
     ),
     view: <Listgroup items={slideItems} className="outline-slides" />,
@@ -70,12 +93,26 @@ const subOutlineItems: AccordionItemProps[] = [
   {
     id: '2',
     label: (
-      <div className="outline-item-header d-flex">
-        <span className="material-symbols-sharp dropdown-arrow interests">
-          arrow_drop_down
-        </span>
-        <span className="material-symbols-sharp interests">interests</span>
-        <p>What is Harassment?</p>
+      <div className="outline-header d-flex justify-content-between w-100">
+        <div className="outline-item-header-left d-flex align-items-center">
+          <span className="material-symbols-sharp dropdown-arrow folder">
+            arrow_drop_down
+          </span>
+          <span className="material-symbols-sharp folder">interests</span>
+          <p>What is Harassment</p>
+        </div>
+
+        <div className="outline-item-header-right d-flex">
+          <Dropdown
+            title="title"
+            align="start"
+            items={lessonDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
       </div>
     ),
     view: <Listgroup items={slideItems} className="outline-slides" />,
@@ -86,12 +123,26 @@ export const topOutlineItems: AccordionItemProps[] = [
   {
     id: '1',
     label: (
-      <div className="outline-item-header d-flex">
-        <span className="material-symbols-sharp dropdown-arrow folder">
-          arrow_drop_down
-        </span>
-        <span className="material-symbols-sharp folder">folder</span>
-        <p>An Introduction to Harassment</p>
+      <div className="outline-header d-flex justify-content-between w-100">
+        <div className="outline-item-header-left d-flex align-items-center">
+          <span className="material-symbols-sharp dropdown-arrow folder">
+            arrow_drop_down
+          </span>
+          <span className="material-symbols-sharp folder">folder</span>
+          <p>An Introduction to Harassment</p>
+        </div>
+
+        <div className="outline-item-header-right d-flex">
+          <Dropdown
+            title="title"
+            align="start"
+            items={moduleDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
       </div>
     ),
     view: (
@@ -106,12 +157,26 @@ export const topOutlineItems: AccordionItemProps[] = [
   {
     id: '2',
     label: (
-      <div className="outline-item-header d-flex">
-        <span className="material-symbols-sharp dropdown-arrow folder">
-          arrow_drop_down
-        </span>
-        <span className="material-symbols-sharp folder">folder</span>
-        <p>Additional Training for Supervisors</p>
+      <div className="outline-header d-flex justify-content-between w-100">
+        <div className="outline-item-header-left d-flex align-items-center">
+          <span className="material-symbols-sharp dropdown-arrow folder">
+            arrow_drop_down
+          </span>
+          <span className="material-symbols-sharp folder">folder</span>
+          <p>Additional Training for Supervisors</p>
+        </div>
+
+        <div className="outline-item-header-right d-flex">
+          <Dropdown
+            title="title"
+            align="start"
+            items={moduleDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
       </div>
     ),
     view: (

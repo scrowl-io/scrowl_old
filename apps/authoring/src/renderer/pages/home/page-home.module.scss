@@ -60,6 +60,11 @@
   display: none;
 }
 
+.side-panel .outline-header p {
+  margin-bottom: 0;
+  margin-left: 0.5em;
+}
+
 .side-panel .owlui-accordion-button:not(.collapsed) {
   background-color: white !important;
   color: black !important;

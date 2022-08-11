@@ -16,13 +16,22 @@ export interface CardProps {
 const dropdownItems = [
   {
     id: '1',
-    label: 'Edit',
+    label: (
+      <div className="d-flex align-items-center">
+        <span className="material-symbols-sharp">edit_note</span>
+        <span>Edit</span>
+      </div>
+    ),
     value: undefined,
-    as: 'button',
   },
   {
     id: '2',
-    label: 'Delete Term',
+    label: (
+      <div className="d-flex align-items-center">
+        <span className="material-symbols-sharp">delete</span>
+        <span>Delete Term</span>
+      </div>
+    ),
     value: undefined,
   },
 ];
@@ -38,23 +47,6 @@ const children = () => {
 
 const button = <span className="material-symbols-rounded">more_vert</span>;
 
-// const handleCardOff = () => {
-//   const dropdowns = document.querySelectorAll('.glossary-dropdown');
-//   dropdowns.forEach(dropdown => {
-//     dropdown.classList.remove('dropdown-visible');
-//   });
-// };
-
-// const handleHoverOff = (e: BaseSyntheticEvent) => {
-//   const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
-//   dropdown?.classList.remove('dropdown-visible');
-// };
-
-// const handleHoverOn = (e: BaseSyntheticEvent) => {
-//   const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
-//   dropdown?.classList.add('dropdown-visible');
-// };
-
 export const GlossaryCard = ({ cards }: CardProps) => {
   const sortedCards = cards.sort((a, b) => {
     return a.header.localeCompare(b.header);
@@ -69,20 +61,13 @@ export const GlossaryCard = ({ cards }: CardProps) => {
     <>
       {firstLetters.map((letter: string) => {
         return (
-          <Card
-            className="glossary-card"
-            key={letter}
-            // onMouseLeave={handleCardOff}
-            // onScroll={handleCardOff}
-          >
+          <Card className="glossary-card" key={letter}>
             <Card.Header className="glossary-card-header">{letter}</Card.Header>
             {sortedCards.map((card: CardItemProps) => {
               if (card.header[0] === letter) {
                 return (
                   <Card.Body
                     className="glossary-item"
-                    // onMouseOver={handleHoverOn}
-                    // onMouseLeave={handleHoverOff}
                     key={card.id}
                     id={card.id}
                   >
