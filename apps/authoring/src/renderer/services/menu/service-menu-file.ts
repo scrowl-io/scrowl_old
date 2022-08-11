@@ -3,7 +3,7 @@ import { MenuEventsFileApi } from '../../../main/services/menu';
 
 export const ENDPOINTS: MenuEventsFileApi = {
   projectsCreate: '/projects/create',
-  projectOpen: 'menu/project/open',
+  projectOpen: '/projects/open',
   projectSave: 'menu/project/save',
   importFile: 'menu/project/import',
 };

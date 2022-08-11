@@ -13,7 +13,7 @@ export const EVENTS: MenuItemEventsFile = {
   },
   projectOpen: {
     id: 'open-project',
-    name: 'menu/project/open',
+    name: '/projects/open',
     type: 'send',
   },
   projectSave: {
@@ -44,9 +44,7 @@ export const template: MenuItemConstructorOptions = {
       label: 'Open...',
       id: EVENTS.projectOpen.id,
       click: async () => {
-        const openProjectData = await ProjectModel.open();
-
-        send(EVENTS.projectOpen.name, openProjectData);
+        send(EVENTS.projectOpen.name);
       },
       accelerator: 'CmdOrCtrl+O',
     },

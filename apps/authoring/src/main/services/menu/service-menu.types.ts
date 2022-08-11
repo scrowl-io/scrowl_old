@@ -9,7 +9,7 @@ export interface MenuEventCreateProject
 export interface MenuEventOpenProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'open-project';
-  name: 'menu/project/open';
+  name: '/projects/open';
 }
 
 export interface MenuEventSaveProject

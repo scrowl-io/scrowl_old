@@ -1,4 +1,4 @@
-import { app, IpcMainInvokeEvent } from 'electron';
+import { IpcMainInvokeEvent } from 'electron';
 import { Model } from '../model.types';
 import {
   ProjectEvents,
@@ -57,45 +57,34 @@ export const create = function (
   };
 };
 
-export const open = async function () {
-  const dialogOptions = {
-    title: 'Scrowl - Open Project',
-    filters: [
-      {
-        name: 'Scrowl Project',
-        extensions: ['scrowl'],
-      },
-    ],
-  };
-
-  const dialogResult = await fs.dialogOpen(dialogOptions);
-
-  if (dialogResult.error) {
-    return {
-      error: true,
-      message: 'Unable to save project - working directory required',
-    };
-  }
-
-  if (dialogResult.data.canceled) {
-    return {
-      error: true,
-      message: 'No files found/selected',
-    };
-  }
-
+export const open = async function (
+  event: IpcMainInvokeEvent,
+  fileLocation: string
+) {
   const tempDir = fs.dirTempSync(PROJECT_DIR_PREFIX);
 
   if (tempDir.error || !tempDir.data.pathname) {
     return tempDir;
   }
 
-  const projectData = fs.unarchive(
-    dialogResult.data.filePaths[0],
-    tempDir.data.pathname
+  const projectFiles = await fs.unarchive(fileLocation, tempDir.data.pathname);
+
+  const projectData = fs.fileReadSync(
+    `${projectFiles.data.projectDir}/${PROJECT_FILE_NAME}`
   );
 
-  return fs.fileReadSync(`${projectData.data.projectDir}/${PROJECT_FILE_NAME}`);
+  if (projectData.data.contents) {
+    projectData.data.contents.updatedAt = new Date().toJSON();
+    projectData.data.contents.workingDir = tempDir.data.pathname;
+    projectData.data.contents.workingFile = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
+
+    return await save(null, projectData.data.contents);
+  } else {
+    return {
+      error: true,
+      message: `Error opening the project "${projectData.data.project.name}"`,
+    };
+  }
 };
 
 const write = function (source: string, filename: string): fs.FileDataResult {
@@ -116,7 +105,10 @@ const write = function (source: string, filename: string): fs.FileDataResult {
   return fs.archive(source, filename);
 };
 
-export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
+export const save = (
+  event: IpcMainInvokeEvent | null,
+  project: ProjectData
+) => {
   return new Promise<SaveResult>((resolve, reject) => {
     const updateProject = (res: fs.DialogSaveResult) => {
       if (!project.workingDir) {
@@ -147,8 +139,6 @@ export const save = (event: IpcMainInvokeEvent, project: ProjectData) => {
           .split('/')
           .slice(0, -1)
           .join('/');
-
-        app.addRecentDocument(filePath);
 
         Projects.insert({
           id: project.id,
@@ -311,6 +301,11 @@ export const EVENTS: ProjectEvents = {
     name: 'project/save',
     type: 'invoke',
     fn: save,
+  },
+  open: {
+    name: '/projects/open',
+    type: 'invoke',
+    fn: open,
   },
   getFiles: {
     name: '/projects/list',

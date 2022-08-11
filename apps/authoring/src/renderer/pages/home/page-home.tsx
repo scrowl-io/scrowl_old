@@ -1,26 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as styles from './page-home.module.scss';
 import { PageNavItems } from './page-home-routes';
 import { NavigationBar } from '../../components/navigationbar';
 import { Project } from '../../models';
-import { requester } from '../../services';
+import { Menu, requester } from '../../services';
+import { FileFromDirData } from '../../../main/services/file-system';
+import { OpenResult } from '../../../main/models/project';
 
 const project = new Project();
 
 export const PageElement = () => {
+  const [recentFiles, setRecentFiles] = useState([]);
   project.ready();
 
   const isProcessing = project.useProcessing();
-  const projectData = project.useProjectData();
+  const projectModelData = project.useProjectData();
 
-  console.log(projectData);
-
-  // Example of how to fetch a list of recent projects from the backend. Endpoint "/projects/lists/recent".
+  // Example of how to fetch a list of recent projects from the backend. Endpoint "/projects/lists/recent":
   useEffect(() => {
-    requester
-      .invoke('/projects/list/recent')
-      .then(result => console.log(result));
+    requester.invoke('/projects/list/recent').then(result => {
+      if (result.data) {
+        setRecentFiles(result.data.files);
+      }
+    });
   }, []);
+
+  // Example of how handle the click to open a recent project:
+  const handleOpenProject = (e: React.MouseEvent<HTMLButtonElement>) => {
+    requester
+      .invoke('/projects/open', e.currentTarget.dataset.file)
+      .then(result => console.log(result));
+  };
+
+  console.log(projectModelData);
 
   return (
     <>
@@ -28,6 +40,22 @@ export const PageElement = () => {
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
         <h1>Home Page</h1>
+        {recentFiles && (
+          <>
+            <h3>Recent Projects:</h3>
+            <div>
+              {recentFiles.map((recentFile: FileFromDirData, index) => (
+                <button
+                  key={index}
+                  data-file={recentFile.fileLocation}
+                  onClick={handleOpenProject}
+                >
+                  {recentFile.projectName}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </main>
     </>
   );

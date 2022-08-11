@@ -326,12 +326,16 @@ export const getRecentScrowlFiles = async () => {
 
   const recentFilesList = scrowlFilesRes.data?.files.slice(0, 10);
 
-  return {
-    ...scrowlFilesRes,
-    data: {
-      files: recentFilesList,
-    },
-  };
+  if (!scrowlFilesRes.error) {
+    return {
+      ...scrowlFilesRes,
+      data: {
+        files: recentFilesList,
+      },
+    };
+  } else {
+    return scrowlFilesRes;
+  }
 };
 
 export default {

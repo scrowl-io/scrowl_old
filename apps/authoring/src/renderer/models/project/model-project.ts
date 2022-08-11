@@ -18,6 +18,7 @@ import { requester, Menu } from '../../services';
 export const ENDPOINTS: ProjectEventApi = {
   new: '/projects/create',
   save: 'project/save',
+  open: '/projects/open',
   getFiles: '/projects/list',
   getRecentFiles: '/projects/list/recent',
   import: 'project/import-file',
@@ -57,10 +58,10 @@ export class Project {
       this.create('example-id');
     });
 
-    Menu.File.onProjectOpen((event, result: OpenResult) => {
-      if (!result.error || !result.data) {
-        this.create(result.data.contents);
-      }
+    Menu.File.onProjectOpen(() => {
+      this.__setProcessing(true);
+      console.log('Display modal with recent files to open...');
+      this.__setProcessing(false);
     });
 
     Menu.File.onProjectSave(() => {
