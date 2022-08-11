@@ -15,7 +15,7 @@ export interface MenuEventOpenProject
 export interface MenuEventSaveProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'save-project';
-  name: 'menu/project/save';
+  name: '/projects/save';
 }
 
 export interface MenuEventImportFile

@@ -5,7 +5,6 @@ import {
   ProjectEventApi,
   SaveResult,
   ImportResult,
-  OpenResult,
   CreateResult,
 } from '../../../main/models/project';
 import {

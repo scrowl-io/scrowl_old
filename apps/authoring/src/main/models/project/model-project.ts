@@ -111,6 +111,15 @@ export const save = (
 ) => {
   return new Promise<SaveResult>((resolve, reject) => {
     const updateProject = (res: fs.DialogSaveResult) => {
+      if (!res.data.filePath) {
+        reject({
+          error: true,
+          message:
+            'Unable to save project - saving directory not set in the preferences',
+        });
+        return;
+      }
+
       if (!project.workingDir) {
         reject({
           error: true,

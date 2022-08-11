@@ -3,9 +3,8 @@ import * as styles from './page-home.module.scss';
 import { PageNavItems } from './page-home-routes';
 import { NavigationBar } from '../../components/navigationbar';
 import { Project } from '../../models';
-import { Menu, requester } from '../../services';
+import { requester } from '../../services';
 import { FileFromDirData } from '../../../main/services/file-system';
-import { OpenResult } from '../../../main/models/project';
 
 const project = new Project();
 
@@ -33,6 +32,7 @@ export const PageElement = () => {
   };
 
   console.log(projectModelData);
+  console.log(recentFiles);
 
   return (
     <>
@@ -40,7 +40,7 @@ export const PageElement = () => {
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
         <h1>Home Page</h1>
-        {recentFiles && (
+        {recentFiles.length > 0 && (
           <>
             <h3>Recent Projects:</h3>
             <div>
