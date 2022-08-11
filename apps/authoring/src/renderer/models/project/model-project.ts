@@ -18,7 +18,8 @@ import { requester, Menu } from '../../services';
 export const ENDPOINTS: ProjectEventApi = {
   new: '/projects/create',
   save: 'project/save',
-  recent: '/projects/list/recent',
+  getFiles: '/projects/list',
+  getRecentFiles: '/projects/list/recent',
   import: 'project/import-file',
 };
 export class Project {

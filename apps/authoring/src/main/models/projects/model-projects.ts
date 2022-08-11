@@ -7,7 +7,7 @@ const TABLE_NAME = 'projects';
 export const get = async () => {
   const res = await IS.get(TABLE_NAME);
 
-  return res[0];
+  return res;
 };
 
 export const insert = (data: PreferenceData) => {

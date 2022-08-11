@@ -5,7 +5,11 @@ import {
   FileExistsResult,
   DirectoryTempResult,
   FileDataResult,
+  FileFromDirDataResult,
+  FileFromDirData,
 } from './service-fs.types';
+import { InternalStorage as IS } from '../../services';
+import { Preferences, Projects } from '../../models';
 
 const normalize = (pathname: string) => {
   return path.normalize(pathname);
@@ -216,7 +220,9 @@ export const fileTempSync = (source: string, dest: string): FileDataResult => {
   return fileCopySync(source, destFile);
 };
 
-export const getSortedFilesFromDir = async (source: string) => {
+export const getSortedFilesFromDir = async (
+  source: string
+): Promise<FileFromDirDataResult> => {
   try {
     const filesList = await fs.promises.readdir(source);
 
@@ -225,7 +231,6 @@ export const getSortedFilesFromDir = async (source: string) => {
       data: {
         files: filesList
           .map(filename => ({
-            projectName: filename,
             fileLocation: `${source}/${filename}`,
             modifiedAt: fs.statSync(`${source}/${filename}`).mtime,
             createdAt: fs.statSync(`${source}/${filename}`).birthtime,
@@ -249,6 +254,71 @@ export const getSortedFilesFromDir = async (source: string) => {
   }
 };
 
+const getValidProjectFiles = (
+  dirFiles: FileFromDirData[],
+  dbProjects: IS.DatabaseData[]
+): FileFromDirData[] => {
+  dirFiles.forEach(dirFile => {
+    const fileNamePath = path.basename(dirFile.fileLocation);
+    const fileNameExt = path.extname(dirFile.fileLocation);
+    const fileName = path.basename(fileNamePath, fileNameExt);
+
+    dbProjects.forEach(dbProject => {
+      if (dbProject.id.toString() === fileName) {
+        dirFile.projectName = dbProject.name as string;
+      }
+    });
+  });
+
+  return dirFiles.filter(dirFile =>
+    Object.prototype.hasOwnProperty.call(dirFile, 'projectName')
+  );
+};
+
+export const getScrowlFiles = async (): Promise<FileFromDirDataResult> => {
+  const savingDir = await Preferences.get('save_folder_path');
+
+  const dirReadRes = await getSortedFilesFromDir(savingDir.save_folder_path);
+
+  const dbProjects = await Projects.get();
+
+  const validProjectFiles = getValidProjectFiles(
+    dirReadRes.data?.files,
+    dbProjects
+  );
+
+  if (dirReadRes.error) {
+    return dirReadRes;
+  }
+
+  if (!dirReadRes.data?.files.length) {
+    return {
+      ...dirReadRes,
+      message: 'No recent files have been saved. Saving directory is empty.',
+    };
+  }
+
+  return {
+    ...dirReadRes,
+    data: {
+      files: validProjectFiles,
+    },
+  };
+};
+
+export const getRecentScrowlFiles = async () => {
+  const scrowlFilesRes = await getScrowlFiles();
+
+  const recentFilesList = scrowlFilesRes.data?.files.slice(0, 10);
+
+  return {
+    ...scrowlFilesRes,
+    data: {
+      files: recentFilesList,
+    },
+  };
+};
+
 export default {
   join,
   ext,
@@ -260,4 +330,6 @@ export default {
   fileCopySync,
   fileTempSync,
   getSortedFilesFromDir,
+  getScrowlFiles,
+  getRecentScrowlFiles,
 };

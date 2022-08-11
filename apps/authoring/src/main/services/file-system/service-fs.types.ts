@@ -38,6 +38,23 @@ export interface FileDataResultSuccess extends Omit<ApiResultSuccess, 'data'> {
 
 export type FileDataResult = FileDataResultSuccess | ApiResultError;
 
+export interface FileFromDirData {
+  projectName?: string;
+  fileLocation: string;
+  modifiedAt: Date;
+  createdAt: Date;
+}
+export interface FileFromDirDataResultSuccess
+  extends Omit<ApiResultSuccess, 'data'> {
+  data: {
+    files: FileFromDirData[];
+  };
+}
+
+export type FileFromDirDataResult =
+  | FileFromDirDataResultSuccess
+  | ApiResultError;
+
 export interface DialogSaveResultSuccess
   extends Omit<ApiResultSuccess, 'data'> {
   data: SaveDialogReturnValue;

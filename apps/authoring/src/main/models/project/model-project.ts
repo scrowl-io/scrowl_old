@@ -301,38 +301,6 @@ export const importFile = (
   });
 };
 
-const getScrowlFiles = async () => {
-  const savingDir = await Preferences.get('save_folder_path');
-
-  const dirReadRes = await fs.getSortedFilesFromDir(savingDir.save_folder_path);
-
-  if (dirReadRes.error) {
-    return dirReadRes;
-  }
-
-  if (!dirReadRes.data?.files.length) {
-    return {
-      ...dirReadRes,
-      message: 'No recent files have been saved. Saving directory is empty.',
-    };
-  }
-
-  return dirReadRes;
-};
-
-const getRecentScrowlFiles = async () => {
-  const scrowlFilesRes = await getScrowlFiles();
-
-  const recentFilesList = scrowlFilesRes.data?.files.slice(0, 10);
-
-  return {
-    ...scrowlFilesRes,
-    data: {
-      files: recentFilesList,
-    },
-  };
-};
-
 export const EVENTS: ProjectEvents = {
   new: {
     name: '/projects/create',
@@ -347,12 +315,12 @@ export const EVENTS: ProjectEvents = {
   getFiles: {
     name: '/projects/list',
     type: 'invoke',
-    fn: getScrowlFiles,
+    fn: fs.getScrowlFiles,
   },
   getRecentFiles: {
     name: '/projects/list/recent',
     type: 'invoke',
-    fn: getRecentScrowlFiles,
+    fn: fs.getRecentScrowlFiles,
   },
   import: {
     name: 'project/import-file',
@@ -371,7 +339,6 @@ export const Project: Model = {
   create,
   open,
   save,
-  getRecentScrowlFiles,
   importFile,
 };
 
