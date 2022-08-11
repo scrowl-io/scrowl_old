@@ -18,19 +18,8 @@ export const PageElement = () => {
       <NavigationBar pages={PageNavItems} />
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
-        <h1>Home Page</h1>
-        <div
-          className="side-panel"
-          style={{
-            width: '30%',
-            height: '100%',
-            minWidth: '30%',
-            maxWidth: '100vw',
-            resize: 'horizontal',
-            overflow: 'auto',
-            border: '1px solid darkgrey',
-          }}
-        >
+        {/* <h1>Home Page</h1> */}
+        <div className="side-panel">
           <LeftPane />
         </div>
       </main>

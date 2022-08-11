@@ -1,11 +1,57 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-// import { PageRouteProps } from '../../pages';
 import {
   Accordion,
   AccordionDefaultProps,
   AccordionItemProps,
+  Listgroup,
 } from '@owlui/lib';
+
+const slideItems = [
+  {
+    id: '1',
+    header: (
+      <div className="d-flex outline-item-header">
+        <span className="material-symbols-outlined scrowl-outline__detail-icon">
+          rectangle
+        </span>
+        <p>Slide 1</p>
+      </div>
+    ),
+    bsProps: {
+      action: true,
+      // if we pass an href, this element is rendered as a button and will have an additional 'active' class added when clicked. Return here when we know what we want to do for active, focus, hover and whether we keep track of all that in state
+      // href: '#',
+    },
+  },
+  {
+    id: '2',
+    header: (
+      <div className="d-flex outline-item-header">
+        <span className="material-symbols-outlined scrowl-outline__detail-icon">
+          rectangle
+        </span>
+        <p>Slide 2</p>
+      </div>
+    ),
+    bsProps: {
+      action: true,
+    },
+  },
+  {
+    id: '3',
+    header: (
+      <div className="d-flex outline-item-header">
+        <span className="material-symbols-outlined scrowl-outline__detail-icon">
+          rectangle
+        </span>
+        <p>Slide 3</p>
+      </div>
+    ),
+    bsProps: {
+      action: true,
+    },
+  },
+];
 
 const subOutlineItems: AccordionItemProps[] = [
   {
@@ -19,40 +65,7 @@ const subOutlineItems: AccordionItemProps[] = [
         <p>Building a Respecful Workplace</p>
       </div>
     ),
-    view: (
-      <ul style={{ borderLeft: '2px solid #e66f00' }}>
-        <li>
-          <span
-            className="material-symbols-outlined scrowl-outline__detail-icon"
-            style={{ color: '#ffba00' }}
-          >
-            rectangle
-          </span>
-          <p>Slide 1</p>
-        </li>
-        <li>
-          <span
-            className="material-symbols-outlined scrowl-outline__detail-icon"
-            style={{ color: '#ffba00' }}
-          >
-            rectangle
-          </span>
-          <p>Slide 2</p>
-        </li>
-        <li>
-          <span
-            className="material-symbols-outlined scrowl-outline__detail-icon"
-            style={{ color: '#ffba00' }}
-          >
-            rectangle
-          </span>
-          <p>Slide 3</p>
-        </li>
-        <li style={{ marginTop: '1em' }}>
-          <a href="https://osg.ca">Add new slide</a>
-        </li>
-      </ul>
-    ),
+    view: <Listgroup items={slideItems} className="outline-slides" />,
   },
   {
     id: '2',
@@ -65,37 +78,7 @@ const subOutlineItems: AccordionItemProps[] = [
         <p>What is Harassment?</p>
       </div>
     ),
-    view: (
-      <ul style={{ borderLeft: '2px solid #e66f00' }}>
-        <li>
-          <span
-            className="material-symbols-outlined scrowl-outline__detail-icon"
-            style={{ color: '#ffba00' }}
-          >
-            rectangle
-          </span>
-          <p>Slide 1</p>
-        </li>
-        <li>
-          <span
-            className="material-symbols-outlined scrowl-outline__detail-icon"
-            style={{ color: '#ffba00' }}
-          >
-            rectangle
-          </span>
-          <p>Slide 2</p>
-        </li>
-        <li>
-          <span
-            className="material-symbols-outlined scrowl-outline__detail-icon"
-            style={{ color: '#ffba00' }}
-          >
-            rectangle
-          </span>
-          <p>Slide 3</p>
-        </li>
-      </ul>
-    ),
+    view: <Listgroup items={slideItems} className="outline-slides" />,
   },
 ];
 

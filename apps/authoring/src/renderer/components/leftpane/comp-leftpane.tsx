@@ -1,5 +1,12 @@
-import React from 'react';
-import { Tabs, Input, InputProps, Button, Listgroup } from '@owlui/lib';
+import React, { ReactNode } from 'react';
+import {
+  Tabs,
+  Input,
+  InputProps,
+  Button,
+  Listgroup,
+  Dropdown,
+} from '@owlui/lib';
 import { Outline, topOutlineItems } from '../accordion';
 import { GlossaryCard } from '../card';
 
@@ -21,7 +28,7 @@ const AddResourceButton = () => {
   );
 };
 
-const cards = [
+const glossaryCards = [
   {
     id: '1',
     header: 'Agent',
@@ -58,28 +65,85 @@ const cards = [
     content:
       'Assault can be defined as any act in which a person is abused, threatened, intimidated or assaulted in his or her employment. While exact definitions vary in legislation, generally speaking workplace violence or harassment includes: Threatening behaviour – such as shaking fists, destroying property or throwing objects.',
   },
+  {
+    id: '7',
+    header: 'Bullying',
+    content:
+      "Objectionable behavior in the form of repeated and hostile/unwanted conduct, verbal comments, actions, or gestures. This behavior affects an employee's dignity or pychological or physical integrity, serves no legitimate work-related purpose, and results in a harmful work environment for the employee.",
+  },
 ];
+
+const resourceDropdownItems = [
+  {
+    id: '1',
+    label: 'Edit',
+    value: undefined,
+    as: 'button',
+  },
+  {
+    id: '2',
+    label: 'Preview',
+    value: undefined,
+  },
+  {
+    id: '3',
+    label: 'Delete Resource',
+    value: undefined,
+  },
+];
+
+const button = <span className="material-symbols-rounded">more_vert</span>;
+
+const placeholderChildren = <h1>Placeholder</h1>;
 
 const resourcesItems = [
   {
     id: '1',
     header: (
-      <div className="d-flex resource-header">
-        <span className="material-symbols-sharp">description</span>
-        <a className="resource-header-link" href="https://osg.ca">
-          Bill 168 Legistlation
-        </a>
+      <div className="d-flex resource-header justify-content-between">
+        <div className="d-flex resource-header-left">
+          <span className="material-symbols-sharp">description</span>
+          <a className="resource-header-link" href="https://osg.ca">
+            Bill 168 Legistlation
+          </a>
+        </div>
+
+        <div className="d-flex resource-header-right">
+          <Dropdown
+            title="title"
+            align="start"
+            items={resourceDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
       </div>
     ),
   },
   {
     id: '2',
     header: (
-      <div className="d-flex resource-header">
-        <span className="material-symbols-sharp">description</span>
-        <a className="resource-header-link" href="https://osg.ca">
-          Harassment Policy.pdf
-        </a>
+      <div className="d-flex resource-header justify-content-between">
+        <div className="d-flex resource-header-left">
+          <span className="material-symbols-sharp">description</span>
+          <a className="resource-header-link" href="https://osg.ca">
+            Harassment Policy.pdf
+          </a>
+        </div>
+
+        <div className="d-flex resource-header-right">
+          <Dropdown
+            title="title"
+            align="start"
+            items={resourceDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
       </div>
     ),
     description: (
@@ -94,11 +158,25 @@ const resourcesItems = [
   {
     id: '3',
     header: (
-      <div className="d-flex resource-header">
-        <span className="material-symbols-sharp">description</span>
-        <a className="resource-header-link" href="https://osg.ca">
-          Harassment Report.pdf
-        </a>
+      <div className="d-flex resource-header justify-content-between">
+        <div className="d-flex resource-header-left">
+          <span className="material-symbols-sharp">description</span>
+          <a className="resource-header-link" href="https://osg.ca">
+            Harassment Report.pdf
+          </a>
+        </div>
+
+        <div className="d-flex resource-header-right">
+          <Dropdown
+            title="title"
+            align="start"
+            items={resourceDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
       </div>
     ),
     description: (
@@ -107,6 +185,40 @@ const resourcesItems = [
         adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
         magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
         laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    ),
+  },
+  {
+    id: '4',
+    header: (
+      <div className="d-flex resource-header justify-content-between">
+        <div className="d-flex resource-header-left">
+          <span className="material-symbols-sharp">description</span>
+          <a className="resource-header-link" href="https://osg.ca">
+            Example Resource
+          </a>
+        </div>
+
+        <div className="d-flex resource-header-right">
+          <Dropdown
+            title="title"
+            align="start"
+            items={resourceDropdownItems}
+            button={button}
+            children={placeholderChildren as unknown as ReactNode}
+            className="resources-dropdown"
+            variant="light"
+          />
+        </div>
+      </div>
+    ),
+    description: (
+      <p className="description">
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+        exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat.labore et dolore magna aliqua. Ut enim ad minim veniam, quis
+        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat.
       </p>
     ),
   },
@@ -135,7 +247,7 @@ const tabItems = [
     title: 'Glossary',
     view: (
       <>
-        <GlossaryCard cards={cards} />
+        <GlossaryCard cards={glossaryCards} />
         <div className="panel-footer">
           <AddGlossaryButton />
         </div>

@@ -30,6 +30,13 @@
 
 .side-panel {
   background-color: #ffffff;
+  width: 30%;
+  height: 100%;
+  min-width: 30%;
+  max-width: 100vw;
+  resize: horizontal;
+  overflow: auto;
+  border: 1px solid darkgrey;
 }
 
 .side-panel button {
@@ -93,17 +100,56 @@
   box-shadow: none !important;
 }
 
-.outline-item-header {
+.side-panel .outline-item-header {
   align-items: center;
 }
 
-.outline-item-header p {
+.side-panel .outline-item-header p {
   margin: 0;
   margin-left: 0.5em;
 }
 
+.owlui-list-group-item-action {
+  font-size: 0.6em;
+}
+
+.owlui-list-group-item.active {
+  z-index: 2;
+  color: black !important;
+  background-color: #ede5a6 !important;
+  border: 0;
+}
+
+.side-panel .outline-slides {
+  border-left: 2px solid #e66f00;
+  border-radius: 0;
+}
+
 .side-panel .owlui-accordion-body ul {
   padding-left: 0;
+}
+
+.owlui-list-group-item-action:hover {
+  background-color: lightgrey !important;
+}
+
+.owlui-list-group-item-action:hover p {
+  text-decoration: underline;
+}
+
+.owlui-list-group-item-action:focus {
+  z-index: 1;
+  background-color: #ede5a6 !important;
+  text-decoration: none;
+  color: black;
+}
+
+.owlui-list-group-item-action:focus span {
+  color: #ffba00;
+}
+
+.owlui-list-group-item-action:focus p {
+  color: black;
 }
 
 .side-panel .owlui-accordion-body li {
@@ -112,10 +158,6 @@
   align-items: center;
   height: 3em;
   padding-left: 2em;
-}
-
-.side-panel .owlui-accordion-body li:focus {
-  background-color: yellow;
 }
 
 .side-panel .owlui-accordion-body li p {
@@ -154,24 +196,52 @@
 
 .side-panel .resource-header a {
   text-decoration: none;
-  color: #6c757d;
+  color: black;
 }
+
+// **** Glossary Tab ****
 
 .side-panel .glossary-dropdown {
   border-radius: 50px;
-  visibility: hidden;
+
+  // visibility: hidden;
 }
 
-.owlui-dropdown-toggle {
+.side-panel .glossary-card {
+  border-radius: 0 !important;
+  border: 0 !important;
+}
+
+.side-panel .glossary-card-header {
+  font-size: 0.6em;
+  background-color: #e9ecef;
+  border: 0;
+  border-radius: 0;
+}
+
+.side-panel .glossary-card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.6em;
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
+}
+
+.side-panel .glossary-card-body {
+  font-size: 0.4em;
+}
+
+.side-panel .owlui-dropdown-toggle {
   border-radius: 50px !important;
   padding: 0.2em !important;
 }
 
-.owlui-dropdown-toggle::after {
+.side-panel .owlui-dropdown-toggle::after {
   display: none !important;
 }
 
-.owlui-tab-content {
+.side-panel .owlui-tab-content {
   position: relative;
 }
 
@@ -184,18 +254,18 @@
   font-weight: 600;
 }
 
-.panel-footer {
+.side-panel .panel-footer {
   margin-bottom: -3em;
   display: flex;
   justify-content: center;
   border-top: 1px solid darkgray;
-  position: absolute;
+  position: sticky;
   bottom: 0;
   width: 100%;
   background-color: white;
 }
 
-#add-resource-button {
+.side-panel #add-resource-button {
   background-color: white;
   color: black;
   padding: 1em;
@@ -210,7 +280,7 @@
   margin-top: 1.5em;
 }
 
-#add-glossary-button {
+.side-panel #add-glossary-button {
   background-color: white;
   color: black;
   padding: 1em;
@@ -225,9 +295,9 @@
   margin-top: 1.5em;
 }
 
-.more-actions-button::after {
-  display: none;
-}
+// .side-panel .more-actions-button::after {
+//   display: none;
+// }
 
 .section-title {
   font-weight: bold;

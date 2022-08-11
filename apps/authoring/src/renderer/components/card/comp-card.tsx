@@ -1,8 +1,7 @@
-import React, { BaseSyntheticEvent, ReactNode, useState } from 'react';
+import React, { BaseSyntheticEvent, ReactNode } from 'react';
 // import { Card, CardDefaultProps } from '@owlui/lib';
 import { Card } from 'react-bootstrap';
 import { Dropdown } from '@owlui/lib';
-import { propTypes } from 'react-bootstrap/esm/Image';
 
 export interface CardItemProps {
   id: string;
@@ -37,28 +36,24 @@ const children = () => {
   );
 };
 
-const button = (
-  <div className="more-actions-button">
-    <span className="material-symbols-rounded">more_vert</span>
-  </div>
-);
+const button = <span className="material-symbols-rounded">more_vert</span>;
 
-const handleCardOff = () => {
-  const dropdowns = document.querySelectorAll('.glossary-dropdown');
-  dropdowns.forEach(dropdown => {
-    dropdown.classList.remove('dropdown-visible');
-  });
-};
+// const handleCardOff = () => {
+//   const dropdowns = document.querySelectorAll('.glossary-dropdown');
+//   dropdowns.forEach(dropdown => {
+//     dropdown.classList.remove('dropdown-visible');
+//   });
+// };
 
-const handleHoverOff = (e: BaseSyntheticEvent) => {
-  const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
-  dropdown?.classList.remove('dropdown-visible');
-};
+// const handleHoverOff = (e: BaseSyntheticEvent) => {
+//   const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
+//   dropdown?.classList.remove('dropdown-visible');
+// };
 
-const handleHoverOn = (e: BaseSyntheticEvent) => {
-  const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
-  dropdown?.classList.add('dropdown-visible');
-};
+// const handleHoverOn = (e: BaseSyntheticEvent) => {
+//   const dropdown = document.querySelector(`#dropdown-${e.target.id}`);
+//   dropdown?.classList.add('dropdown-visible');
+// };
 
 export const GlossaryCard = ({ cards }: CardProps) => {
   const sortedCards = cards.sort((a, b) => {
@@ -75,41 +70,23 @@ export const GlossaryCard = ({ cards }: CardProps) => {
       {firstLetters.map((letter: string) => {
         return (
           <Card
+            className="glossary-card"
             key={letter}
-            style={{ borderRadius: '0', border: '0' }}
-            onMouseLeave={handleCardOff}
-            onScroll={handleCardOff}
+            // onMouseLeave={handleCardOff}
+            // onScroll={handleCardOff}
           >
-            <Card.Header
-              style={{
-                fontSize: '0.6em',
-                backgroundColor: '#e9ecef',
-                border: '0',
-                borderRadius: '0',
-              }}
-            >
-              {letter}
-            </Card.Header>
+            <Card.Header className="glossary-card-header">{letter}</Card.Header>
             {sortedCards.map((card: CardItemProps) => {
               if (card.header[0] === letter) {
                 return (
                   <Card.Body
                     className="glossary-item"
-                    onMouseOver={handleHoverOn}
-                    onMouseLeave={handleHoverOff}
+                    // onMouseOver={handleHoverOn}
+                    // onMouseLeave={handleHoverOff}
                     key={card.id}
                     id={card.id}
                   >
-                    <Card.Title
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        fontSize: '0.6em',
-                        paddingTop: '0.25em',
-                        paddingBottom: '0.25em',
-                      }}
-                    >
+                    <Card.Title className="glossary-card-title">
                       {card.header}
                       <Dropdown
                         title="title"
@@ -122,7 +99,7 @@ export const GlossaryCard = ({ cards }: CardProps) => {
                         variant="light"
                       />
                     </Card.Title>
-                    <Card.Text style={{ fontSize: '0.4em' }}>
+                    <Card.Text className="glossary-card-body">
                       {card.content}
                     </Card.Text>
                   </Card.Body>
