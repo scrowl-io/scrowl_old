@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as styles from './page-home.module.scss';
 import { PageNavItems } from './page-home-routes';
 import { NavigationBar } from '../../components/navigationbar';
 import { Project } from '../../models';
+import { requester } from '../../services';
 
 const project = new Project();
 
@@ -13,6 +14,13 @@ export const PageElement = () => {
   const projectData = project.useProjectData();
 
   console.log(projectData);
+
+  // Example of how to fetch a list of recent projects from the backend. Endpoint "/projects/lists/recent".
+  useEffect(() => {
+    requester
+      .invoke('/projects/list/recent')
+      .then(result => console.log(result));
+  }, []);
 
   return (
     <>

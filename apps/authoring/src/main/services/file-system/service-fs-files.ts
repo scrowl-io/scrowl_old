@@ -278,32 +278,47 @@ const getValidProjectFiles = (
 export const getScrowlFiles = async (): Promise<FileFromDirDataResult> => {
   const savingDir = await Preferences.get('save_folder_path');
 
-  const dirReadRes = await getSortedFilesFromDir(savingDir.save_folder_path);
+  if (!savingDir.save_folder_path) {
+    return {
+      error: true,
+      message:
+        'No saving directory has been set in the application preferences.',
+    };
+  } else {
+    const dirReadRes = await getSortedFilesFromDir(savingDir.save_folder_path);
 
-  const dbProjects = await Projects.get();
+    const dbProjects = await Projects.get();
 
-  const validProjectFiles = getValidProjectFiles(
-    dirReadRes.data?.files,
-    dbProjects
-  );
+    if (dirReadRes.error) {
+      return dirReadRes;
+    }
 
-  if (dirReadRes.error) {
-    return dirReadRes;
-  }
+    if (!dirReadRes.data?.files.length) {
+      return {
+        ...dirReadRes,
+        message: 'No recent files have been saved. Saving directory is empty.',
+      };
+    }
 
-  if (!dirReadRes.data?.files.length) {
+    if (!dbProjects.length) {
+      return {
+        error: true,
+        message: 'No projects found in the database.',
+      };
+    }
+
+    const validProjectFiles = getValidProjectFiles(
+      dirReadRes.data?.files,
+      dbProjects
+    );
+
     return {
       ...dirReadRes,
-      message: 'No recent files have been saved. Saving directory is empty.',
+      data: {
+        files: validProjectFiles,
+      },
     };
   }
-
-  return {
-    ...dirReadRes,
-    data: {
-      files: validProjectFiles,
-    },
-  };
 };
 
 export const getRecentScrowlFiles = async () => {
