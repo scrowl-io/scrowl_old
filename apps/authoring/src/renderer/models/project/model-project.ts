@@ -171,6 +171,9 @@ export class Project {
   save() {
     return this.update();
   }
+  setProjectData(data: ProjectData) {
+    this.__update(data);
+  }
   importFile = (fileTypes: AllowedFiles[]) => {
     this.__setProcessing(true);
 

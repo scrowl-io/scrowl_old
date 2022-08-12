@@ -28,7 +28,7 @@ export const PageElement = () => {
   const handleOpenProject = (e: React.MouseEvent<HTMLButtonElement>) => {
     requester
       .invoke('/projects/open', e.currentTarget.dataset.file)
-      .then(result => console.log(result));
+      .then(result => project.setProjectData(result.data.project));
   };
 
   console.log(projectModelData);
