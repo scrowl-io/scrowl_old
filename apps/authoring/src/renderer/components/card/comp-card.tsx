@@ -1,7 +1,12 @@
-import React, { BaseSyntheticEvent, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 // import { Card, CardDefaultProps } from '@owlui/lib';
 import { Card } from 'react-bootstrap';
 import { Dropdown } from '@owlui/lib';
+import {
+  glossaryDropdownItems,
+  dropdownButton,
+  placeholderChild,
+} from '../leftpane/leftpane-data';
 
 export interface CardItemProps {
   id: string;
@@ -12,40 +17,6 @@ export interface CardItemProps {
 export interface CardProps {
   cards: CardItemProps[];
 }
-
-const dropdownItems = [
-  {
-    id: '1',
-    label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">edit_note</span>
-        <span>Edit</span>
-      </div>
-    ),
-    value: undefined,
-  },
-  {
-    id: '2',
-    label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">delete</span>
-        <span>Delete Term</span>
-      </div>
-    ),
-    value: undefined,
-  },
-];
-
-const children = () => {
-  return (
-    <>
-      <h1>test</h1>
-      <h2>test 2</h2>
-    </>
-  );
-};
-
-const button = <span className="material-symbols-rounded">more_vert</span>;
 
 export const GlossaryCard = ({ cards }: CardProps) => {
   const sortedCards = cards.sort((a, b) => {
@@ -76,9 +47,9 @@ export const GlossaryCard = ({ cards }: CardProps) => {
                       <Dropdown
                         title="title"
                         align="start"
-                        items={dropdownItems}
-                        button={button}
-                        children={children as unknown as ReactNode}
+                        items={glossaryDropdownItems}
+                        button={dropdownButton}
+                        children={placeholderChild as unknown as ReactNode}
                         id={`dropdown-${card.id}`}
                         className="glossary-dropdown"
                         variant="light"

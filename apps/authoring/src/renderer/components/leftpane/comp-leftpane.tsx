@@ -1,14 +1,17 @@
 import React from 'react';
-import { Tabs, Input, InputProps, Button, Listgroup } from '@owlui/lib';
+import { Tabs, Input, InputProps, Button, Listgroup, Icon } from '@owlui/lib';
+
 import { Outline, topOutlineItems } from '../accordion';
 import { GlossaryCard } from '../card';
 import { glossaryCards, resourcesItems } from './leftpane-data';
+
+import * as styles from './comp-leftpane.module.scss';
 
 const AddGlossaryButton = () => {
   return (
     <Button id="add-glossary-button" className="tab-add-button">
       Add a new term to the Glossary...
-      <span className="material-symbols-rounded">add_circle</span>
+      <Icon display="Outlined" icon="add_circle" style={{ fontSize: '2em' }} />
     </Button>
   );
 };
@@ -17,7 +20,7 @@ const AddResourceButton = () => {
   return (
     <Button id="add-resource-button" className="tab-add-button">
       Add a new resource to your project...
-      <span className="material-symbols-rounded">attach_file</span>
+      <Icon display="Outlined" icon="attach_file" style={{ fontSize: '2em' }} />
     </Button>
   );
 };
@@ -26,7 +29,11 @@ const tabItems = [
   {
     id: '1',
     title: 'Outline',
-    view: <Outline items={topOutlineItems} />,
+    view: (
+      <>
+        <Outline items={topOutlineItems} />
+      </>
+    ),
   },
   {
     id: '2',
@@ -67,10 +74,10 @@ const inputProps: InputProps = {
 
 export const LeftPane = () => {
   return (
-    <>
+    <div className={styles.leftpane}>
       <Input inputProps={inputProps} style={{ padding: '1em' }} />
       <Tabs items={tabItems} />
-    </>
+    </div>
   );
 };
 

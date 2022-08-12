@@ -1,5 +1,16 @@
 import React, { ReactNode } from 'react';
-import { Dropdown } from '@owlui/lib';
+import { Dropdown, Icon } from '@owlui/lib';
+
+// **** Common UI elements
+
+export const dropdownButton = (
+  <Icon display="Outlined" icon="more_vert" style={{ fontSize: '15px' }} />
+);
+
+// This is temporary until we remove/make optional the children props for dropdown in OwlUI
+export const placeholderChild = <h1>Placeholder</h1>;
+
+// **** Glossary Data ****
 
 export const glossaryCards = [
   {
@@ -46,12 +57,12 @@ export const glossaryCards = [
   },
 ];
 
-export const resourceDropdownItems = [
+export const glossaryDropdownItems = [
   {
     id: '1',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">edit_note</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="edit" />
         <span>Edit</span>
       </div>
     ),
@@ -60,8 +71,33 @@ export const resourceDropdownItems = [
   {
     id: '2',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">visibility</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="delete" />
+        <span>Delete Term</span>
+      </div>
+    ),
+    value: undefined,
+  },
+];
+
+// **** Resources Data ****
+
+export const resourceDropdownItems = [
+  {
+    id: '1',
+    label: (
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="edit" />
+        <span>Edit</span>
+      </div>
+    ),
+    value: undefined,
+  },
+  {
+    id: '2',
+    label: (
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="zoom_in" />
         <span>Preview</span>
       </div>
     ),
@@ -70,8 +106,8 @@ export const resourceDropdownItems = [
   {
     id: '3',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">delete</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="delete" />
         <span>Delete Resource</span>
       </div>
     ),
@@ -79,17 +115,13 @@ export const resourceDropdownItems = [
   },
 ];
 
-const button = <span className="material-symbols-rounded">more_vert</span>;
-
-const placeholderChildren = <h1>Placeholder</h1>;
-
 export const resourcesItems = [
   {
     id: '1',
     header: (
       <div className="d-flex resource-header justify-content-between">
         <div className="d-flex resource-header-left">
-          <span className="material-symbols-sharp">description</span>
+          <Icon display="Outlined" icon="description" />
           <a className="resource-header-link" href="https://osg.ca">
             Bill 168 Legistlation
           </a>
@@ -100,8 +132,8 @@ export const resourcesItems = [
             title="title"
             align="start"
             items={resourceDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
           />
@@ -114,7 +146,7 @@ export const resourcesItems = [
     header: (
       <div className="d-flex resource-header justify-content-between">
         <div className="d-flex resource-header-left">
-          <span className="material-symbols-sharp">description</span>
+          <Icon display="Outlined" icon="description" />
           <a className="resource-header-link" href="https://osg.ca">
             Harassment Policy.pdf
           </a>
@@ -125,8 +157,8 @@ export const resourcesItems = [
             title="title"
             align="start"
             items={resourceDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
           />
@@ -147,7 +179,7 @@ export const resourcesItems = [
     header: (
       <div className="d-flex resource-header justify-content-between">
         <div className="d-flex resource-header-left">
-          <span className="material-symbols-sharp">description</span>
+          <Icon display="Outlined" icon="description" />
           <a className="resource-header-link" href="https://osg.ca">
             Harassment Report.pdf
           </a>
@@ -158,8 +190,8 @@ export const resourcesItems = [
             title="title"
             align="start"
             items={resourceDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
           />
@@ -180,7 +212,7 @@ export const resourcesItems = [
     header: (
       <div className="d-flex resource-header justify-content-between">
         <div className="d-flex resource-header-left">
-          <span className="material-symbols-sharp">description</span>
+          <Icon display="Outlined" icon="description" />
           <a className="resource-header-link" href="https://osg.ca">
             Example Resource
           </a>
@@ -191,8 +223,8 @@ export const resourcesItems = [
             title="title"
             align="start"
             items={resourceDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
           />
@@ -211,12 +243,14 @@ export const resourcesItems = [
   },
 ];
 
+// *** Outline data ***
+
 export const moduleDropdownItems = [
   {
     id: '1',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">interests</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="widgets" />
         <span>Add Lesson</span>
       </div>
     ),
@@ -225,8 +259,8 @@ export const moduleDropdownItems = [
   {
     id: '2',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">edit</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="edit" />
         <span>Rename</span>
       </div>
     ),
@@ -235,8 +269,8 @@ export const moduleDropdownItems = [
   {
     id: '3',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">content_copy</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="content_copy" />
         <span>Duplicate</span>
       </div>
     ),
@@ -245,8 +279,8 @@ export const moduleDropdownItems = [
   {
     id: '4',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">folder</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="folder" />
         <span>Add Module After</span>
       </div>
     ),
@@ -255,8 +289,8 @@ export const moduleDropdownItems = [
   {
     id: '5',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">arrow_upward</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="arrow_upward" />
         <span>Move Up</span>
       </div>
     ),
@@ -265,8 +299,8 @@ export const moduleDropdownItems = [
   {
     id: '6',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">arrow_downward</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="arrow_downward" />
         <span>Move Down</span>
       </div>
     ),
@@ -275,8 +309,8 @@ export const moduleDropdownItems = [
   {
     id: '7',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">delete</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="delete" />
         <span>Delete Module</span>
       </div>
     ),
@@ -288,8 +322,8 @@ export const lessonDropdownItems = [
   {
     id: '1',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">rectangle</span>
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="crop_square" />
         <span>Add Slide</span>
       </div>
     ),
@@ -298,8 +332,8 @@ export const lessonDropdownItems = [
   {
     id: '2',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">edit</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="edit" />
         <span>Rename</span>
       </div>
     ),
@@ -308,8 +342,8 @@ export const lessonDropdownItems = [
   {
     id: '3',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">interests</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="content_copy" />
         <span>Duplicate</span>
       </div>
     ),
@@ -318,8 +352,8 @@ export const lessonDropdownItems = [
   {
     id: '4',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">arrow_upward</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="arrow_upward" />
         <span>Move Up</span>
       </div>
     ),
@@ -328,8 +362,8 @@ export const lessonDropdownItems = [
   {
     id: '5',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">arrow_downward</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="arrow_downward" />
         <span>Move Down</span>
       </div>
     ),
@@ -338,8 +372,8 @@ export const lessonDropdownItems = [
   {
     id: '6',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">trending_flat</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="trending_flat" />
         <span>Move To...</span>
       </div>
     ),
@@ -348,11 +382,167 @@ export const lessonDropdownItems = [
   {
     id: '7',
     label: (
-      <div className="d-flex align-items-center">
-        <span className="material-symbols-sharp">delete</span>
+      <div className="dropdown-item-wrapper d-flex align-items-center">
+        <Icon display="Outlined" icon="delete" />
         <span>Delete Lesson</span>
       </div>
     ),
     value: undefined,
+  },
+];
+
+export const slideDropdownItems = [
+  {
+    id: '1',
+    label: (
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="edit" />
+        <span>Rename</span>
+      </div>
+    ),
+    value: undefined,
+  },
+  {
+    id: '2',
+    label: (
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="content_copy" />
+        <span>Duplicate</span>
+      </div>
+    ),
+    value: undefined,
+  },
+  {
+    id: '3',
+    label: (
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="crop_square" />
+        <span>Add New Slide After</span>
+      </div>
+    ),
+    value: undefined,
+  },
+  {
+    id: '4',
+    label: (
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="arrow_upward" />
+        <span>Move Up</span>
+      </div>
+    ),
+    value: undefined,
+  },
+  {
+    id: '5',
+    label: (
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="arrow_downward" />
+        <span>Move Down</span>
+      </div>
+    ),
+    value: undefined,
+  },
+  {
+    id: '6',
+    label: (
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="trending_flat" />
+        <span>Move To</span>
+      </div>
+    ),
+    value: undefined,
+  },
+  {
+    id: '7',
+    label: (
+      <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <Icon display="Outlined" icon="delete" />
+        <span>Delete</span>
+      </div>
+    ),
+    value: undefined,
+  },
+];
+
+export const outlineSlideItems = [
+  {
+    id: '1',
+    header: (
+      <div className="d-flex slide-item-header justify-content-between">
+        <div className="d-flex slide-header-left">
+          <Icon display="Outlined" icon="crop_square" />
+          <p>Slide 1</p>
+        </div>
+
+        <div className="d-flex slide-header-right">
+          <Dropdown
+            title="title"
+            align="start"
+            items={slideDropdownItems}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
+            className="slide-dropdown"
+            variant="light"
+          />
+        </div>
+      </div>
+    ),
+    bsProps: {
+      action: true,
+      // if we pass an href, this element is rendered as a button and will have an additional 'active' class added when clicked. Return here when we know what we want to do for active, focus, hover and whether we keep track of all that in state
+      // href: '#',
+    },
+  },
+  {
+    id: '2',
+    header: (
+      <div className="d-flex slide-item-header justify-content-between">
+        <div className="d-flex slide-header-left">
+          <Icon display="Outlined" icon="crop_square" />
+          <p>Slide 1</p>
+        </div>
+
+        <div className="d-flex slide-header-right">
+          <Dropdown
+            title="title"
+            align="start"
+            items={slideDropdownItems}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
+            className="slide-dropdown"
+            variant="light"
+          />
+        </div>
+      </div>
+    ),
+    bsProps: {
+      action: true,
+    },
+  },
+  {
+    id: '3',
+    header: (
+      <div className="d-flex slide-item-header justify-content-between">
+        <div className="d-flex slide-header-left">
+          <Icon display="Outlined" icon="crop_square" />
+          <p>Slide 1</p>
+        </div>
+
+        <div className="d-flex slide-header-right">
+          <Dropdown
+            title="title"
+            align="start"
+            items={slideDropdownItems}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
+            className="slide-dropdown"
+            variant="light"
+          />
+        </div>
+      </div>
+    ),
+    bsProps: {
+      action: true,
+    },
   },
 ];

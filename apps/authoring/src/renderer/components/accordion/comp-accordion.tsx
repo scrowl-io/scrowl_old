@@ -5,62 +5,15 @@ import {
   AccordionItemProps,
   Listgroup,
   Dropdown,
+  Icon,
 } from '@owlui/lib';
 import {
   moduleDropdownItems,
   lessonDropdownItems,
+  outlineSlideItems,
+  dropdownButton,
+  placeholderChild,
 } from '../leftpane/leftpane-data';
-
-const slideItems = [
-  {
-    id: '1',
-    header: (
-      <div className="d-flex outline-item-header">
-        <span className="material-symbols-outlined scrowl-outline__detail-icon">
-          rectangle
-        </span>
-        <p>Slide 1</p>
-      </div>
-    ),
-    bsProps: {
-      action: true,
-      // if we pass an href, this element is rendered as a button and will have an additional 'active' class added when clicked. Return here when we know what we want to do for active, focus, hover and whether we keep track of all that in state
-      // href: '#',
-    },
-  },
-  {
-    id: '2',
-    header: (
-      <div className="d-flex outline-item-header">
-        <span className="material-symbols-outlined scrowl-outline__detail-icon">
-          rectangle
-        </span>
-        <p>Slide 2</p>
-      </div>
-    ),
-    bsProps: {
-      action: true,
-    },
-  },
-  {
-    id: '3',
-    header: (
-      <div className="d-flex outline-item-header">
-        <span className="material-symbols-outlined scrowl-outline__detail-icon">
-          rectangle
-        </span>
-        <p>Slide 3</p>
-      </div>
-    ),
-    bsProps: {
-      action: true,
-    },
-  },
-];
-
-const button = <span className="material-symbols-rounded">more_vert</span>;
-
-const placeholderChildren = <h1>Placeholder</h1>;
 
 const subOutlineItems: AccordionItemProps[] = [
   {
@@ -68,10 +21,14 @@ const subOutlineItems: AccordionItemProps[] = [
     label: (
       <div className="outline-header d-flex justify-content-between w-100">
         <div className="outline-item-header-left d-flex align-items-center">
-          <span className="material-symbols-sharp dropdown-arrow folder">
-            arrow_drop_down
-          </span>
-          <span className="material-symbols-sharp folder">interests</span>
+          <div className="dropdown-arrow">
+            <Icon
+              display="Outlined"
+              icon="arrow_drop_down"
+              style={{ fontSize: '2em' }}
+            />
+          </div>
+          <Icon display="Outlined" icon="widgets" />
           <p>Building a Respectful Workplace</p>
         </div>
 
@@ -80,25 +37,30 @@ const subOutlineItems: AccordionItemProps[] = [
             title="title"
             align="start"
             items={lessonDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
+            onClick={e => e.stopPropagation()}
           />
         </div>
       </div>
     ),
-    view: <Listgroup items={slideItems} className="outline-slides" />,
+    view: <Listgroup items={outlineSlideItems} className="outline-slides" />,
   },
   {
     id: '2',
     label: (
       <div className="outline-header d-flex justify-content-between w-100">
         <div className="outline-item-header-left d-flex align-items-center">
-          <span className="material-symbols-sharp dropdown-arrow folder">
-            arrow_drop_down
-          </span>
-          <span className="material-symbols-sharp folder">interests</span>
+          <div className="dropdown-arrow">
+            <Icon
+              display="Outlined"
+              icon="arrow_drop_down"
+              style={{ fontSize: '2em' }}
+            />
+          </div>
+          <Icon display="Outlined" icon="widgets" />
           <p>What is Harassment</p>
         </div>
 
@@ -107,15 +69,16 @@ const subOutlineItems: AccordionItemProps[] = [
             title="title"
             align="start"
             items={lessonDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
+            onClick={e => e.stopPropagation()}
           />
         </div>
       </div>
     ),
-    view: <Listgroup items={slideItems} className="outline-slides" />,
+    view: <Listgroup items={outlineSlideItems} className="outline-slides" />,
   },
 ];
 
@@ -125,10 +88,14 @@ export const topOutlineItems: AccordionItemProps[] = [
     label: (
       <div className="outline-header d-flex justify-content-between w-100">
         <div className="outline-item-header-left d-flex align-items-center">
-          <span className="material-symbols-sharp dropdown-arrow folder">
-            arrow_drop_down
-          </span>
-          <span className="material-symbols-sharp folder">folder</span>
+          <div className="dropdown-arrow">
+            <Icon
+              display="Outlined"
+              icon="arrow_drop_down"
+              style={{ fontSize: '2em' }}
+            />
+          </div>
+          <Icon display="Outlined" icon="folder" />
           <p>An Introduction to Harassment</p>
         </div>
 
@@ -137,10 +104,11 @@ export const topOutlineItems: AccordionItemProps[] = [
             title="title"
             align="start"
             items={moduleDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
+            onClick={e => e.stopPropagation()}
           />
         </div>
       </div>
@@ -159,10 +127,14 @@ export const topOutlineItems: AccordionItemProps[] = [
     label: (
       <div className="outline-header d-flex justify-content-between w-100">
         <div className="outline-item-header-left d-flex align-items-center">
-          <span className="material-symbols-sharp dropdown-arrow folder">
-            arrow_drop_down
-          </span>
-          <span className="material-symbols-sharp folder">folder</span>
+          <div className="dropdown-arrow">
+            <Icon
+              display="Outlined"
+              icon="arrow_drop_down"
+              style={{ fontSize: '2em' }}
+            />
+          </div>
+          <Icon display="Outlined" icon="folder" />
           <p>Additional Training for Supervisors</p>
         </div>
 
@@ -171,10 +143,11 @@ export const topOutlineItems: AccordionItemProps[] = [
             title="title"
             align="start"
             items={moduleDropdownItems}
-            button={button}
-            children={placeholderChildren as unknown as ReactNode}
+            button={dropdownButton}
+            children={placeholderChild as unknown as ReactNode}
             className="resources-dropdown"
             variant="light"
+            onClick={e => e.stopPropagation()}
           />
         </div>
       </div>
