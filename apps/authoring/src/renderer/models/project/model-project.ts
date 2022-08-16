@@ -16,7 +16,7 @@ import { requester, Menu } from '../../services';
 
 export const ENDPOINTS: ProjectEventApi = {
   new: '/projects/create',
-  save: 'project/save',
+  save: '/projects/save',
   open: '/projects/open',
   getFiles: '/projects/list',
   getRecentFiles: '/projects/list/recent',
@@ -148,12 +148,12 @@ export class Project {
     });
   };
 
-  update = (saveAs?: boolean) => {
+  update = () => {
     this.__setProcessing(true);
 
     return new Promise<SaveResult>((resolve, reject) => {
       requester
-        .invoke(ENDPOINTS.save, this.data, saveAs)
+        .invoke(ENDPOINTS.save, this.data)
         .then((result: SaveResult) => {
           if (result.error) {
             reject(result);

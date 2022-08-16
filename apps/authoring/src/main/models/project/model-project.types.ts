@@ -6,7 +6,7 @@ export interface ProjectEventNew extends Omit<Requester.RegisterEvent, 'name'> {
 
 export interface ProjectEventSave
   extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'project/save';
+  name: '/projects/save';
 }
 
 export interface ProjectEventOpen

@@ -54,7 +54,7 @@ export const template: MenuItemConstructorOptions = {
       id: EVENTS.projectSave.id,
       enabled: false,
       click: () => {
-        send(EVENTS.projectSave.name, false);
+        send(EVENTS.projectSave.name);
       },
       accelerator: 'CmdOrCtrl+S',
     },

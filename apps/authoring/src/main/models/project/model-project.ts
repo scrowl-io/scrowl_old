@@ -307,7 +307,7 @@ export const EVENTS: ProjectEvents = {
     fn: create,
   },
   save: {
-    name: 'project/save',
+    name: '/projects/save',
     type: 'invoke',
     fn: save,
   },
