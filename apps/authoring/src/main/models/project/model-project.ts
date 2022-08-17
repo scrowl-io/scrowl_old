@@ -2,59 +2,77 @@ import { IpcMainInvokeEvent } from 'electron';
 import { Model } from '../model.types';
 import {
   ProjectEvents,
-  CreateResult,
   SaveResult,
   ImportResult,
   ProjectData,
 } from './model-project.types';
-import { FileSystem as fs, Requester } from '../../services';
-import { projectData as EXAMPLE_DATA } from './model-project-data';
+import {
+  FileSystem as fs,
+  InternalStorage as IS,
+  Requester,
+} from '../../services';
 import { Preferences } from '../preferences';
 import { Projects } from '../projects';
 
 const PROJECT_DIR_PREFIX = 'scrowl';
 const PROJECT_FILE_NAME = 'scrowl.project';
-const PROJECT_SAVED_EXTENSION = 'scrowl';
+const FILE_EXTENSION = 'scrowl';
 
-export const create = function (
-  event: IpcMainInvokeEvent,
-  projectID: ProjectData
-): CreateResult {
-  const tempDir: fs.DirectoryTempResult = fs.dirTempSync(PROJECT_DIR_PREFIX);
+export const create = function () {
+  return new Promise((resolve, reject) => {
+    const projectData = {};
 
-  if (tempDir.error) {
-    return tempDir;
-  }
+    Requester.send(EVENTS.onCreate.name, {
+      error: false,
+      data: {
+        project: projectData,
+      },
+    });
+  });
+  // console.log(
+  //   'pathing',
+  //   app.getAppPath(),
+  //   app.getPath('home'),
+  //   app.getPath('appData'),
+  //   app.getPath('userData'),
+  //   app.getPath('temp'),
+  //   app.getPath('exe')
+  // );
+  // const tempDir = fs.dirTempSync(PROJECT_DIR_PREFIX);
 
-  const filename = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
+  // if (tempDir.error) {
+  //   return tempDir;
+  // }
 
-  // TODO: The tempProjectData will be replaced by the proper project data loaded from the project
-  // template file according to the projectID received from the frontend. The way the templates
-  // will be stored hasn't been defined yet so we'll use example data for now.
-  const currentDate = new Date();
-  const tempProjectData: ProjectData = {
-    ...EXAMPLE_DATA,
-    id: currentDate.getTime(),
-    workingFile: filename,
-    workingDir: filename.split('/').slice(0, -1).join('/'),
-    createdAt: currentDate.toJSON(),
-    updatedAt: currentDate.toJSON(),
-    openedAt: currentDate.toJSON(),
-  };
+  // const filename = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
 
-  const writeRes = fs.fileWriteSync(filename, tempProjectData);
+  // // TODO: The tempProjectData will be replaced by the proper project data loaded from the project
+  // // template file according to the projectID received from the frontend. The way the templates
+  // // will be stored hasn't been defined yet so we'll use example data for now.
+  // const currentDate = new Date();
+  // const tempProjectData: ProjectData = {
+  //   ...EXAMPLE_DATA,
+  //   id: currentDate.getTime(),
+  //   workingFile: filename,
+  //   workingDir: filename.split('/').slice(0, -1).join('/'),
+  //   createdAt: currentDate.toJSON(),
+  //   updatedAt: currentDate.toJSON(),
+  //   openedAt: currentDate.toJSON(),
+  // };
 
-  if (writeRes.error) {
-    return writeRes;
-  }
+  // const writeRes = fs.fileWriteSync(filename, tempProjectData);
 
-  return {
-    error: false,
-    data: {
-      filename: filename,
-      project: tempProjectData,
-    },
-  };
+  // if (writeRes.error) {
+  //   return writeRes;
+  // }
+
+  // return {
+  //   error: false,
+  //   data: {
+  //     filename: filename,
+  //     project: tempProjectData,
+  //   },
+  // };
 };
 
 export const open = async function (
@@ -133,7 +151,7 @@ export const save = (
         return;
       }
 
-      const filePath = `${res.data.filePath}/${project.id}.${PROJECT_SAVED_EXTENSION}`;
+      const filePath = `${res.data.filePath}/${project.id}.${FILE_EXTENSION}`;
 
       const writeRes = write(project.workingDir, filePath);
 
@@ -301,27 +319,35 @@ export const importFile = (
 };
 
 export const EVENTS: ProjectEvents = {
-  new: {
+  create: {
     name: '/projects/create',
     type: 'invoke',
     fn: create,
+  },
+  onCreate: {
+    name: '/projects/create',
+    type: 'send',
   },
   save: {
     name: '/projects/save',
     type: 'invoke',
     fn: save,
   },
+  onSave: {
+    name: '/projects/save',
+    type: 'send',
+  },
   open: {
     name: '/projects/open',
     type: 'invoke',
     fn: open,
   },
-  getFiles: {
+  list: {
     name: '/projects/list',
     type: 'invoke',
     fn: fs.getScrowlFiles,
   },
-  getRecentFiles: {
+  listRecent: {
     name: '/projects/list/recent',
     type: 'invoke',
     fn: fs.getRecentScrowlFiles,

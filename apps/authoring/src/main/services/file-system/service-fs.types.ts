@@ -3,7 +3,12 @@ import {
   OpenDialogReturnValue,
   SaveDialogReturnValue,
 } from 'electron';
-import { ApiResultSuccess, ApiResultError, JsonResult } from '../requester';
+import {
+  ApiResultSuccess,
+  ApiResultError,
+  ApiResult,
+  JsonResult,
+} from '../requester';
 
 export interface FileFilters {
   [key: string]: FileFilter;
@@ -68,3 +73,5 @@ export interface DialogOpenResultSuccess
 }
 
 export type DialogOpenResult = DialogOpenResultSuccess | ApiResultError;
+
+export type FSResult = ApiResult;

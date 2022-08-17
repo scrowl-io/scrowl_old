@@ -1,7 +1,7 @@
-import { MenuItemConstructorOptions } from 'electron';
-import { send, registerAll } from '../../requester';
+import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
-import { Project as ProjectModel } from '../../../models/project';
+// import { send, registerAll } from '../../requester';
+import { Project } from '../../../models';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
@@ -34,8 +34,8 @@ export const template: MenuItemConstructorOptions = {
     {
       label: 'New Project...',
       id: EVENTS.projectsCreate.id,
-      click: () => {
-        send(EVENTS.projectsCreate.name);
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        Project.create();
       },
       accelerator: 'CmdOrCtrl+N',
     },
@@ -43,8 +43,8 @@ export const template: MenuItemConstructorOptions = {
     {
       label: 'Open...',
       id: EVENTS.projectOpen.id,
-      click: async () => {
-        send(EVENTS.projectOpen.name);
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        // send(EVENTS.projectOpen.name);
       },
       accelerator: 'CmdOrCtrl+O',
     },
@@ -53,8 +53,8 @@ export const template: MenuItemConstructorOptions = {
       label: 'Save',
       id: EVENTS.projectSave.id,
       enabled: false,
-      click: () => {
-        send(EVENTS.projectSave.name);
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        // send(EVENTS.projectSave.name);
       },
       accelerator: 'CmdOrCtrl+S',
     },
@@ -63,8 +63,8 @@ export const template: MenuItemConstructorOptions = {
       label: 'Import File',
       id: EVENTS.importFile.id,
       enabled: false,
-      click: () => {
-        send(EVENTS.importFile.name, true);
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        // send(EVENTS.importFile.name, true);
       },
       accelerator: 'CmdOrCtrl+I',
     },
@@ -72,7 +72,7 @@ export const template: MenuItemConstructorOptions = {
 };
 
 export const init = () => {
-  registerAll(EVENTS);
+  // registerAll(EVENTS);
 };
 
 export default {

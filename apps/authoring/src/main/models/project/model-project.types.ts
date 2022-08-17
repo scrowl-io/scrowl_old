@@ -1,6 +1,7 @@
 import { Requester, FileSystem } from '../../services';
 
-export interface ProjectEventNew extends Omit<Requester.RegisterEvent, 'name'> {
+export interface ProjectEventCreate
+  extends Omit<Requester.RegisterEvent, 'name'> {
   name: '/projects/create';
 }
 
@@ -14,12 +15,12 @@ export interface ProjectEventOpen
   name: '/projects/open';
 }
 
-export interface ProjectEventGetFiles
+export interface ProjectEventList
   extends Omit<Requester.RegisterEvent, 'name'> {
   name: '/projects/list';
 }
 
-export interface ProjectEventGetRecentFiles
+export interface ProjectEventListRecent
   extends Omit<Requester.RegisterEvent, 'name'> {
   name: '/projects/list/recent';
 }
@@ -30,36 +31,38 @@ export interface ProjectEventImport
 }
 
 export type ProjectEventApi = {
-  new: ProjectEventNew['name'];
+  new: ProjectEventCreate['name'];
   save: ProjectEventSave['name'];
   open: ProjectEventOpen['name'];
-  getFiles: ProjectEventGetFiles['name'];
-  getRecentFiles: ProjectEventGetRecentFiles['name'];
+  getFiles: ProjectEventList['name'];
+  getRecentFiles: ProjectEventListRecent['name'];
   import: ProjectEventImport['name'];
 };
 
 export type ProjectEventNames =
-  | ProjectEventNew['name']
+  | ProjectEventCreate['name']
   | ProjectEventSave['name']
   | ProjectEventOpen['name']
-  | ProjectEventGetFiles['name']
-  | ProjectEventGetRecentFiles['name']
+  | ProjectEventList['name']
+  | ProjectEventListRecent['name']
   | ProjectEventImport['name'];
 
 export type ProjectEvent =
-  | ProjectEventNew
+  | ProjectEventCreate
   | ProjectEventSave
   | ProjectEventOpen
-  | ProjectEventGetFiles
-  | ProjectEventGetRecentFiles
+  | ProjectEventList
+  | ProjectEventListRecent
   | ProjectEventImport;
 
 export type ProjectEvents = {
-  new: ProjectEventNew;
+  create: ProjectEventCreate;
+  onCreate: ProjectEventCreate;
   save: ProjectEventSave;
+  onSave: ProjectEventSave;
   open: ProjectEventOpen;
-  getFiles: ProjectEventGetFiles;
-  getRecentFiles: ProjectEventGetRecentFiles;
+  list: ProjectEventList;
+  listRecent: ProjectEventListRecent;
   import: ProjectEventImport;
 };
 

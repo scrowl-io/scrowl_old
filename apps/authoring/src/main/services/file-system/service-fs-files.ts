@@ -1,15 +1,38 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
+import { app } from 'electron';
 import {
   FileExistsResult,
   DirectoryTempResult,
   FileDataResult,
   FileFromDirDataResult,
   FileFromDirData,
+  FSResult,
 } from './service-fs.types';
 import { InternalStorage as IS } from '../../services';
 import { Preferences, Projects } from '../../models';
+
+export const pathSaveFolder = app.getPath('userData');
+export const pathTempFolder = app.getPath('temp');
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createResultError = (message: string, error?: any): FSResult => {
+  if (error === undefined) {
+    return {
+      error: true,
+      message,
+    };
+  } else {
+    return {
+      error: true,
+      message,
+      data: {
+        trace: error,
+      },
+    };
+  }
+};
 
 const normalize = (pathname: string) => {
   return path.normalize(pathname);
@@ -256,7 +279,7 @@ export const getSortedFilesFromDir = async (
 
 const getValidProjectFiles = (
   dirFiles: FileFromDirData[],
-  dbProjects: IS.DatabaseData[]
+  dbProjects: IS.StorageData[]
 ): FileFromDirData[] => {
   dirFiles.forEach(dirFile => {
     const fileNamePath = path.basename(dirFile.fileLocation);
@@ -338,7 +361,167 @@ export const getRecentScrowlFiles = async () => {
   }
 };
 
+const writeFile = (pathname: string, contents: unknown) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!pathname) {
+      resolve(createResultError('Unable to write file: path required'));
+      return;
+    }
+
+    if (!contents) {
+      resolve(createResultError('Unable to write file: contents required'));
+      return;
+    }
+
+    try {
+      let fileData = contents;
+
+      if (isJSON(pathname)) {
+        if (typeof contents !== 'string') {
+          fileData = JSON.stringify(contents, null, 2);
+        } else {
+          fileData = JSON.stringify(JSON.parse(contents), null, 2);
+        }
+      }
+
+      fs.outputFile(pathname, fileData).then(() => {
+        resolve({
+          error: false,
+          data: {
+            pathname,
+            contents: fileData,
+          },
+        });
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export const writeFileTemp = (filename: string, contents: unknown) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!filename) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: filename required'
+        )
+      );
+      return;
+    }
+
+    if (!contents) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: contents required'
+        )
+      );
+      return;
+    }
+
+    try {
+      const pathname = `${pathTempFolder}/${filename}`;
+
+      writeFile(pathname, contents).then(resolve).catch(reject);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export const writeFileSave = (filename: string, contents: unknown) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!filename) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: filename required'
+        )
+      );
+      return;
+    }
+
+    if (!contents) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: contents required'
+        )
+      );
+      return;
+    }
+
+    try {
+      const pathname = `${pathSaveFolder}/${filename}`;
+
+      writeFile(pathname, contents).then(resolve).catch(reject);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const readDir = (pathname: string) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read directory: path required'));
+      return;
+    }
+
+    try {
+      fs.readdir(pathname).then(() => {
+        resolve({
+          error: false,
+          data: {
+            pathname,
+          },
+        });
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export const readDirTemp = (pathname: string) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!pathname) {
+      resolve(
+        createResultError('Unable to read temp directory: path required')
+      );
+      return;
+    }
+
+    try {
+      const tempPath = path.join(`${pathTempFolder}`, pathname);
+
+      readDir(tempPath).then(resolve);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export const readDirSave = (pathname: string) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!pathname) {
+      resolve(
+        createResultError('Unable to read temp directory: path required')
+      );
+      return;
+    }
+
+    try {
+      const savePath = path.join(`${pathSaveFolder}`, pathname);
+
+      readDir(savePath).then(resolve);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 export default {
+  pathSaveFolder,
+  pathTempFolder,
   join,
   ext,
   dirExistsSync,
@@ -351,4 +534,8 @@ export default {
   getSortedFilesFromDir,
   getScrowlFiles,
   getRecentScrowlFiles,
+  writeFileTemp,
+  writeFileSave,
+  readDirTemp,
+  readDirSave,
 };
