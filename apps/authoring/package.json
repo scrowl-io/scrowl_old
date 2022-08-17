@@ -1,8 +1,8 @@
 {
   "name": "@scrowl/authoring",
-  "productName": "authoring",
+  "productName": "scrowl-authoring",
   "version": "1.0.0",
-  "description": "",
+  "description": "A tool used to create online training materials",
   "license": "MIT",
   "keywords": [],
   "author": {
@@ -31,7 +31,7 @@
     "package:test": "npx electron-builder build --dir",
     "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
     "prepackage": "yarn run build",
-    "package": "npx electron-builder build",
+    "package": "electron-builder build",
     "test": "yarn test:unit && yarn test:e2e",
     "pretest:e2e": "yarn run build",
     "test:e2e": "npx playwright test tests/",
@@ -50,7 +50,8 @@
     "lint:fix:prettier": "prettier --no-editorconfig --write \"./src/**/*.{json,ts,tsx,jsx}\"",
     "prelint:fix:eslint": "yarn run logs:clean",
     "lint:fix:eslint": "eslint --fix \"./src/**/*.{ts,tsx,jsx}\" --format compact --output-file ./logs/eslint.txt && yarn run logs:print -f ./logs/eslint.txt",
-    "lint:fix:styles": "stylelint --fix \"./src/**/*.scss\""
+    "lint:fix:styles": "stylelint --fix \"./src/**/*.scss\"",
+    "postinstall": "electron-builder install-app-deps"
   },
   "main": "./dist/main.js",
   "backend": "./dist/main.js",
@@ -89,11 +90,9 @@
     "productName": "Scrowl",
     "files": [
       "dist/*",
-      "node_modules/**/*",
       "../../node_modules/**/*",
       "package.json"
     ],
-    "afterSign": "./scripts/pipeline/notarize.js",
     "dmg": {
       "contents": [
         {
