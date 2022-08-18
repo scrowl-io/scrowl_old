@@ -1,4 +1,8 @@
-export interface StorageData {
+import { ApiResult, JsonResult } from '../requester';
+
+export type StorageData = JsonResult;
+
+export interface StorageQuery {
   [key: string]: string | number | boolean;
 }
 
@@ -11,3 +15,5 @@ export type StorageSchemaColumn = {
 };
 
 export type StorageSchema = Array<StorageSchemaColumn>;
+
+export type StorageResult = ApiResult;

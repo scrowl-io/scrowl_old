@@ -44,18 +44,13 @@ export class Project {
       return;
     }
 
-    Menu.File.onProjectNew((ev, data) => {
-      console.log('new project', JSON.stringify(data, null, 2));
-      // if (this.data && this.data.workingDir) {
-      //   console.error('Unable to create project - project already created');
-      //   return;
-      // }
+    Menu.File.onProjectNew((ev, result) => {
+      if (result.error) {
+        console.error(result);
+        return;
+      }
 
-      // // TODO: Replace the alert with a modal containing a list ot templates. Choosing the template should return the projectID of the selected template
-      // alert('Click OK to start a new empty project.');
-
-      // // TODO: The projectID from the template selection above will be passed by as argument to the create function.
-      // this.create('example-id');
+      this.__update(result.data.project);
     });
 
     Menu.File.onProjectOpen(() => {

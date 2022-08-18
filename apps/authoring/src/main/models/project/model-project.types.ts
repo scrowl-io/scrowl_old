@@ -1,4 +1,4 @@
-import { Requester, FileSystem } from '../../services';
+import { Requester, FileSystem, InternalStorage } from '../../services';
 
 export interface ProjectEventCreate
   extends Omit<Requester.RegisterEvent, 'name'> {
@@ -70,13 +70,13 @@ export type ProjectEvents = {
  * This interface should be updated once
  * define the actual project structure.
  */
-export interface ProjectData {
-  id: number | null;
-  createdAt: string;
-  updatedAt: string;
-  openedAt: string;
-  name: string;
-  description: string;
+export interface ProjectData extends InternalStorage.StorageData {
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+  opened_at?: string;
+  name?: string;
+  description?: string;
   theme?: string;
   workingFile?: string;
   workingDir?: string;

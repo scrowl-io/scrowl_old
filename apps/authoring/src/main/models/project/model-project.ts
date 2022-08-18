@@ -11,68 +11,54 @@ import {
   InternalStorage as IS,
   Requester,
 } from '../../services';
+import * as table from './model-projects-schema';
 import { Preferences } from '../preferences';
-import { Projects } from '../projects';
+import { join, dirName, writeFileTemp } from '../../services/file-system';
 
 const PROJECT_DIR_PREFIX = 'scrowl';
 const PROJECT_FILE_NAME = 'scrowl.project';
 const FILE_EXTENSION = 'scrowl';
 
 export const create = function () {
-  return new Promise((resolve, reject) => {
-    const projectData = {};
+  // TODO add support for handling duplicating a project when a project ID is passed
+  return new Promise<Requester.ApiResult>(resolve => {
+    let projectData: ProjectData = { name: 'Untitled Project' };
 
-    Requester.send(EVENTS.onCreate.name, {
-      error: false,
-      data: {
-        project: projectData,
-      },
+    // create a new entity in the DB
+    IS.create(table.name, projectData).then(createRes => {
+      if (createRes.error) {
+        createRes.message = 'Unable to create project';
+        resolve(createRes);
+        return;
+      }
+
+      projectData = createRes.data.item;
+      // use the entity ID as the temporary folder name
+      projectData.filename = join(`${projectData.id}`, `manifest.json`);
+
+      writeFileTemp(projectData.filename, projectData).then(writeRes => {
+        if (writeRes.error) {
+          resolve(writeRes);
+          Requester.send(EVENTS.onCreate.name, writeRes);
+          return;
+        }
+
+        // set pathing to make future lookups easier
+        projectData.workingFile = writeRes.data.pathanme;
+        projectData.workingDir = dirName(writeRes.data.pathanme);
+
+        const result = {
+          error: false as const,
+          data: {
+            project: projectData,
+          },
+        };
+
+        resolve(result);
+        Requester.send(EVENTS.onCreate.name, result);
+      });
     });
   });
-  // console.log(
-  //   'pathing',
-  //   app.getAppPath(),
-  //   app.getPath('home'),
-  //   app.getPath('appData'),
-  //   app.getPath('userData'),
-  //   app.getPath('temp'),
-  //   app.getPath('exe')
-  // );
-  // const tempDir = fs.dirTempSync(PROJECT_DIR_PREFIX);
-
-  // if (tempDir.error) {
-  //   return tempDir;
-  // }
-
-  // const filename = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
-
-  // // TODO: The tempProjectData will be replaced by the proper project data loaded from the project
-  // // template file according to the projectID received from the frontend. The way the templates
-  // // will be stored hasn't been defined yet so we'll use example data for now.
-  // const currentDate = new Date();
-  // const tempProjectData: ProjectData = {
-  //   ...EXAMPLE_DATA,
-  //   id: currentDate.getTime(),
-  //   workingFile: filename,
-  //   workingDir: filename.split('/').slice(0, -1).join('/'),
-  //   createdAt: currentDate.toJSON(),
-  //   updatedAt: currentDate.toJSON(),
-  //   openedAt: currentDate.toJSON(),
-  // };
-
-  // const writeRes = fs.fileWriteSync(filename, tempProjectData);
-
-  // if (writeRes.error) {
-  //   return writeRes;
-  // }
-
-  // return {
-  //   error: false,
-  //   data: {
-  //     filename: filename,
-  //     project: tempProjectData,
-  //   },
-  // };
 };
 
 export const open = async function (
@@ -160,43 +146,43 @@ export const save = (
         return;
       }
 
-      try {
-        project.saveFile = writeRes.data.filename;
-        project.saveDir = writeRes.data.filename
-          .split('/')
-          .slice(0, -1)
-          .join('/');
+      // try {
+      //   project.saveFile = writeRes.data.filename;
+      //   project.saveDir = writeRes.data.filename
+      //     .split('/')
+      //     .slice(0, -1)
+      //     .join('/');
 
-        Projects.insert({
-          id: project.id,
-          name: project.name,
-        })
-          .then(() =>
-            resolve({
-              error: false,
-              data: {
-                filename: writeRes.data.filename,
-                project: project,
-              },
-            })
-          )
-          .catch((err: string) => {
-            reject({
-              error: true,
-              message: `Unable to save project - ${err}`,
-            });
-          });
-      } catch (err) {
-        const message =
-          err && typeof err === 'string'
-            ? err
-            : 'Unable to save project - unknown reason';
+      //   Projects.insert({
+      //     id: project.id,
+      //     name: project.name,
+      //   })
+      //     .then(() =>
+      //       resolve({
+      //         error: false,
+      //         data: {
+      //           filename: writeRes.data.filename,
+      //           project: project,
+      //         },
+      //       })
+      //     )
+      //     .catch((err: string) => {
+      //       reject({
+      //         error: true,
+      //         message: `Unable to save project - ${err}`,
+      //       });
+      //     });
+      // } catch (err) {
+      //   const message =
+      //     err && typeof err === 'string'
+      //       ? err
+      //       : 'Unable to save project - unknown reason';
 
-        resolve({
-          error: true,
-          message,
-        });
-      }
+      //   resolve({
+      //     error: true,
+      //     message,
+      //   });
+      // }
     };
 
     if (!project) {
@@ -345,12 +331,10 @@ export const EVENTS: ProjectEvents = {
   list: {
     name: '/projects/list',
     type: 'invoke',
-    fn: fs.getScrowlFiles,
   },
   listRecent: {
     name: '/projects/list/recent',
     type: 'invoke',
-    fn: fs.getRecentScrowlFiles,
   },
   import: {
     name: 'project/import-file',
@@ -360,7 +344,27 @@ export const EVENTS: ProjectEvents = {
 };
 
 export const init = () => {
-  Requester.registerAll(EVENTS);
+  return new Promise<Requester.ApiResult>(resolve => {
+    try {
+      Requester.registerAll(EVENTS);
+      IS.__tableCreate(table.name, table.schema).then(() => {
+        resolve({
+          error: false,
+          data: {
+            table: table.name,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Unable to initialize project model',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
 };
 
 export const Project: Model = {

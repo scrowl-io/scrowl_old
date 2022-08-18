@@ -5,7 +5,10 @@ import {
   StorageData,
   StorageSchema,
   StorageSchemaColumn,
+  StorageQuery,
+  StorageResult,
 } from './service-is.types';
+import { ApiResult } from '../requester';
 
 const pathStorage = path.join(
   `${app.getPath('userData')}`,
@@ -22,26 +25,18 @@ const dbConfig: Knex.Config = {
 
 const DB = knex(dbConfig);
 
+// [util, schema] creates a id column
 const uuid = (table: Knex.TableBuilder, col = 'id') => {
-  switch (col) {
-    case 'id':
-      table
-        .uuid(col)
-        .primary()
-        .notNullable()
-        .unique()
-        .defaultTo(DB.raw('uuid_generate_v4()'));
-      break;
-    default:
-      table
-        .uuid(col)
-        .notNullable()
-        .unique()
-        .defaultTo(DB.raw('uuid_generate_v4()'));
-      break;
+  if (col !== 'id') {
+    throw new Error(
+      `Unable to create primary column: primary columns must be named "id" not ${col}`
+    );
   }
+
+  table.increments(col).primary();
 };
 
+// [util, schema] set a foreign key relationship
 const foreignKey = (
   table: Knex.TableBuilder,
   config: { columnName: string; tableName: string }
@@ -49,7 +44,8 @@ const foreignKey = (
   table.foreign(config.columnName).references(`${config.tableName}.id`);
 };
 
-export const __create = (tableName: string, schema: StorageSchema) => {
+// creates a table in the DB based on a schema
+export const __tableCreate = (tableName: string, schema: StorageSchema) => {
   const processCol = (
     table: Knex.TableBuilder,
     { column }: StorageSchemaColumn
@@ -75,11 +71,11 @@ export const __create = (tableName: string, schema: StorageSchema) => {
           return;
         }
 
-        table.uuid(column.name);
+        table.integer(column.name).unsigned().notNullable();
         foreignKey(table, { columnName: column.name, tableName: column.table });
         break;
       case 'datetime':
-        table.datetime(column.name, { precision: 6 }).defaultTo(DB.fn.now(6));
+        table.datetime(column.name).defaultTo(DB.fn.now());
         break;
       default:
         console.warn(
@@ -88,43 +84,154 @@ export const __create = (tableName: string, schema: StorageSchema) => {
         break;
     }
   };
-
-  return DB.schema.createTable(tableName, (table: Knex.TableBuilder) => {
-    schema.forEach((schemaCol: StorageSchemaColumn) => {
-      processCol(table, schemaCol);
+  const processTable = () => {
+    return new Promise(resolve => {
+      DB.schema
+        .createTable(tableName, (table: Knex.TableBuilder) => {
+          schema.forEach((schemaCol: StorageSchemaColumn) => {
+            processCol(table, schemaCol);
+          });
+        })
+        .then(() => {
+          resolve(true);
+        })
+        .catch(e => {
+          console.error(`failed to create table: ${tableName}`, e);
+          resolve(false);
+        });
     });
+  };
+
+  return new Promise<StorageResult>(resolve => {
+    try {
+      DB.schema.hasTable(tableName).then(exists => {
+        if (exists) {
+          resolve({
+            error: false,
+            data: {
+              created: false,
+              tableName,
+            },
+          });
+          return;
+        }
+
+        processTable().then(() => {
+          resolve({
+            error: false,
+            data: {
+              created: true,
+              tableName,
+            },
+          });
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Unable to create table',
+        data: {
+          trace: e,
+        },
+      });
+    }
   });
 };
 
-export const __drop = (tableName: string) => {
+// drops a table DANGEROUS!!!
+export const __tableDrop = (tableName: string) => {
   return DB.schema.dropTableIfExists(tableName);
 };
 
-export const get = (tableName: string, column?: string) => {
-  if (column) {
-    return DB.select(column).from(tableName);
+// creates a item(s) in a table, returns the id(s) by default.
+export const create = (
+  tableName: string,
+  data: StorageData | Array<StorageData>
+) => {
+  return new Promise<StorageResult>(resolve => {
+    try {
+      DB(tableName)
+        .insert(data)
+        .then(ids => {
+          read(tableName, { id: ids[0] }).then(res => {
+            resolve({
+              error: false,
+              data: {
+                item: res[0],
+              },
+            });
+          });
+        });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Unable to create item(s)',
+        data: {
+          trace: e,
+          tableName,
+          data,
+        },
+      });
+    }
+  });
+};
+
+// returns item(s) from a table
+export const read = (tableName: string, query?: StorageQuery) => {
+  if (query) {
+    return DB.select().from(tableName).where(query);
   }
 
   return DB.select().from(tableName);
 };
 
-export const insert = (tableName: string, data: StorageData) => {
-  return DB(tableName).insert(data);
-};
+// updates item(s) in a table
+export const update = (
+  tableName: string,
+  data: StorageData,
+  query?: StorageQuery
+) => {
+  if (query) {
+    return DB(tableName).where(query).update(data);
+  }
 
-export const set = (tableName: string, data: StorageData) => {
   return DB(tableName).update(data);
 };
 
-// insert (create)  https://knexjs.org/guide/query-builder.html#insert
-// select (read)    https://knexjs.org/guide/query-builder.html#select
-// update (update)  https://knexjs.org/guide/query-builder.html#update
-// delete (delete)  https://knexjs.org/guide/query-builder.html#del-delete
+// deletes item(s) in a table
+export const remove = (tableName: string, query: StorageQuery) => {
+  return DB(tableName).where(query).del();
+};
+
+export const init = () => {
+  return new Promise<ApiResult>(resolve => {
+    try {
+      // SQLite doesn't have FKeys enabled by default - need to enable them
+      DB.raw('PRAGMA foreign_keys = ON;').then(() => {
+        resolve({
+          error: false,
+          data: {
+            init: true,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to initialize Internal Storage',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
 
 export default {
-  __create,
-  __drop,
-  get,
-  insert,
-  set,
+  __tableCreate,
+  __tableDrop,
+  create,
+  read,
+  update,
+  remove,
 };

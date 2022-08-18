@@ -29,13 +29,13 @@ export const schema: InternalStorage.StorageSchema = [
   },
   {
     column: {
-      name: 'last_opened_at',
+      name: 'opened_at',
       type: 'datetime',
     },
   },
   {
     column: {
-      name: 'last_modified_at',
+      name: 'updated_at',
       type: 'datetime',
     },
   },

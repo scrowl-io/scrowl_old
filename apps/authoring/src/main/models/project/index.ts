@@ -1,3 +1,3 @@
 export * from './model-project.types';
 export * from './model-project';
-export * as Schema from './model-projects-schema';
+export * as Table from './model-projects-schema';
