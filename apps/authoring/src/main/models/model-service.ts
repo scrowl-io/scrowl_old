@@ -1,4 +1,4 @@
-import * as Project from './project';
+import * as Project from './projects';
 import * as Preferences from './preferences';
 
 const models = [Preferences, Project];

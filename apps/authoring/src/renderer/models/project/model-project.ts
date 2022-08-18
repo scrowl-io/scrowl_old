@@ -6,7 +6,7 @@ import {
   SaveResult,
   ImportResult,
   CreateResult,
-} from '../../../main/models/project';
+} from '../../../main/models/projects';
 import {
   ProjectObserverDataFn,
   ProjectObserverProcessFn,

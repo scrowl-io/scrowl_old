@@ -5,7 +5,7 @@ import {
   SaveResult,
   ImportResult,
   ProjectData,
-} from './model-project.types';
+} from './model-projects.types';
 import {
   FileSystem as fs,
   InternalStorage as IS,
