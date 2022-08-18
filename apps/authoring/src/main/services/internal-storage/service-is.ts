@@ -151,10 +151,15 @@ const returnItem = (tableName: string, ids: Array<number>) => {
   return new Promise<ApiResult>(resolve => {
     try {
       read(tableName, { id: ids[0] }).then(res => {
+        if (res.error) {
+          resolve(res);
+          return;
+        }
+
         resolve({
           error: false,
           data: {
-            item: res[0],
+            item: res.data.items[0],
           },
         });
       });
@@ -202,21 +207,75 @@ export const create = (
 export const read = (
   tableName: string,
   query?: StorageQuery,
-  order?: StorageOrder
+  order?: StorageOrder,
+  limit?: number
 ) => {
-  if (query) {
-    if (order) {
-      return DB.select().from(tableName).where(query).orderBy(order);
+  return new Promise<ApiResult>(resolve => {
+    const returnResult = (items: Array<StorageData>) => {
+      resolve({
+        error: false,
+        data: {
+          items,
+        },
+      });
+    };
+
+    try {
+      if (query) {
+        if (order) {
+          if (limit) {
+            DB.select()
+              .from(tableName)
+              .limit(limit)
+              .where(query)
+              .orderBy(order)
+              .then(returnResult);
+          }
+
+          DB.select()
+            .from(tableName)
+            .where(query)
+            .orderBy(order)
+            .then(returnResult);
+        }
+
+        if (limit) {
+          DB.select()
+            .from(tableName)
+            .limit(limit)
+            .where(query)
+            .then(returnResult);
+        }
+
+        DB.select().from(tableName).where(query).then(returnResult);
+      }
+
+      if (order) {
+        if (limit) {
+          DB.select()
+            .from(tableName)
+            .limit(limit)
+            .orderBy(order)
+            .then(returnResult);
+        }
+        DB.select().from(tableName).orderBy(order).then(returnResult);
+      }
+
+      if (limit) {
+        DB.select().from(tableName).limit(10).then(returnResult);
+      }
+
+      DB.select().from(tableName).then(returnResult);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to read from storage',
+        data: {
+          trace: e,
+        },
+      });
     }
-
-    return DB.select().from(tableName).where(query);
-  }
-
-  if (order) {
-    return DB.select().from(tableName).orderBy(order);
-  }
-
-  return DB.select().from(tableName);
+  });
 };
 
 // updates item(s) in a table

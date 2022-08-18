@@ -8,7 +8,6 @@ import {
   FileDataResult,
   FSResult,
 } from './service-fs.types';
-import { create } from 'handlebars/runtime';
 
 export const pathSaveFolder = app.getPath('userData');
 export const pathTempFolder = path.join(app.getPath('temp'), 'scrowl');
@@ -99,7 +98,7 @@ export const dirTempSync = (prefix: string): DirectoryTempResult => {
   }
 };
 
-export const fileExistsSync = (pathname: string): FileExistsResult => {
+export const fileExistsSync = (pathname: string): FSResult => {
   try {
     return {
       error: false,
@@ -244,124 +243,6 @@ export const fileTempSync = (source: string, dest: string): FileDataResult => {
   return fileCopySync(source, destFile);
 };
 
-// export const getSortedFilesFromDir = async (
-//   source: string
-// ): Promise<FileFromDirDataResult> => {
-//   try {
-//     const filesList = await fs.promises.readdir(source);
-
-//     return {
-//       error: false,
-//       data: {
-//         files: filesList
-//           .map(filename => ({
-//             fileLocation: `${source}/${filename}`,
-//             modifiedAt: fs.statSync(`${source}/${filename}`).mtime,
-//             createdAt: fs.statSync(`${source}/${filename}`).birthtime,
-//           }))
-//           .sort(
-//             (fileA, fileB) =>
-//               fileB.modifiedAt.getTime() - fileA.modifiedAt.getTime()
-//           ),
-//       },
-//     };
-//   } catch (err) {
-//     const message =
-//       err && typeof err === 'string'
-//         ? err
-//         : `Unable to read files from: ${source} - unknown reason`;
-
-//     return {
-//       error: true,
-//       message,
-//     };
-//   }
-// };
-
-// const getValidProjectFiles = (
-//   dirFiles: FileFromDirData[],
-//   dbProjects: IS.StorageData[]
-// ): FileFromDirData[] => {
-//   dirFiles.forEach(dirFile => {
-//     const fileNamePath = path.basename(dirFile.fileLocation);
-//     const fileNameExt = path.extname(dirFile.fileLocation);
-//     const fileName = path.basename(fileNamePath, fileNameExt);
-
-//     dbProjects.forEach(dbProject => {
-//       if (dbProject.id.toString() === fileName) {
-//         dirFile.projectName = dbProject.name as string;
-//       }
-//     });
-//   });
-
-//   return dirFiles.filter(dirFile =>
-//     Object.prototype.hasOwnProperty.call(dirFile, 'projectName')
-//   );
-// };
-
-// export const getScrowlFiles = async (): Promise<FileFromDirDataResult> => {
-//   const savingDir = await Preferences.get('save_folder_path');
-
-//   if (!savingDir.save_folder_path) {
-//     return {
-//       error: true,
-//       message:
-//         'No saving directory has been set in the application preferences.',
-//     };
-//   } else {
-//     const dirReadRes = await getSortedFilesFromDir(savingDir.save_folder_path);
-
-//     const dbProjects = await Projects.get();
-
-//     if (dirReadRes.error) {
-//       return dirReadRes;
-//     }
-
-//     if (!dirReadRes.data?.files.length) {
-//       return {
-//         ...dirReadRes,
-//         message: 'No recent files have been saved. Saving directory is empty.',
-//       };
-//     }
-
-//     if (!dbProjects.length) {
-//       return {
-//         error: true,
-//         message: 'No projects found in the database.',
-//       };
-//     }
-
-//     const validProjectFiles = getValidProjectFiles(
-//       dirReadRes.data?.files,
-//       dbProjects
-//     );
-
-//     return {
-//       ...dirReadRes,
-//       data: {
-//         files: validProjectFiles,
-//       },
-//     };
-//   }
-// };
-
-// export const getRecentScrowlFiles = async () => {
-//   const scrowlFilesRes = await getScrowlFiles();
-
-//   const recentFilesList = scrowlFilesRes.data?.files.slice(0, 10);
-
-//   if (!scrowlFilesRes.error) {
-//     return {
-//       ...scrowlFilesRes,
-//       data: {
-//         files: recentFilesList,
-//       },
-//     };
-//   } else {
-//     return scrowlFilesRes;
-//   }
-// };
-
 const writeFile = (pathname: string, contents: unknown) => {
   return new Promise<FSResult>((resolve, reject) => {
     if (!pathname) {
@@ -501,8 +382,95 @@ export const copyTempToSave = (source: string, dest: string) => {
   });
 };
 
+const readFile = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read file: path required'));
+      return;
+    }
+
+    const existsRes = fileExistsSync(pathname);
+
+    if (existsRes.error) {
+      resolve(existsRes);
+      return;
+    }
+
+    if (!existsRes.data.exists) {
+      resolve(createResultError('Unable to read file: file does not exist'));
+      return;
+    }
+
+    try {
+      fs.readFile(pathname, { encoding: 'utf-8', flag: 'r' }).then(file => {
+        resolve({
+          error: false,
+          data: {
+            pathname,
+            contents: isJSON(pathname) ? JSON.parse(file) : file,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const readFileTemp = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read file: path required'));
+      return;
+    }
+
+    try {
+      const savePath = path.join(`${pathTempFolder}`, pathname);
+
+      readFile(savePath).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const readFileSave = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read file: path required'));
+      return;
+    }
+
+    try {
+      const savePath = path.join(`${pathSaveFolder}`, pathname);
+
+      readFile(savePath).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 const readDir = (pathname: string) => {
-  return new Promise<FSResult>((resolve, reject) => {
+  return new Promise<FSResult>(resolve => {
     if (!pathname) {
       resolve(createResultError('Unable to read directory: path required'));
       return;
@@ -518,13 +486,19 @@ const readDir = (pathname: string) => {
         });
       });
     } catch (e) {
-      reject(e);
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
     }
   });
 };
 
 export const readDirTemp = (pathname: string) => {
-  return new Promise<FSResult>((resolve, reject) => {
+  return new Promise<FSResult>(resolve => {
     if (!pathname) {
       resolve(
         createResultError('Unable to read temp directory: path required')
@@ -537,13 +511,19 @@ export const readDirTemp = (pathname: string) => {
 
       readDir(tempPath).then(resolve);
     } catch (e) {
-      reject(e);
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
     }
   });
 };
 
 export const readDirSave = (pathname: string) => {
-  return new Promise<FSResult>((resolve, reject) => {
+  return new Promise<FSResult>(resolve => {
     if (!pathname) {
       resolve(
         createResultError('Unable to read temp directory: path required')
@@ -556,7 +536,13 @@ export const readDirSave = (pathname: string) => {
 
       readDir(savePath).then(resolve);
     } catch (e) {
-      reject(e);
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
     }
   });
 };
@@ -576,6 +562,8 @@ export default {
   fileTempSync,
   writeFileTemp,
   writeFileSave,
+  readFileTemp,
+  readFileSave,
   readDirTemp,
   readDirSave,
   copyTempToSave,

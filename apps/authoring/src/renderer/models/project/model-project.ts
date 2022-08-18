@@ -154,6 +154,9 @@ export class Project {
   save() {
     this.update();
   }
+  list() {
+    return requester.invoke(ENDPOINTS.getFiles);
+  }
   setProjectData(data: ProjectData) {
     this.__update(data);
   }

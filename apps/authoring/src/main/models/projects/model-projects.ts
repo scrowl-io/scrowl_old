@@ -10,11 +10,6 @@ import {
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
-import {
-  join,
-  writeFileTemp,
-  copyTempToSave,
-} from '../../services/file-system';
 import { ApiResult } from '../../services/requester';
 
 const PROJECT_DIR_PREFIX = 'scrowl';
@@ -35,9 +30,9 @@ const writeProjectTemp = (
       return;
     }
 
-    const filePath = join(`${project.id}`, filename);
+    const filePath = fs.join(`${project.id}`, filename);
 
-    writeFileTemp(filePath, contents).then(writeRes => {
+    fs.writeFileTemp(filePath, contents).then(writeRes => {
       if (writeRes.error) {
         resolve(writeRes);
         return;
@@ -138,7 +133,7 @@ export const save = (ev: Requester.RequestEvent, project: ProjectData) => {
           const to = updatedProject.id.toString();
 
           // copy the project temp folder into the save folder
-          copyTempToSave(from, to).then(copyRes => {
+          fs.copyTempToSave(from, to).then(copyRes => {
             if (copyRes.error) {
               resolve(copyRes);
               return;
@@ -162,6 +157,64 @@ export const save = (ev: Requester.RequestEvent, project: ProjectData) => {
           },
         });
       });
+  });
+};
+
+export const list = (ev: Requester.RequestEvent, amount?: number) => {
+  return new Promise<ApiResult>(resolve => {
+    try {
+      const orderBy: IS.StorageOrder = [
+        {
+          column: 'updated_at',
+        },
+      ];
+      const getProjectsManifests = (projectRecords: Array<ProjectData>) => {
+        const filePromises = projectRecords.map(project => {
+          return fs.readFileSave(fs.join(`${project.id}`, 'manifest.json'));
+        });
+
+        Promise.allSettled(filePromises).then(fileResults => {
+          const projects: Array<ProjectData | undefined> = [];
+          fileResults.forEach(result => {
+            if (result.status === 'rejected') {
+              return;
+            }
+
+            const fileRes = result.value;
+
+            if (fileRes.error) {
+              return;
+            }
+
+            projects.push(fileRes.data.contents);
+          });
+
+          resolve({
+            error: false,
+            data: {
+              projects,
+            },
+          });
+        });
+      };
+
+      IS.read(table.name, undefined, orderBy, amount).then(readRes => {
+        if (readRes.error) {
+          resolve(readRes);
+          return;
+        }
+
+        getProjectsManifests(readRes.data.items);
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to list projects',
+        data: {
+          trace: e,
+        },
+      });
+    }
   });
 };
 
@@ -315,10 +368,14 @@ export const EVENTS: ProjectEvents = {
   list: {
     name: '/projects/list',
     type: 'invoke',
+    fn: list,
   },
   listRecent: {
     name: '/projects/list/recent',
     type: 'invoke',
+    fn: ev => {
+      return list(ev, 10);
+    },
   },
   import: {
     name: 'project/import-file',

@@ -2,37 +2,33 @@ import React, { useEffect, useState } from 'react';
 import * as styles from './page-home.module.scss';
 import { PageNavItems } from './page-home-routes';
 import { NavigationBar } from '../../components/navigationbar';
-import { Project } from '../../models';
-import { requester } from '../../services';
-import { FileFromDirData } from '../../../main/services/file-system';
+import { Project, ProjectData } from '../../models';
 
 const project = new Project();
 
 export const PageElement = () => {
-  const [recentFiles, setRecentFiles] = useState([]);
   project.ready();
 
+  const [recentProjects, setProjectList] = useState([]);
   const isProcessing = project.useProcessing();
   const projectModelData = project.useProjectData();
 
-  // Example of how to fetch a list of recent projects from the backend. Endpoint "/projects/lists/recent":
   useEffect(() => {
-    requester.invoke('/projects/list/recent').then(result => {
-      if (result.data) {
-        setRecentFiles(result.data.files);
+    project.list().then(res => {
+      if (res.err) {
+        console.warn(res);
+        return;
       }
+
+      setProjectList(res.data.projects);
     });
   }, []);
 
-  // Example of how handle the click to open a recent project:
-  const handleOpenProject = (e: React.MouseEvent<HTMLButtonElement>) => {
-    requester
-      .invoke('/projects/open', e.currentTarget.dataset.file)
-      .then(result => project.setProjectData(result.data.project));
+  const handleOpenProject = () => {
+    console.log('opening project');
   };
 
   console.log(projectModelData);
-  console.log(recentFiles);
 
   return (
     <>
@@ -40,17 +36,13 @@ export const PageElement = () => {
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
         <h1>Home Page</h1>
-        {recentFiles.length > 0 && (
+        {recentProjects.length > 0 && (
           <>
             <h3>Recent Projects:</h3>
             <div>
-              {recentFiles.map((recentFile: FileFromDirData, index) => (
-                <button
-                  key={index}
-                  data-file={recentFile.fileLocation}
-                  onClick={handleOpenProject}
-                >
-                  {recentFile.projectName}
+              {recentProjects.map((project: ProjectData, index) => (
+                <button key={index} onClick={handleOpenProject}>
+                  {project.name}
                 </button>
               ))}
             </div>
