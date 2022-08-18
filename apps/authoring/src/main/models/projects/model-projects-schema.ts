@@ -24,19 +24,19 @@ export const schema: InternalStorage.StorageSchema = [
   {
     column: {
       name: 'created_at',
-      type: 'datetime',
+      type: 'timestamp',
     },
   },
   {
     column: {
       name: 'opened_at',
-      type: 'datetime',
+      type: 'timestamp',
     },
   },
   {
     column: {
       name: 'updated_at',
-      type: 'datetime',
+      type: 'timestamp',
     },
   },
 ];

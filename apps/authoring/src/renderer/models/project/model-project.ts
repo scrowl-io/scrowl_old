@@ -53,19 +53,14 @@ export class Project {
       this.__update(result.data.project);
     });
 
+    Menu.File.onProjectSave(() => {
+      this.save();
+    });
+
     Menu.File.onProjectOpen(() => {
       this.__setProcessing(true);
       console.log('Display modal with recent files to open...');
       this.__setProcessing(false);
-    });
-
-    Menu.File.onProjectSave(() => {
-      if (!this.data || !this.data.workingDir) {
-        console.error('Unable to save project - project not created');
-        return;
-      }
-
-      this.save();
     });
 
     Menu.File.onImportFile(() => {
@@ -101,7 +96,7 @@ export class Project {
 
     this.__setProcessing(true);
 
-    if (data && data.workingDir) {
+    if (data && data.id) {
       Promise.allSettled([
         Menu.Global.disable(Menu.Global.ITEMS.projectsCreate),
         Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
@@ -146,26 +141,18 @@ export class Project {
 
   update = () => {
     this.__setProcessing(true);
+    requester.invoke(ENDPOINTS.save, this.data).then((result: SaveResult) => {
+      if (result.error) {
+        this.__setProcessing(false);
+        console.error(result);
+        return;
+      }
 
-    return new Promise<SaveResult>((resolve, reject) => {
-      requester
-        .invoke(ENDPOINTS.save, this.data)
-        .then((result: SaveResult) => {
-          if (result.error) {
-            reject(result);
-            this.__setProcessing(false);
-            console.error(result);
-            return;
-          }
-
-          this.__update(result.data.project);
-          resolve(result);
-        })
-        .catch(reject);
+      this.__update(result.data.project);
     });
   };
   save() {
-    return this.update();
+    this.update();
   }
   setProjectData(data: ProjectData) {
     this.__update(data);

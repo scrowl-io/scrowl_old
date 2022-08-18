@@ -2,6 +2,7 @@ import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
 // import { send, registerAll } from '../../requester';
 import { Project } from '../../../models';
+import { send } from '../../requester';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
@@ -54,7 +55,7 @@ export const template: MenuItemConstructorOptions = {
       id: EVENTS.projectSave.id,
       enabled: false,
       click: (menuItem, window, ev: KeyboardEvent) => {
-        // send(EVENTS.projectSave.name);
+        send(EVENTS.projectSave.name);
       },
       accelerator: 'CmdOrCtrl+S',
     },

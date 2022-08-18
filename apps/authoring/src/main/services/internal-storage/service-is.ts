@@ -7,6 +7,7 @@ import {
   StorageSchemaColumn,
   StorageQuery,
   StorageResult,
+  StorageOrder,
 } from './service-is.types';
 import { ApiResult } from '../requester';
 
@@ -77,6 +78,9 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
       case 'datetime':
         table.datetime(column.name).defaultTo(DB.fn.now());
         break;
+      case 'timestamp':
+        table.timestamp(column.name).defaultTo(DB.fn.now());
+        break;
       default:
         console.warn(
           `Unable to create column from table schema: column type ${column.type} not supported - ${tableName}/${column.name}`
@@ -143,6 +147,31 @@ export const __tableDrop = (tableName: string) => {
   return DB.schema.dropTableIfExists(tableName);
 };
 
+const returnItem = (tableName: string, ids: Array<number>) => {
+  return new Promise<ApiResult>(resolve => {
+    try {
+      read(tableName, { id: ids[0] }).then(res => {
+        resolve({
+          error: false,
+          data: {
+            item: res[0],
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Unable to return item',
+        data: {
+          tableName,
+          ids,
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 // creates a item(s) in a table, returns the id(s) by default.
 export const create = (
   tableName: string,
@@ -153,14 +182,7 @@ export const create = (
       DB(tableName)
         .insert(data)
         .then(ids => {
-          read(tableName, { id: ids[0] }).then(res => {
-            resolve({
-              error: false,
-              data: {
-                item: res[0],
-              },
-            });
-          });
+          returnItem(tableName, ids).then(resolve);
         });
     } catch (e) {
       resolve({
@@ -177,9 +199,21 @@ export const create = (
 };
 
 // returns item(s) from a table
-export const read = (tableName: string, query?: StorageQuery) => {
+export const read = (
+  tableName: string,
+  query?: StorageQuery,
+  order?: StorageOrder
+) => {
   if (query) {
+    if (order) {
+      return DB.select().from(tableName).where(query).orderBy(order);
+    }
+
     return DB.select().from(tableName).where(query);
+  }
+
+  if (order) {
+    return DB.select().from(tableName).orderBy(order);
   }
 
   return DB.select().from(tableName);
@@ -189,13 +223,39 @@ export const read = (tableName: string, query?: StorageQuery) => {
 export const update = (
   tableName: string,
   data: StorageData,
-  query?: StorageQuery
+  query: StorageQuery
 ) => {
-  if (query) {
-    return DB(tableName).where(query).update(data);
-  }
-
-  return DB(tableName).update(data);
+  return new Promise<ApiResult>(resolve => {
+    try {
+      if (data.updated_at) {
+        delete data.updated_at;
+        DB(tableName)
+          .update(data)
+          .update('updated_at', DB.fn.now())
+          .where(query)
+          .then(() => {
+            returnItem(tableName, [data.id]).then(resolve);
+          });
+      } else {
+        DB(tableName)
+          .update(data)
+          .where(query)
+          .then(() => {
+            returnItem(tableName, [data.id]).then(resolve);
+          });
+      }
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to update ${tableName}`,
+        data: {
+          data,
+          query,
+          trace: e,
+        },
+      });
+    }
+  });
 };
 
 // deletes item(s) in a table

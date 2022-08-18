@@ -3,8 +3,15 @@ import { ApiResult, JsonResult } from '../requester';
 export type StorageData = JsonResult;
 
 export interface StorageQuery {
-  [key: string]: string | number | boolean;
+  [key: string]: string | number | boolean | undefined;
 }
+
+export type StorageOrder = [
+  {
+    column: string;
+    order?: 'desc' | 'asc';
+  }
+];
 
 export type StorageSchemaColumn = {
   column: {

@@ -1,8 +1,6 @@
-import { IpcMainInvokeEvent } from 'electron';
 import { Model } from '../model.types';
 import {
   ProjectEvents,
-  SaveResult,
   ImportResult,
   ProjectData,
 } from './model-projects.types';
@@ -12,45 +10,80 @@ import {
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
-import { Preferences } from '../preferences';
-import { join, dirName, writeFileTemp } from '../../services/file-system';
+import {
+  join,
+  writeFileTemp,
+  copyTempToSave,
+} from '../../services/file-system';
+import { ApiResult } from '../../services/requester';
 
 const PROJECT_DIR_PREFIX = 'scrowl';
 const PROJECT_FILE_NAME = 'scrowl.project';
-const FILE_EXTENSION = 'scrowl';
 
-export const create = function () {
+const writeProjectTemp = (
+  project: ProjectData,
+  filename: string,
+  contents: string
+) => {
+  return new Promise<Requester.ApiResult>(resolve => {
+    if (!project.id) {
+      resolve({
+        error: true,
+        message:
+          'Unable to add project to temporary directory: project id required',
+      });
+      return;
+    }
+
+    const filePath = join(`${project.id}`, filename);
+
+    writeFileTemp(filePath, contents).then(writeRes => {
+      if (writeRes.error) {
+        resolve(writeRes);
+        return;
+      }
+
+      resolve({
+        error: false,
+        data: {
+          filename,
+          contents,
+        },
+      });
+    });
+  });
+};
+
+// TODO change the event to send (remove the resolves)
+export const create = () => {
   // TODO add support for handling duplicating a project when a project ID is passed
   return new Promise<Requester.ApiResult>(resolve => {
-    let projectData: ProjectData = { name: 'Untitled Project' };
+    let project: ProjectData = { name: 'Untitled Project' };
 
     // create a new entity in the DB
-    IS.create(table.name, projectData).then(createRes => {
+    IS.create(table.name, project).then(createRes => {
       if (createRes.error) {
         createRes.message = 'Unable to create project';
         resolve(createRes);
         return;
       }
 
-      projectData = createRes.data.item;
-      // use the entity ID as the temporary folder name
-      projectData.filename = join(`${projectData.id}`, `manifest.json`);
-
-      writeFileTemp(projectData.filename, projectData).then(writeRes => {
+      project = createRes.data.item;
+      writeProjectTemp(
+        project,
+        'manifest.json',
+        JSON.stringify(project, null, 2)
+      ).then(writeRes => {
         if (writeRes.error) {
           resolve(writeRes);
           Requester.send(EVENTS.onCreate.name, writeRes);
           return;
         }
 
-        // set pathing to make future lookups easier
-        projectData.workingFile = writeRes.data.pathanme;
-        projectData.workingDir = dirName(writeRes.data.pathanme);
-
         const result = {
           error: false as const,
           data: {
-            project: projectData,
+            project,
           },
         };
 
@@ -61,8 +94,79 @@ export const create = function () {
   });
 };
 
+export const save = (ev: Requester.RequestEvent, project: ProjectData) => {
+  return new Promise<ApiResult>(resolve => {
+    if (!project.id) {
+      resolve({
+        error: true,
+        message: 'Unable to save: project id required',
+      });
+      return;
+    }
+
+    // update the project in the DB
+    IS.update(table.name, project, { id: project.id })
+      .then(updateRes => {
+        if (updateRes.error) {
+          resolve(updateRes);
+          return;
+        }
+
+        if (!updateRes.data.item) {
+          resolve({
+            error: true,
+            message: 'Malformed save: project was not returned',
+            data: updateRes,
+          });
+          return;
+        }
+
+        const updatedProject = updateRes.data.item;
+
+        // write the new manifest
+        writeProjectTemp(
+          updatedProject,
+          'manifest.json',
+          JSON.stringify(updatedProject, null, 2)
+        ).then(writeRes => {
+          if (writeRes.error) {
+            resolve(writeRes);
+            return;
+          }
+
+          const from = updatedProject.id.toString();
+          const to = updatedProject.id.toString();
+
+          // copy the project temp folder into the save folder
+          copyTempToSave(from, to).then(copyRes => {
+            if (copyRes.error) {
+              resolve(copyRes);
+              return;
+            }
+
+            resolve({
+              error: false,
+              data: {
+                project: updatedProject,
+              },
+            });
+          });
+        });
+      })
+      .catch(e => {
+        resolve({
+          error: true,
+          message: 'Failed to save changes to storage',
+          data: {
+            trace: e,
+          },
+        });
+      });
+  });
+};
+
 export const open = async function (
-  event: IpcMainInvokeEvent,
+  ev: Requester.RequestEvent,
   fileLocation: string
 ) {
   const tempDir = fs.dirTempSync(PROJECT_DIR_PREFIX);
@@ -82,7 +186,7 @@ export const open = async function (
     projectData.data.contents.workingDir = tempDir.data.pathname;
     projectData.data.contents.workingFile = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
 
-    return await save(null, projectData.data.contents);
+    return await save(ev, projectData.data.contents);
   } else {
     return {
       error: true,
@@ -91,128 +195,8 @@ export const open = async function (
   }
 };
 
-const write = function (source: string, filename: string): fs.FileDataResult {
-  if (!source) {
-    return {
-      error: true,
-      message: 'project requires a source',
-    };
-  }
-
-  if (!filename) {
-    return {
-      error: true,
-      message: 'project requires a filename',
-    };
-  }
-
-  return fs.archive(source, filename);
-};
-
-export const save = (
-  event: IpcMainInvokeEvent | null,
-  project: ProjectData
-) => {
-  return new Promise<SaveResult>((resolve, reject) => {
-    const updateProject = (res: fs.DialogSaveResult) => {
-      if (!res.data.filePath) {
-        reject({
-          error: true,
-          message:
-            'Unable to save project - saving directory not set in the preferences',
-        });
-        return;
-      }
-
-      if (!project.workingDir) {
-        reject({
-          error: true,
-          message: 'Unable to save project - working directory required',
-        });
-        return;
-      }
-
-      if (res.error) {
-        reject(res);
-        return;
-      }
-
-      const filePath = `${res.data.filePath}/${project.id}.${FILE_EXTENSION}`;
-
-      const writeRes = write(project.workingDir, filePath);
-
-      if (writeRes.error) {
-        reject(writeRes);
-        return;
-      }
-
-      // try {
-      //   project.saveFile = writeRes.data.filename;
-      //   project.saveDir = writeRes.data.filename
-      //     .split('/')
-      //     .slice(0, -1)
-      //     .join('/');
-
-      //   Projects.insert({
-      //     id: project.id,
-      //     name: project.name,
-      //   })
-      //     .then(() =>
-      //       resolve({
-      //         error: false,
-      //         data: {
-      //           filename: writeRes.data.filename,
-      //           project: project,
-      //         },
-      //       })
-      //     )
-      //     .catch((err: string) => {
-      //       reject({
-      //         error: true,
-      //         message: `Unable to save project - ${err}`,
-      //       });
-      //     });
-      // } catch (err) {
-      //   const message =
-      //     err && typeof err === 'string'
-      //       ? err
-      //       : 'Unable to save project - unknown reason';
-
-      //   resolve({
-      //     error: true,
-      //     message,
-      //   });
-      // }
-    };
-
-    if (!project) {
-      resolve({
-        error: true,
-        message: 'Unable to save project - project data required',
-      });
-    }
-
-    if (!project.workingDir) {
-      resolve({
-        error: true,
-        message: 'Unable to save project - working directory required',
-      });
-    }
-
-    Preferences.get('save_folder_path').then((savingDir: Model) =>
-      updateProject({
-        error: false,
-        data: {
-          canceled: false,
-          filePath: savingDir.save_folder_path,
-        },
-      })
-    );
-  });
-};
-
 export const importFile = (
-  event: IpcMainInvokeEvent,
+  ev: Requester.RequestEvent,
   fileTypes: Array<fs.AllowedFiles>,
   project: ProjectData
 ) => {
@@ -296,7 +280,7 @@ export const importFile = (
       resolve({
         error: false,
         data: {
-          contents: project,
+          project: project,
           import: workingImport,
         },
       });

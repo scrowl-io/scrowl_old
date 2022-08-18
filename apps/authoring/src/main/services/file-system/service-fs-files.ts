@@ -8,6 +8,7 @@ import {
   FileDataResult,
   FSResult,
 } from './service-fs.types';
+import { create } from 'handlebars/runtime';
 
 export const pathSaveFolder = app.getPath('userData');
 export const pathTempFolder = path.join(app.getPath('temp'), 'scrowl');
@@ -459,6 +460,47 @@ export const writeFileSave = (filename: string, contents: unknown) => {
   });
 };
 
+export const copyTempToSave = (source: string, dest: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!source) {
+      resolve(
+        createResultError('Unable to copy temp to source: source required')
+      );
+      return;
+    }
+
+    if (!dest) {
+      resolve(
+        createResultError('Unable to copy temp to source: destination required')
+      );
+      return;
+    }
+
+    try {
+      const sourcePath = join(pathTempFolder, source);
+      const destPath = join(pathSaveFolder, source);
+
+      fs.copy(sourcePath, destPath)
+        .then(() => {
+          resolve({
+            error: false,
+            data: {
+              source,
+              sourcePath,
+              dest,
+              destPath,
+            },
+          });
+        })
+        .catch(e => {
+          resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
+        });
+    } catch (e) {
+      resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
+    }
+  });
+};
+
 const readDir = (pathname: string) => {
   return new Promise<FSResult>((resolve, reject) => {
     if (!pathname) {
@@ -536,4 +578,5 @@ export default {
   writeFileSave,
   readDirTemp,
   readDirSave,
+  copyTempToSave,
 };
