@@ -422,6 +422,10 @@ export const EVENTS: ProjectEvents = {
   },
   import: {
     name: 'project/import-file',
+    type: 'send',
+  },
+  onImport: {
+    name: 'project/import-file',
     type: 'invoke',
     fn: importFile,
   },

@@ -65,7 +65,7 @@ export const template: MenuItemConstructorOptions = {
       id: EVENTS.importFile.id,
       enabled: false,
       click: (menuItem, window, ev: KeyboardEvent) => {
-        // send(EVENTS.importFile.name, true);
+        send(EVENTS.importFile.name);
       },
       accelerator: 'CmdOrCtrl+I',
     },

@@ -56,6 +56,7 @@ export type ProjectEvents = {
   onOpen: ProjectEventOpen;
   list: ProjectEventList;
   import: ProjectEventImport;
+  onImport: ProjectEventImport;
 };
 
 /**

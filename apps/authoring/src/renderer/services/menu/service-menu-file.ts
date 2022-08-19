@@ -15,7 +15,7 @@ const registerListener = (
   requester.on(endpoint, listener);
 };
 
-export const onProjectNew = (listener: requester.Listener) => {
+export const onProjectCreate = (listener: requester.Listener) => {
   registerListener(ENDPOINTS.projectsCreate, listener);
 };
 
@@ -32,7 +32,7 @@ export const onImportFile = (listener: requester.Listener) => {
 };
 
 export default {
-  onProjectNew,
+  onProjectCreate,
   onProjectOpen,
   onProjectSave,
   onImportFile,
