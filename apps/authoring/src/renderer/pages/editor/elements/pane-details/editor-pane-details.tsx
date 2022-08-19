@@ -22,7 +22,7 @@ export const PaneDetails = () => {
       view: TabGlossary(),
     },
   ];
-  console.log('styles', styles);
+
   return (
     <Pane>
       <Tabs items={tabItems} className={styles.paneDetailsTabs} size="Sm" />
