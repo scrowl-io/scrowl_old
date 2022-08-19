@@ -1,8 +1,5 @@
 name: pre-release
-on:
-  push:
-    branches:
-      - develop
+on: workflow_dispatch
 
 jobs:
   pre-release:
