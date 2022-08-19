@@ -55,7 +55,7 @@
   flex-wrap: wrap; // allow us to do the line break for collapsing content
   align-items: center;
   justify-content: space-between; // space out brand from logo
-  padding: var(--bs-navbar-padding-y) var(--bs-navbar-padding-x);
+  padding: 2px 8px; // TODO figure out why padding vars arent working as expected
   @include gradient-bg();
 
   // Because flex properties aren't inherited, we need to redeclare these first
