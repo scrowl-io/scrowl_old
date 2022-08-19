@@ -18,7 +18,7 @@ const publishProject = () => {
 export const PageElement = () => {
   return (
     <>
-      <NavigationBar pages={PageNavItems} publishProject={publishProject} />
+      <NavigationBar />
       <main className={styles.editor}>
         <h1>Editor Page</h1>
       </main>

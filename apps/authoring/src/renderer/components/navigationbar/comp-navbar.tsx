@@ -1,38 +1,58 @@
-import React from 'react';
-import * as styles from './comp-navbar.module.scss';
-import { Link, useMatch, useResolvedPath } from 'react-router-dom';
-import { PageRouteProps } from '../../pages';
-import { Button } from '@owlui/lib';
-import { NavigationBarProps } from './comp-navbar.types';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './comp-navbar.scss';
+import { Button, Icon, Nav } from '@owlui/lib';
+import logo from './scrowl-logo.svg';
+import { VersionDropdown } from '../versionDropdown';
+import { PreviewDropdown } from '../previewDropdown';
 
-const NavigationItem = ({ page }: { page: PageRouteProps }) => {
-  const resolved = useResolvedPath(page.url);
-  const match = useMatch({ path: resolved.pathname, end: true });
+export const NavigationBar = () => {
+  const [projectName, setProjectName] = useState('MyCourseProject');
+
+  const handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
+    setProjectName(e.currentTarget.value);
+  };
 
   return (
-    <li
-      className={`${styles.navigationItem} ${
-        match ? styles.navigationItemActive : ''
-      }`}
+    <Nav
+      className={`owlui-navbar navbar-expand fixed-top scrowl-navbar`}
+      as="nav"
     >
-      <Link to={page.url}>{page.label}</Link>
-    </li>
-  );
-};
+      <Link to="/home" className="owl-logo me-2">
+        <img src={logo} alt="Scrowl Logo" />
+      </Link>
 
-export const NavigationBar = ({
-  pages,
-  publishProject,
-}: NavigationBarProps) => {
-  return (
-    <div className={styles.topContainer}>
-      <ul className={styles.navigationBar}>
-        {pages.map((page: PageRouteProps, index: number) => {
-          return <NavigationItem key={index} page={page} />;
-        })}
-      </ul>
-      {publishProject ? <Button onClick={publishProject}>Publish</Button> : ''}
-    </div>
+      <div>
+        <ul className="navbar-nav align-items-center">
+          <VersionDropdown />
+        </ul>
+      </div>
+
+      <div className="scrowl-filename">
+        <input
+          name="filename"
+          id="filenameInput"
+          className="form-control"
+          placeholder="Untitled Project"
+          value={projectName}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div className="scrowl-navbar__actions">
+        <PreviewDropdown />
+
+        <Button
+          variant="primary"
+          className="btn btn-primary btn-sm ms-2"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#publishSettings"
+          aria-controls="publishSettings"
+        >
+          <Icon icon="publish" /> Publish
+        </Button>
+      </div>
+    </Nav>
   );
 };
 

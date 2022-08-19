@@ -32,7 +32,7 @@ export const PageElement = () => {
 
   return (
     <>
-      <NavigationBar pages={PageNavItems} />
+      <NavigationBar />
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
         <h1>Home Page</h1>

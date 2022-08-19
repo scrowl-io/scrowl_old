@@ -50,7 +50,6 @@ const createWindow = async () => {
 
   function getBrowserWindow(preloadPath: string) {
     const browserWindowConfig: BrowserWindowConstructorOptions = {
-      titleBarStyle: 'hidden',
       show: false,
       width: 1024,
       minWidth: 1024,

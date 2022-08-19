@@ -6,7 +6,7 @@ import { NavigationBar } from '../../components/navigationbar';
 export const PageElement = () => {
   return (
     <>
-      <NavigationBar pages={PageNavItems} />
+      <NavigationBar />
       <main className={styles.settings}>
         <h1>Settings Page</h1>
       </main>

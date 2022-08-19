@@ -15,9 +15,12 @@ body {
 
 .content {
   display: flex;
-  flex-direction: column;
-  height: calc(100vh - 40px);
-  overflow: hidden;
+  flex-wrap: nowrap;
+  position: fixed;
+  top: 3.125rem; // replce by var(--owl-navbar-height) once declared
+  bottom: 2rem; // replace bu var(--owl-footer-height) once defined
+  left: 0;
+  right: 0;
 }
 
 section {

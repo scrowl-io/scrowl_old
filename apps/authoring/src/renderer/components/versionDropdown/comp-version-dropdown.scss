@@ -1,0 +1,44 @@
+.scrowl-versions {
+  .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    padding-right: 0.5em !important;
+    margin-right: 0.5rem;
+    color: #212529;
+    font-weight: 500;
+    border: 1px solid #adb5bd;
+    border-radius: 0.25rem;
+    background: #ffffff;
+    transition: none;
+
+    &:hover,
+    &:focus,
+    &.show {
+      color: #ffffff;
+      border-color: #007aba;
+      background: #007aba;
+    }
+  }
+
+  &__menu {
+    min-width: 26rem;
+
+    .dropdown-header {
+      font-weight: 700;
+      letter-spacing: 0.025rem;
+      text-transform: uppercase;
+      color: #6c757d;
+      font-size: 0.75rem;
+    }
+
+    .table {
+      tbody tr:first-child {
+        font-weight: 500;
+      }
+
+      td {
+        font-variant-numeric: tabular-nums;
+      }
+    }
+  }
+}
