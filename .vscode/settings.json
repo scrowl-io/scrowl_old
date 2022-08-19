@@ -9,5 +9,5 @@
   "less.validate": false,
   "scss.validate": false,
   "stylelint.validate": ["css", "less", "postcss", "scss"],
-  "cSpell.words": ["Scrowl"]
+  "cSpell.words": ["owlui", "Scrowl"]
 }
