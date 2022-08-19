@@ -1,11 +1,11 @@
 import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
-// import { send, registerAll } from '../../requester';
-import { Project } from '../../../models';
 import { send } from '../../requester';
+import { Project } from '../../../models';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
+// these events are registered by the project model
 export const EVENTS: MenuItemEventsFile = {
   projectsCreate: {
     id: 'new-project',
@@ -45,7 +45,7 @@ export const template: MenuItemConstructorOptions = {
       label: 'Open...',
       id: EVENTS.projectOpen.id,
       click: (menuItem, window, ev: KeyboardEvent) => {
-        // send(EVENTS.projectOpen.name);
+        // TODO refactor this so that FE opens a modal to view all projects
       },
       accelerator: 'CmdOrCtrl+O',
     },
@@ -65,19 +65,14 @@ export const template: MenuItemConstructorOptions = {
       id: EVENTS.importFile.id,
       enabled: false,
       click: (menuItem, window, ev: KeyboardEvent) => {
-        // send(EVENTS.importFile.name, true);
+        send(EVENTS.importFile.name);
       },
       accelerator: 'CmdOrCtrl+I',
     },
   ],
 };
 
-export const init = () => {
-  // registerAll(EVENTS);
-};
-
 export default {
   EVENTS,
-  init,
   template,
 };

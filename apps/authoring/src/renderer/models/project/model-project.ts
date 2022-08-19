@@ -5,7 +5,6 @@ import {
   ProjectEventApi,
   SaveResult,
   ImportResult,
-  CreateResult,
 } from '../../../main/models/projects';
 import {
   ProjectObserverDataFn,
@@ -15,11 +14,10 @@ import {
 import { requester, Menu } from '../../services';
 
 export const ENDPOINTS: ProjectEventApi = {
-  new: '/projects/create',
+  create: '/projects/create',
   save: '/projects/save',
   open: '/projects/open',
-  getFiles: '/projects/list',
-  getRecentFiles: '/projects/list/recent',
+  list: '/projects/list',
   import: 'project/import-file',
 };
 export class Project {
@@ -44,7 +42,16 @@ export class Project {
       return;
     }
 
-    Menu.File.onProjectNew((ev, result) => {
+    Menu.File.onProjectCreate((ev, result) => {
+      if (result.error) {
+        console.error(result);
+        return;
+      }
+
+      this.__update(result.data.project);
+    });
+
+    Menu.File.onProjectOpen((ev, result) => {
       if (result.error) {
         console.error(result);
         return;
@@ -54,13 +61,7 @@ export class Project {
     });
 
     Menu.File.onProjectSave(() => {
-      this.save();
-    });
-
-    Menu.File.onProjectOpen(() => {
-      this.__setProcessing(true);
-      console.log('Display modal with recent files to open...');
-      this.__setProcessing(false);
+      this.update();
     });
 
     Menu.File.onImportFile(() => {
@@ -116,29 +117,10 @@ export class Project {
       });
     }
   };
-
-  // TODO: The projectID type needs to be updated to accept only the proper template IDs
-  create = (projectID: string) => {
+  create = (projectId: number) => {
     this.__setProcessing(true);
-
-    return new Promise<CreateResult>((resolve, reject) => {
-      requester
-        .invoke(ENDPOINTS.new, projectID)
-        .then((result: CreateResult) => {
-          if (result.error) {
-            reject(result);
-            this.__setProcessing(false);
-            console.error(result);
-            return;
-          }
-
-          this.__update(result.data.project);
-          resolve(result);
-        })
-        .catch(reject);
-    });
+    requester.send(ENDPOINTS.create, projectId);
   };
-
   update = () => {
     this.__setProcessing(true);
     requester.invoke(ENDPOINTS.save, this.data).then((result: SaveResult) => {
@@ -151,61 +133,45 @@ export class Project {
       this.__update(result.data.project);
     });
   };
-  save() {
-    this.update();
-  }
-  list() {
-    return requester.invoke(ENDPOINTS.getFiles);
-  }
-  setProjectData(data: ProjectData) {
-    this.__update(data);
-  }
+  list = (limit?: number) => {
+    return requester.invoke(ENDPOINTS.list, limit);
+  };
+  open = (projectId: number) => {
+    this.__setProcessing(true);
+    requester.send(ENDPOINTS.open, projectId);
+  };
   importFile = (fileTypes: AllowedFiles[]) => {
+    if (!this.data) {
+      console.error('Unable to import file: project files not set');
+      return;
+    }
+
     this.__setProcessing(true);
 
-    return new Promise<ImportResult>((resolve, reject) => {
-      if (!this.data || !this.data.workingDir) {
-        this.__setProcessing(false);
-        reject({
-          error: true,
-          message: 'Unable to import file - project has no working directory',
-          canceled: false,
-          filePaths: [],
-        });
-        return;
-      }
+    requester
+      .invoke(ENDPOINTS.import, fileTypes, this.data)
+      .then((result: ImportResult) => {
+        if (result.error) {
+          this.__setProcessing(false);
+          console.error(result);
+          return;
+        }
 
-      requester
-        .invoke(ENDPOINTS.import, fileTypes, this.data)
-        .then((result: ImportResult) => {
-          if (result.error) {
-            this.__setProcessing(false);
-            reject(result);
-            console.error(result);
-            return;
-          }
+        if (!result.data.import) {
+          this.__setProcessing(false);
+          console.error(result);
+          return;
+        }
 
-          if (!result.data.import) {
-            this.__setProcessing(false);
-            resolve({
-              error: true,
-              message: 'Importing file failed',
-              data: result,
-            });
-            return;
-          }
-
+        if (this.__observerImport) {
           const url = `scrowl-file://${result.data.import}`;
 
-          if (this.__observerImport) {
-            this.__update(result.data.project);
-            this.__observerImport(url);
-          }
+          this.__update(result.data.project);
+          this.__observerImport(url);
+        }
 
-          this.__setProcessing(false);
-          resolve(result);
-        });
-    });
+        this.__setProcessing(false);
+      });
   };
   useProcessing = () => {
     const [isProcessing, setProcessState] = useState<boolean>(false);

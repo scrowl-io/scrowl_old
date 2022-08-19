@@ -226,10 +226,11 @@ export const read = (
           if (limit) {
             DB.select()
               .from(tableName)
-              .limit(limit)
               .where(query)
               .orderBy(order)
+              .limit(limit)
               .then(returnResult);
+            return;
           }
 
           DB.select()
@@ -237,35 +238,43 @@ export const read = (
             .where(query)
             .orderBy(order)
             .then(returnResult);
+          return;
         }
 
         if (limit) {
           DB.select()
             .from(tableName)
-            .limit(limit)
             .where(query)
+            .limit(limit)
             .then(returnResult);
+          return;
         }
 
         DB.select().from(tableName).where(query).then(returnResult);
+        return;
       }
 
       if (order) {
         if (limit) {
           DB.select()
             .from(tableName)
-            .limit(limit)
             .orderBy(order)
+            .limit(limit)
             .then(returnResult);
+          return;
         }
+
         DB.select().from(tableName).orderBy(order).then(returnResult);
+        return;
       }
 
       if (limit) {
         DB.select().from(tableName).limit(10).then(returnResult);
+        return;
       }
 
       DB.select().from(tableName).then(returnResult);
+      return;
     } catch (e) {
       resolve({
         error: true,

@@ -14,18 +14,37 @@ export const PageElement = () => {
   const projectModelData = project.useProjectData();
 
   useEffect(() => {
-    project.list().then(res => {
+    project.list(10).then(res => {
       if (res.err) {
         console.warn(res);
         return;
       }
 
       setProjectList(res.data.projects);
+      console.log('recentProjects', res.data.projects);
     });
   }, []);
 
-  const handleOpenProject = () => {
-    console.log('opening project');
+  const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
+    ev.preventDefault();
+
+    const projectBtn = ev.currentTarget;
+
+    if (!projectBtn.dataset.projectId) {
+      console.error(`Unable to open project: project id required`);
+      return;
+    }
+
+    const projectId = parseInt(projectBtn.dataset.projectId);
+
+    if (isNaN(projectId)) {
+      console.error(
+        `Unable to open project: malformed id - ${projectBtn.dataset.projectId}`
+      );
+      return;
+    }
+
+    project.open(projectId);
   };
 
   console.log(projectModelData);
@@ -41,7 +60,11 @@ export const PageElement = () => {
             <h3>Recent Projects:</h3>
             <div>
               {recentProjects.map((project: ProjectData, index) => (
-                <button key={index} onClick={handleOpenProject}>
+                <button
+                  key={index}
+                  onClick={handleOpenProject}
+                  data-project-id={project.id}
+                >
                   {project.name}
                 </button>
               ))}

@@ -341,6 +341,54 @@ export const writeFileSave = (filename: string, contents: unknown) => {
   });
 };
 
+const copy = (source: string, dest: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!source) {
+      resolve(
+        createResultError('Unable to copy temp to source: source required')
+      );
+      return;
+    }
+
+    if (!dest) {
+      resolve(
+        createResultError('Unable to copy temp to source: destination required')
+      );
+      return;
+    }
+
+    try {
+      if (!fs.pathExistsSync(source)) {
+        resolve({
+          error: true,
+          message: `Unable to copy ${source}: path does not exist`,
+          data: {
+            source,
+            dest,
+          },
+        });
+        return;
+      }
+
+      fs.copy(source, dest)
+        .then(() => {
+          resolve({
+            error: false,
+            data: {
+              source,
+              dest,
+            },
+          });
+        })
+        .catch(e => {
+          resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
+        });
+    } catch (e) {
+      resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
+    }
+  });
+};
+
 export const copyTempToSave = (source: string, dest: string) => {
   return new Promise<FSResult>(resolve => {
     if (!source) {
@@ -361,23 +409,36 @@ export const copyTempToSave = (source: string, dest: string) => {
       const sourcePath = join(pathTempFolder, source);
       const destPath = join(pathSaveFolder, source);
 
-      fs.copy(sourcePath, destPath)
-        .then(() => {
-          resolve({
-            error: false,
-            data: {
-              source,
-              sourcePath,
-              dest,
-              destPath,
-            },
-          });
-        })
-        .catch(e => {
-          resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
-        });
+      copy(sourcePath, destPath).then(resolve);
     } catch (e) {
-      resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
+      resolve(createResultError(`Unable to copy temp ${source} to ${dest}`, e));
+    }
+  });
+};
+
+export const copySaveToTemp = (source: string, dest: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!source) {
+      resolve(
+        createResultError('Unable to copy save to source: source required')
+      );
+      return;
+    }
+
+    if (!dest) {
+      resolve(
+        createResultError('Unable to copy save to source: destination required')
+      );
+      return;
+    }
+
+    try {
+      const sourcePath = join(pathSaveFolder, source);
+      const destPath = join(pathTempFolder, source);
+
+      copy(sourcePath, destPath).then(resolve);
+    } catch (e) {
+      resolve(createResultError(`Unable to copy save ${source} to ${dest}`, e));
     }
   });
 };
@@ -567,4 +628,5 @@ export default {
   readDirTemp,
   readDirSave,
   copyTempToSave,
+  copySaveToTemp,
 };
