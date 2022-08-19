@@ -47,7 +47,108 @@ export const resourceData = [
   },
 ];
 
+export const outlineData = [
+  {
+    name: 'An Introduction to Harassment & Discrimination',
+    lessons: [
+      {
+        name: 'Building a Respectful Workplace',
+        slides: [
+          {
+            name: 'Introduction',
+          },
+          {
+            name: 'TheDefinition of Resqpect',
+          },
+        ],
+      },
+      {
+        name: 'What is Harassment vs. Discrimination?',
+        slides: [
+          {
+            name: 'Slide 1',
+          },
+          {
+            name: 'Slide 2',
+          },
+          {
+            name: 'Slide 3',
+          },
+        ],
+      },
+      {
+        name: 'What Does a Respectful Workplace Look Like?',
+        slides: [
+          {
+            name: 'Slide 1',
+          },
+        ],
+      },
+      {
+        name: '4 Workplace Anti-Discrimination Laws',
+        slides: [
+          {
+            name: 'Slide 1',
+          },
+          {
+            name: 'Slide 2',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Sexual Harassment',
+    lessons: [
+      {
+        name: 'What is Sexual Harassment?',
+        slides: [
+          {
+            name: 'Slide 1',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Additional Training For Supervisors',
+    lessons: [
+      {
+        name: 'Preventing Sexual Harassment as a Supervisor',
+        slides: [
+          {
+            name: 'Slide 1',
+          },
+          {
+            name: 'Slide 2',
+          },
+          {
+            name: 'Slide 3',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Conclusion',
+    lessons: [
+      {
+        name: 'Final Thoughts',
+        slides: [
+          {
+            name: 'Slide 1',
+          },
+          {
+            name: 'Slide 2',
+          },
+        ],
+      },
+    ],
+  },
+];
+
 export default {
   glossaryData,
   resourceData,
+  outlineData,
 };
