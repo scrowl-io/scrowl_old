@@ -80,12 +80,9 @@ const slideMenuItems: Array<ActionMenuItem> = [
 const TreeViewSlide = (tree: SlideTreeItem, id: string) => {
   const itemId = `${id}-slide-item`;
   return (
-    <div className={styles.treeViewModule} key={id}>
+    <div className={styles.treeViewSlide} key={id}>
       <div className={styles.treeViewHeader}>
         <Button id={itemId} className={styles.treeViewItem} variant="link">
-          <span className={styles.treeViewItemIconHandle}>
-            <Icon icon="arrow_drop_down" display="Filled" />
-          </span>
           <span className={styles.treeViewItemIconDetail}>
             <Icon icon="check_box_outline_blank" display="Filled" />
           </span>
@@ -112,7 +109,7 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
   const itemId = `${id}-lesson-item`;
   const menuId = `${id}-lesson-menu`;
   return (
-    <div className={styles.treeViewModule} key={id}>
+    <div className={styles.treeViewLesson} key={id}>
       <div className={styles.treeViewHeader}>
         <Button
           id={itemId}
