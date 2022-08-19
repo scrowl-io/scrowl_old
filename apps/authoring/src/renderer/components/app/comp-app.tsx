@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import * as styles from './styles/comp-app.module.scss';
 import { pageRoutes } from './comp-app-routes';
-import { Home, PageNavProps } from '../../pages';
+import { Home, PageNavProps, Editor } from '../../pages';
 import { TitleBar } from './elements';
 
 const routeList: PageNavProps = [];
@@ -26,31 +26,18 @@ const createRouting = () => {
 };
 
 export const App = () => {
-  const appRoutes = createRouting();
-  // const [titlesList, setTitlesList] = useState(appRoutes.pages);
-
-  // const handleTitleChange = (pages: PageNav) => {
-  //   const newTitles = [...titlesList];
-
-  //   pages.map(page => {
-  //     if (!newTitles.some(title => title.PageName === page.label)) {
-  //       newTitles.push({ PageName: page.label, PageRoute: page.link });
-  //     }
-  //   });
-
-  //   setTitlesList(newTitles);
-  // };
-
+  // const appRoutes = createRouting();
+  // {appRoutes}
+  // <Route
+  //   path="*"
+  //   element={<Navigate to={Home.PageRoutes.base.url} />}
+  // />
   return (
     <Router>
       <TitleBar routes={routeList} />
       <div className={styles.content}>
         <Routes>
-          {appRoutes}
-          <Route
-            path="*"
-            element={<Navigate to={Home.PageRoutes.base.url} />}
-          />
+          <Route path="/" element={<Editor.PageElement />} />
         </Routes>
       </div>
     </Router>
