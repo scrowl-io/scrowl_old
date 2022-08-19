@@ -12,9 +12,6 @@ import {
 import * as table from './model-projects-schema';
 import { ApiResult } from '../../services/requester';
 
-const PROJECT_DIR_PREFIX = 'scrowl';
-const PROJECT_FILE_NAME = 'scrowl.project';
-
 const writeProjectTemp = (
   project: ProjectData,
   filename: string,
@@ -89,7 +86,11 @@ export const create = () => {
   });
 };
 
-export const save = (ev: Requester.RequestEvent, project: ProjectData) => {
+export const save = (
+  ev: Requester.RequestEvent,
+  project: ProjectData,
+  onlyManifest = false
+) => {
   return new Promise<ApiResult>(resolve => {
     if (!project.id) {
       resolve({
@@ -129,8 +130,12 @@ export const save = (ev: Requester.RequestEvent, project: ProjectData) => {
             return;
           }
 
-          const from = updatedProject.id.toString();
-          const to = updatedProject.id.toString();
+          const from = !onlyManifest
+            ? updatedProject.id.toString()
+            : fs.join(updatedProject.id.toString(), 'manifest.json');
+          const to = !onlyManifest
+            ? updatedProject.id.toString()
+            : fs.join(updatedProject.id.toString(), 'manifest.json');
 
           // copy the project temp folder into the save folder
           fs.copyTempToSave(from, to).then(copyRes => {
@@ -160,19 +165,14 @@ export const save = (ev: Requester.RequestEvent, project: ProjectData) => {
   });
 };
 
-export const list = (ev: Requester.RequestEvent, amount?: number) => {
+export const list = (ev: Requester.RequestEvent, limit?: number) => {
   return new Promise<ApiResult>(resolve => {
-    try {
-      const orderBy: IS.StorageOrder = [
-        {
-          column: 'updated_at',
-        },
-      ];
-      const getProjectsManifests = (projectRecords: Array<ProjectData>) => {
-        const filePromises = projectRecords.map(project => {
-          return fs.readFileSave(fs.join(`${project.id}`, 'manifest.json'));
-        });
+    const getProjectsManifests = (projectRecords: Array<ProjectData>) => {
+      const filePromises = projectRecords.map(project => {
+        return fs.readFileSave(fs.join(`${project.id}`, 'manifest.json'));
+      });
 
+      try {
         Promise.allSettled(filePromises).then(fileResults => {
           const projects: Array<ProjectData | undefined> = [];
           fileResults.forEach(result => {
@@ -196,9 +196,25 @@ export const list = (ev: Requester.RequestEvent, amount?: number) => {
             },
           });
         });
-      };
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to read projects files',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    };
 
-      IS.read(table.name, undefined, orderBy, amount).then(readRes => {
+    try {
+      const orderBy: IS.StorageOrder = [
+        {
+          column: 'updated_at',
+        },
+      ];
+
+      IS.read(table.name, undefined, orderBy, limit).then(readRes => {
         if (readRes.error) {
           resolve(readRes);
           return;
@@ -209,7 +225,7 @@ export const list = (ev: Requester.RequestEvent, amount?: number) => {
     } catch (e) {
       resolve({
         error: true,
-        message: 'Failed to list projects',
+        message: 'Failed to read projects from storage',
         data: {
           trace: e,
         },
@@ -218,33 +234,63 @@ export const list = (ev: Requester.RequestEvent, amount?: number) => {
   });
 };
 
-export const open = async function (
-  ev: Requester.RequestEvent,
-  fileLocation: string
-) {
-  const tempDir = fs.dirTempSync(PROJECT_DIR_PREFIX);
-
-  if (tempDir.error || !tempDir.data.pathname) {
-    return tempDir;
+export const open = function (ev: Requester.RequestEvent, projectId: number) {
+  if (!projectId) {
+    Requester.send(EVENTS.open.name, {
+      error: true,
+      message: 'Unable to open: project id required',
+    });
+    return;
   }
 
-  const projectFiles = await fs.unarchive(fileLocation, tempDir.data.pathname);
+  // track the opening of the project
+  const updateProjectData = () => {
+    try {
+      IS.read(table.name, { id: projectId }).then(readRes => {
+        if (readRes.error) {
+          Requester.send(EVENTS.open.name, readRes);
+          return;
+        }
 
-  const projectData = fs.fileReadSync(
-    `${projectFiles.data.projectDir}/${PROJECT_FILE_NAME}`
-  );
+        const project = readRes.data.items[0];
 
-  if (projectData.data.contents) {
-    projectData.data.contents.updatedAt = new Date().toJSON();
-    projectData.data.contents.workingDir = tempDir.data.pathname;
-    projectData.data.contents.workingFile = `${tempDir.data.pathname}/${PROJECT_FILE_NAME}`;
+        project.opened_at = IS.getTimestamp();
+        save(ev, project, true).then(saveRes => {
+          Requester.send(EVENTS.open.name, saveRes);
+        });
+      });
+    } catch (e) {
+      Requester.send(EVENTS.open.name, {
+        error: true,
+        message: 'Failed to update project while opening',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  };
 
-    return await save(ev, projectData.data.contents);
-  } else {
-    return {
+  // copy the project from the save folder to the temp folder
+  try {
+    const from = projectId.toString();
+    const to = projectId.toString();
+
+    fs.copyTempToSave(from, to).then(copyRes => {
+      if (copyRes.error) {
+        Requester.send(EVENTS.open.name, copyRes);
+        return;
+      }
+
+      updateProjectData();
+    });
+  } catch (e) {
+    Requester.send(EVENTS.open.name, {
       error: true,
-      message: `Error opening the project "${projectData.data.project.name}"`,
-    };
+      message: `Failed to open project: ${projectId}`,
+      data: {
+        trace: e,
+      },
+    });
   }
 };
 
@@ -344,38 +390,35 @@ export const importFile = (
 export const EVENTS: ProjectEvents = {
   create: {
     name: '/projects/create',
-    type: 'invoke',
-    fn: create,
+    type: 'send',
   },
   onCreate: {
     name: '/projects/create',
-    type: 'send',
+    type: 'invoke',
+    fn: create,
   },
   save: {
+    name: '/projects/save',
+    type: 'send',
+  },
+  onSave: {
     name: '/projects/save',
     type: 'invoke',
     fn: save,
   },
-  onSave: {
-    name: '/projects/save',
-    type: 'send',
-  },
   open: {
     name: '/projects/open',
-    type: 'invoke',
+    type: 'send',
+  },
+  onOpen: {
+    name: '/projects/open',
+    type: 'on',
     fn: open,
   },
   list: {
     name: '/projects/list',
     type: 'invoke',
     fn: list,
-  },
-  listRecent: {
-    name: '/projects/list/recent',
-    type: 'invoke',
-    fn: ev => {
-      return list(ev, 10);
-    },
   },
   import: {
     name: 'project/import-file',

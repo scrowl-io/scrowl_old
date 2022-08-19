@@ -20,22 +20,16 @@ export interface ProjectEventList
   name: '/projects/list';
 }
 
-export interface ProjectEventListRecent
-  extends Omit<Requester.RegisterEvent, 'name'> {
-  name: '/projects/list/recent';
-}
-
 export interface ProjectEventImport
   extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'project/import-file';
 }
 
 export type ProjectEventApi = {
-  new: ProjectEventCreate['name'];
+  create: ProjectEventCreate['name'];
   save: ProjectEventSave['name'];
   open: ProjectEventOpen['name'];
-  getFiles: ProjectEventList['name'];
-  getRecentFiles: ProjectEventListRecent['name'];
+  list: ProjectEventList['name'];
   import: ProjectEventImport['name'];
 };
 
@@ -44,7 +38,6 @@ export type ProjectEventNames =
   | ProjectEventSave['name']
   | ProjectEventOpen['name']
   | ProjectEventList['name']
-  | ProjectEventListRecent['name']
   | ProjectEventImport['name'];
 
 export type ProjectEvent =
@@ -52,7 +45,6 @@ export type ProjectEvent =
   | ProjectEventSave
   | ProjectEventOpen
   | ProjectEventList
-  | ProjectEventListRecent
   | ProjectEventImport;
 
 export type ProjectEvents = {
@@ -61,8 +53,8 @@ export type ProjectEvents = {
   save: ProjectEventSave;
   onSave: ProjectEventSave;
   open: ProjectEventOpen;
+  onOpen: ProjectEventOpen;
   list: ProjectEventList;
-  listRecent: ProjectEventListRecent;
   import: ProjectEventImport;
 };
 

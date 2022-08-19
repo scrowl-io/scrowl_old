@@ -15,11 +15,10 @@ import {
 import { requester, Menu } from '../../services';
 
 export const ENDPOINTS: ProjectEventApi = {
-  new: '/projects/create',
+  create: '/projects/create',
   save: '/projects/save',
   open: '/projects/open',
-  getFiles: '/projects/list',
-  getRecentFiles: '/projects/list/recent',
+  list: '/projects/list',
   import: 'project/import-file',
 };
 export class Project {
@@ -54,13 +53,16 @@ export class Project {
     });
 
     Menu.File.onProjectSave(() => {
-      this.save();
+      this.update();
     });
 
-    Menu.File.onProjectOpen(() => {
-      this.__setProcessing(true);
-      console.log('Display modal with recent files to open...');
-      this.__setProcessing(false);
+    Menu.File.onProjectOpen((ev, result) => {
+      if (result.error) {
+        console.error(result);
+        return;
+      }
+
+      this.__update(result.data.project);
     });
 
     Menu.File.onImportFile(() => {
@@ -123,7 +125,7 @@ export class Project {
 
     return new Promise<CreateResult>((resolve, reject) => {
       requester
-        .invoke(ENDPOINTS.new, projectID)
+        .invoke(ENDPOINTS.create, projectID)
         .then((result: CreateResult) => {
           if (result.error) {
             reject(result);
@@ -138,7 +140,6 @@ export class Project {
         .catch(reject);
     });
   };
-
   update = () => {
     this.__setProcessing(true);
     requester.invoke(ENDPOINTS.save, this.data).then((result: SaveResult) => {
@@ -151,15 +152,13 @@ export class Project {
       this.__update(result.data.project);
     });
   };
-  save() {
-    this.update();
-  }
-  list() {
-    return requester.invoke(ENDPOINTS.getFiles);
-  }
-  setProjectData(data: ProjectData) {
-    this.__update(data);
-  }
+  list = (limit?: number) => {
+    return requester.invoke(ENDPOINTS.list, limit);
+  };
+  open = (projectId: number) => {
+    this.__setProcessing(true);
+    requester.send(ENDPOINTS.open, projectId);
+  };
   importFile = (fileTypes: AllowedFiles[]) => {
     this.__setProcessing(true);
 
