@@ -45,7 +45,7 @@ export const template: MenuItemConstructorOptions = {
       label: 'Open...',
       id: EVENTS.projectOpen.id,
       click: (menuItem, window, ev: KeyboardEvent) => {
-        // send(EVENTS.projectOpen.name);
+        // TODO refactor this so that FE opens a modal to view all projects
       },
       accelerator: 'CmdOrCtrl+O',
     },
