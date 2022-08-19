@@ -1,6 +1,15 @@
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 
-import { IpcMainInvokeEvent } from 'electron';
+import {
+  IpcMainInvokeEvent,
+  KeyboardEvent,
+  KeyboardInputEvent,
+} from 'electron';
+
+export type RequestEvent =
+  | IpcMainInvokeEvent
+  | KeyboardEvent
+  | KeyboardInputEvent;
 
 export type ClickHandler = (
   menuItem: Electron.MenuItem,

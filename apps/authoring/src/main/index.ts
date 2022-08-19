@@ -76,8 +76,7 @@ const createWindow = async () => {
   }
 
   Publisher.init();
-  initModels();
-
+  await initModels();
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
 
   mainWindow.on('ready-to-show', () => {

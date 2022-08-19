@@ -1,11 +1,34 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
+import { app } from 'electron';
 import {
   FileExistsResult,
   DirectoryTempResult,
   FileDataResult,
+  FSResult,
 } from './service-fs.types';
+
+export const pathSaveFolder = app.getPath('userData');
+export const pathTempFolder = path.join(app.getPath('temp'), 'scrowl');
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const createResultError = (message: string, error?: any): FSResult => {
+  if (error === undefined) {
+    return {
+      error: true,
+      message,
+    };
+  } else {
+    return {
+      error: true,
+      message,
+      data: {
+        trace: error,
+      },
+    };
+  }
+};
 
 const normalize = (pathname: string) => {
   return path.normalize(pathname);
@@ -21,6 +44,10 @@ export const join = (...paths: Array<string>) => {
 
 export const ext = (pathname: string) => {
   return path.extname(pathname);
+};
+
+export const dirName = (pathname: string) => {
+  return path.dirname(pathname);
 };
 
 export const dirExistsSync = (pathname: string): FileExistsResult => {
@@ -71,7 +98,7 @@ export const dirTempSync = (prefix: string): DirectoryTempResult => {
   }
 };
 
-export const fileExistsSync = (pathname: string): FileExistsResult => {
+export const fileExistsSync = (pathname: string): FSResult => {
   try {
     return {
       error: false,
@@ -216,9 +243,377 @@ export const fileTempSync = (source: string, dest: string): FileDataResult => {
   return fileCopySync(source, destFile);
 };
 
+const writeFile = (pathname: string, contents: unknown) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!pathname) {
+      resolve(createResultError('Unable to write file: path required'));
+      return;
+    }
+
+    if (!contents) {
+      resolve(createResultError('Unable to write file: contents required'));
+      return;
+    }
+
+    try {
+      let fileData = contents;
+
+      if (isJSON(pathname)) {
+        if (typeof contents !== 'string') {
+          fileData = JSON.stringify(contents, null, 2);
+        } else {
+          fileData = JSON.stringify(JSON.parse(contents), null, 2);
+        }
+      }
+
+      fs.outputFile(pathname, fileData).then(() => {
+        resolve({
+          error: false,
+          data: {
+            pathname,
+            contents: fileData,
+          },
+        });
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export const writeFileTemp = (filename: string, contents: unknown) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!filename) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: filename required'
+        )
+      );
+      return;
+    }
+
+    if (!contents) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: contents required'
+        )
+      );
+      return;
+    }
+
+    try {
+      const pathname = `${pathTempFolder}/${filename}`;
+
+      writeFile(pathname, contents).then(resolve).catch(reject);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+export const writeFileSave = (filename: string, contents: unknown) => {
+  return new Promise<FSResult>((resolve, reject) => {
+    if (!filename) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: filename required'
+        )
+      );
+      return;
+    }
+
+    if (!contents) {
+      resolve(
+        createResultError(
+          'Unable to write file to temp directory: contents required'
+        )
+      );
+      return;
+    }
+
+    try {
+      const pathname = `${pathSaveFolder}/${filename}`;
+
+      writeFile(pathname, contents).then(resolve).catch(reject);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const copy = (source: string, dest: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!source) {
+      resolve(
+        createResultError('Unable to copy temp to source: source required')
+      );
+      return;
+    }
+
+    if (!dest) {
+      resolve(
+        createResultError('Unable to copy temp to source: destination required')
+      );
+      return;
+    }
+
+    try {
+      if (!fs.pathExistsSync(source)) {
+        resolve({
+          error: true,
+          message: `Unable to copy ${source}: path does not exist`,
+          data: {
+            source,
+            dest,
+          },
+        });
+        return;
+      }
+
+      fs.copy(source, dest)
+        .then(() => {
+          resolve({
+            error: false,
+            data: {
+              source,
+              dest,
+            },
+          });
+        })
+        .catch(e => {
+          resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
+        });
+    } catch (e) {
+      resolve(createResultError(`Unable to copy ${source} to ${dest}`, e));
+    }
+  });
+};
+
+export const copyTempToSave = (source: string, dest: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!source) {
+      resolve(
+        createResultError('Unable to copy temp to source: source required')
+      );
+      return;
+    }
+
+    if (!dest) {
+      resolve(
+        createResultError('Unable to copy temp to source: destination required')
+      );
+      return;
+    }
+
+    try {
+      const sourcePath = join(pathTempFolder, source);
+      const destPath = join(pathSaveFolder, source);
+
+      copy(sourcePath, destPath).then(resolve);
+    } catch (e) {
+      resolve(createResultError(`Unable to copy temp ${source} to ${dest}`, e));
+    }
+  });
+};
+
+export const copySaveToTemp = (source: string, dest: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!source) {
+      resolve(
+        createResultError('Unable to copy save to source: source required')
+      );
+      return;
+    }
+
+    if (!dest) {
+      resolve(
+        createResultError('Unable to copy save to source: destination required')
+      );
+      return;
+    }
+
+    try {
+      const sourcePath = join(pathSaveFolder, source);
+      const destPath = join(pathTempFolder, source);
+
+      copy(sourcePath, destPath).then(resolve);
+    } catch (e) {
+      resolve(createResultError(`Unable to copy save ${source} to ${dest}`, e));
+    }
+  });
+};
+
+const readFile = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read file: path required'));
+      return;
+    }
+
+    const existsRes = fileExistsSync(pathname);
+
+    if (existsRes.error) {
+      resolve(existsRes);
+      return;
+    }
+
+    if (!existsRes.data.exists) {
+      resolve(createResultError('Unable to read file: file does not exist'));
+      return;
+    }
+
+    try {
+      fs.readFile(pathname, { encoding: 'utf-8', flag: 'r' }).then(file => {
+        resolve({
+          error: false,
+          data: {
+            pathname,
+            contents: isJSON(pathname) ? JSON.parse(file) : file,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const readFileTemp = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read file: path required'));
+      return;
+    }
+
+    try {
+      const savePath = path.join(`${pathTempFolder}`, pathname);
+
+      readFile(savePath).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const readFileSave = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read file: path required'));
+      return;
+    }
+
+    try {
+      const savePath = path.join(`${pathSaveFolder}`, pathname);
+
+      readFile(savePath).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
+const readDir = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(createResultError('Unable to read directory: path required'));
+      return;
+    }
+
+    try {
+      fs.readdir(pathname).then(() => {
+        resolve({
+          error: false,
+          data: {
+            pathname,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const readDirTemp = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(
+        createResultError('Unable to read temp directory: path required')
+      );
+      return;
+    }
+
+    try {
+      const tempPath = path.join(`${pathTempFolder}`, pathname);
+
+      readDir(tempPath).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const readDirSave = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    if (!pathname) {
+      resolve(
+        createResultError('Unable to read temp directory: path required')
+      );
+      return;
+    }
+
+    try {
+      const savePath = path.join(`${pathSaveFolder}`, pathname);
+
+      readDir(savePath).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Unable to read from: ${pathname}`,
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 export default {
+  pathSaveFolder,
+  pathTempFolder,
   join,
   ext,
+  dirName,
   dirExistsSync,
   dirTempSync,
   fileExistsSync,
@@ -226,4 +621,12 @@ export default {
   fileWriteSync,
   fileCopySync,
   fileTempSync,
+  writeFileTemp,
+  writeFileSave,
+  readFileTemp,
+  readFileSave,
+  readDirTemp,
+  readDirSave,
+  copyTempToSave,
+  copySaveToTemp,
 };

@@ -70,10 +70,11 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.30",
-    "react": "^18.0.0",
+    "@owlui/lib": "^0.0.32",
+    "bootstrap": "5.2.0-beta1",
+    "react": "^18.1.0",
     "react-bootstrap": "^2.4.0",
-    "react-dom": "^18.0.0",
+    "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0"
   }
 }
