@@ -1,17 +1,16 @@
 import { Model } from '../model.types';
 import { PreferenceData, PreferenceEvents } from './model-preferences.types';
-import { InternalStorage as IS, Requester } from '../../services';
+import { Requester } from '../../services';
 
-const TABLE_NAME = 'preferences';
+// const TABLE_NAME = 'preferences';
 
 export const get = async (preference?: string) => {
-  const res = await IS.get(TABLE_NAME, preference);
-
-  return res[0];
+  // const res = await IS.get(TABLE_NAME, preference);
+  // return res[0];
 };
 
 export const set = (data: PreferenceData) => {
-  return IS.set(TABLE_NAME, data);
+  // return IS.set(TABLE_NAME, data);
 };
 
 const handlerGetPreference = (
@@ -51,7 +50,25 @@ export const EVENTS: PreferenceEvents = {
 };
 
 export const init = () => {
-  Requester.registerAll(EVENTS);
+  return new Promise<Requester.ApiResult>(resolve => {
+    try {
+      Requester.registerAll(EVENTS);
+      resolve({
+        error: false,
+        data: {
+          table: '',
+        },
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Unable to initalize preferences',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
 };
 
 export const Preferences: Model = {

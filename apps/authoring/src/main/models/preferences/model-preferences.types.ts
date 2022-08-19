@@ -2,8 +2,9 @@ import { InternalStorage, Requester } from '../../services';
 
 export type PreferenceAppearance = 'light' | 'dark';
 
-export interface PreferenceData extends InternalStorage.DatabaseData {
+export interface PreferenceData extends InternalStorage.StorageData {
   appearance: PreferenceAppearance;
+  save_folder_path: string;
 }
 
 export interface PreferenceEventList

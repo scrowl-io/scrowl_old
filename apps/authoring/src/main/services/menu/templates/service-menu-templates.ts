@@ -19,7 +19,6 @@ export const createMenu = (
   }
 
   template.push(menuFile.template);
-  menuFile.init();
   EVENTS = Object.assign(EVENTS, menuFile.EVENTS);
 
   return {

@@ -2,35 +2,33 @@ import { useState, useEffect } from 'react';
 import { AllowedFiles } from '../../../main/services/file-system';
 import {
   ProjectData,
-  ProjectDataNew,
   ProjectEventApi,
-  CreateResult,
   SaveResult,
   ImportResult,
-  OpenResult,
-} from '../../../main/models/project';
+} from '../../../main/models/projects';
 import {
   ProjectObserverDataFn,
   ProjectObserverProcessFn,
   ProjectObserverImportFn,
 } from './model-project.types';
 import { requester, Menu } from '../../services';
-import EXAMPLE_DATA from './model-project-data';
 
 export const ENDPOINTS: ProjectEventApi = {
-  new: 'project/new',
-  save: 'project/save',
+  create: '/projects/create',
+  save: '/projects/save',
+  open: '/projects/open',
+  list: '/projects/list',
   import: 'project/import-file',
 };
 export class Project {
-  data?: ProjectData | ProjectDataNew;
+  data?: ProjectData;
   isProcessing: boolean;
   isReady: boolean;
   lastImport: string;
   __observerData?: ProjectObserverDataFn;
   __observerProcess?: ProjectObserverProcessFn;
   __observerImport?: ProjectObserverImportFn;
-  constructor(data?: ProjectDataNew) {
+  constructor(data?: ProjectData) {
     this.isProcessing = false;
     this.isReady = false;
     this.lastImport = '';
@@ -44,37 +42,26 @@ export class Project {
       return;
     }
 
-    Menu.File.onProjectNew(() => {
-      if (this.data && this.data.workingDir) {
-        console.error('Unable to create project - project already created');
+    Menu.File.onProjectCreate((ev, result) => {
+      if (result.error) {
+        console.error(result);
         return;
       }
 
-      this.create(EXAMPLE_DATA);
+      this.__update(result.data.project);
     });
 
-    Menu.File.onProjectOpen((event, result: OpenResult) => {
-      if (!result.error && result.data) {
-        this.create(EXAMPLE_DATA);
+    Menu.File.onProjectOpen((ev, result) => {
+      if (result.error) {
+        console.error(result);
+        return;
       }
+
+      this.__update(result.data.project);
     });
 
     Menu.File.onProjectSave(() => {
-      if (!this.data || !this.data.workingDir) {
-        console.error('Unable to save project - project not created');
-        return;
-      }
-
-      this.save();
-    });
-
-    Menu.File.onProjectSaveAs(() => {
-      if (!this.data || !this.data.workingDir) {
-        console.error('Unable to save project - project not created');
-        return;
-      }
-
-      this.saveAs();
+      this.update();
     });
 
     Menu.File.onImportFile(() => {
@@ -88,7 +75,7 @@ export class Project {
 
     this.isReady = true;
   };
-  __setData = (data: ProjectData | ProjectDataNew) => {
+  __setData = (data: ProjectData) => {
     if (!this.__observerData) {
       return;
     }
@@ -103,126 +90,88 @@ export class Project {
 
     this.__observerProcess(state);
   };
-  __update = (data: ProjectData | ProjectDataNew) => {
+  __update = (data: ProjectData) => {
     if (!this.__observerData) {
       return;
     }
 
     this.__setProcessing(true);
 
-    if (data && data.workingDir) {
+    if (data && data.id) {
       Promise.allSettled([
-        Menu.Global.disable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.disable(Menu.Global.ITEMS.projectsCreate),
         Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
-        Menu.Global.enable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
       ]).then(() => {
         this.__setData(data);
       });
     } else {
       Promise.allSettled([
-        Menu.Global.enable(Menu.Global.ITEMS.projectNew),
+        Menu.Global.enable(Menu.Global.ITEMS.projectsCreate),
         Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
-        Menu.Global.disable(Menu.Global.ITEMS.projectSaveAs),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),
       ]).then(() => {
         this.__setData(data);
       });
     }
   };
-  create = (data: ProjectDataNew) => {
+  create = (projectId: number) => {
     this.__setProcessing(true);
-    return new Promise<CreateResult>((resolve, reject) => {
-      requester
-        .invoke(ENDPOINTS.new, data)
-        .then((result: CreateResult) => {
-          if (result.error) {
-            resolve(result);
-            this.__setProcessing(false);
-            console.error(result);
-            return;
-          }
-
-          this.__update(result.data.project);
-          resolve(result);
-        })
-        .catch(reject);
-    });
+    requester.send(ENDPOINTS.create, projectId);
   };
-  update = (saveAs?: boolean) => {
+  update = () => {
     this.__setProcessing(true);
-
-    return new Promise<SaveResult>((resolve, reject) => {
-      requester
-        .invoke(ENDPOINTS.save, this.data, saveAs)
-        .then((result: SaveResult) => {
-          if (result.error) {
-            resolve(result);
-            this.__setProcessing(false);
-            console.error(result);
-            return;
-          }
-
-          this.__update(result.data.project);
-          resolve(result);
-        })
-        .catch(reject);
-    });
-  };
-  save() {
-    return this.update();
-  }
-  saveAs() {
-    return this.update(true);
-  }
-  importFile = (fileTypes: AllowedFiles[]) => {
-    this.__setProcessing(true);
-
-    return new Promise<ImportResult>(resolve => {
-      if (!this.data || !this.data.workingDir) {
+    requester.invoke(ENDPOINTS.save, this.data).then((result: SaveResult) => {
+      if (result.error) {
         this.__setProcessing(false);
-        resolve({
-          error: true,
-          message: 'Unable to import file - project has no working directory',
-          canceled: false,
-          filePaths: [],
-        });
+        console.error(result);
         return;
       }
 
-      requester
-        .invoke(ENDPOINTS.import, fileTypes, this.data)
-        .then((result: ImportResult) => {
-          if (result.error) {
-            this.__setProcessing(false);
-            resolve(result);
-            console.error(result);
-            return;
-          }
+      this.__update(result.data.project);
+    });
+  };
+  list = (limit?: number) => {
+    return requester.invoke(ENDPOINTS.list, limit);
+  };
+  open = (projectId: number) => {
+    this.__setProcessing(true);
+    requester.send(ENDPOINTS.open, projectId);
+  };
+  importFile = (fileTypes: AllowedFiles[]) => {
+    if (!this.data) {
+      console.error('Unable to import file: project files not set');
+      return;
+    }
 
-          if (!result.data.import) {
-            this.__setProcessing(false);
-            resolve({
-              error: true,
-              message: 'Importing file failed',
-              data: result,
-            });
-            return;
-          }
+    this.__setProcessing(true);
 
+    requester
+      .invoke(ENDPOINTS.import, fileTypes, this.data)
+      .then((result: ImportResult) => {
+        if (result.error) {
+          this.__setProcessing(false);
+          console.error(result);
+          return;
+        }
+
+        if (!result.data.import) {
+          this.__setProcessing(false);
+          console.error(result);
+          return;
+        }
+
+        if (this.__observerImport) {
           const url = `scrowl-file://${result.data.import}`;
 
-          if (this.__observerImport) {
-            this.__update(result.data.project);
-            this.__observerImport(url);
-          }
+          this.__update(result.data.project);
+          this.__observerImport(url);
+        }
 
-          this.__setProcessing(false);
-          resolve(result);
-        });
-    });
+        this.__setProcessing(false);
+      });
   };
   useProcessing = () => {
     const [isProcessing, setProcessState] = useState<boolean>(false);
@@ -240,9 +189,7 @@ export class Project {
     return this.isProcessing;
   };
   useProjectData = () => {
-    const [activeData, setActiveData] = useState<
-      ProjectData | ProjectDataNew
-    >();
+    const [activeData, setActiveData] = useState<ProjectData>();
 
     this.data = activeData;
 
