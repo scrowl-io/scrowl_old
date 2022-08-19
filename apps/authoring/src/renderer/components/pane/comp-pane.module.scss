@@ -1,0 +1,50 @@
+@use '../../styles/variables';
+@import '../../styles/bs';
+@import '../../styles/osg';
+
+.pane {
+  &--left {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    min-width: var(--owl-sidebar-minwidth);
+    width: var(--owl-sidebar-width);
+    color: var(--owl-sidebar-color);
+    border-right: var(--owl-border-width) var(--owl-border-color) solid;
+    background: var(--owl-sidebar-bg);
+
+    &__header {
+      flex: 0 1 auto;
+      margin-top: calc(var(--owl-sidebar-spacing) / 2);
+    }
+
+    &__content {
+      flex: 1 1 auto;
+      padding-bottom: var(--owl-sidebar-spacing);
+      overflow-y: auto;
+    }
+  }
+
+  &__heading {
+    @include owlLabelStyle();
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: calc(var(--owl-sidebar-spacing) / 2)
+      calc(var(--owl-sidebar-spacing) / 2) calc(var(--owl-sidebar-spacing) / 2)
+      var(--owl-sidebar-spacing);
+    line-height: var(--osg-line-height-sm);
+    font-size: 0.75rem;
+    user-select: none;
+  }
+
+  .nav-tabs {
+    font-size: 12px;
+  }
+
+  .tab-pane {
+    font-size: $font-size-sm;
+  }
+}
