@@ -191,7 +191,7 @@ const TreeViewModules = (data: ProjectTree) => {
 };
 
 export const TabOutline = () => {
-  const tabStyles = `${styles.tabOutline} ${styles.treeView} nav flex-column`;
+  const tabStyles = `${styles.tabOutline} tree-view nav flex-column`;
   const outlineTree = TreeViewModules(outlineData);
 
   return <div className={tabStyles}>{outlineTree}</div>;
