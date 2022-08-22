@@ -1,5 +1,5 @@
 // Scrowl Variables
-@import './bs';
+@forward './bs';
 
 $primarys: (
   'primary-100': tint-color($primary, 80%),
@@ -167,6 +167,11 @@ $all-colors: map-merge-multiple(
   // Global
   --owl-box-shadow: 0.25rem 0.25rem 0 0 rgb(0 0 0 / 12.5%);
   --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgb(0 0 0 / 6.25%);
+  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.125);
+  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.0625);
+
+  --owl-close-icon: url('/img/close_black.svg');
+
   --owl-input-color: var(--#{$prefix}body-color);
   --owl-input-bg: var(--#{$prefix}body-bg);
   --owl-input-placeholder-color: var(--#{$prefix}gray-600);
@@ -182,11 +187,15 @@ $all-colors: map-merge-multiple(
   --owl-border-width: var(--#{$prefix}border-width);
   --owl-dropdown-color: var(--#{$prefix}gray-800);
   --owl-dropdown-bg: var(--#{$prefix}white);
-  --owl-dropdown-link-color: var(--#{$prefix}gray-900);
+  --owl-dropdown-link-color: var(--#{$prefix}gray-800);
   --owl-dropdown-link-hover-color: var(--#{$prefix}black);
   --owl-dropdown-link-hover-bg: var(--#{$prefix}gray-200);
   --owl-dropdown-link-disabled-color: var(--#{$prefix}gray-500);
   --owl-label-color: var(--#{$prefix}gray-600);
+
+  --owl-tooltip-color: var(--#{$prefix}white);
+  --owl-tooltip-bg: var(--#{$prefix}gray-800);
+
   --owl-nav-tab-color: var(--#{$prefix}gray-600);
   --owl-nav-tab-active-color: var(--#{$prefix}gray-700);
   --owl-transparent-hover-bg: rgb(0 0 0 / 15%);
@@ -198,6 +207,8 @@ $all-colors: map-merge-multiple(
   --owl-navbar-hover-color: #{$navbar-light-hover-color};
   --owl-navbar-disabled-color: #{$navbar-light-disabled-color};
   --owl-navbar-active-color: #{$navbar-light-active-color};
+  --owl-navbar-link-color: var(--#{$prefix}gray-900);
+  --owl-navbar-link-hover-color: var(--#{$prefix}gray-600);
 
   // Footer
   --owl-footer-bg: var(--#{$prefix}gray-900);
@@ -238,6 +249,9 @@ $all-colors: map-merge-multiple(
   --owl-color-slide: var(--#{$prefix}yellow);
   --owl-color-template: var(--#{$prefix}cyan);
   --owl-color-quiz: var(--#{$prefix}pink);
+  --owl-color-template: var(--#{$prefix}gray-500);
+  --owl-color-quiz: var(--#{$prefix}gray-500);
+
   --owl-selection-bg: var(--#{$prefix}yellow-100);
   --owl-selection-color: var(--#{$prefix}yellow-800);
   --owl-active-bg: var(--#{$prefix}primary);
@@ -264,10 +278,17 @@ $all-colors: map-merge-multiple(
         }
       }
 
-      &:active + .dropdown-toggle-split {
-        box-shadow: var(--#{$prefix}btn-active-shadow),
-          var(--#{$prefix}btn-focus-box-shadow);
+      &:active {
+        box-shadow: none;
+
+        & + .dropdown-toggle-split {
+          box-shadow: none;
+        }
       }
+    }
+
+    &.dropdown-toggle-split:active {
+      box-shadow: none;
     }
   }
 
@@ -293,6 +314,11 @@ $all-colors: map-merge-multiple(
   // Global
   --owl-box-shadow: 0.25rem 0.25rem 0 0 rgb(0 0 0 / 25%);
   --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgb(0 0 0 / 15%);
+  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.25);
+  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.15);
+
+  --owl-close-icon: url('/img/close_white.svg');
+
   --owl-input-bg: var(--#{$prefix}gray-700);
   --owl-input-placeholder-color: var(--#{$prefix}gray-400);
   --owl-input-border-color: var(--#{$prefix}black);
@@ -311,6 +337,10 @@ $all-colors: map-merge-multiple(
   --owl-dropdown-link-hover-bg: var(--#{$prefix}gray-800);
   --owl-dropdown-link-disabled-color: var(--#{$prefix}gray-600);
   --owl-label-color: var(--#{$prefix}gray-500);
+
+  --owl-tooltip-color: var(--#{$prefix}gray-700);
+  --owl-tooltip-bg: var(--#{$prefix}white);
+
   --owl-nav-tab-color: var(--#{$prefix}gray-500);
   --owl-nav-tab-active-color: var(--#{$prefix}gray-100);
   --owl-transparent-hover-bg: rgb(255 255 255 / 15%);
@@ -320,6 +350,8 @@ $all-colors: map-merge-multiple(
   --owl-navbar-color: var(--#{$prefix}white);
   --owl-navbar-box-shadow: 0 1px 0 0 var(--#{$prefix}gray-800);
 
+  --owl-navbar-link-color: var(--#{$prefix}gray-200);
+  --owl-navbar-link-hover-color: var(--#{$prefix}gray-500);
   // --owl-navbar-hover-color: #{$navbar-light-hover-color};
   // --owl-navbar-disabled-color: #{$navbar-light-disabled-color};
   // --owl-navbar-active-color: #{$navbar-light-active-color};
@@ -362,6 +394,11 @@ $all-colors: map-merge-multiple(
   // --owl-color-slide:     var(--#{$prefix}yellow);
   // --owl-color-template:  var(--#{$prefix}cyan);
   // --owl-color-quiz:      var(--#{$prefix}pink);
+  --owl-color-module: var(--#{$prefix}purple-300);
+  // --owl-color-lesson: var(--#{$prefix}orange);
+  // --owl-color-slide: var(--#{$prefix}yellow);
+  --owl-color-template: var(--#{$prefix}gray-500);
+  --owl-color-quiz: var(--#{$prefix}gray-500);
 
   --owl-selection-bg: var(--#{$prefix}yellow-800);
   --owl-selection-color: var(--#{$prefix}yellow-100);
@@ -376,8 +413,6 @@ $all-colors: map-merge-multiple(
       $active-border: shade-color($primary, 20%),
       $active-color: color-contrast(shade-color($primary, 20%))
     );
-
-    --#{$prefix}btn-focus-shadow-rgb: var(--#{$prefix}primary-rgb);
   }
 
   .accordion {

@@ -177,9 +177,9 @@ $nav-tabs-border-color: var(--#{$prefix}border-color);
 $navbar-padding-x: 0.5rem;
 $navbar-padding-y: 0.125rem;
 
-$navbar-light-color: var(--owl-dropdown-link-color);
-$navbar-light-hover-color: var(--owl-dropdown-link-hover-color);
-$navbar-light-active-color: var(--owl-dropdown-link-hover-color);
+$navbar-light-color: var(--owl-navbar-link-color);
+$navbar-light-hover-color: var(--owl-navbar-link-hover-color);
+$navbar-light-active-color: var(--owl-navbar-link-hover-color);
 
 $dropdown-font-size: 0.75rem;
 $dropdown-color: var(--owl-dropdown-color);
@@ -274,7 +274,10 @@ $kbd-padding-x: 0.25em;
 $pre-color: currentColor;
 
 @import './bs';
-@import './variables'; // Bootstrap Style Changes
+@import './variables';
+
+
+// Bootstrap Style Changes
 h1,
 .h1,
 h2,
@@ -346,7 +349,7 @@ h2,
     &.active {
       color: var(--owl-nav-tab-active-color);
       font-weight: 600;
-      border-bottom: 2px currentColor solid;
+      border-bottom: 3px currentColor solid;
       background: transparent;
     }
 
@@ -376,6 +379,27 @@ button {
     font-size: 1.5em;
     line-height: 0.66;
     vertical-align: inherit;
+  }
+}
+
+.btn-link {
+  margin-left: $btn-padding-x;
+  margin-right: $btn-padding-x;
+  padding-left: 0;
+  padding-right: 0;
+
+  &.btn-sm {
+    margin-left: $btn-padding-x-sm;
+    margin-right: $btn-padding-x-sm;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  &.btn-lg {
+    margin-left: $btn-padding-x-lg;
+    margin-right: $btn-padding-x-lg;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 
@@ -439,6 +463,7 @@ select {
   &:-webkit-autofill:focus {
     -webkit-text-fill-color: var(--owl-input-color);
     -webkit-box-shadow: 0 0 0px 1000px var(--owl-input-bg) inset;
+    box-shadow: 0 0 0px 1000px var(--owl-input-bg) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 }
@@ -461,4 +486,16 @@ select {
 
 .btn-close {
   color: var(--owl-dropdown-color);
+}
+
+.form-check-input,
+.form-check-label {
+  cursor: pointer;
+}
+
+.tooltip {
+  --#{$prefix}tooltip-color: var(--owl-tooltip-color);
+  --#{$prefix}tooltip-bg: var(--owl-tooltip-bg);
+  --#{$prefix}tooltip-font-size: var(--owl-font-size-sm);
+  line-height: 1.1;
 }
