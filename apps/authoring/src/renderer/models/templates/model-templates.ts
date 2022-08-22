@@ -63,7 +63,7 @@ export class Template {
     this.__observerData(data);
     this.__setProcessing(false);
   };
-  useTemplateData = () => {
+  useData = () => {
     const [activeData, setActiveData] = useState<TemplateData>();
 
     this.data = activeData;
