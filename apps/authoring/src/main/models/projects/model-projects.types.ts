@@ -1,11 +1,23 @@
-import { Requester, FileSystem } from '../../services';
+import { Requester, FileSystem, InternalStorage } from '../../services';
 
-export interface ProjectEventNew extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'project/new';
+export interface ProjectEventCreate
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  name: '/projects/create';
 }
+
 export interface ProjectEventSave
   extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'project/save';
+  name: '/projects/save';
+}
+
+export interface ProjectEventOpen
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  name: '/projects/open';
+}
+
+export interface ProjectEventList
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  name: '/projects/list';
 }
 
 export interface ProjectEventImport
@@ -14,46 +26,48 @@ export interface ProjectEventImport
 }
 
 export type ProjectEventApi = {
-  new: ProjectEventNew['name'];
+  create: ProjectEventCreate['name'];
   save: ProjectEventSave['name'];
+  open: ProjectEventOpen['name'];
+  list: ProjectEventList['name'];
   import: ProjectEventImport['name'];
 };
 
 export type ProjectEventNames =
-  | ProjectEventNew['name']
+  | ProjectEventCreate['name']
   | ProjectEventSave['name']
+  | ProjectEventOpen['name']
+  | ProjectEventList['name']
   | ProjectEventImport['name'];
 
 export type ProjectEvent =
-  | ProjectEventNew
+  | ProjectEventCreate
   | ProjectEventSave
+  | ProjectEventOpen
+  | ProjectEventList
   | ProjectEventImport;
 
 export type ProjectEvents = {
-  new: ProjectEventNew;
+  create: ProjectEventCreate;
+  onCreate: ProjectEventCreate;
   save: ProjectEventSave;
+  onSave: ProjectEventSave;
+  open: ProjectEventOpen;
+  onOpen: ProjectEventOpen;
+  list: ProjectEventList;
   import: ProjectEventImport;
+  onImport: ProjectEventImport;
 };
 
 /**
  * This interface should be updated once
  * define the actual project structure.
  */
-export interface ProjectData {
-  id: string;
-  createdAt: string;
-  modifiedAt: string;
-  name: string;
-  description: string;
-  theme: string;
-  workingFile?: string;
-  workingDir?: string;
-  workingImports?: Array<string>;
-  saveFile?: string;
-  saveDir?: string;
-}
-
-export interface ProjectDataNew {
+export interface ProjectData extends InternalStorage.StorageData {
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+  opened_at?: string;
   name?: string;
   description?: string;
   theme?: string;
@@ -68,7 +82,7 @@ interface CreateResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    project: ProjectData | ProjectDataNew;
+    project: ProjectData;
   };
 }
 
@@ -81,7 +95,7 @@ interface OpenResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    project: ProjectData | ProjectDataNew;
+    project: ProjectData;
   };
 }
 
@@ -94,7 +108,7 @@ export interface SaveResultSuccess
   extends Omit<FileSystem.FileDataResultSuccess, 'data'> {
   data: {
     filename: string;
-    project: ProjectData | ProjectDataNew;
+    project: ProjectData;
   };
 }
 
@@ -107,7 +121,7 @@ export interface ImportResultSuccess
   extends Omit<FileSystem.DialogOpenResultSuccess, 'data'> {
   data: {
     import: string;
-    project: ProjectData | ProjectDataNew;
+    project: ProjectData;
   };
 }
 

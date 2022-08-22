@@ -1,0 +1,460 @@
+// Scrowl Variables
+@import './bs';
+
+$primarys: (
+  'primary-100': tint-color($primary, 80%),
+  'primary-200': tint-color($primary, 60%),
+  'primary-300': tint-color($primary, 40%),
+  'primary-400': tint-color($primary, 20%),
+  'primary-500': $primary,
+  'primary-600': shade-color($primary, 20%),
+  'primary-700': shade-color($primary, 40%),
+  'primary-800': shade-color($primary, 60%),
+  'primary-900': shade-color($primary, 80%),
+);
+
+$secondarys: (
+  'secondary-100': tint-color($secondary, 80%),
+  'secondary-200': tint-color($secondary, 60%),
+  'secondary-300': tint-color($secondary, 40%),
+  'secondary-400': tint-color($secondary, 20%),
+  'secondary-500': $secondary,
+  'secondary-600': shade-color($secondary, 20%),
+  'secondary-700': shade-color($secondary, 40%),
+  'secondary-800': shade-color($secondary, 60%),
+  'secondary-900': shade-color($secondary, 80%),
+);
+
+$all-colors: map-merge-multiple(
+  $blues,
+  $purples,
+  $pinks,
+  $reds,
+  $oranges,
+  $yellows,
+  $greens,
+  $cyans,
+  $teals,
+  $primarys,
+  $secondarys
+);
+
+@mixin pattern-bg(
+  $type: lines,
+  $size: 10px,
+  $color: currentColor,
+  $bg: transparent
+) {
+  @if $type == checks {
+    background-image: repeating-linear-gradient(
+        45deg,
+        $color 25%,
+        transparent 25%,
+        transparent 75%,
+        $color 75%,
+        $color
+      ),
+      repeating-linear-gradient(
+        45deg,
+        $color 25%,
+        transparent 25%,
+        transparent 75%,
+        $color 75%,
+        $color
+      );
+    background-position: 0 0, #{$size} #{$size};
+    background-size: calc(2 * #{$size}) calc(2 * #{$size});
+  }
+
+  @if $type == grid {
+    background-image: linear-gradient($color 1px, transparent 1px),
+      linear-gradient(90deg, $color 1px, transparent 1px);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == dots {
+    background-image: radial-gradient($color #{$size}, transparent #{$size});
+    background-size: calc(10 * #{$size}) calc(10 * #{$size});
+  }
+
+  @if $type == dots--cross {
+    background-image: radial-gradient($color #{$size}, transparent #{$size}),
+      radial-gradient($color #{$size}, transparent #{$size});
+    background-size: calc(20 * #{$size}) calc(20 * #{$size});
+    background-position: 0 0, calc(10 * #{$size}) calc(10 * #{$size});
+  }
+
+  @if $type == lines {
+    background-image: repeating-linear-gradient(
+      135deg,
+      $color 0,
+      $color 1px,
+      transparent 0,
+      transparent 50%
+    );
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == lines--h {
+    background-image: repeating-linear-gradient(
+      0deg,
+      $color,
+      $color 1px,
+      transparent 1px,
+      transparent
+    );
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == lines--v {
+    background-image: repeating-linear-gradient(
+      to right,
+      $color,
+      $color 1px,
+      transparent 1px,
+      transparent
+    );
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == stripes {
+    background: repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent #{$size},
+      $color #{$size},
+      $color calc(2 * #{$size})
+    );
+  }
+
+  @if $type == stripes--h {
+    background-image: linear-gradient(0deg, transparent 50%, $color 50%);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == stripes--v {
+    background-image: linear-gradient(90deg, transparent 50%, $color 50%);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == zigzag {
+    background: linear-gradient(135deg, $color 25%, transparent 25%) -#{$size} 0,
+      linear-gradient(225deg, $color 25%, transparent 25%) -#{$size} 0,
+      linear-gradient(315deg, $color 25%, transparent 25%),
+      linear-gradient(45deg, $color 25%, transparent 25%);
+    background-size: calc(2 * #{$size}) calc(2 * #{$size});
+  }
+
+  @if $type == triangles {
+    background-image: linear-gradient(45deg, $color 50%, transparent 50%);
+    background-size: #{$size} #{$size};
+  }
+
+  background-color: $bg;
+}
+
+@mixin owlLabelStyle {
+  font-weight: var(--owl-label-weight);
+  letter-spacing: var(--owl-label-letterspacing);
+  text-transform: var(--owl-label-texttransform);
+  color: var(--owl-label-color);
+}
+
+@mixin lightMode {
+  --#{$prefix}body-bg: var(--#{$prefix}gray-100);
+  --#{$prefix}body-color: var(--#{$prefix}gray-900);
+  --#{$prefix}border-color: var(--#{$prefix}gray-500);
+  --#{$prefix}link-color: #{$link-color};
+  --#{$prefix}link-hover-color: #{$link-hover-color};
+
+  // Global
+  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.125);
+  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.0625);
+
+  --owl-input-color: var(--#{$prefix}body-color);
+  --owl-input-bg: var(--#{$prefix}body-bg);
+  --owl-input-placeholder-color: var(--#{$prefix}gray-600);
+  --owl-input-border-color: var(--#{$prefix}gray-400);
+
+  --owl-table-info-color: var(--#{$prefix}gray-900);
+  --owl-table-info-bg: var(--#{$prefix}cyan-100);
+  --owl-table-info-border-color: var(--#{$prefix}border-color);
+
+  --owl-accordion-btn-color: var(--#{$prefix}gray-900);
+  --owl-accordion-btn-bg: var(--#{$prefix}white);
+  --owl-accordion-btn-active-color: var(--#{$prefix}black);
+  --owl-accordion-btn-active-bg: var(--#{$prefix}gray-200);
+
+  --owl-border-color: var(--#{$prefix}gray-500);
+  --owl-border-width: var(--#{$prefix}border-width);
+
+  --owl-dropdown-color: var(--#{$prefix}gray-800);
+  --owl-dropdown-bg: var(--#{$prefix}white);
+  --owl-dropdown-link-color: var(--#{$prefix}gray-900);
+  --owl-dropdown-link-hover-color: var(--#{$prefix}black);
+  --owl-dropdown-link-hover-bg: var(--#{$prefix}gray-200);
+  --owl-dropdown-link-disabled-color: var(--#{$prefix}gray-500);
+
+  --owl-label-color: var(--#{$prefix}gray-600);
+
+  --owl-nav-tab-color: var(--#{$prefix}gray-600);
+  --owl-nav-tab-active-color: var(--#{$prefix}gray-700);
+  --owl-transparent-hover-bg: rgba(0, 0, 0, 0.15);
+
+  // Navbar
+  --owl-navbar-bg: var(--#{$prefix}white);
+  --owl-navbar-color: #{$navbar-light-color};
+  --owl-navbar-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.125);
+  --owl-navbar-hover-color: #{$navbar-light-hover-color};
+  --owl-navbar-disabled-color: #{$navbar-light-disabled-color};
+  --owl-navbar-active-color: #{$navbar-light-active-color};
+
+  // Footer
+  --owl-footer-bg: var(--#{$prefix}gray-900);
+  --owl-footer-color: var(--#{$prefix}white);
+  --owl-footer-label-color: var(--#{$prefix}gray-500);
+  --owl-footer-hover-bg: var(--#{$prefix}gray-700);
+  --owl-footer-hover-color: var(--#{$prefix}white);
+
+  // Sidebar
+  --owl-sidebar-bg: var(--#{$prefix}white);
+  --owl-sidebar-color: var(--#{$prefix}gray-700);
+  --owl-sidebar-hover-bg: var(--#{$prefix}gray-200);
+  --owl-sidebar-hover-color: var(--#{$prefix}black);
+  --owl-sidebar-header-bg: var(--#{$prefix}gray-200);
+  --owl-sidebar-header-color: var(--#{$prefix}black);
+
+  // Chatbox
+  --owl-chatbox-bg: var(--#{$prefix}gray-100);
+  --owl-chatbox-bg-hover: var(--#{$prefix}gray-200);
+
+  // Workspace
+  --owl-workspace-bg: var(--#{$prefix}gray-200);
+  --owl-workspace-bg-accent: rgba(0, 0, 0, 0.05);
+  --owl-workplace-color: var(--#{$prefix}body-color);
+
+  // Template Browser
+  --owl-template-browser-bg: var(--#{$prefix}gray-200);
+  --owl-template-browser-bg-accent: var(--#{$prefix}gray-100);
+  --owl-template-browser-item-bg: var(--#{$prefix}body-bg);
+  --owl-template-browser-active-bg: var(--#{$prefix}body-bg);
+  --owl-template-browser-active-border-color: var(--#{$prefix}primary);
+  --owl-template-browser-active-color: inherit;
+
+  // Color Palette
+  --owl-color-default: var(--#{$prefix}gray-600);
+  --owl-color-module: var(--#{$prefix}purple);
+  --owl-color-lesson: var(--#{$prefix}orange);
+  --owl-color-slide: var(--#{$prefix}yellow);
+  --owl-color-template: var(--#{$prefix}cyan);
+  --owl-color-quiz: var(--#{$prefix}pink);
+
+  --owl-selection-bg: var(--#{$prefix}yellow-100);
+  --owl-selection-color: var(--#{$prefix}yellow-800);
+  --owl-active-bg: var(--#{$prefix}primary);
+  --owl-active-color: var(--#{$prefix}white);
+
+  .btn-ghost-primary {
+    @include button-outline-variant(
+      $gray-700,
+      $color-hover: color-contrast(shade-color($primary, 20%)),
+      $active-background: shade-color($primary, 20%),
+      $active-border: shade-color($primary, 20%),
+      $active-color: color-contrast(shade-color($primary, 20%))
+    );
+
+    --#{$prefix}btn-focus-shadow-rgb: var(--#{$prefix}primary-rgb);
+
+    &:first-child {
+      &:hover,
+      &:focus {
+        & + .dropdown-toggle-split {
+          color: color-contrast(shade-color($primary, 20%));
+          border-color: shade-color($primary, 20%);
+          background: shade-color($primary, 20%);
+        }
+      }
+
+      &:active + .dropdown-toggle-split {
+        box-shadow: var(--#{$prefix}btn-active-shadow),
+          var(--#{$prefix}btn-focus-box-shadow);
+      }
+    }
+  }
+
+  .accordion {
+    --#{$prefix}accordion-btn-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='black'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+    --#{$prefix}accordion-btn-active-icon: var(--#{$prefix}accordion-btn-icon);
+  }
+
+  .btn-close {
+    background: transparent
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='black'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>")
+      center/1em auto no-repeat;
+  }
+}
+
+@mixin darkMode {
+  --#{$prefix}body-bg: var(--#{$prefix}gray-700);
+  --#{$prefix}body-color: var(--#{$prefix}white);
+  --#{$prefix}border-color: var(--#{$prefix}gray-700);
+  --#{$prefix}link-color: var(--#{$prefix}primary-400);
+  --#{$prefix}link-hover-color: var(--#{$prefix}primary-300);
+
+  // Global
+  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.25);
+  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.15);
+
+  --owl-input-bg: var(--#{$prefix}gray-700);
+  --owl-input-placeholder-color: var(--#{$prefix}gray-400);
+  --owl-input-border-color: var(--#{$prefix}black);
+
+  --owl-table-info-color: var(--#{$prefix}cyan-100);
+  --owl-table-info-bg: var(--#{$prefix}cyan-800);
+  --owl-table-info-border-color: var(--#{$prefix}cyan-900);
+
+  --owl-accordion-btn-color: var(--#{$prefix}gray-100);
+  --owl-accordion-btn-bg: var(--#{$prefix}gray-900);
+  --owl-accordion-btn-active-color: var(--#{$prefix}white);
+  --owl-accordion-btn-active-bg: var(--#{$prefix}black);
+
+  --owl-border-color: var(--#{$prefix}black);
+
+  --owl-dropdown-color: var(--#{$prefix}gray-200);
+  --owl-dropdown-bg: var(--#{$prefix}gray-900);
+  --owl-dropdown-link-color: var(--#{$prefix}white);
+  --owl-dropdown-link-hover-color: var(--#{$prefix}white);
+  --owl-dropdown-link-hover-bg: var(--#{$prefix}gray-800);
+  --owl-dropdown-link-disabled-color: var(--#{$prefix}gray-600);
+
+  --owl-label-color: var(--#{$prefix}gray-500);
+
+  --owl-nav-tab-color: var(--#{$prefix}gray-500);
+  --owl-nav-tab-active-color: var(--#{$prefix}gray-100);
+  --owl-transparent-hover-bg: rgba(255, 255, 255, 0.15);
+
+  // Navbar
+  --owl-navbar-bg: var(--#{$prefix}gray-900);
+  --owl-navbar-color: var(--#{$prefix}white);
+  --owl-navbar-box-shadow: 0 1px 0 0 var(--#{$prefix}gray-800);
+  // --owl-navbar-hover-color: #{$navbar-light-hover-color};
+  // --owl-navbar-disabled-color: #{$navbar-light-disabled-color};
+  // --owl-navbar-active-color: #{$navbar-light-active-color};
+
+  // Footer
+  --owl-footer-bg: var(--#{$prefix}gray-700);
+  --owl-footer-color: var(--#{$prefix}gray-100);
+  --owl-footer-label-color: var(--#{$prefix}gray-400);
+  --owl-footer-hover-bg: var(--#{$prefix}gray-800);
+  --owl-footer-hover-color: var(--#{$prefix}white);
+
+  // Sidebar
+  --owl-sidebar-bg: var(--#{$prefix}gray-900);
+  --owl-sidebar-color: var(--#{$prefix}gray-200);
+  --owl-sidebar-hover-bg: var(--#{$prefix}gray-800);
+  --owl-sidebar-hover-color: var(--#{$prefix}white);
+  --owl-sidebar-header-bg: var(--#{$prefix}gray-800);
+  --owl-sidebar-header-color: var(--#{$prefix}gray-500);
+
+  --owl-chatbox-bg: var(--#{$prefix}gray-700);
+  --owl-chatbox-bg-hover: var(--#{$prefix}gray-600);
+
+  // Workspace
+  --owl-workspace-bg: var(--#{$prefix}gray-800);
+  --owl-workspace-bg-accent: rgba(255, 255, 255, 0.08);
+  --owl-workplace-color: var(--#{$prefix}body-color);
+
+  // Template Browser
+  --owl-template-browser-bg: var(--#{$prefix}gray-800);
+  --owl-template-browser-bg-accent: var(--#{$prefix}gray-900);
+  --owl-template-browser-item-bg: var(--#{$prefix}body-bg);
+  --owl-template-browser-active-bg: var(--#{$prefix}body-bg);
+  --owl-template-browser-active-border-color: var(--#{$prefix}primary);
+  --owl-template-browser-active-color: inherit;
+
+  // Color Palette
+  --owl-color-default: var(--#{$prefix}gray-400);
+  // --owl-color-module:    var(--#{$prefix}purple);
+  // --owl-color-lesson:    var(--#{$prefix}orange);
+  // --owl-color-slide:     var(--#{$prefix}yellow);
+  // --owl-color-template:  var(--#{$prefix}cyan);
+  // --owl-color-quiz:      var(--#{$prefix}pink);
+
+  --owl-selection-bg: var(--#{$prefix}yellow-800);
+  --owl-selection-color: var(--#{$prefix}yellow-100);
+  --owl-active-bg: var(--#{$prefix}primary-600);
+  --owl-active-color: var(--#{$prefix}white);
+
+  .btn-ghost-primary {
+    @include button-outline-variant(
+      $gray-300,
+      $color-hover: color-contrast(shade-color($primary, 20%)),
+      $active-background: shade-color($primary, 20%),
+      $active-border: shade-color($primary, 20%),
+      $active-color: color-contrast(shade-color($primary, 20%))
+    );
+
+    --#{$prefix}btn-focus-shadow-rgb: var(--#{$prefix}primary-rgb);
+  }
+
+  .accordion {
+    --#{$prefix}accordion-btn-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+  }
+
+  .btn-close {
+    background: transparent
+      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>")
+      center/1em auto no-repeat;
+  }
+}
+
+:root {
+  @each $key, $value in $all-colors {
+    --#{$variable-prefix}#{$key}: #{$value};
+  }
+
+  --owl-btn-border-radius: #{$btn-border-radius};
+
+  --owl-heading-letterspacing: -0.025em;
+  --owl-heading-lineheight: 1.1;
+
+  --owl-font-size-sm: 0.75rem;
+  --owl-font-size-xs: 0.688rem;
+
+  --owl-cubic-bezier: cubic-bezier(0, 1, 0.5, 1);
+
+  --owl-btn-letterspacing: 0.0125em;
+
+  --owl-grabhandle-width: 1px;
+  --owl-grabhandle-hover-width: 5px;
+
+  --owl-label-letterspacing: 0.025em;
+  --owl-label-weight: 700;
+  --owl-label-texttransform: uppercase;
+
+  --owl-navbar-height: 3.125rem;
+
+  --owl-sidebar-width: 19rem;
+  --owl-sidebar-minwidth: 16rem;
+  --owl-sidebar-spacing: 1rem;
+
+  --owl-workspace-spacing: 1.5rem;
+
+  --owl-footer-height: 2rem;
+
+  @include lightMode();
+
+  &.dark {
+    @include darkMode();
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    @include darkMode();
+
+    &.light {
+      @include lightMode();
+    }
+  }
+}

@@ -1,8 +1,8 @@
-import { ProjectData, ProjectDataNew } from '../../../main/models/project';
+import { ProjectData } from '../../../main/models/projects';
 
-export type ProjectObserverDataFn = React.Dispatch<
-  ProjectData | ProjectDataNew
->;
+export type { ProjectData } from '../../../main/models/projects';
+
+export type ProjectObserverDataFn = React.Dispatch<ProjectData>;
 
 export type ProjectObserverProcessFn = React.Dispatch<boolean>;
 

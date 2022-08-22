@@ -1,27 +1,21 @@
 import { Requester } from '..';
 
-export interface MenuEventNewProject
+export interface MenuEventCreateProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'new-project';
-  name: 'menu/project/new';
+  name: '/projects/create';
 }
 
 export interface MenuEventOpenProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'open-project';
-  name: 'menu/project/open';
+  name: '/projects/open';
 }
 
 export interface MenuEventSaveProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'save-project';
-  name: 'menu/project/save';
-}
-
-export interface MenuEventSaveProjectAs
-  extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'save-project-as';
-  name: 'menu/project/save-as';
+  name: '/projects/save';
 }
 
 export interface MenuEventImportFile
@@ -63,36 +57,32 @@ export interface MenuEventItemEnable
 }
 
 export type MenuItemEventNames =
-  | MenuEventNewProject['name']
+  | MenuEventCreateProject['name']
   | MenuEventOpenProject['name']
   | MenuEventSaveProject['name']
-  | MenuEventSaveProjectAs['name']
   | MenuEventImportFile['name']
   | MenuEventAboutOpen['name']
   | MenuEventPreferencesOpen['name'];
 
 export type MenuItemEvent =
-  | MenuEventNewProject
+  | MenuEventCreateProject
   | MenuEventOpenProject
   | MenuEventSaveProject
-  | MenuEventSaveProjectAs
   | MenuEventImportFile
   | MenuEventAboutOpen
   | MenuEventPreferencesOpen;
 
 export type MenuItemEventsFile = {
-  projectNew: MenuEventNewProject;
+  projectsCreate: MenuEventCreateProject;
   projectOpen: MenuEventOpenProject;
   projectSave: MenuEventSaveProject;
-  projectSaveAs: MenuEventSaveProjectAs;
   importFile: MenuEventImportFile;
 };
 
 export type MenuEventsFileApi = {
-  projectNew: MenuEventNewProject['name'];
+  projectsCreate: MenuEventCreateProject['name'];
   projectOpen: MenuEventOpenProject['name'];
   projectSave: MenuEventSaveProject['name'];
-  projectSaveAs: MenuEventSaveProjectAs['name'];
   importFile: MenuEventImportFile['name'];
   preferencesOpen: MenuEventPreferencesOpen['name'];
 };

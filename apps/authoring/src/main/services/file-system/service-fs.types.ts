@@ -3,7 +3,12 @@ import {
   OpenDialogReturnValue,
   SaveDialogReturnValue,
 } from 'electron';
-import { ApiResultSuccess, ApiResultError, JsonResult } from '../requester';
+import {
+  ApiResultSuccess,
+  ApiResultError,
+  ApiResult,
+  JsonResult,
+} from '../requester';
 
 export interface FileFilters {
   [key: string]: FileFilter;
@@ -38,6 +43,23 @@ export interface FileDataResultSuccess extends Omit<ApiResultSuccess, 'data'> {
 
 export type FileDataResult = FileDataResultSuccess | ApiResultError;
 
+export interface FileFromDirData {
+  projectName?: string;
+  fileLocation: string;
+  modifiedAt: Date;
+  createdAt: Date;
+}
+export interface FileFromDirDataResultSuccess
+  extends Omit<ApiResultSuccess, 'data'> {
+  data: {
+    files: FileFromDirData[];
+  };
+}
+
+export type FileFromDirDataResult =
+  | FileFromDirDataResultSuccess
+  | ApiResultError;
+
 export interface DialogSaveResultSuccess
   extends Omit<ApiResultSuccess, 'data'> {
   data: SaveDialogReturnValue;
@@ -51,3 +73,5 @@ export interface DialogOpenResultSuccess
 }
 
 export type DialogOpenResult = DialogOpenResultSuccess | ApiResultError;
+
+export type FSResult = ApiResult;

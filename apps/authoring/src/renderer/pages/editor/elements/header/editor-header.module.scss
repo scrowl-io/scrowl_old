@@ -1,0 +1,45 @@
+@import '../../../../styles/bs';
+@import '../../../../styles/osg';
+@import '../../../../styles/variables';
+
+.filename {
+  display: inline-grid;
+  align-items: center;
+  position: relative;
+  vertical-align: top;
+  max-width: 50%;
+  padding-right: 0.5rem;
+
+  &::after,
+  input {
+    width: auto;
+    min-width: 1em;
+    grid-area: 1 / 2;
+    padding: $input-btn-padding-y-sm;
+    font-size: $font-size-lg;
+    font-weight: 500;
+    background: none;
+    resize: none;
+  }
+
+  input {
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 2px;
+    border-color: transparent;
+
+    &:hover {
+      border-color: $input-border-color;
+    }
+
+    &:focus {
+      border-color: $input-focus-border-color;
+    }
+  }
+
+  &::after {
+    content: attr(data-value) ' ';
+    visibility: hidden;
+    white-space: pre-wrap;
+  }
+}
