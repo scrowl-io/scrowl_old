@@ -10,7 +10,7 @@ export const PageElement = () => {
   project.ready(); // need to ready the project as the on create event controls the enablement of the template import
   template.ready();
 
-  const projectData = project.useProjectData();
+  const projectData = project.useData();
   const templateData = template.useData();
 
   console.log('projectData', projectData);

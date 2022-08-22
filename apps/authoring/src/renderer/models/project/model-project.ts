@@ -193,7 +193,7 @@ export class Project {
 
     return this.isProcessing;
   };
-  useProjectData = () => {
+  useData = () => {
     const [activeData, setActiveData] = useState<ProjectData>();
 
     this.data = activeData;
