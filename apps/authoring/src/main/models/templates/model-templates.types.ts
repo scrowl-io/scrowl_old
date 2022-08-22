@@ -35,6 +35,7 @@ export type TemplateEventNames =
 
 export type TemplateEvents = {
   import: TemplateEventImport;
+  onImport: TemplateEventImport;
   open: TemplateEventOpen;
   list: TemplateEventList;
   load: TemplateEventLoad;

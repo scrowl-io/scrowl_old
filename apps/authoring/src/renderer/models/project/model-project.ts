@@ -13,13 +13,16 @@ import {
 } from './model-project.types';
 import { requester, Menu } from '../../services';
 
-export const ENDPOINTS: ProjectEventApi = {
+const ENDPOINTS: ProjectEventApi = {
   create: '/projects/create',
   save: '/projects/save',
   open: '/projects/open',
   list: '/projects/list',
   import: 'project/import-file',
 };
+
+export const ENDPOINTS_PROJECT = ENDPOINTS;
+
 export class Project {
   data?: ProjectData;
   isProcessing: boolean;
@@ -103,6 +106,7 @@ export class Project {
         Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
+        Menu.Global.enable(Menu.Global.ITEMS.importTemplate),
       ]).then(() => {
         this.__setData(data);
       });
@@ -112,6 +116,7 @@ export class Project {
         Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),
+        Menu.Global.disable(Menu.Global.ITEMS.importTemplate),
       ]).then(() => {
         this.__setData(data);
       });

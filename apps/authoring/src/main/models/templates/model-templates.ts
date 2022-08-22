@@ -6,22 +6,27 @@ import * as table from './model-templates-schema';
 export const importTemplate = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      resolve({
-        error: false,
+      const result = {
+        error: false as const,
         data: {
           template: {
             name: 'Example Template',
           },
         },
-      });
+      };
+
+      resolve(result);
+      Requester.send(EVENTS.import.name, result);
     } catch (e) {
-      resolve({
-        error: true,
+      const result = {
+        error: true as const,
         message: 'Failed to import template',
         data: {
           trace: e,
         },
-      });
+      };
+      resolve(result);
+      Requester.send(EVENTS.import.name, result);
     }
   });
 };
@@ -76,6 +81,10 @@ export const load = () => {
 
 export const EVENTS: TemplateEvents = {
   import: {
+    name: '/templates/import',
+    type: 'send',
+  },
+  onImport: {
     name: '/templates/import',
     type: 'invoke',
     fn: importTemplate,

@@ -6,6 +6,7 @@ export const ENDPOINTS: MenuEventsFileApi = {
   projectOpen: '/projects/open',
   projectSave: '/projects/save',
   importFile: 'menu/project/import',
+  importTemplate: '/templates/import',
 };
 
 const registerListener = (
@@ -31,9 +32,14 @@ export const onImportFile = (listener: requester.Listener) => {
   registerListener(ENDPOINTS.importFile, listener);
 };
 
+export const onImportTemplate = (listener: requester.Listener) => {
+  registerListener(ENDPOINTS.importTemplate, listener);
+};
+
 export default {
   onProjectCreate,
   onProjectOpen,
   onProjectSave,
   onImportFile,
+  onImportTemplate,
 };
