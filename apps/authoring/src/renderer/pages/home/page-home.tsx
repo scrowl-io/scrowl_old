@@ -20,6 +20,13 @@ export const PageElement = () => {
         return;
       }
 
+      /*
+      Create a project, see a log message
+      After project is created, shut down app and restart
+      Then you'll have console log of recent projects, coming from UE
+      Get UI into home page screen - then we can add interactivity
+      */
+
       setProjectList(res.data.projects);
       console.log('recentProjects', res.data.projects);
     });

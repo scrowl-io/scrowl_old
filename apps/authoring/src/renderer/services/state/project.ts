@@ -2,10 +2,7 @@ import React from 'react';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSlice } from '@reduxjs/toolkit';
 
-import {
-  ProjectData,
-  ProjectDataNew,
-} from '../../../main/models/project/index';
+import { ProjectData } from '../../../main/models/projects/index';
 
 /*
 export const projectsApi = createApi({
@@ -27,7 +24,7 @@ export const projectsApi = createApi({
 
 */
 
-const initialProjectState: ProjectDataNew | ProjectData = {
+const initialProjectState: ProjectData = {
   name: '',
   description: '',
   theme: '',
