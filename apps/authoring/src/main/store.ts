@@ -19,7 +19,7 @@ export type AppDispatch = typeof store.dispatch;
 
 // export const createProject = (state: RootState) => state.project;
 
-export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppDispatch: (data: any) => AppDispatch = useDispatch;
 
 export default store;
 setupListeners(store.dispatch);

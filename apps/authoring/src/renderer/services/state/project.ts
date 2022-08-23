@@ -1,7 +1,5 @@
 import React from 'react';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { createSlice } from '@reduxjs/toolkit';
-
 import { ProjectData } from '../../../main/models/projects/index';
 
 /*

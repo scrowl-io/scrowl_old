@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as styles from './page-editor.module.scss';
 import { Header, PaneDetails } from './elements';
 import { ProjectData } from '../../../main/models/projects/index';
 import { create } from '../../services/state/index';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../store';
+// import { AppDispatch, useAppDispatch } from '../../store';
 
 const project: ProjectData = {
   name: 'new project',
@@ -16,11 +16,22 @@ const project: ProjectData = {
   saveFile: '',
   saveDir: '',
 };
-const dispatch: AppDispatch = (data: any) => useDispatch();
+
 export const PageElement = () => {
+  const [projectData, setProjectData] = useState({});
+  const dispatch = useDispatch();
+
   const handler = () => {
-    dispatch(create(project));
+    window.electronAPI.ipcRenderer.invoke('/projects/create').then(res => {
+      console.log('project create', res);
+      // useAppDispatch(create(res));
+      setProjectData(res);
+      dispatch(create(res));
+    });
   };
+
+  console.log('hanler', projectData);
+
   return (
     <>
       <main className={styles.editor}>
