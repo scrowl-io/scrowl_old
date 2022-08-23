@@ -13,13 +13,16 @@ import {
 } from './model-project.types';
 import { requester, Menu } from '../../services';
 
-export const ENDPOINTS: ProjectEventApi = {
+const ENDPOINTS: ProjectEventApi = {
   create: '/projects/create',
   save: '/projects/save',
   open: '/projects/open',
   list: '/projects/list',
   import: 'project/import-file',
 };
+
+export const ENDPOINTS_PROJECT = ENDPOINTS;
+
 export class Project {
   data?: ProjectData;
   isProcessing: boolean;

@@ -2,7 +2,7 @@ import { PageRoutesProps, PageNavProps } from '..';
 
 export const PageRoutes: PageRoutesProps = {
   base: {
-    url: '/',
+    url: '/home/*',
     label: 'Home',
   },
 };
