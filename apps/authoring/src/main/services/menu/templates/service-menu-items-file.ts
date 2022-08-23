@@ -1,34 +1,30 @@
-import { MenuItemConstructorOptions } from 'electron';
-import { send, registerAll } from '../../requester';
+import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
-import { Project as ProjectModel } from '../../../models/project';
+import { send } from '../../requester';
+import { Project } from '../../../models';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
+// these events are registered by the project model
 export const EVENTS: MenuItemEventsFile = {
-  projectNew: {
+  projectsCreate: {
     id: 'new-project',
-    name: 'menu/project/new',
+    name: '/projects/create',
     type: 'send',
   },
   projectOpen: {
     id: 'open-project',
-    name: 'menu/project/open',
+    name: '/projects/open',
     type: 'send',
   },
   projectSave: {
     id: 'save-project',
-    name: 'menu/project/save',
-    type: 'send',
-  },
-  projectSaveAs: {
-    id: 'save-project-as',
-    name: 'menu/project/save-as',
+    name: '/projects/save',
     type: 'send',
   },
   importFile: {
     id: 'import-file',
-    name: 'menu/project/import',
+    name: 'project/import-file',
     type: 'send',
   },
 };
@@ -38,9 +34,9 @@ export const template: MenuItemConstructorOptions = {
   submenu: [
     {
       label: 'New Project...',
-      id: EVENTS.projectNew.id,
-      click: () => {
-        send(EVENTS.projectNew.name);
+      id: EVENTS.projectsCreate.id,
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        Project.create();
       },
       accelerator: 'CmdOrCtrl+N',
     },
@@ -48,10 +44,8 @@ export const template: MenuItemConstructorOptions = {
     {
       label: 'Open...',
       id: EVENTS.projectOpen.id,
-      click: async () => {
-        const openProjectData = await ProjectModel.open();
-
-        send(EVENTS.projectOpen.name, openProjectData);
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        // TODO refactor this so that FE opens a modal to view all projects
       },
       accelerator: 'CmdOrCtrl+O',
     },
@@ -60,38 +54,25 @@ export const template: MenuItemConstructorOptions = {
       label: 'Save',
       id: EVENTS.projectSave.id,
       enabled: false,
-      click: () => {
-        send(EVENTS.projectSave.name, false);
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        send(EVENTS.projectSave.name);
       },
       accelerator: 'CmdOrCtrl+S',
     },
-    {
-      label: 'Save As...',
-      id: EVENTS.projectSaveAs.id,
-      enabled: false,
-      click: () => {
-        send(EVENTS.projectSaveAs.name, true);
-      },
-      accelerator: 'CmdOrCtrl+Shift+S',
-    },
+    separator,
     {
       label: 'Import File',
       id: EVENTS.importFile.id,
       enabled: false,
-      click: () => {
-        send(EVENTS.importFile.name, true);
+      click: (menuItem, window, ev: KeyboardEvent) => {
+        send(EVENTS.importFile.name);
       },
       accelerator: 'CmdOrCtrl+I',
     },
   ],
 };
 
-export const init = () => {
-  registerAll(EVENTS);
-};
-
 export default {
   EVENTS,
-  init,
   template,
 };

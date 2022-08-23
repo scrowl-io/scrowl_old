@@ -14,12 +14,9 @@ export const createMenu = (
 
   if (isMacOs) {
     template.push(menuApp.template);
-    menuApp.init();
-    EVENTS = Object.assign(EVENTS, menuApp.EVENTS);
   }
 
   template.push(menuFile.template);
-  menuFile.init();
   EVENTS = Object.assign(EVENTS, menuFile.EVENTS);
 
   return {

@@ -2,11 +2,12 @@ import { requester } from '..';
 import { MenuEventsFileApi } from '../../../main/services/menu';
 
 export const ENDPOINTS: MenuEventsFileApi = {
-  projectNew: 'menu/project/new',
-  projectOpen: 'menu/project/open',
-  projectSave: 'menu/project/save',
-  projectSaveAs: 'menu/project/save-as',
-  importFile: 'menu/project/import',
+  projectsCreate: '/projects/create',
+  projectOpen: '/projects/open',
+  projectSave: '/projects/save',
+  importFile: 'project/import-file',
+  preferencesCreate: '/preferences/create',
+  preferencesOpen: '/preferences/open',
 };
 
 const registerListener = (
@@ -16,8 +17,8 @@ const registerListener = (
   requester.on(endpoint, listener);
 };
 
-export const onProjectNew = (listener: requester.Listener) => {
-  registerListener(ENDPOINTS.projectNew, listener);
+export const onProjectCreate = (listener: requester.Listener) => {
+  registerListener(ENDPOINTS.projectsCreate, listener);
 };
 
 export const onProjectOpen = (listener: requester.Listener) => {
@@ -28,18 +29,23 @@ export const onProjectSave = (listener: requester.Listener) => {
   registerListener(ENDPOINTS.projectSave, listener);
 };
 
-export const onProjectSaveAs = (listener: requester.Listener) => {
-  registerListener(ENDPOINTS.projectSaveAs, listener);
-};
-
 export const onImportFile = (listener: requester.Listener) => {
   registerListener(ENDPOINTS.importFile, listener);
 };
 
+export const onPreferencesCreate = (listener: requester.Listener) => {
+  registerListener(ENDPOINTS.preferencesCreate, listener);
+};
+
+export const onPreferencesOpen = (listener: requester.Listener) => {
+  registerListener(ENDPOINTS.preferencesOpen, listener);
+};
+
 export default {
-  onProjectNew,
+  onProjectCreate,
   onProjectOpen,
   onProjectSave,
-  onProjectSaveAs,
   onImportFile,
+  onPreferencesCreate,
+  onPreferencesOpen,
 };

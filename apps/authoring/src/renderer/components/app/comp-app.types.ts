@@ -1,3 +1,4 @@
+import React from 'react';
 import { PageRoutesProps, PageNavProps } from '../../pages';
 
 export interface AppPageProps {
@@ -7,3 +8,5 @@ export interface AppPageProps {
 }
 
 export type AppPages = Array<AppPageProps>;
+
+export type AppMainProps = React.AllHTMLAttributes<HTMLDivElement>;

@@ -1,12 +1,14 @@
-import * as Project from './project';
+import * as Project from './projects';
 import * as Preferences from './preferences';
 
 const models = [Preferences, Project];
 
 export const init = () => {
-  models.forEach(model => {
-    model.init();
+  const inits = models.map(model => {
+    return model.init();
   });
+
+  return Promise.allSettled(inits);
 };
 
 export default {
