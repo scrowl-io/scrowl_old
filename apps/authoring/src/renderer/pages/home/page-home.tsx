@@ -8,7 +8,7 @@ const project = new Project();
 
 export const PageElement = () => {
   project.ready();
-
+  console.log('project model', project);
   const [recentProjects, setProjectList] = useState([]);
   const isProcessing = project.useProcessing();
   const projectModelData = project.useProjectData();

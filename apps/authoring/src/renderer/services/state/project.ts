@@ -23,6 +23,10 @@ export const projectsApi = createApi({
 */
 
 const initialProjectState: ProjectData = {
+  id: '',
+  created_at: '',
+  updated_at: '',
+  opened_at: '',
   name: '',
   description: '',
   theme: '',

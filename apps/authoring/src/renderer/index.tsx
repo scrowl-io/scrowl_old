@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './components/app';
 import { Menu } from './services';
 import { Provider } from 'react-redux';
+import { Project } from './models/project/model-project';
 import store from './store';
 
 const container = document.getElementById('app') as HTMLElement;

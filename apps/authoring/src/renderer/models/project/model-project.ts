@@ -47,7 +47,7 @@ export class Project {
         console.error(result);
         return;
       }
-
+      console.log('menu on create');
       this.__update(result.data.project);
     });
 
@@ -131,6 +131,18 @@ export class Project {
       }
 
       this.__update(result.data.project);
+    });
+  };
+
+  init = () => {
+    this.ready();
+    this.create(1);
+
+    return new Promise(resolve => {
+      resolve({
+        error: false,
+        data: {},
+      });
     });
   };
   list = (limit?: number) => {
