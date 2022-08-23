@@ -3,7 +3,7 @@ import { PreferenceData, PreferenceEvents } from './model-preferences.types';
 import { InternalStorage as IS, Requester, System } from '../../services';
 import * as table from './model-preferences-schema';
 
-export const create = () => {
+export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       System.getPreferences().then(sysRes => {
@@ -29,35 +29,50 @@ export const create = () => {
               preferences,
             },
           };
+
           resolve(result);
-          Requester.send(EVENTS.onCreate.name, result);
+
+          if (!returnOnly) {
+            Requester.send(EVENTS.onCreate.name, result);
+          }
         });
       });
     } catch (e) {
-      resolve({
+      const result = {
         error: true,
         message: 'Failed to create preferences',
         data: {
           trace: e,
         },
-      });
+      };
+
+      resolve(result);
+
+      if (!returnOnly) {
+        Requester.send(EVENTS.onCreate.name, result);
+      }
     }
   });
 };
 
-export const get = () => {
+export const get = (ev: Requester.RequestEvent) => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       IS.read(table.name).then(result => {
-        if (!result.length) {
-          create().then(resolve);
+        if (result.error) {
+          resolve(result);
+          return;
+        }
+
+        if (result.data.items.length !== 0) {
+          create(ev, true).then(resolve);
           return;
         }
 
         resolve({
           error: false,
           data: {
-            preference: result[0],
+            preference: result.data.items[0],
           },
         });
       });

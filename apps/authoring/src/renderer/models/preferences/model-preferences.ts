@@ -1,13 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu } from '../../services';
-import { PreferenceData } from '../../../main/models/preferences';
+import { Menu, requester } from '../../services';
+import {
+  PreferenceData,
+  PreferenceEventApi,
+} from '../../../main/models/preferences';
 import {
   PreferenceObserverDataFn,
   PreferenceObserverProcessFn,
   PreferenceObserverOpenFn,
   PreferenceNavigator,
 } from './model-preferences.types';
+
+const ENDPOINTS: PreferenceEventApi = {
+  create: '/preferences/create',
+  get: '/preferences',
+  save: '/preferences/save',
+  open: '/preferences/open',
+};
+
+export const ENDPOINTS_PREFERENCES = ENDPOINTS;
 
 export class Preferences {
   isReady: boolean;
@@ -111,5 +123,32 @@ export class Preferences {
 
     this.defaultRoute = to || '/settings/theme';
     this.__navigator = navigator;
+  };
+  get = () => {
+    this.__setProcessing(true);
+
+    return new Promise<requester.ApiResult>(resolve => {
+      try {
+        requester.invoke(ENDPOINTS.get).then(result => {
+          if (result.error) {
+            this.__setProcessing(false);
+            resolve(result);
+            return;
+          }
+
+          this.__update(result.data.preference);
+          resolve(result);
+        });
+      } catch (e) {
+        this.__setProcessing(false);
+        resolve({
+          error: true,
+          message: 'Failed to get preferences',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    });
   };
 }
