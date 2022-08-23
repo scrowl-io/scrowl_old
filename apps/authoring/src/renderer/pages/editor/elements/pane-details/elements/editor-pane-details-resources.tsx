@@ -2,41 +2,13 @@ import React from 'react';
 import { Listgroup, Dropdown, Icon } from '@owlui/lib';
 import * as styles from '../editor-pane-details.module.scss';
 import { resourceData } from './mock-data';
+import { ActionMenu, ActionMenuItem } from '../../../../../components';
 
-const ItemActionBtn = (
-  <Icon display="Outlined" icon="more_vert" style={{ fontSize: '15px' }} />
-);
-
-const ItemActionMenu = [
+const resourcesMenuItems: Array<ActionMenuItem> = [
   {
-    id: '1',
-    label: (
-      <div className="dropdown-item-wrapper d-flex align-items-center">
-        <Icon display="Outlined" icon="edit" />
-        <span>Edit</span>
-      </div>
-    ),
-    value: undefined,
-  },
-  {
-    id: '2',
-    label: (
-      <div className="dropdown-item-wrapper d-flex align-items-center">
-        <Icon display="Outlined" icon="zoom_in" />
-        <span>Preview</span>
-      </div>
-    ),
-    value: undefined,
-  },
-  {
-    id: '3',
-    label: (
-      <div className="dropdown-item-wrapper d-flex align-items-center">
-        <Icon display="Outlined" icon="delete" />
-        <span>Delete Resource</span>
-      </div>
-    ),
-    value: undefined,
+    label: 'Add Lesson',
+    icon: 'widgets',
+    iconStyle: 'Outlined',
   },
 ];
 
@@ -53,16 +25,13 @@ const createItem = (
       </div>
 
       <div className="d-flex resource-header-right">
-        <Dropdown
-          title="title"
-          align="start"
-          items={ItemActionMenu}
-          button={ItemActionBtn}
-          className="resources-dropdown"
-          variant="light"
-        >
-          <></>
-        </Dropdown>
+        <div className="resources-dropdown">
+          <ActionMenu
+            menu-items={resourcesMenuItems}
+            title="title"
+            children={<></>}
+          />
+        </div>
       </div>
     </div>
   );

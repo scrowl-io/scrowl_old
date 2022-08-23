@@ -1,5 +1,7 @@
 import React from 'react';
 import * as styles from '../editor-pane-details.module.scss';
+import { ActionMenu, ActionMenuItem } from '../../../../../components';
+
 import { glossaryData } from './mock-data';
 
 export type GlossaryItem = { name: string; description: string };
@@ -9,6 +11,21 @@ export type GlossaryDict = {
     [key: string]: string;
   };
 };
+
+const glossaryTermMenuItems: Array<ActionMenuItem> = [
+  {
+    label: 'Edit',
+    icon: 'edit',
+    iconStyle: 'Outlined',
+    // action: menuItemAction,
+  },
+  {
+    label: 'Delete Term',
+    icon: 'delete',
+    iconStyle: 'Outlined',
+    // action: menuItemAction,
+  },
+];
 
 const createGlossaryDict = (data: GlossaryData) => {
   const glossary: GlossaryDict = {};
@@ -34,7 +51,14 @@ const createGlossaryItems = (data: GlossaryDict) => {
     const glossaryItemElements = entries.map((entry, idxE) => {
       return (
         <div className={styles.tabGlossaryTerm} key={idxE}>
-          <dt className={styles.tabGlossaryTermWord}>{entry}</dt>
+          <div className="d-flex justify-content-between">
+            <dt className={styles.tabGlossaryTermWord}>{entry}</dt>
+            <ActionMenu
+              menu-items={glossaryTermMenuItems}
+              title="title"
+              children={<></>}
+            />
+          </div>
           <dd className={styles.tabGlossaryTermDefinition}>
             {data[heading][entry]}
           </dd>
