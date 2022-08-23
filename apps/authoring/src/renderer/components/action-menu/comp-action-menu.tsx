@@ -20,7 +20,9 @@ const makeActionMenu = (
       label: (
         <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
           <Icon display={item.iconStyle} icon={item.icon} />
-          <span>{item.label}</span>
+          <span onClick={item.action} role="listitem">
+            {item.label}
+          </span>
         </div>
       ),
     };

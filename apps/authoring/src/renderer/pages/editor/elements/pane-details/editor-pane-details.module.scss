@@ -14,7 +14,6 @@
   --bs-nav-tabs-link-active-color: #495057;
   --bs-nav-tabs-link-active-bg: #fafbfc;
   --bs-nav-tabs-link-active-border-color: #dee2e6 #dee2e6 #fafbfc;
-
   font-size: 12px;
   padding-left: var(--bs-nav-link-padding-y);
   padding-right: var(--bs-nav-link-padding-y);
@@ -77,18 +76,30 @@
     border: none;
 
     & .resource-header {
+      &:hover {
+        cursor: pointer;
+
+        .resource-header-link {
+          color: var(--owl-sidebar-hover-color);
+          text-decoration: underline;
+        }
+
+        & .resource-header-right {
+          & .resources-dropdown {
+            & .owlui-btn {
+              opacity: 1;
+              color: var(--owl-nav-tab-active-color);
+            }
+          }
+        }
+      }
+
       & .resource-header-left {
         & .resource-header-link {
           display: inline-block;
           line-height: 1.4;
           font-weight: 500;
           color: inherit;
-
-          &:hover {
-            color: var(--owl-sidebar-hover-color);
-            text-decoration: underline;
-            cursor: pointer;
-          }
         }
 
         & .owlui-icons {
@@ -132,7 +143,7 @@
               background: transparent;
             }
 
-            &:after {
+            &::after {
               display: none;
               margin-left: 0;
               border: none;
@@ -154,7 +165,6 @@
     padding-bottom: 5rem;
 
     & header {
-      position: -webkit-sticky;
       position: sticky;
       top: -1px;
       z-index: 1;
@@ -203,11 +213,11 @@
 
   &__header {
     $ref-header: &;
-
     display: flex;
     padding-right: calc(var(--owl-sidebar-spacing) / 2);
     flex-wrap: nowrap;
     color: var(--owl-sidebar-color);
+    padding-bottom: 0.25em;
 
     &:hover .owlui-dropdown-toggle,
     &:focus .owlui-dropdown-toggle {
@@ -246,11 +256,15 @@
         background: transparent;
       }
 
-      &:after {
+      &::after {
         display: none;
         margin-left: 0;
         border: none;
       }
+    }
+
+    &:hover {
+      background-color: var(--owl-sidebar-hover-bg);
     }
   }
 
@@ -271,11 +285,12 @@
         margin: 0;
         width: auto;
         height: auto;
-        transform: rotate(-90deg);
+        transform: rotate(270deg);
         font-size: 24px;
         align-self: baseline;
         position: absolute;
-        left: 0px;
+        left: 0;
+        transition: transform 0.1s linear;
       }
 
       &--detail {
@@ -284,6 +299,25 @@
         font-size: 0.9rem;
         position: relative;
         top: 0.3rem;
+      }
+    }
+
+    &:hover {
+      text-decoration: underline;
+      color: currentColor;
+    }
+
+    &:focus {
+      color: currentColor;
+    }
+
+    &[aria-expanded='true'] {
+      .tree-view__item__icon--handle {
+        transform: rotate(360deg);
+      }
+
+      span:nth-child(1) {
+        color: var(--bs-link-color);
       }
     }
 

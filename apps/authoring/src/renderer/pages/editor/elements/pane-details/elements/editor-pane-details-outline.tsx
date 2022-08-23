@@ -25,41 +25,52 @@ export type ModuleTreeItem = {
 
 export type ProjectTree = Array<ModuleTreeItem>;
 
+const menuItemAction = (e: React.BaseSyntheticEvent) => {
+  console.log(e.target.firstChild.textContent);
+};
+
 const moduleMenuItems: Array<ActionMenuItem> = [
   {
     label: 'Add Lesson',
     icon: 'widgets',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Rename',
     icon: 'edit',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Duplicate',
     icon: 'content_copy',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Add Module After',
     icon: 'folder',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Move Up',
     icon: 'arrow_upward',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Move Down',
     icon: 'arrow_downward',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Delete Module',
     icon: 'delete',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
 ];
 const lessonMenuItems: Array<ActionMenuItem> = [
@@ -134,7 +145,7 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
         />
       </div>
       <Collapse in={open}>
-        <div className="nav flex-column collapse" id={menuId}>
+        <div className="nav flex-column" id={menuId}>
           {TreeViewSlides(tree.slides, itemId)}
         </div>
       </Collapse>
@@ -178,7 +189,7 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
         />
       </div>
       <Collapse in={open}>
-        <div className="nav flex-column collapse" id={menuId}>
+        <div className="nav flex-column" id={menuId}>
           {TreeViewLessons(tree.lessons, itemId)}
         </div>
       </Collapse>
