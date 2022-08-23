@@ -136,7 +136,7 @@ export class Preferences {
             return;
           }
 
-          this.__update(result.data.preference);
+          this.__update(result.data.preferences);
           resolve(result);
         });
       } catch (e) {
@@ -149,6 +149,18 @@ export class Preferences {
           },
         });
       }
+    });
+  };
+  update = () => {
+    this.__setProcessing(true);
+    requester.invoke(ENDPOINTS.save, this.data).then(result => {
+      if (result.error) {
+        this.__setProcessing(false);
+        console.error(result);
+        return;
+      }
+
+      this.__update(result.data.preferences);
     });
   };
 }

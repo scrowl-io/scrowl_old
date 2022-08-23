@@ -88,7 +88,10 @@ export const get = (ev: Requester.RequestEvent) => {
   });
 };
 
-export const save = (preferences: PreferenceData) => {
+export const save = (
+  ev: Requester.RequestEvent,
+  preferences: PreferenceData
+) => {
   return new Promise<Requester.ApiResult>(resolve => {
     if (!preferences || !preferences.id) {
       resolve({
