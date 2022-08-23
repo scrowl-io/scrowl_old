@@ -24,7 +24,7 @@ export const EVENTS: MenuItemEventsFile = {
   },
   importFile: {
     id: 'import-file',
-    name: 'menu/project/import',
+    name: 'project/import-file',
     type: 'send',
   },
 };
