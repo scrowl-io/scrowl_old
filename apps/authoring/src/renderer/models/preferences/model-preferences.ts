@@ -1,23 +1,51 @@
 import { useState, useEffect } from 'react';
-import { requester } from '../../services';
-import { PreferenceData, CreateResult } from '../../../main/models/preferences';
+import { useNavigate } from 'react-router-dom';
+import { Menu } from '../../services';
+import { PreferenceData } from '../../../main/models/preferences';
 import {
   PreferenceObserverDataFn,
   PreferenceObserverProcessFn,
+  PreferenceObserverOpenFn,
+  PreferenceNavigator,
 } from './model-preferences.types';
 
 export class Preferences {
+  isReady: boolean;
   isProcessing: boolean;
+  isOpen: boolean;
   data?: PreferenceData;
+  defaultRoute?: string;
+  __navigator?: PreferenceNavigator;
   __observerData?: PreferenceObserverDataFn;
   __observerProcess?: PreferenceObserverProcessFn;
+  __observerOpen?: PreferenceObserverOpenFn;
   constructor(data?: PreferenceData) {
+    this.isReady = false;
     this.isProcessing = false;
+    this.isOpen = false;
 
     if (data) {
       this.data = data;
     }
   }
+  ready = () => {
+    if (this.isReady) {
+      return;
+    }
+
+    Menu.File.onPreferencesCreate((ev, result) => {
+      if (result.error) {
+        console.error(result);
+        return;
+      }
+
+      this.__update(result.data.preferences);
+    });
+
+    Menu.File.onPreferencesOpen(() => {
+      this.__navigate();
+    });
+  };
   __setData = (data: PreferenceData) => {
     if (!this.__observerData) {
       return;
@@ -33,6 +61,13 @@ export class Preferences {
 
     this.__observerProcess(state);
   };
+  __navigate = () => {
+    if (!this.__navigator || !this.defaultRoute) {
+      return;
+    }
+
+    this.__navigator(this.defaultRoute);
+  };
   __update = (data: PreferenceData) => {
     if (!this.__observerData) {
       return;
@@ -40,23 +75,6 @@ export class Preferences {
 
     this.__setProcessing(true);
     this.__setData(data);
-  };
-  get = () => {
-    this.__setProcessing(true);
-    return new Promise((resolve, reject) => {
-      requester
-        .invoke('preferences/get')
-        .then((result: CreateResult) => {
-          if (result.error) {
-            resolve(result);
-            return;
-          }
-
-          this.__update(result.data.preferences);
-          resolve(result);
-        })
-        .catch(reject);
-    });
   };
   useProcessing = () => {
     const [isProcessing, setProcessState] = useState<boolean>(false);
@@ -87,5 +105,11 @@ export class Preferences {
     }, [activeData]);
 
     return this.data;
+  };
+  useOpen = (to?: string) => {
+    const navigator = useNavigate();
+
+    this.defaultRoute = to || '/settings/theme';
+    this.__navigator = navigator;
   };
 }

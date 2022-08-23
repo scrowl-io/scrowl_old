@@ -30,13 +30,13 @@ export const PageElement = () => {
           </nav>
 
           <Routes>
-            <Route path="one" element={Theme(preferences)} />
-            <Route path="two" element={Advanced(preferences)} />
+            <Route path="one" element={Theme(preference)} />
+            <Route path="two" element={Advanced(preference)} />
             <Route path="*" element={<Theme />} />
           </Routes>
 
           <div className={styles.buttonContainer}>
-            <button onClick={() => updatePreferences()}>Update</button>
+            {/* <button onClick={() => updatePreferences()}>Update</button> */}
           </div>
         </main>
       )}

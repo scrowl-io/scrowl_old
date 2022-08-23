@@ -1,38 +1,16 @@
 import { MenuItemConstructorOptions } from 'electron';
-import { send, registerAll } from '../../requester';
-import { MenuItemEventsApp } from '../service-menu.types';
+import { Preferences } from '../../../models';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
-
-export const EVENTS: MenuItemEventsApp = {
-  aboutOpen: {
-    id: 'about-open',
-    name: 'menu/about/open',
-    type: 'send',
-  },
-  preferencesOpen: {
-    id: 'preferences-open',
-    name: 'menu/preferences/open',
-    type: 'send',
-  },
-};
 
 export const template: MenuItemConstructorOptions = {
   label: 'Scrowl',
   submenu: [
     {
-      label: 'About Scrowl',
-      id: EVENTS.aboutOpen.id,
-      click: () => {
-        send(EVENTS.aboutOpen.name);
-      },
-    },
-    separator,
-    {
       label: 'Preferences…',
-      id: EVENTS.preferencesOpen.id,
+      id: 'preferences-open',
       click: () => {
-        send(EVENTS.preferencesOpen.name);
+        Preferences.open();
       },
       accelerator: 'CmdOrCtrl+,',
     },
@@ -50,12 +28,6 @@ export const template: MenuItemConstructorOptions = {
   ],
 };
 
-export const init = () => {
-  registerAll(EVENTS);
-};
-
 export default {
-  EVENTS,
-  init,
   template,
 };

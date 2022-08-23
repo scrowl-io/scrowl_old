@@ -5,8 +5,9 @@ export const ENDPOINTS: MenuEventsFileApi = {
   projectsCreate: '/projects/create',
   projectOpen: '/projects/open',
   projectSave: '/projects/save',
-  importFile: 'menu/project/import',
-  preferencesOpen: 'menu/preferences/open',
+  importFile: 'project/import-file',
+  preferencesCreate: '/preferences/create',
+  preferencesOpen: '/preferences/open',
 };
 
 const registerListener = (
@@ -32,6 +33,10 @@ export const onImportFile = (listener: requester.Listener) => {
   registerListener(ENDPOINTS.importFile, listener);
 };
 
+export const onPreferencesCreate = (listener: requester.Listener) => {
+  registerListener(ENDPOINTS.preferencesCreate, listener);
+};
+
 export const onPreferencesOpen = (listener: requester.Listener) => {
   registerListener(ENDPOINTS.preferencesOpen, listener);
 };
@@ -41,5 +46,6 @@ export default {
   onProjectOpen,
   onProjectSave,
   onImportFile,
+  onPreferencesCreate,
   onPreferencesOpen,
 };

@@ -2,13 +2,15 @@ import React from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import * as styles from './styles/comp-app.module.scss';
 import { pageRoutes } from './comp-app-routes';
-import { Editor, PageNavProps } from '../../pages';
 import { TitleBar } from './elements';
+import { Editor, PageNavProps } from '../../pages';
+import { Preferences } from '../../models';
 
 const routeList: PageNavProps = [];
+const preference = new Preferences();
 
-const createRouting = () => {
-  return pageRoutes.map((page, index) => {
+const AppRoutes = () => {
+  const pageRouteElements = pageRoutes.map((page, index) => {
     routeList.push(page.PageRoutes.base);
     return (
       <Route
@@ -18,23 +20,33 @@ const createRouting = () => {
       />
     );
   });
+
+  return (
+    <Routes>
+      {pageRouteElements}
+      <Route path="/" element={<Editor.PageElement />} />
+    </Routes>
+  );
+};
+
+const Main = () => {
+  preference.ready();
+  preference.useOpen();
+
+  return (
+    <>
+      <TitleBar routes={routeList} />
+      <div className={styles.content}>
+        <AppRoutes />
+      </div>
+    </>
+  );
 };
 
 export const App = () => {
-  // const appRoutes = createRouting();
-  // {appRoutes}
-  // <Route
-  //   path="*"
-  //   element={<Navigate to={Home.PageRoutes.base.url} />}
-  // />
   return (
     <Router>
-      <TitleBar routes={routeList} />
-      <div className={styles.content}>
-        <Routes>
-          <Route path="/" element={<Editor.PageElement />} />
-        </Routes>
-      </div>
+      <Main />
     </Router>
   );
 };
