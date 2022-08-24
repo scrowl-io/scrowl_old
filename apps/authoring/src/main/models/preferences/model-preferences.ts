@@ -12,21 +12,21 @@ export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
           return;
         }
         const { theme } = sysRes.data;
-        let preferences: PreferenceData = {
+        let preference: PreferenceData = {
           theme,
         };
 
-        IS.create(table.name, preferences).then(createRes => {
+        IS.create(table.name, preference).then(createRes => {
           if (createRes.error) {
             resolve(createRes);
             return;
           }
 
-          preferences = createRes.data.item;
+          preference = createRes.data.item;
           const result = {
             error: false as const,
             data: {
-              preferences,
+              preference,
             },
           };
 
@@ -64,7 +64,7 @@ export const get = (ev: Requester.RequestEvent) => {
           return;
         }
 
-        if (result.data.items.length !== 0) {
+        if (result.data.items.length === 0) {
           create(ev, true).then(resolve);
           return;
         }

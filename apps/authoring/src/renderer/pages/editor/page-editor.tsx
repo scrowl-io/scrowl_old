@@ -7,6 +7,7 @@ export const PageElement = () => {
     <>
       <main className={styles.editor}>
         <Header />
+
         <div className={styles.workspace}>
           <PaneDetails />
         </div>

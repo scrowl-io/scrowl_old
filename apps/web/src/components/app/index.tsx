@@ -7,6 +7,7 @@ const pages = [pageHome]
 
 const createAppRoutes = () => {
   return pages.map((page, index) => {
+    console.log('page route', page);
     return (
       <Route key={index} path={`${page.Route}`} element={<page.Element />} />
     )
