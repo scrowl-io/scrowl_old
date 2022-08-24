@@ -87,7 +87,7 @@ $display-font-sizes: (
   3: 3.052rem,
   4: 2.441rem,
   5: 1.953rem,
-  6: 1.563rem,
+  6: 1.563rem
 );
 
 $display-font-weight: 700;
@@ -447,8 +447,7 @@ input[type='search'] {
     height: 1.5em;
     width: 1.5em;
     right: -0.75em;
-    background: var(--owl-close-icon);
-    background-size: contain;
+    background: transparent var(--owl-close-icon) center/1em auto no-repeat;
     -webkit-appearance: none;
     cursor: pointer;
   }
@@ -486,6 +485,7 @@ select {
 
 .btn-close {
   color: var(--owl-dropdown-color);
+  background: transparent var(--owl-close-icon) center/1em auto no-repeat;
 }
 
 .form-check-input,
