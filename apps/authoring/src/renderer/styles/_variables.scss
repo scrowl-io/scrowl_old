@@ -1,5 +1,5 @@
 // Scrowl Variables
-@forward './bs';
+@import './bs';
 
 $primarys: (
   'primary-100': tint-color($primary, 80%),
@@ -170,7 +170,7 @@ $all-colors: map-merge-multiple(
   --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.125);
   --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.0625);
 
-  --owl-close-icon: url('/img/close_black.svg');
+  --owl-close-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='black'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>");
 
   --owl-input-color: var(--#{$prefix}body-color);
   --owl-input-bg: var(--#{$prefix}body-bg);
@@ -231,8 +231,13 @@ $all-colors: map-merge-multiple(
 
   // Workspace
   --owl-workspace-bg: var(--#{$prefix}gray-200);
-  --owl-workspace-bg-accent: rgb(0 0 0 / 5%);
-  --owl-workplace-color: var(--#{$prefix}body-color);
+  --owl-workspace-bg-accent: rgba(0, 0, 0, 0.05);
+  --owl-workspace-color: var(--#{$prefix}body-color);
+
+  // Start
+  --owl-start-bg: var(--#{$prefix}gray-100);
+  --owl-start-bg-accent: rgba(0, 0, 0, 0.05);
+  --owl-start-color: var(--#{$prefix}body-color);
 
   // Template Browser
   --owl-template-browser-bg: var(--#{$prefix}gray-200);
@@ -296,12 +301,6 @@ $all-colors: map-merge-multiple(
     --#{$prefix}accordion-btn-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='black'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
     --#{$prefix}accordion-btn-active-icon: var(--#{$prefix}accordion-btn-icon);
   }
-
-  .btn-close {
-    background: transparent
-      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='black'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>")
-      center/0.75em auto no-repeat;
-  }
 }
 
 @mixin darkMode {
@@ -317,7 +316,7 @@ $all-colors: map-merge-multiple(
   --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.25);
   --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.15);
 
-  --owl-close-icon: url('/img/close_white.svg');
+  --owl-close-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>");
 
   --owl-input-bg: var(--#{$prefix}gray-700);
   --owl-input-placeholder-color: var(--#{$prefix}gray-400);
@@ -375,8 +374,13 @@ $all-colors: map-merge-multiple(
 
   // Workspace
   --owl-workspace-bg: var(--#{$prefix}gray-800);
-  --owl-workspace-bg-accent: rgb(255 255 255 / 8%);
-  --owl-workplace-color: var(--#{$prefix}body-color);
+  --owl-workspace-bg-accent: rgba(255, 255, 255, 0.08);
+  --owl-workspace-color: var(--#{$prefix}body-color);
+
+  // Start
+  --owl-start-bg: var(--#{$prefix}gray-800);
+  --owl-start-bg-accent: rgba(255, 255, 255, 0.08);
+  --owl-start-color: var(--#{$prefix}body-color);
 
   // Template Browser
   --owl-template-browser-bg: var(--#{$prefix}gray-800);
@@ -418,12 +422,6 @@ $all-colors: map-merge-multiple(
   .accordion {
     --#{$prefix}accordion-btn-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
   }
-
-  .btn-close {
-    background: transparent
-      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>")
-      center/1em auto no-repeat;
-  }
 }
 
 :root {
@@ -448,6 +446,9 @@ $all-colors: map-merge-multiple(
   --owl-sidebar-minwidth: 16rem;
   --owl-sidebar-spacing: 1rem;
   --owl-workspace-spacing: 1.5rem;
+
+  --owl-start-spacing: 1.5rem;
+
   --owl-footer-height: 2rem;
 
   @include lightMode;
