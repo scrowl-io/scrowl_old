@@ -23,15 +23,19 @@ export const useOpen = (to = '/settings/theme') => {
   });
 };
 
+const processor: State.StateProcessor = {};
+
 export const useInit = () => {
   const isInit = useSelector(
     (state: State.RootState) => state.preferences.isInit
   );
-  const data = useData();
   const isProcessing = useProcessing();
   const dispatch = useDispatch();
 
-  if (isProcessing || Object.keys(data).length) {
+  processor.dispatch = dispatch;
+  processor.isProcessing = isProcessing;
+
+  if (isProcessing || isInit) {
     return isInit;
   }
 
@@ -43,7 +47,7 @@ export const useInit = () => {
       return;
     }
 
-    dispatch(state.update(result.data.preferences));
+    dispatch(state.update(result.data.preference));
     dispatch(state.process(false));
     dispatch(state.init(true));
   });
@@ -51,10 +55,18 @@ export const useInit = () => {
   return isInit;
 };
 
-export const useUpdate = (data: PreferenceData) => {
-  const dispatch = useDispatch();
+export const save = (data: PreferenceData) => {
+  if (!processor.dispatch) {
+    console.error('preference processor not set!');
+    return;
+  }
 
-  dispatch(state.process(true));
+  if (processor.isProcessing) {
+    console.warn('preference update in progress...');
+    return;
+  }
+
+  processor.dispatch(state.process(true));
 
   api.update(data).then(result => {
     if (result.error) {
@@ -62,9 +74,27 @@ export const useUpdate = (data: PreferenceData) => {
       return;
     }
 
-    dispatch(state.update(result.data.preferences));
-    dispatch(state.process(false));
+    processor.dispatch(state.update(result.data.preferences));
+    processor.dispatch(state.process(false));
   });
+};
+
+export const update = (data: PreferenceData, autoSave = false) => {
+  if (!processor.dispatch) {
+    console.error('preference processor not set!');
+    return;
+  }
+
+  if (processor.isProcessing) {
+    console.warn('preference update in progress...');
+    return;
+  }
+
+  if (!autoSave) {
+    processor.dispatch(state.update(data));
+  } else {
+    save(data);
+  }
 };
 
 export default {
@@ -72,5 +102,6 @@ export default {
   useProcessing,
   useOpen,
   useInit,
-  useUpdate,
+  save,
+  update,
 };

@@ -10,7 +10,7 @@ export const config: StateConfig = {
   },
   reducers: {
     update: (state, action) => {
-      state.data = action.payload;
+      state.data = Object.assign(state.data, action.payload);
     },
     process: (state, action) => {
       state.isProcessing = action.payload;

@@ -30,3 +30,8 @@ export type RootState = StateValue;
 export type StateSelector = any | ReturnType<typeof useSelector>;
 
 export type Dispatch = any | ReturnType<typeof useDispatch>;
+
+export type StateProcessor = {
+  dispatch?: Dispatch;
+  isProcessing?: boolean;
+};

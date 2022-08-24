@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import * as styles from './page-settings.module.scss';
 import * as Pages from './pages';
@@ -6,26 +6,12 @@ import { Preferences } from '../../models';
 import { PageNavItems } from './page-settings-routes';
 import { NavigationBar } from '../../components/navigationbar';
 
-// const preference = new Preferences.Preferences();
-
 export const PageElement = () => {
-  // preference.ready();
+  const preference = Preferences.useData();
+  const prefProcessing = Preferences.useProcessing();
 
-  // const preferenceData = preference.useData();
-  // const isProcessing = preference.useProcessing();
-  // const count = preference.useCounter();
-  // const increment = preference.incrementCount;
-
-  // useEffect(() => {
-  //   preference.get().then(result => {
-  //     if (result.error) {
-  //       console.error(result);
-  //     }
-  //   });
-  // }, []);
-
-  const handleSavePreferences = () => {
-    // preference.update();
+  const handleSave = () => {
+    Preferences.save(preference);
   };
 
   return (
@@ -39,23 +25,19 @@ export const PageElement = () => {
           <Link to={Pages.Advanced.route}>Advanced</Link>
         </nav>
 
-        {/* <Routes>
-          <Route
-            path={Pages.Theme.route}
-            element={<Pages.Theme.Element preferences={preferenceData} />}
-          />
+        <Routes>
+          <Route path={Pages.Theme.route} element={<Pages.Theme.Element />} />
           <Route
             path={Pages.Advanced.route}
-            element={<Pages.Advanced.Element preferences={preferenceData} />}
+            element={<Pages.Advanced.Element />}
           />
-          <Route
-            path="*"
-            element={<Pages.Theme.Element preferences={preferenceData} />}
-          />
-        </Routes> */}
+          <Route path="*" element={<Pages.Theme.Element />} />
+        </Routes>
 
         <div className={styles.buttonContainer}>
-          <button onClick={handleSavePreferences}>Save</button>
+          <button onClick={() => handleSave()}>
+            {prefProcessing ? 'Saving...' : 'Save'}
+          </button>
         </div>
       </main>
     </>
