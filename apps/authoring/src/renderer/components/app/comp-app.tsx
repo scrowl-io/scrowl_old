@@ -9,7 +9,6 @@ import { Editor, PageNavProps } from '../../pages';
 import { Preferences } from '../../models';
 
 const routeList: PageNavProps = [];
-const preference = new Preferences.Preferences();
 
 const AppRoutes = () => {
   const pageRouteElements = pageRoutes.map((page, index) => {
@@ -32,8 +31,7 @@ const AppRoutes = () => {
 };
 
 const Main = (props: AppMainProps) => {
-  preference.ready();
-  preference.useOpen();
+  Preferences.useOpen();
 
   return (
     <div {...props}>
@@ -50,32 +48,27 @@ export const Loader = () => {
 };
 
 export const App = () => {
+  const preference = Preferences.useData();
+  const prefInit = Preferences.useInit();
   const [appTheme, setAppTheme] = useState('');
-  const [appInit, setAppState] = useState(false);
+  const [appInit, setAppInit] = useState(false);
+  const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
-    const initializations = [Menu.Global.init(), preference.get()];
+    const initializations = [Menu.Global.init()];
 
-    Promise.allSettled(initializations).then(([menuInit, prefInit]) => {
-      if (prefInit.status === 'rejected') {
-        console.error(`Failed to initialize preferences`);
-        return;
-      }
-
-      const prefRes = prefInit.value;
-
-      if (prefRes.error) {
-        console.error(prefRes);
-        return;
-      }
-
-      setAppTheme(`theme--${prefRes.data.preferences.theme}`);
-      setAppState(true);
+    Promise.allSettled(initializations).then(([menuInit]) => {
+      setAppInit(true);
     });
-  }, [appInit, appTheme]);
+
+    if (appInit && prefInit) {
+      setAppTheme(`theme--${preference.theme}`);
+      setAppReady(true);
+    }
+  }, [appInit, appTheme, preference, prefInit]);
 
   return (
-    <Router>{appInit ? <Main className={appTheme} /> : <Loader />}</Router>
+    <Router>{appReady ? <Main className={appTheme} /> : <Loader />}</Router>
   );
 };
 

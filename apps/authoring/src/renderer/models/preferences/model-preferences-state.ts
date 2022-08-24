@@ -4,20 +4,26 @@ import { StateConfig } from '../../services/state/service-state.types';
 export const config: StateConfig = {
   name: 'preferences',
   initialState: {
-    value: 0,
+    data: {},
+    isProcessing: false,
+    isInit: false,
   },
   reducers: {
-    increment: (state, action) => {
-      const increase = action.payload ? action.payload : 1;
-
-      state.value += increase;
+    update: (state, action) => {
+      state.data = action.payload;
+    },
+    process: (state, action) => {
+      state.isProcessing = action.payload;
+    },
+    init: (state, action) => {
+      state.isInit = action.payload;
     },
   },
 };
 
 export const slice = createSlice(config);
 
-export const { increment } = slice.actions;
+export const { update, process, init } = slice.actions;
 
 export const reducer = slice.reducer;
 

@@ -6,66 +6,58 @@ import { Preferences } from '../../models';
 import { PageNavItems } from './page-settings-routes';
 import { NavigationBar } from '../../components/navigationbar';
 
-const preference = new Preferences.Preferences();
+// const preference = new Preferences.Preferences();
 
 export const PageElement = () => {
-  preference.ready();
+  // preference.ready();
 
-  const preferenceData = preference.useData();
-  const isProcessing = preference.useProcessing();
-  const count = preference.useCounter();
-  const increment = preference.incrementCount;
+  // const preferenceData = preference.useData();
+  // const isProcessing = preference.useProcessing();
+  // const count = preference.useCounter();
+  // const increment = preference.incrementCount;
 
-  useEffect(() => {
-    preference.get().then(result => {
-      if (result.error) {
-        console.error(result);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   preference.get().then(result => {
+  //     if (result.error) {
+  //       console.error(result);
+  //     }
+  //   });
+  // }, []);
 
   const handleSavePreferences = () => {
-    preference.update();
+    // preference.update();
   };
 
   return (
     <>
       <NavigationBar pages={PageNavItems} />
-      {isProcessing ? (
-        <div>Loading...</div>
-      ) : (
-        <main className={styles.settings}>
-          <h1>
-            Settings Page <span>{count}</span>
-          </h1>
+      <main className={styles.settings}>
+        <h1>Settings Page</h1>
 
-          <button onClick={() => increment(1)}>+1 count</button>
+        <nav>
+          <Link to={Pages.Theme.route}>Theme</Link>
+          <Link to={Pages.Advanced.route}>Advanced</Link>
+        </nav>
 
-          <nav>
-            <Link to={Pages.Theme.route}>Theme</Link>
-            <Link to={Pages.Advanced.route}>Advanced</Link>
-          </nav>
+        {/* <Routes>
+          <Route
+            path={Pages.Theme.route}
+            element={<Pages.Theme.Element preferences={preferenceData} />}
+          />
+          <Route
+            path={Pages.Advanced.route}
+            element={<Pages.Advanced.Element preferences={preferenceData} />}
+          />
+          <Route
+            path="*"
+            element={<Pages.Theme.Element preferences={preferenceData} />}
+          />
+        </Routes> */}
 
-          <Routes>
-            <Route
-              path={Pages.Theme.route}
-              element={<Pages.Theme.Element preferences={preferenceData} />}
-            />
-            <Route
-              path={Pages.Advanced.route}
-              element={<Pages.Advanced.Element preferences={preferenceData} />}
-            />
-            <Route
-              path="*"
-              element={<Pages.Theme.Element preferences={preferenceData} />}
-            />
-          </Routes>
-
-          <div className={styles.buttonContainer}>
-            <button onClick={handleSavePreferences}>Save</button>
-          </div>
-        </main>
-      )}
+        <div className={styles.buttonContainer}>
+          <button onClick={handleSavePreferences}>Save</button>
+        </div>
+      </main>
     </>
   );
 };
