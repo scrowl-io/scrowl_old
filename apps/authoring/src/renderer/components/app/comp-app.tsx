@@ -9,7 +9,7 @@ import { Editor, PageNavProps } from '../../pages';
 import { Preferences } from '../../models';
 
 const routeList: PageNavProps = [];
-const preference = new Preferences();
+const preference = new Preferences.Preferences();
 
 const AppRoutes = () => {
   const pageRouteElements = pageRoutes.map((page, index) => {

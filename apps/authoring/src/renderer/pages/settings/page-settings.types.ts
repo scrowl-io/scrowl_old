@@ -1,8 +1,8 @@
 import React from 'react';
-import { PreferenceData } from '../../models';
+import { Preferences } from '../../models';
 
 export interface SubPageCommons {
-  preferences: PreferenceData;
+  preferences: Preferences.PreferenceData;
 }
 
 export type SubPageProps = Partial<SubPageCommons> &

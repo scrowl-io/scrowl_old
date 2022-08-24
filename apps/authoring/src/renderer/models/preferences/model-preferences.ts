@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Menu, requester } from '../../services';
+import { useDispatch, useSelector } from 'react-redux';
+import { Menu, requester, State } from '../../services';
 import {
   PreferenceData,
   PreferenceEventApi,
@@ -11,6 +12,7 @@ import {
   PreferenceObserverOpenFn,
   PreferenceNavigator,
 } from './model-preferences.types';
+import { increment } from './model.preferences-state';
 
 const ENDPOINTS: PreferenceEventApi = {
   create: '/preferences/create',
@@ -27,6 +29,8 @@ export class Preferences {
   isOpen: boolean;
   data?: PreferenceData;
   defaultRoute?: string;
+  counter?: State.StateSelector;
+  dispatch?: State.Dispatch;
   __navigator?: PreferenceNavigator;
   __observerData?: PreferenceObserverDataFn;
   __observerProcess?: PreferenceObserverProcessFn;
@@ -123,6 +127,21 @@ export class Preferences {
 
     this.defaultRoute = to || '/settings/theme';
     this.__navigator = navigator;
+  };
+  useCounter = () => {
+    this.counter = useSelector(
+      (state: State.RootState) => state.preferences.value
+    );
+    this.dispatch = useDispatch();
+
+    return this.counter;
+  };
+  incrementCount = (amount = 1) => {
+    if (!this.dispatch) {
+      return;
+    }
+
+    this.dispatch(increment(amount));
   };
   get = () => {
     this.__setProcessing(true);
