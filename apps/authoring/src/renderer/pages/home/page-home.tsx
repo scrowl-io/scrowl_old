@@ -24,17 +24,7 @@ export const PageElement = () => {
         console.warn(res);
         return;
       }
-<<<<<<< HEAD
-=======
 
-      /*
-      Create a project, see a log message
-      After project is created, shut down app and restart
-      Then you'll have console log of recent projects, coming from UE
-      Get UI into home page screen - then we can add interactivity
-      */
-
->>>>>>> main
       setProjectList(res.data.projects);
     });
   }, []);
@@ -156,3 +146,10 @@ export const PageElement = () => {
 export default {
   PageElement,
 };
+
+/*
+      Create a project, see a log message
+      After project is created, shut down app and restart
+      Then you'll have console log of recent projects, coming from UE
+      Get UI into home page screen - then we can add interactivity
+      */

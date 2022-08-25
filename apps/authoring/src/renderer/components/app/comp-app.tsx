@@ -68,11 +68,7 @@ export const App = () => {
   }, [appInit, appTheme, preference, prefInit]);
 
   return (
-<<<<<<< HEAD
-    <Router>{!appInit ? <Main className={appTheme} /> : <Loader />}</Router>
-=======
-    <Router>{appReady ? <Main className={appTheme} /> : <Loader />}</Router>
->>>>>>> main
+    <Router>{appInit ? <Main className={appTheme} /> : <Loader />}</Router>
   );
 };
 
