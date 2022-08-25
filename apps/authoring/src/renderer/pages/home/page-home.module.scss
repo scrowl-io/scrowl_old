@@ -4,8 +4,8 @@
     padding-left: 0.25rem;
 
     &__icon {
-      font-size: inherit;
-      margin-right: 0.5rem;
+        font-size: inherit;
+        margin-right: 0.5rem;
     }
   }
 
@@ -20,18 +20,48 @@
   }
 }
 
+.owlui-icons-outlined{
+  color: var(--bs-primary) !important ;
+  margin-right: 0.5rem;
+}
+
+svg{
+  margin: .25rem 1rem 0 0;
+}
+
 .main {
   height: calc(100vh - 40px);
   width: 100vw;
+  padding: 1rem;
   background-color: var(--bs-gray-200);
   overflow-x: hidden;
   overflow-y: auto;
 }
 
+.section-title-wrap{
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
 .section-title {
   font-weight: bold;
+  // color: var(--bs-primary);
+  color: #000000;
+  margin-bottom: 1rem;
+}
+
+.section-link {
   color: var(--bs-primary);
   margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  text-decoration: none;
+  border: none;
+  background-color: transparent;
+
+  &:hover{
+    text-decoration: underline;
+  }
 }
 
 .section-row {

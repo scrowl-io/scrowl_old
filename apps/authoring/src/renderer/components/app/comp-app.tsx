@@ -5,7 +5,7 @@ import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
 import { TitleBar } from './elements';
 import { Menu } from '../../services';
-import { Editor, PageNavProps } from '../../pages';
+import { Home, Editor, PageNavProps } from '../../pages';
 import { Preferences } from '../../models';
 
 const routeList: PageNavProps = [];
@@ -26,7 +26,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       {pageRouteElements}
-      <Route path="/" element={<Editor.PageElement />} />
+      <Route path="/" element={<Home.PageElement />} />
     </Routes>
   );
 };
@@ -75,7 +75,7 @@ export const App = () => {
   }, [appInit, appTheme]);
 
   return (
-    <Router>{appInit ? <Main className={appTheme} /> : <Loader />}</Router>
+    <Router>{!appInit ? <Main className={appTheme} /> : <Loader />}</Router>
   );
 };
 
