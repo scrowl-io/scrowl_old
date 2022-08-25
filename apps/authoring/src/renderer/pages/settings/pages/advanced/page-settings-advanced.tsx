@@ -1,11 +1,27 @@
 import React from 'react';
-import { SubPageProps } from '../../page-settings.types';
+import { Preferences } from '../../../../models';
 
 export const route = 'advanced';
 
-export const Element = (props: SubPageProps) => {
-  console.log('advanced prefs', props.preferences);
-  return <div>This is the advanced preferences page</div>;
+export const Element = () => {
+  const preference = Preferences.useData();
+
+  console.log('advanced prefs', preference);
+
+  const handleChangeTheme = () => {
+    const theme = preference.theme === 'light' ? 'dark' : 'light';
+
+    Preferences.update({ theme });
+  };
+
+  return (
+    <div>
+      <p>This is the advanced preferences page</p>
+      <button onClick={handleChangeTheme}>
+        Change Theme {preference.theme}
+      </button>
+    </div>
+  );
 };
 
 export default {
