@@ -2,44 +2,156 @@
 @import '../../../../styles/osg';
 @import '../../../../styles/variables';
 
-.filename {
-  display: inline-grid;
-  align-items: center;
-  position: relative;
-  vertical-align: top;
-  max-width: 50%;
-  padding-right: 0.5rem;
+.toolbar {
+  padding-top: 2em;
 
-  &::after,
-  input {
-    width: auto;
-    min-width: 1em;
-    grid-area: 1 / 2;
-    padding: $input-btn-padding-y-sm;
-    font-size: $font-size-lg;
-    font-weight: 500;
-    background: none;
-    resize: none;
+  .filename {
+    display: inline-grid;
+    align-items: center;
+    position: relative;
+    vertical-align: top;
+    padding-right: 0.5rem;
+
+    &::after,
+    input {
+      width: auto;
+      min-width: 1em;
+      grid-area: 1 / 2;
+      padding: $input-btn-padding-y-sm;
+      font-size: $font-size-lg;
+      font-weight: 500;
+      background: none;
+      resize: none;
+    }
+
+    input {
+      padding-top: 0;
+      padding-bottom: 0;
+      border-width: 2px;
+      border-color: transparent;
+
+      &:hover {
+        border-color: $input-border-color;
+      }
+
+      &:focus {
+        border-color: $input-focus-border-color;
+      }
+    }
+
+    &::after {
+      content: attr(data-value) ' ';
+      visibility: hidden;
+      white-space: pre-wrap;
+    }
   }
 
-  input {
-    padding-top: 0;
-    padding-bottom: 0;
-    border-width: 2px;
-    border-color: transparent;
+  .publish-button {
+    display: flex;
+    background-color: #007aba;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 0.25em !important;
+    font-weight: 700;
+    width: 7em;
+    height: 75%;
+
+    span {
+      color: white;
+      font-weight: 700;
+    }
 
     &:hover {
-      border-color: $input-border-color;
+      background-color: #006295;
+    }
+  }
+}
+
+.publish-drawer {
+  top: 1.5em !important;
+  display: grid;
+  min-height: 100%;
+  grid-auto-flow: row;
+  grid-template-rows: auto 1fr;
+  transition: transform 0.15s ease-in-out;
+
+  .owlui-offcanvas-header {
+    border-bottom: var(--owl-border-color) solid var(--owl-border-width);
+
+    div,
+    h4 {
+      margin-bottom: 0;
     }
 
-    &:focus {
-      border-color: $input-focus-border-color;
+    h4 {
+      font-weight: 700;
+      font-size: 1.3em;
+    }
+
+    .btn-close {
+      width: 0.5em;
+      height: 0.5em;
     }
   }
 
-  &::after {
-    content: attr(data-value) ' ';
-    visibility: hidden;
-    white-space: pre-wrap;
+  label {
+    font-size: var(--owl-font-size-sm);
+    font-weight: var(--owl-label-weight);
+    text-transform: uppercase;
+    color: var(--owl-label-color);
+    letter-spacing: var(--owl-label-letterspacing);
+  }
+
+  .owlui-accordion-item {
+    border-radius: 0;
+
+    .owlui-accordion-button {
+      font-weight: 600;
+      font-size: 0.9em;
+      border-radius: 0;
+
+      &:focus {
+        border: 0;
+        box-shadow: none;
+      }
+
+      &::after {
+        color: black;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .owlui-accordion-button:not(.collapsed) {
+    background-color: lightgray;
+    color: black;
+
+    &:focus {
+      border: 0;
+      box-shadow: none;
+    }
+
+    &::after {
+      color: black;
+    }
+  }
+
+  &__button {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-weight: 700;
+    width: 7em;
+    float: right;
+    margin-top: 1em;
+    border-radius: var(--owl-btn-border-radius);
+
+    span {
+      color: white;
+      font-weight: 700;
+    }
   }
 }
