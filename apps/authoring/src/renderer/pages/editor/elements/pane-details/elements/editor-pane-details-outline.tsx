@@ -119,6 +119,7 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
   const [open, setOpen] = useState(false);
   const itemId = `${id}-lesson-item`;
   const menuId = `${id}-lesson-menu`;
+  console.log(styles);
   return (
     <div className={styles.treeViewLesson} key={id}>
       <div className={styles.treeViewHeader}>
@@ -130,13 +131,15 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
           onClick={() => setOpen(!open)}
           variant="link"
         >
-          <span className={styles.treeViewItemIconHandle}>
-            <Icon icon="arrow_drop_down" display="Filled" />
-          </span>
-          <span className={styles.treeViewItemIconDetail}>
-            <Icon icon="widgets" display="Outlined" />
-          </span>
-          <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          <div className="lesson-icons">
+            <span className={styles.treeViewItemIconHandle}>
+              <Icon icon="arrow_drop_down" display="Filled" />
+            </span>
+            <span className={styles.treeViewItemIconDetail}>
+              <Icon icon="widgets" display={open ? 'Outlined' : 'Filled'} />
+            </span>
+            <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          </div>
         </Button>
         <ActionMenu
           menu-items={lessonMenuItems}
@@ -174,13 +177,15 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
           onClick={() => setOpen(!open)}
           variant="link"
         >
-          <span className={styles.treeViewItemIconHandle}>
-            <Icon icon="arrow_drop_down" display="Filled" />
-          </span>
-          <span className={styles.treeViewItemIconDetail}>
-            <Icon icon="folder" display="Filled" />
-          </span>
-          <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          <div className="module-icons">
+            <span className={styles.treeViewItemIconHandle}>
+              <Icon icon="arrow_drop_down" display="Filled" />
+            </span>
+            <span className={styles.treeViewItemIconDetail}>
+              <Icon icon="folder" display={open ? 'Outlined' : 'Filled'} />
+            </span>
+            <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          </div>
         </Button>
         <ActionMenu
           menu-items={moduleMenuItems}

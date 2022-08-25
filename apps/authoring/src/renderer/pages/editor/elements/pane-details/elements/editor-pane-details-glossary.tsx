@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as styles from '../editor-pane-details.module.scss';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
 
 import { glossaryData } from './mock-data';
+import { Icon, Drawer, DrawerProps, Button } from '@owlui/lib';
+import { GlossaryForm } from './forms/glossary-form';
 
 export type GlossaryItem = { name: string; description: string };
 export type GlossaryData = Array<GlossaryItem>;
@@ -17,13 +19,11 @@ const glossaryTermMenuItems: Array<ActionMenuItem> = [
     label: 'Edit',
     icon: 'edit',
     iconStyle: 'Outlined',
-    // action: menuItemAction,
   },
   {
     label: 'Delete Term',
     icon: 'delete',
     iconStyle: 'Outlined',
-    // action: menuItemAction,
   },
 ];
 
@@ -74,6 +74,45 @@ const createGlossaryItems = (data: GlossaryDict) => {
   });
 };
 
+const AddGlossaryTermButton = () => {
+  const [toggleDrawer, setToggleDrawer] = useState(false);
+
+  const glossaryDrawer: DrawerProps = {
+    header: {
+      content: <h4>Add Glossary Term</h4>,
+      bsProps: {
+        closeButton: true,
+        className: styles.owluiOffcanvasHeader,
+      },
+    },
+    body: <GlossaryForm show={toggleDrawer} setShow={setToggleDrawer} />,
+  };
+
+  const toggleShow = () => {
+    setToggleDrawer(!toggleDrawer);
+  };
+
+  return (
+    <div className={styles.owlStickyAddItem}>
+      <Button
+        className={styles.owlStickyAddItemButton}
+        data-bs-toggle="offcanvas"
+        data-bs-target="#addResource"
+        aria-controls="addResource"
+        onClick={toggleShow}
+      >
+        Add a new term to the glossary... <Icon icon="add_circle" />
+      </Button>
+      <Drawer
+        drawer={glossaryDrawer}
+        show={toggleDrawer}
+        onHide={toggleShow}
+        className={styles.tabGlossaryOwlOffcanvasForm}
+      />
+    </div>
+  );
+};
+
 export const TabGlossary = () => {
   const glossaryDict = createGlossaryDict(glossaryData);
   const glossaryItems = createGlossaryItems(glossaryDict);
@@ -81,6 +120,7 @@ export const TabGlossary = () => {
   return (
     <div className={styles.tabGlossary}>
       <dl className={styles.tabGlossaryList}>{glossaryItems}</dl>
+      <AddGlossaryTermButton />
     </div>
   );
 };
