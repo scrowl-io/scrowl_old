@@ -1,5 +1,6 @@
 import React from 'react';
 import { Preferences } from '../../../../models';
+import { api } from '../../../../models/preferences';
 
 export const route = 'advanced';
 
@@ -14,12 +15,17 @@ export const Element = () => {
     Preferences.update({ theme });
   };
 
+  const handleSetProjectSavePath = () => {
+    api.systemUpdate({ projectPathDialog: true });
+  };
+
   return (
     <div>
       <p>This is the advanced preferences page</p>
       <button onClick={handleChangeTheme}>
         Change Theme {preference.theme}
       </button>
+      <button onClick={handleSetProjectSavePath}>Project Path</button>
     </div>
   );
 };

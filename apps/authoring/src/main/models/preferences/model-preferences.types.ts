@@ -20,11 +20,17 @@ export interface PreferenceEventOpen
   name: '/preferences/open';
 }
 
+export interface PreferenceEventSystemUpdate
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  name: '/preferences/systemUpdate';
+}
+
 export type PreferenceEventApi = {
   create: PreferenceEventCreate['name'];
   get: PreferenceEventGet['name'];
   save: PreferenceEventSave['name'];
   open: PreferenceEventOpen['name'];
+  systemUpdate: PreferenceEventSystemUpdate['name'];
 };
 
 export type PreferenceEventNames =
@@ -39,6 +45,7 @@ export type PreferenceEvents = {
   get: PreferenceEventGet;
   save: PreferenceEventSave;
   open: PreferenceEventOpen;
+  systemUpdate: PreferenceEventSystemUpdate;
 };
 
 export interface PreferenceData extends InternalStorage.StorageData {
@@ -46,4 +53,5 @@ export interface PreferenceData extends InternalStorage.StorageData {
   created_at?: string;
   updated_at?: string;
   theme?: 'dark' | 'light';
+  projectPathDialog?: boolean;
 }

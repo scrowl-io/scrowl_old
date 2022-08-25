@@ -1,7 +1,50 @@
 .settings {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   height: 100%;
   background-color: var(--bs-gray-200);
+}
+
+.settingsHeaderContainerr {
+  height: 50px;
+  border-top: var(--owl-border-width) var(--owl-border-color) solid;
+  border-bottom: var(--owl-border-width) var(--owl-border-color) solid;
+  padding: 2px 8px;
+}
+
+.settingsLeftPane {
+  display: flex;
+  flex-direction: column;
+  width: var(--owl-sidebar-width);
+  border: var(--owl-border-width) var(--owl-border-color) solid;
+  border-top: none;
+  background-color: white;
+}
+
+.settingsNavLink {
+  text-decoration: none;
+  padding-left: 16px;
+  border-bottom: var(--owl-border-width) var(--owl-border-color) solid;
+}
+
+.settingsRightPane {
+  width: 100%;
+  position: relative;
+}
+
+.settingsContent {
+  padding: 1rem;
+}
+
+.settingsSaveButtonContainer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 0.5rem;
+
+  button {
+    // position: absolute;
+    right: 0;
+  }
 }

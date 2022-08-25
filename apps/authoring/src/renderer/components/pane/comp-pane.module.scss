@@ -28,7 +28,7 @@
   }
 
   &__heading {
-    @include owlLabelStyle();
+    @include owlLabelStyle;
     display: flex;
     align-items: center;
     justify-content: space-between;

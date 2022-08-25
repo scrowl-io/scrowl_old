@@ -57,6 +57,11 @@ export const App = () => {
   const [appInit, setAppInit] = useState(false);
   const [appReady, setAppReady] = useState(false);
 
+  // const computeTheme = useCallback(() => {
+  //   const systemTheme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+  //   return preference.theme === 'system' ? systemTheme : preference.theme;
+  // }, [preference.theme]);
+
   useEffect(() => {
     let ready = false;
     const initializations = [Menu.Global.init()];
@@ -78,7 +83,6 @@ export const App = () => {
       ready = true;
     };
   }, [appInit, appTheme, preference, prefInit, projectInit]);
-
   return (
     <Router>{appReady ? <Main className={appTheme} /> : <Loader />}</Router>
   );

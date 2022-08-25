@@ -1,7 +1,7 @@
 import { nativeTheme } from 'electron';
 import { ApiResult } from '../requester';
 
-export const getPreferences = () => {
+export const getSystemTheme = () => {
   return new Promise<ApiResult>(resolve => {
     try {
       const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
@@ -25,5 +25,5 @@ export const getPreferences = () => {
 };
 
 export default {
-  getPreferences,
+  getSystemTheme,
 };

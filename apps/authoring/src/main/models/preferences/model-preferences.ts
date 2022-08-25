@@ -2,11 +2,13 @@ import { Model } from '../model.types';
 import { PreferenceData, PreferenceEvents } from './model-preferences.types';
 import { InternalStorage as IS, Requester, System } from '../../services';
 import * as table from './model-preferences-schema';
+import { dialog } from 'electron';
+import { resolve } from 'path';
 
 export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      System.getPreferences().then(sysRes => {
+      System.getSystemTheme().then(sysRes => {
         if (sysRes.error) {
           resolve(sysRes);
           return;
@@ -140,6 +142,33 @@ export const save = (
   });
 };
 
+export const systemUpdate = (
+  ev: Requester.RequestEvent,
+  preferences: PreferenceData
+) => {
+  return new Promise<Requester.ApiResult>(resolve => {
+    if (!preferences || !preferences.projectPathDialog) {
+      resolve({
+        error: true,
+        message: 'Unable to save preference: id required',
+      });
+      return;
+    }
+
+    dialog
+      .showOpenDialog({
+        properties: ['openFile', 'openDirectory'],
+      })
+      .then(result => {
+        console.log(result.canceled);
+        console.log(result.filePaths);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+};
+
 export const open = () => {
   Requester.send(EVENTS.open.name);
 };
@@ -167,6 +196,10 @@ export const EVENTS: PreferenceEvents = {
   open: {
     name: '/preferences/open',
     type: 'send',
+  },
+  systemUpdate: {
+    name: '/preferences/systemUpdate',
+    type: 'invoke',
   },
 };
 

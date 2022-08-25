@@ -1,0 +1,20 @@
+.container {
+  border: 1px solid red;
+}
+
+.optionsContainer {
+  margin-bottom: 1rem;
+}
+
+.appearanceInput {
+  display: flex;
+  align-items: center;
+
+  input {
+    margin-right: 0.5rem;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
