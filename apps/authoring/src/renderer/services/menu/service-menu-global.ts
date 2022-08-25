@@ -1,5 +1,4 @@
 import { requester } from '..';
-import { ApiResult } from '../../../main/services/requester';
 import { MenuEventGlobalApi, MenuItems } from '../../../main/services/menu';
 
 export const ENDPOINTS: MenuEventGlobalApi = {
@@ -12,8 +11,8 @@ export const ENDPOINTS: MenuEventGlobalApi = {
 export let ITEMS: MenuItems = {};
 
 export const init = () => {
-  return new Promise(resolve => {
-    requester.invoke(ENDPOINTS.itemList).then((result: ApiResult) => {
+  return new Promise<requester.ApiResult>(resolve => {
+    requester.invoke(ENDPOINTS.itemList).then((result: requester.ApiResult) => {
       if (result.error) {
         console.error(result);
         resolve(result);
@@ -31,7 +30,7 @@ const isMenuInitialized = () => {
 };
 
 export const enable = (item: typeof ITEMS[keyof typeof ITEMS]) => {
-  return new Promise<ApiResult>(resolve => {
+  return new Promise<requester.ApiResult>(resolve => {
     if (!item) {
       resolve({
         error: true,
@@ -56,7 +55,7 @@ export const enable = (item: typeof ITEMS[keyof typeof ITEMS]) => {
 };
 
 export const disable = (item: typeof ITEMS[keyof typeof ITEMS]) => {
-  return new Promise<ApiResult>(resolve => {
+  return new Promise<requester.ApiResult>(resolve => {
     if (!item) {
       resolve({
         error: true,
@@ -81,7 +80,7 @@ export const disable = (item: typeof ITEMS[keyof typeof ITEMS]) => {
 };
 
 export const toggle = (item: typeof ITEMS[keyof typeof ITEMS]) => {
-  return new Promise<ApiResult>(resolve => {
+  return new Promise<requester.ApiResult>(resolve => {
     if (!item) {
       resolve({
         error: true,

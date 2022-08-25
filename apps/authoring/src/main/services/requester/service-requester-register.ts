@@ -40,7 +40,7 @@ export const register = (event: RegisterEvent) => {
       EVENTS.push(event);
       break;
     default:
-      console.log(
+      console.warn(
         `Event type: ${event.type} not found. IPC event: ${event.name} has not been registered. `
       );
       break;
