@@ -1,2 +1,2 @@
 export * from './project';
-export * from './preferences';
+export * as Preferences from './preferences';
