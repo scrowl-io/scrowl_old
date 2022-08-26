@@ -25,12 +25,18 @@ export interface ProjectEventImport
   name: 'project/import-file';
 }
 
+export interface ProjectEventPublish
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  name: '/projects/publish';
+}
+
 export type ProjectEventApi = {
   create: ProjectEventCreate['name'];
   save: ProjectEventSave['name'];
   open: ProjectEventOpen['name'];
   list: ProjectEventList['name'];
   import: ProjectEventImport['name'];
+  publish: ProjectEventPublish['name'];
 };
 
 export type ProjectEventNames =
@@ -38,14 +44,16 @@ export type ProjectEventNames =
   | ProjectEventSave['name']
   | ProjectEventOpen['name']
   | ProjectEventList['name']
-  | ProjectEventImport['name'];
+  | ProjectEventImport['name']
+  | ProjectEventPublish['name'];
 
 export type ProjectEvent =
   | ProjectEventCreate
   | ProjectEventSave
   | ProjectEventOpen
   | ProjectEventList
-  | ProjectEventImport;
+  | ProjectEventImport
+  | ProjectEventPublish;
 
 export type ProjectEvents = {
   create: ProjectEventCreate;
@@ -57,6 +65,8 @@ export type ProjectEvents = {
   list: ProjectEventList;
   import: ProjectEventImport;
   onImport: ProjectEventImport;
+  publish: ProjectEventPublish;
+  onPublish: ProjectEventPublish;
 };
 
 /**

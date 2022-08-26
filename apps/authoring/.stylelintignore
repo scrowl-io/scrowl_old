@@ -1,0 +1,5 @@
+src/renderer/styles/*.scss
+src/renderer/components/logo/comp-logo.module.scss
+src/renderer/components/pane/comp-pane.module.scss
+src/renderer/components/toolbar/comp-toolbar.module.scss
+src/renderer/pages/editor/elements/pane-details/editor-pane-details.module.scss

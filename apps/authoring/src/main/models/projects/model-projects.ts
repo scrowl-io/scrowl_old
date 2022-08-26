@@ -7,10 +7,11 @@ import {
 import {
   FileSystem as fs,
   InternalStorage as IS,
+  Publisher,
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
-import { ApiResult } from '../../services/requester';
+import { data } from './model-project.mock';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -50,39 +51,50 @@ const writeProjectTemp = (
 export const create = () => {
   // TODO add support for handling duplicating a project when a project ID is passed
   return new Promise<Requester.ApiResult>(resolve => {
-    let project: ProjectData = { name: 'Untitled Project' };
+    try {
+      let project: ProjectData = {
+        name: data.name,
+        sections: JSON.stringify(data.sections),
+      };
 
-    // create a new entity in the DB
-    IS.create(table.name, project).then(createRes => {
-      if (createRes.error) {
-        createRes.message = 'Unable to create project';
-        resolve(createRes);
-        return;
-      }
-
-      project = createRes.data.item;
-      writeProjectTemp(
-        project,
-        'manifest.json',
-        JSON.stringify(project, null, 2)
-      ).then(writeRes => {
-        if (writeRes.error) {
-          resolve(writeRes);
-          Requester.send(EVENTS.onCreate.name, writeRes);
+      // create a new entity in the DB
+      IS.create(table.name, project).then(createRes => {
+        if (createRes.error) {
+          createRes.message = 'Unable to create project';
+          resolve(createRes);
           return;
         }
 
-        const result = {
-          error: false as const,
-          data: {
-            project,
-          },
-        };
+        project = createRes.data.item;
+        project.sections = JSON.parse(project.sections);
+        console.log('writing project');
+        writeProjectTemp(
+          project,
+          'manifest.json',
+          JSON.stringify(project, null, 2)
+        ).then(writeRes => {
+          if (writeRes.error) {
+            resolve(writeRes);
+            return;
+          }
 
-        resolve(result);
-        Requester.send(EVENTS.onCreate.name, result);
+          resolve({
+            error: false,
+            data: {
+              project,
+            },
+          });
+        });
       });
-    });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to create project',
+        data: {
+          trace: e,
+        },
+      });
+    }
   });
 };
 
@@ -91,7 +103,7 @@ export const save = (
   project: ProjectData,
   onlyManifest = false
 ) => {
-  return new Promise<ApiResult>(resolve => {
+  return new Promise<Requester.ApiResult>(resolve => {
     if (!project.id) {
       resolve({
         error: true,
@@ -101,6 +113,8 @@ export const save = (
     }
 
     // update the project in the DB
+    const data = project;
+    data.sections = JSON.stringify(data.sections);
     IS.update(table.name, project, { id: project.id })
       .then(updateRes => {
         if (updateRes.error) {
@@ -118,7 +132,7 @@ export const save = (
         }
 
         const updatedProject = updateRes.data.item;
-
+        updatedProject.sections = JSON.parse(updatedProject.sections);
         // write the new manifest
         writeProjectTemp(
           updatedProject,
@@ -166,7 +180,7 @@ export const save = (
 };
 
 export const list = (ev: Requester.RequestEvent, limit?: number) => {
-  return new Promise<ApiResult>(resolve => {
+  return new Promise<Requester.ApiResult>(resolve => {
     const getProjectsManifests = (projectRecords: Array<ProjectData>) => {
       const filePromises = projectRecords.map(project => {
         return fs.readFileSave(fs.join(`${project.id}`, 'manifest.json'));
@@ -387,6 +401,31 @@ export const importFile = (
   });
 };
 
+export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
+  return new Promise<Requester.ApiResult>(resolve => {
+    if (!project || !project.id) {
+      resolve({
+        error: true,
+        message: 'Unable to publish project: project data required',
+      });
+      return;
+    }
+
+    try {
+      Publisher.pack(project).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to publish project',
+        data: {
+          trace: e,
+          project,
+        },
+      });
+    }
+  });
+};
+
 export const EVENTS: ProjectEvents = {
   create: {
     name: '/projects/create',
@@ -428,6 +467,15 @@ export const EVENTS: ProjectEvents = {
     name: 'project/import-file',
     type: 'invoke',
     fn: importFile,
+  },
+  publish: {
+    name: '/projects/publish',
+    type: 'send',
+  },
+  onPublish: {
+    name: '/projects/publish',
+    type: 'invoke',
+    fn: publish,
   },
 };
 
