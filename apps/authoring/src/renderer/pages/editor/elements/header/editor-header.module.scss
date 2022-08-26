@@ -46,23 +46,50 @@
     }
   }
 
-  .publish-button {
+  .button-group {
     display: flex;
-    background-color: #007aba;
-    justify-content: space-evenly;
-    align-items: center;
-    border-radius: 0.25em !important;
-    font-weight: 700;
-    width: 7em;
-    height: 75%;
 
-    span {
-      color: white;
+    button {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      border-radius: 0.25em !important;
       font-weight: 700;
+      width: 7em;
+      height: 75%;
+
+      &:hover {
+        background-color: #006295;
+      }
     }
 
+    .publish-button {
+      background-color: #007aba;
+      margin-left: 0.5em;
+
+      span {
+        color: white;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .preview-button {
+    color: #495057;
+    border: 1px solid black;
+
     &:hover {
-      background-color: #006295;
+      border: 1px solid #006295;
+      color: white;
+    }
+
+    &:hover span {
+      color: white;
+    }
+
+    span {
+      color: #495057;
+      transition: color 0.2s;
     }
   }
 }
@@ -96,7 +123,9 @@
 
   label {
     font-size: var(--owl-font-size-sm);
-    font-weight: var(--owl-label-weight);
+
+    // font-weight: var(--owl-label-weight);
+    font-weight: 800;
     text-transform: uppercase;
     color: var(--owl-label-color);
     letter-spacing: var(--owl-label-letterspacing);
@@ -126,7 +155,7 @@
   }
 
   .owlui-accordion-button:not(.collapsed) {
-    background-color: lightgray;
+    background-color: #e9ecef;
     color: black;
 
     &:focus {

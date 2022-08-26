@@ -1,8 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
-// import * as styles from './editor-header.module.scss';
 import { Form, FormDataProps } from '@owlui/lib';
-import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup';
 
 type publishData = {
   courseName: string;
@@ -215,35 +212,6 @@ export const PublishDrawerContent = (
     },
   ];
 
-  const overviewGrid = (
-    <CardGroup>
-      <Card>
-        <Card.Body>
-          <Card.Title>4</Card.Title>
-          <Card.Text>Modules</Card.Text>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          <Card.Title>4</Card.Title>
-          <Card.Text>Modules</Card.Text>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          <Card.Title>4</Card.Title>
-          <Card.Text>Modules</Card.Text>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Body>
-          <Card.Title>4</Card.Title>
-          <Card.Text>Modules</Card.Text>
-        </Card.Body>
-      </Card>
-    </CardGroup>
-  );
-
   const courseSettingsForm = (
     <Form formData={courseSettingsFormData} children={<></>} />
   );
@@ -271,11 +239,6 @@ export const PublishDrawerContent = (
       id: '3',
       label: 'Export Options',
       view: exportOptionsForm,
-    },
-    {
-      id: '4',
-      label: 'Overview',
-      view: overviewGrid,
     },
   ];
 

@@ -27,7 +27,7 @@ export const PublishButton = () => {
 
   const drawer: DrawerProps = {
     header: {
-      content: <h2>Publish</h2>,
+      content: <h4>Publish</h4>,
       bsProps: {
         closeButton: true,
       },

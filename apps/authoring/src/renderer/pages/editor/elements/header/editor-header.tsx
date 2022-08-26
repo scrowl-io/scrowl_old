@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import * as styles from './editor-header.module.scss';
 import { Logo, Toolbar } from '../../../../components';
 import { PublishButton } from './editor-header-publish-button';
+import { Button, Icon } from '@owlui/lib';
 
 export const Header = () => {
   const [filename, setFilename] = useState('MyCourseProject');
@@ -26,7 +27,11 @@ export const Header = () => {
             />
           </div>
         </div>
-        <div>
+        <div className={styles.buttonGroup}>
+          <Button className={styles.previewButton} variant="light">
+            <Icon icon="play_arrow" type="Filled" />
+            Preview
+          </Button>
           <PublishButton />
         </div>
       </div>
