@@ -129,6 +129,7 @@
     "@scrowl/runtime": "^0.0.1",
     "@testing-library/react": "^13.0.0",
     "@types/adm-zip": "^0.5.0",
+    "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.4.1",
     "@types/node": "^17.0.41",
     "@types/react": "^18.0.7",

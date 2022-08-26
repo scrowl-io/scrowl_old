@@ -207,15 +207,17 @@ export class Project {
 
     this.__setProcessing(true);
 
-    requester.invoke(ENDPOINTS.save, this.data).then((result: SaveResult) => {
-      if (result.error) {
-        this.__setProcessing(false);
-        console.error(result);
-        return;
-      }
+    requester
+      .invoke(ENDPOINTS.publish, this.data)
+      .then((result: SaveResult) => {
+        if (result.error) {
+          this.__setProcessing(false);
+          console.error(result);
+          return;
+        }
 
-      console.log('Published', result);
-    });
+        console.log('Published', result);
+      });
   };
   useProcessing = () => {
     const [isProcessing, setProcessState] = useState<boolean>(false);
