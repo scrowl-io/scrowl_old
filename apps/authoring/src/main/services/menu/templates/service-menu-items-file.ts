@@ -1,7 +1,6 @@
-import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
+import { MenuItemConstructorOptions, KeyboardEvent, MenuItem } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
 import { send } from '../../requester';
-import { Project } from '../../../models';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
@@ -22,6 +21,11 @@ export const EVENTS: MenuItemEventsFile = {
     name: '/projects/save',
     type: 'send',
   },
+  projectPublish: {
+    id: 'publish-project',
+    name: '/projects/publish',
+    type: 'send',
+  },
   importFile: {
     id: 'import-file',
     name: 'project/import-file',
@@ -36,7 +40,7 @@ export const template: MenuItemConstructorOptions = {
       label: 'New Project...',
       id: EVENTS.projectsCreate.id,
       click: (menuItem, window, ev: KeyboardEvent) => {
-        Project.create();
+        send(EVENTS.projectsCreate.name);
       },
       accelerator: 'CmdOrCtrl+N',
     },
@@ -58,6 +62,16 @@ export const template: MenuItemConstructorOptions = {
         send(EVENTS.projectSave.name);
       },
       accelerator: 'CmdOrCtrl+S',
+    },
+    separator,
+    {
+      label: 'Publish',
+      id: EVENTS.projectPublish.id,
+      enabled: false,
+      click: (MenuItem, window, ev: KeyboardEvent) => {
+        send(EVENTS.projectPublish.name);
+      },
+      accelerator: 'CmdorCtrl+P',
     },
     separator,
     {

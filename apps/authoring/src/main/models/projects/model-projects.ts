@@ -10,7 +10,6 @@ import {
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
-import { ApiResult } from '../../services/requester';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -68,7 +67,6 @@ export const create = () => {
       ).then(writeRes => {
         if (writeRes.error) {
           resolve(writeRes);
-          Requester.send(EVENTS.onCreate.name, writeRes);
           return;
         }
 
@@ -80,7 +78,6 @@ export const create = () => {
         };
 
         resolve(result);
-        Requester.send(EVENTS.onCreate.name, result);
       });
     });
   });
@@ -91,7 +88,7 @@ export const save = (
   project: ProjectData,
   onlyManifest = false
 ) => {
-  return new Promise<ApiResult>(resolve => {
+  return new Promise<Requester.ApiResult>(resolve => {
     if (!project.id) {
       resolve({
         error: true,
@@ -166,7 +163,7 @@ export const save = (
 };
 
 export const list = (ev: Requester.RequestEvent, limit?: number) => {
-  return new Promise<ApiResult>(resolve => {
+  return new Promise<Requester.ApiResult>(resolve => {
     const getProjectsManifests = (projectRecords: Array<ProjectData>) => {
       const filePromises = projectRecords.map(project => {
         return fs.readFileSave(fs.join(`${project.id}`, 'manifest.json'));
@@ -387,6 +384,43 @@ export const importFile = (
   });
 };
 
+export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
+  return new Promise<Requester.ApiResult>(resolve => {
+    if (!project || !project.id) {
+      resolve({
+        error: true,
+        message: 'Unable to publish project: project data required',
+      });
+      return;
+    }
+
+    try {
+      // check/get temp location
+      // create dist folder in temp
+      // copy temp except for manifest into dist/content
+      // copy package/content tp dist/content
+      // get temp/manifest
+      // compile templates/index.hbs with temp/manifest to dist/content/index.html
+      // package scorm to downloads folder
+      resolve({
+        error: false,
+        data: {
+          project,
+        },
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to publish project',
+        data: {
+          trace: e,
+          project,
+        },
+      });
+    }
+  });
+};
+
 export const EVENTS: ProjectEvents = {
   create: {
     name: '/projects/create',
@@ -428,6 +462,15 @@ export const EVENTS: ProjectEvents = {
     name: 'project/import-file',
     type: 'invoke',
     fn: importFile,
+  },
+  publish: {
+    name: '/projects/publish',
+    type: 'send',
+  },
+  onPublish: {
+    name: '/projects/publish',
+    type: 'invoke',
+    fn: publish,
   },
 };
 
