@@ -116,7 +116,8 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
 
   return new Promise<StorageResult>(resolve => {
     try {
-      __tableDrop(tableName).then(() => { //TODO this and the exists check needs to be replaced with a migration step
+      __tableDrop(tableName).then(() => {
+        //TODO this and the exists check needs to be replaced with a migration step
         DB.schema.hasTable(tableName).then(exists => {
           if (exists) {
             resolve({
@@ -128,7 +129,7 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
             });
             return;
           }
-  
+
           processTable().then(() => {
             resolve({
               error: false,

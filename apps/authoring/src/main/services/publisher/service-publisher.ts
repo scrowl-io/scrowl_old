@@ -15,12 +15,17 @@ import {
 
 const publisherAssetPath = () => {
   return getAssetPath(join('services', 'publisher'));
-}
+};
 
 const createScormSource = (source: string, dist: string) => {
   return new Promise<ApiResult>(resolve => {
     try {
-      const templatesPath = join(publisherAssetPath(), 'project', 'package', 'content');
+      const templatesPath = join(
+        publisherAssetPath(),
+        'project',
+        'package',
+        'content'
+      );
       const dest = join(dist, 'content');
       const opts = {
         filter: (src: string) => {

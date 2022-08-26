@@ -18,7 +18,9 @@ export const getAssetPath = (sourceDir: string) => {
     return __dirname;
   }
 
-  return __dirname.replace('Resources/app.asar/', '').replace(join('services', 'file-system'), sourceDir);
+  return __dirname
+    .replace('Resources/app.asar/', '')
+    .replace(join('services', 'file-system'), sourceDir);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
