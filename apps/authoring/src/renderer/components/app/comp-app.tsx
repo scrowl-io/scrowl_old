@@ -3,7 +3,6 @@ import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import * as styles from './styles/comp-app.module.scss';
 import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
-import { TitleBar } from './elements';
 import { Menu } from '../../services';
 import { Editor, PageNavProps } from '../../pages';
 import { Preferences } from '../../models';
@@ -35,7 +34,6 @@ const Main = (props: AppMainProps) => {
 
   return (
     <div {...props}>
-      <TitleBar routes={routeList} />
       <div className={styles.content}>
         <AppRoutes />
       </div>

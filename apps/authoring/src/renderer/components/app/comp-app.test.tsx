@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { TitleBar } from './elements';
 
 // Create routes that will be used to render the component
 const routes = [
@@ -22,19 +21,3 @@ jest.mock('react-router', () => ({
     return { pathname: '/create' };
   }),
 }));
-
-test('A toolbar element is rendered', () => {
-  render(<TitleBar routes={routes} />);
-  const toolBar = screen.getByTestId('toolbar');
-  expect(toolBar).toBeTruthy;
-});
-
-test('Should render title from route', () => {
-  const expectedText = 'Scrowl - Create New Project';
-
-  render(<TitleBar routes={routes} />);
-
-  const toolBar = screen.getByText(expectedText);
-
-  expect(toolBar).toBeTruthy;
-});
