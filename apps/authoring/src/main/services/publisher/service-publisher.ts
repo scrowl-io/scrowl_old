@@ -1,45 +1,16 @@
-import path from 'path';
-import fs from 'fs-extra';
 import packager from 'scorm-packager';
-import {
-  PathingProps,
-  PathingDirKey,
-  PublisherEvents,
-} from './service-publisher.types';
+import { PublisherEvents } from './service-publisher.types';
 import { ProjectData } from '../../models/projects/model-projects.types';
 import { registerAll, ApiResult } from '../requester';
+import { compile } from '../templater';
 import {
   pathTempFolder,
+  pathDownloadsFolder,
   join,
   copy,
   readFile,
   writeFile,
 } from '../file-system';
-import { compile } from '../templater';
-import { ProjectConfig } from '@scrowl/player/src/lib';
-
-const pathing: PathingProps = {
-  files: {
-    template: {
-      source: path.join(__dirname, 'project/templates/index.hbs'),
-      dest: path.join(__dirname, 'project/package/content/index.html'),
-    },
-  },
-  dirs: {
-    source: path.join(__dirname, 'project/package'),
-    out: path.join(__dirname, 'project/dist'),
-  },
-};
-
-const setPathingDirs = () => {
-  let dest = '' as PathingDirKey;
-
-  for (dest in pathing.dirs) {
-    if (!fs.existsSync(pathing.dirs[dest])) {
-      fs.mkdirSync(pathing.dirs[dest]);
-    }
-  }
-};
 
 const createScormSource = (source: string, dist: string) => {
   return new Promise<ApiResult>(resolve => {
@@ -127,17 +98,54 @@ const createScormEntry = (source: string, dest: string) => {
   });
 };
 
-const createScormPackage = (tempPath: string) => {
+const toScormCase = (str: string) => {
+  return str
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase();
+};
+
+const createScormPackage = (source: string, projectName?: string) => {
   return new Promise<ApiResult>(resolve => {
+    if (!projectName) {
+      resolve({
+        error: true,
+        message: 'Unable to create scorm package: project name missing',
+      });
+      return;
+    }
+
     try {
-      // package scorm to downloads folder
+      const config = {
+        version: '1.2',
+        organization: 'OSG',
+        language: 'en-US',
+        startingPage: 'content/index.html',
+        source: source,
+        package: {
+          name: toScormCase(projectName),
+          version: '0.0.1',
+          zip: true,
+          outputFolder: pathDownloadsFolder,
+        },
+      };
+
+      packager(config, (message: string) => {
+        resolve({
+          error: false,
+          data: {
+            message,
+          },
+        });
+      });
     } catch (e) {
       resolve({
         error: true,
         message: 'Failed to create scorm package',
         data: {
           trace: e,
-          path: tempPath,
+          path: source,
+          projectName,
         },
       });
     }
@@ -157,7 +165,7 @@ export const pack = (project: ProjectData) => {
     try {
       const source = join(pathTempFolder, project.id.toString());
       const dest = join(pathTempFolder, 'dist');
-      console.log('paths', source, dest);
+
       createScormSource(source, dest).then(sourceRes => {
         if (sourceRes.error) {
           resolve(sourceRes);
@@ -170,13 +178,7 @@ export const pack = (project: ProjectData) => {
             return;
           }
 
-          resolve({
-            error: false,
-            data: {
-              project,
-            },
-          });
-          // createScormPackage(tempPath).then(resolve);
+          createScormPackage(dest, project.name).then(resolve);
         });
       });
     } catch (e) {
@@ -191,72 +193,6 @@ export const pack = (project: ProjectData) => {
     }
   });
 };
-
-// export const pack = (
-//   ev: Electron.IpcMainInvokeEvent,
-//   packOptions: {
-//     title?: string;
-//     manifest?: ProjectConfig;
-//   }
-// ) => {
-//   return new Promise((resolve, reject) => {
-//     const config = {
-//       version: '1.2',
-//       organization: 'OSG',
-//       language: 'en-US',
-//       startingPage: 'content/index.html',
-//       source: pathing.dirs.source,
-//       package: {
-//         version: '0.0.1',
-//         zip: true,
-//         outputFolder: pathing.dirs.out,
-//       },
-//     };
-//     const projectTemplate = fileReadSync(pathing.files.template.source);
-
-//     if (projectTemplate.error) {
-//       reject(projectTemplate);
-//       return;
-//     }
-
-//     if (!packOptions.manifest) {
-//       reject({
-//         error: true,
-//         message: 'Missing project manifest',
-//       });
-//       return;
-//     }
-
-//     const projectData = {
-//       title: packOptions.title ? packOptions.title : '',
-//       manifest: JSON.stringify(packOptions.manifest),
-//     };
-//     const projectContents = compile(projectTemplate.data.contents, projectData);
-
-//     if (projectContents.error) {
-//       reject(projectContents);
-//       return;
-//     }
-
-//     const writeRes = fileWriteSync(
-//       pathing.files.template.dest,
-//       projectContents.data.contents
-//     );
-
-//     if (writeRes.error) {
-//       reject(writeRes);
-//       return;
-//     }
-
-//     setPathingDirs();
-//     packager(config, (msg: string) => {
-//       resolve({
-//         error: false,
-//         message: msg,
-//       });
-//     });
-//   });
-// };
 
 export const EVENTS: PublisherEvents = {
   package: {

@@ -11,6 +11,7 @@ import {
 
 export const pathSaveFolder = app.getPath('userData');
 export const pathTempFolder = path.join(app.getPath('temp'), 'scrowl');
+export const pathDownloadsFolder = app.getPath('downloads');
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createResultError = (message: string, error?: any): FSResult => {
@@ -615,6 +616,7 @@ export const readDirSave = (pathname: string) => {
 export default {
   pathSaveFolder,
   pathTempFolder,
+  pathDownloadsFolder,
   join,
   ext,
   dirName,
