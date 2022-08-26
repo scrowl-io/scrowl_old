@@ -81,6 +81,9 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
       case 'timestamp':
         table.timestamp(column.name).defaultTo(DB.fn.now());
         break;
+      case 'json':
+        table.json(column.name);
+        break;
       default:
         console.warn(
           `Unable to create column from table schema: column type ${column.type} not supported - ${tableName}/${column.name}`

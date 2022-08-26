@@ -7,9 +7,11 @@ import {
 import {
   FileSystem as fs,
   InternalStorage as IS,
+  Publisher,
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
+import { data } from './model-project.mock';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -49,7 +51,10 @@ const writeProjectTemp = (
 export const create = () => {
   // TODO add support for handling duplicating a project when a project ID is passed
   return new Promise<Requester.ApiResult>(resolve => {
-    let project: ProjectData = { name: 'Untitled Project' };
+    let project: ProjectData = {
+      name: data.name,
+      sections: JSON.stringify(data.sections),
+    };
 
     // create a new entity in the DB
     IS.create(table.name, project).then(createRes => {
@@ -60,6 +65,7 @@ export const create = () => {
       }
 
       project = createRes.data.item;
+      project.sections = JSON.parse(project.sections);
       writeProjectTemp(
         project,
         'manifest.json',
@@ -98,6 +104,8 @@ export const save = (
     }
 
     // update the project in the DB
+    const data = project;
+    data.sections = JSON.stringify(data.sections);
     IS.update(table.name, project, { id: project.id })
       .then(updateRes => {
         if (updateRes.error) {
@@ -115,7 +123,7 @@ export const save = (
         }
 
         const updatedProject = updateRes.data.item;
-
+        updatedProject.sections = JSON.parse(updatedProject.sections);
         // write the new manifest
         writeProjectTemp(
           updatedProject,
@@ -395,19 +403,7 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
     }
 
     try {
-      // check/get temp location
-      // create dist folder in temp
-      // copy temp except for manifest into dist/content
-      // copy package/content tp dist/content
-      // get temp/manifest
-      // compile templates/index.hbs with temp/manifest to dist/content/index.html
-      // package scorm to downloads folder
-      resolve({
-        error: false,
-        data: {
-          project,
-        },
-      });
+      Publisher.pack(project).then(resolve);
     } catch (e) {
       resolve({
         error: true,
