@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as styles from './page-editor.module.scss';
 import { Header, PaneDetails } from './elements';
 import { Project } from '../../models';

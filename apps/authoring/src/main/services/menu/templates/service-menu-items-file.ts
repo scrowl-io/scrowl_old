@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { MenuItemConstructorOptions, KeyboardEvent, MenuItem } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
 import { send } from '../../requester';

@@ -46,7 +46,7 @@ export class Project {
       return;
     }
 
-    Menu.File.onProjectCreate((ev, result) => {
+    Menu.File.onProjectCreate(() => {
       this.create();
     });
 
