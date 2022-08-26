@@ -19,6 +19,7 @@ const ENDPOINTS: ProjectEventApi = {
   open: '/projects/open',
   list: '/projects/list',
   import: 'project/import-file',
+  publish: '/projects/publish',
 };
 
 export const ENDPOINTS_PROJECT = ENDPOINTS;
@@ -45,13 +46,8 @@ export class Project {
       return;
     }
 
-    Menu.File.onProjectCreate((ev, result) => {
-      if (result.error) {
-        console.error(result);
-        return;
-      }
-      console.log('menu on create');
-      this.__update(result.data.project);
+    Menu.File.onProjectCreate(() => {
+      this.create();
     });
 
     Menu.File.onProjectOpen((ev, result) => {
@@ -65,6 +61,10 @@ export class Project {
 
     Menu.File.onProjectSave(() => {
       this.update();
+    });
+
+    Menu.File.onProjectPublish(() => {
+      this.publish();
     });
 
     Menu.File.onImportFile(() => {
@@ -105,6 +105,7 @@ export class Project {
         Menu.Global.disable(Menu.Global.ITEMS.projectsCreate),
         Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.enable(Menu.Global.ITEMS.projectSave),
+        Menu.Global.enable(Menu.Global.ITEMS.projectPublish),
         Menu.Global.enable(Menu.Global.ITEMS.importFile),
       ]).then(() => {
         this.__setData(data);
@@ -114,15 +115,26 @@ export class Project {
         Menu.Global.enable(Menu.Global.ITEMS.projectsCreate),
         Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
         Menu.Global.disable(Menu.Global.ITEMS.projectSave),
+        Menu.Global.disable(Menu.Global.ITEMS.projectPublish),
         Menu.Global.disable(Menu.Global.ITEMS.importFile),
       ]).then(() => {
         this.__setData(data);
       });
     }
   };
-  create = (projectId: number) => {
+  create = (projectId?: number) => {
     this.__setProcessing(true);
-    requester.send(ENDPOINTS.create, projectId);
+    requester
+      .invoke(ENDPOINTS.create, projectId)
+      .then((result: requester.ApiResult) => {
+        if (result.error) {
+          this.__setProcessing(false);
+          console.error(result);
+          return;
+        }
+
+        this.__update(result.data.project);
+      });
   };
   update = () => {
     this.__setProcessing(true);
@@ -188,6 +200,25 @@ export class Project {
         this.__setProcessing(false);
       });
   };
+  publish = () => {
+    if (!this.data) {
+      console.error('Unable to publish: project files not set');
+    }
+
+    this.__setProcessing(true);
+
+    requester
+      .invoke(ENDPOINTS.publish, this.data)
+      .then((result: SaveResult) => {
+        if (result.error) {
+          this.__setProcessing(false);
+          console.error(result);
+          return;
+        }
+
+        console.log('Published', result);
+      });
+  };
   useProcessing = () => {
     const [isProcessing, setProcessState] = useState<boolean>(false);
 
@@ -203,7 +234,7 @@ export class Project {
 
     return this.isProcessing;
   };
-  useProjectData = () => {
+  useData = () => {
     const [activeData, setActiveData] = useState<ProjectData>();
 
     this.data = activeData;

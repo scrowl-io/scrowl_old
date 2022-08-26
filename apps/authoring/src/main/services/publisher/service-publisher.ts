@@ -1,102 +1,206 @@
-import path from 'path';
-import fs from 'fs-extra';
 import packager from 'scorm-packager';
-import {
-  PathingProps,
-  PathingDirKey,
-  PublisherEvents,
-} from './service-publisher.types';
-import { registerAll } from '../requester';
-import { fileReadSync, fileWriteSync } from '../file-system';
+import { PublisherEvents } from './service-publisher.types';
+import { ProjectData } from '../../models/projects/model-projects.types';
+import { registerAll, ApiResult } from '../requester';
 import { compile } from '../templater';
-import { ProjectConfig } from '@scrowl/player/src/lib';
+import {
+  pathTempFolder,
+  pathDownloadsFolder,
+  getAssetPath,
+  join,
+  copy,
+  readFile,
+  writeFile,
+} from '../file-system';
 
-const pathing: PathingProps = {
-  files: {
-    template: {
-      source: path.join(__dirname, 'project/templates/index.hbs'),
-      dest: path.join(__dirname, 'project/package/content/index.html'),
-    },
-  },
-  dirs: {
-    source: path.join(__dirname, 'project/package'),
-    out: path.join(__dirname, 'project/dist'),
-  },
+const publisherAssetPath = () => {
+  return getAssetPath(join('services', 'publisher'));
 };
 
-const setPathingDirs = () => {
-  let dest = '' as PathingDirKey;
+const createScormSource = (source: string, dist: string) => {
+  return new Promise<ApiResult>(resolve => {
+    try {
+      const templatesPath = join(
+        publisherAssetPath(),
+        'project',
+        'package',
+        'content'
+      );
+      const dest = join(dist, 'content');
+      const opts = {
+        filter: (src: string) => {
+          return src.indexOf('manifest.json') === -1;
+        },
+      };
 
-  for (dest in pathing.dirs) {
-    if (!fs.existsSync(pathing.dirs[dest])) {
-      fs.mkdirSync(pathing.dirs[dest]);
-    }
-  }
-};
+      copy(source, dest, opts).then(copyRes => {
+        if (copyRes.error) {
+          resolve(copyRes);
+          return;
+        }
 
-export const pack = (
-  ev: Electron.IpcMainInvokeEvent,
-  packOptions: {
-    title?: string;
-    manifest?: ProjectConfig;
-  }
-) => {
-  return new Promise((resolve, reject) => {
-    const config = {
-      version: '1.2',
-      organization: 'OSG',
-      language: 'en-US',
-      startingPage: 'content/index.html',
-      source: pathing.dirs.source,
-      package: {
-        version: '0.0.1',
-        zip: true,
-        outputFolder: pathing.dirs.out,
-      },
-    };
-    const projectTemplate = fileReadSync(pathing.files.template.source);
-
-    if (projectTemplate.error) {
-      reject(projectTemplate);
-      return;
-    }
-
-    if (!packOptions.manifest) {
-      reject({
-        error: true,
-        message: 'Missing project manifest',
+        copy(templatesPath, dest).then(resolve);
       });
-      return;
-    }
-
-    const projectData = {
-      title: packOptions.title ? packOptions.title : '',
-      manifest: JSON.stringify(packOptions.manifest),
-    };
-    const projectContents = compile(projectTemplate.data.contents, projectData);
-
-    if (projectContents.error) {
-      reject(projectContents);
-      return;
-    }
-
-    const writeRes = fileWriteSync(
-      pathing.files.template.dest,
-      projectContents.data.contents
-    );
-
-    if (writeRes.error) {
-      reject(writeRes);
-      return;
-    }
-
-    setPathingDirs();
-    packager(config, (msg: string) => {
+    } catch (e) {
       resolve({
-        error: false,
-        message: msg,
+        error: true,
+        message: 'Failed to create scorm source files',
+        data: {
+          trace: e,
+          dist,
+          source,
+        },
       });
-    });
+    }
+  });
+};
+
+const createScormEntry = (source: string, dest: string) => {
+  return new Promise<ApiResult>(resolve => {
+    try {
+      const manifestSource = join(source, 'manifest.json');
+      readFile(manifestSource).then(readManifest => {
+        if (readManifest.error) {
+          resolve(readManifest);
+          return;
+        }
+
+        const manifest = readManifest.data.contents;
+        const entrySource = join(
+          publisherAssetPath(),
+          'project',
+          'templates',
+          'index.hbs'
+        );
+
+        readFile(entrySource).then(readEntry => {
+          if (readEntry.error) {
+            resolve(readEntry);
+            return;
+          }
+
+          const entryRes = compile(readEntry.data.contents, {
+            manifest: JSON.stringify(manifest),
+          });
+
+          if (entryRes.error) {
+            resolve(entryRes);
+            return;
+          }
+
+          const entryDest = join(dest, 'content', 'index.html');
+          const entryFile = entryRes.data.contents;
+
+          writeFile(entryDest, entryFile).then(resolve);
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to create scorm entry',
+        data: {
+          trace: e,
+          source,
+          dest,
+        },
+      });
+    }
+  });
+};
+
+const toScormCase = (str: string) => {
+  return str
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s_]+/g, '-')
+    .toLowerCase();
+};
+
+const createScormPackage = (source: string, projectName?: string) => {
+  return new Promise<ApiResult>(resolve => {
+    if (!projectName) {
+      resolve({
+        error: true,
+        message: 'Unable to create scorm package: project name missing',
+      });
+      return;
+    }
+
+    try {
+      const config = {
+        version: '1.2',
+        organization: 'OSG',
+        language: 'en-US',
+        startingPage: 'content/index.html',
+        source: source,
+        package: {
+          name: toScormCase(projectName),
+          version: '0.0.1',
+          zip: true,
+          outputFolder: pathDownloadsFolder,
+        },
+      };
+
+      packager(config, (message: string) => {
+        resolve({
+          error: false,
+          data: {
+            message,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to create scorm package',
+        data: {
+          trace: e,
+          path: source,
+          projectName,
+        },
+      });
+    }
+  });
+};
+
+export const pack = (project: ProjectData) => {
+  return new Promise<ApiResult>(resolve => {
+    if (!project || !project.id) {
+      resolve({
+        error: true,
+        message: 'Unable to publish project: project data required',
+      });
+      return;
+    }
+
+    try {
+      const source = join(pathTempFolder, project.id.toString());
+      const dest = join(pathTempFolder, 'dist');
+
+      createScormSource(source, dest).then(sourceRes => {
+        if (sourceRes.error) {
+          resolve(sourceRes);
+          return;
+        }
+
+        createScormEntry(source, dest).then(entryRes => {
+          if (entryRes.error) {
+            resolve(entryRes);
+            return;
+          }
+
+          createScormPackage(dest, project.name).then(resolve);
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to publish project',
+        data: {
+          trace: e,
+          project,
+        },
+      });
+    }
   });
 };
 
