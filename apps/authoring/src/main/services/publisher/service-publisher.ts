@@ -6,16 +6,21 @@ import { compile } from '../templater';
 import {
   pathTempFolder,
   pathDownloadsFolder,
+  getAssetPath,
   join,
   copy,
   readFile,
   writeFile,
 } from '../file-system';
 
+const publisherAssetPath = () => {
+  return getAssetPath(join('services', 'publisher'));
+}
+
 const createScormSource = (source: string, dist: string) => {
   return new Promise<ApiResult>(resolve => {
     try {
-      const templatesPath = join(__dirname, 'project', 'package', 'content');
+      const templatesPath = join(publisherAssetPath(), 'project', 'package', 'content');
       const dest = join(dist, 'content');
       const opts = {
         filter: (src: string) => {
@@ -57,7 +62,7 @@ const createScormEntry = (source: string, dest: string) => {
 
         const manifest = readManifest.data.contents;
         const entrySource = join(
-          __dirname,
+          publisherAssetPath(),
           'project',
           'templates',
           'index.hbs'

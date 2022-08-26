@@ -93,6 +93,9 @@
       "../../node_modules/**/*",
       "package.json"
     ],
+    "extraFiles": [
+      "src/main/services/publisher/project/**"
+    ],
     "dmg": {
       "contents": [
         {

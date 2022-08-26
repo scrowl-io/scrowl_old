@@ -51,41 +51,50 @@ const writeProjectTemp = (
 export const create = () => {
   // TODO add support for handling duplicating a project when a project ID is passed
   return new Promise<Requester.ApiResult>(resolve => {
-    let project: ProjectData = {
-      name: data.name,
-      sections: JSON.stringify(data.sections),
-    };
+    try {
+      let project: ProjectData = {
+        name: data.name,
+        sections: JSON.stringify(data.sections),
+      };
 
-    // create a new entity in the DB
-    IS.create(table.name, project).then(createRes => {
-      if (createRes.error) {
-        createRes.message = 'Unable to create project';
-        resolve(createRes);
-        return;
-      }
-
-      project = createRes.data.item;
-      project.sections = JSON.parse(project.sections);
-      writeProjectTemp(
-        project,
-        'manifest.json',
-        JSON.stringify(project, null, 2)
-      ).then(writeRes => {
-        if (writeRes.error) {
-          resolve(writeRes);
+      // create a new entity in the DB
+      IS.create(table.name, project).then(createRes => {
+        if (createRes.error) {
+          createRes.message = 'Unable to create project';
+          resolve(createRes);
           return;
         }
 
-        const result = {
-          error: false as const,
-          data: {
-            project,
-          },
-        };
+        project = createRes.data.item;
+        project.sections = JSON.parse(project.sections);
+        console.log('writing project');
+        writeProjectTemp(
+          project,
+          'manifest.json',
+          JSON.stringify(project, null, 2)
+        ).then(writeRes => {
+          if (writeRes.error) {
+            resolve(writeRes);
+            return;
+          }
 
-        resolve(result);
+          resolve({
+            error: false,
+            data: {
+              project,
+            },
+          });
+        });
       });
-    });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to create project',
+        data: {
+          trace: e,
+        },
+      });
+    }
   });
 };
 
