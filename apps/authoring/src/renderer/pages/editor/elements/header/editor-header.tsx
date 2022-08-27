@@ -3,10 +3,14 @@ import * as styles from './editor-header.module.scss';
 import * as toolbarStyles from '../../../../components/toolbar/comp-toolbar.module.scss';
 import { Logo, Toolbar } from '../../../../components';
 import { PreviewButton } from './elements';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { SaveTooltip } from './elements/save-tooltip';
 
 export const Header = () => {
   const [filename, setFilename] = useState('MyCourseProject');
+  // Once the implementation of the "unsaved" state is defined, this
+  // piece of state should be updated in order to display the tooltip
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [showSavetooltip, setShowSaveTooltip] = useState(false);
 
   const handleFilenameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     setFilename(ev.currentTarget.value);
@@ -30,22 +34,11 @@ export const Header = () => {
         <ul
           className={`${toolbarStyles.toolbarNav} align-items-center me-auto`}
         >
-          <li className="nav-item">
-            <OverlayTrigger
-              placement="bottom"
-              overlay={<Tooltip>Unsaved Changes</Tooltip>}
-              delay={0}
-            >
-              <div
-                className="btn btn-save-state"
-                role="button"
-                aria-pressed="false"
-                tabIndex={0}
-              >
-                <span className="save-state">*</span>
-              </div>
-            </OverlayTrigger>
-          </li>
+          {showSavetooltip && (
+            <li className="nav-item">
+              <SaveTooltip />
+            </li>
+          )}
         </ul>
         <ul className={`${toolbarStyles.toolbarNav} align-items-center`}>
           <li className="scrowl-navbar__actions">

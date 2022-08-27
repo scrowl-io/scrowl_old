@@ -43,25 +43,3 @@
     white-space: pre-wrap;
   }
 }
-
-.btn-save-state {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  max-height: 2rem;
-  padding: 0.2rem;
-
-  &:hover {
-    border-color: $input-border-color;
-  }
-
-  &:focus {
-    border-color: $input-focus-border-color;
-  }
-
-  .save-state {
-    font-size: $h2-font-size;
-    line-height: normal;
-    max-height: inherit;
-  }
-}
