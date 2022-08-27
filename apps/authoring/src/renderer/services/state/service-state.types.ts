@@ -34,4 +34,9 @@ export type Dispatch = any | ReturnType<typeof useDispatch>;
 export type StateProcessor = {
   dispatch?: Dispatch;
   isProcessing?: boolean;
+  navigator?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (to: string, options?: { replace?: boolean; state?: any }): void;
+    (delta: number): void;
+  };
 };
