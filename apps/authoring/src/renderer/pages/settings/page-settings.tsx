@@ -34,7 +34,7 @@ export const PageElement = () => {
           <Route path="*" element={<Pages.Theme.Element />} />
         </Routes>
 
-        <div className={styles.buttonContainer}>
+        <div>
           <button onClick={() => handleSave()}>
             {prefProcessing ? 'Saving...' : 'Save'}
           </button>

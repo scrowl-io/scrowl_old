@@ -4,6 +4,7 @@ export type ActionMenuItem = {
   label: string;
   icon: IconType;
   iconStyle: 'Filled' | 'Outlined';
+  action?: (e: React.MouseEvent) => void;
 };
 
 export interface ActionMenuCommons {
