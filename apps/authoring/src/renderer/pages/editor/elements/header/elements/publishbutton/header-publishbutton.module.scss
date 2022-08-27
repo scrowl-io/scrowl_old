@@ -3,7 +3,7 @@
 .btn-publish {
   display: flex;
   align-items: center;
-  font-weight: $headings-font-weight;
+  font-weight: 700;
   padding: 0.375em 1em;
   background-color: #0071ba; // --bs-btn-color var mapping doesn't match Scott's designs
 
@@ -19,10 +19,68 @@
     box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5);
   }
 
+  &.btn-success {
+    background-color: #178622;
+
+    &:hover,
+    &:active,
+    &:focus {
+      background-color: #126b1b;
+    }
+  }
+
   .owlui-icons {
     color: var(--bs-btn-hover-color);
     margin-right: 0.25em;
     font-size: 1.5em;
     line-height: 0.66;
+  }
+}
+
+.publish-drawer-header {
+  .owlui-offcanvas-header {
+    --bs-offcanvas-padding-y: 0.5rem;
+
+    border-bottom: var(--owl-border-color) solid var(--bs-border-width);
+    .owlui-offcanvas-title {
+      margin: 0;
+
+      .publish-header {
+        font-weight: 600;
+        font-size: 1.563rem;
+      }
+    }
+  }
+
+  .owlui-accordion {
+    --bs-accordion-border-radius: 0;
+
+    .owlui-accordion-button {
+      --bs-accordion-btn-padding-y: 0.75rem;
+      --bs-accordion-inner-border-radius: -1px;
+
+      font-weight: 600;
+      font-size: 0.875rem;
+      letter-spacing: 0.0125em;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5);
+      }
+
+      &:not(.collapse) {
+        --bs-accordion-active-color: #000;
+        --bs-accordion-active-bg: #e9ecef;
+      }
+    }
+
+    .form-control {
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5);
+      }
+    }
   }
 }
