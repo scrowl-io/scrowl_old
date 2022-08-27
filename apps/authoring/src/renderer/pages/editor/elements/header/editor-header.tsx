@@ -4,6 +4,7 @@ import * as toolbarStyles from '../../../../components/toolbar/comp-toolbar.modu
 import { Logo, Toolbar } from '../../../../components';
 import { PreviewButton } from './elements';
 import { SaveTooltip } from './elements/save-tooltip';
+import { PublishButton } from './elements/publishbutton';
 
 export const Header = () => {
   const [filename, setFilename] = useState('MyCourseProject');
@@ -43,6 +44,7 @@ export const Header = () => {
         <ul className={`${toolbarStyles.toolbarNav} align-items-center`}>
           <li className="scrowl-navbar__actions">
             <PreviewButton />
+            <PublishButton />
           </li>
         </ul>
       </div>

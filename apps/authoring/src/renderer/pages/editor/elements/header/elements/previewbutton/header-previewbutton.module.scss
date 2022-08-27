@@ -6,7 +6,9 @@
   font-weight: $headings-font-weight;
   padding: 0.375em 1em;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     .owlui-icons {
       color: #ffffff;
     }
