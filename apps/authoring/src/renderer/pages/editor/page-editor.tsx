@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as styles from './page-editor.module.scss';
 import { Header, PaneDetails } from './elements';
-import { Project } from '../../models';
-
-const project = new Project();
+import { Projects } from '../../models';
 
 export const PageElement = () => {
-  project.ready();
+  const isSaveable = Projects.useSave();
+  const project = Projects.useData();
 
-  const projectData = project.useData();
+  useEffect(() => {
+    console.log('updating');
+  }, [project, isSaveable]);
 
-  console.log('projectData', projectData);
+  console.log('project', project);
 
   return (
     <>

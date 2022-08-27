@@ -67,7 +67,6 @@ export const create = () => {
 
         project = createRes.data.item;
         project.sections = JSON.parse(project.sections);
-        console.log('writing project');
         writeProjectTemp(
           project,
           'manifest.json',
@@ -234,7 +233,17 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
           return;
         }
 
-        getProjectsManifests(readRes.data.items);
+        if (readRes.data.items.length) {
+          getProjectsManifests(readRes.data.items);
+          return;
+        }
+
+        resolve({
+          error: false,
+          data: {
+            projects: [],
+          },
+        });
       });
     } catch (e) {
       resolve({
@@ -248,64 +257,70 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
   });
 };
 
-export const open = function (ev: Requester.RequestEvent, projectId: number) {
-  if (!projectId) {
-    Requester.send(EVENTS.open.name, {
-      error: true,
-      message: 'Unable to open: project id required',
-    });
-    return;
-  }
-
-  // track the opening of the project
-  const updateProjectData = () => {
-    try {
-      IS.read(table.name, { id: projectId }).then(readRes => {
-        if (readRes.error) {
-          Requester.send(EVENTS.open.name, readRes);
-          return;
-        }
-
-        const project = readRes.data.items[0];
-
-        project.opened_at = IS.getTimestamp();
-        save(ev, project, true).then(saveRes => {
-          Requester.send(EVENTS.open.name, saveRes);
-        });
-      });
-    } catch (e) {
-      Requester.send(EVENTS.open.name, {
-        error: true,
-        message: 'Failed to update project while opening',
-        data: {
-          trace: e,
-        },
-      });
-    }
-  };
-
-  // copy the project from the save folder to the temp folder
-  try {
+export const open = (ev: Requester.RequestEvent, projectId: number) => {
+  const updateTempFolder = () => {
     const from = projectId.toString();
     const to = projectId.toString();
 
-    fs.copyTempToSave(from, to).then(copyRes => {
-      if (copyRes.error) {
-        Requester.send(EVENTS.open.name, copyRes);
-        return;
-      }
+    return fs.copyTempToSave(from, to);
+  };
 
-      updateProjectData();
+  const openProject = () => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        IS.read(table.name, { id: projectId }).then(readRes => {
+          if (readRes.error) {
+            resolve(readRes);
+            return;
+          }
+
+          const project = readRes.data.items[0];
+
+          project.opened_at = IS.getTimestamp();
+          save(ev, project, true).then(resolve);
+        });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to update project while writing meta data',
+          data: {
+            trace: e,
+            projectId,
+          },
+        });
+      }
     });
-  } catch (e) {
-    Requester.send(EVENTS.open.name, {
-      error: true,
-      message: `Failed to open project: ${projectId}`,
-      data: {
-        trace: e,
-      },
-    });
-  }
+  };
+
+  return new Promise<Requester.ApiResult>(resolve => {
+    if (!projectId) {
+      resolve({
+        error: true,
+        message: 'Unable to open: project id required',
+      });
+      return;
+    }
+
+    try {
+      updateTempFolder().then(tempRes => {
+        if (tempRes.error) {
+          resolve(tempRes);
+          return;
+        }
+
+        openProject().then(resolve);
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to open project',
+        data: {
+          trace: e,
+          projectId,
+        },
+      });
+    }
+  });
 };
 
 export const importFile = (

@@ -32,6 +32,7 @@ export type StateSelector = any | ReturnType<typeof useSelector>;
 export type Dispatch = any | ReturnType<typeof useDispatch>;
 
 export type StateProcessor = {
+  data?: any;
   dispatch?: Dispatch;
   isProcessing?: boolean;
   navigator?: {

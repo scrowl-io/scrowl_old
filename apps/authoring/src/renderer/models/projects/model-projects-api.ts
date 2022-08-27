@@ -46,7 +46,7 @@ export const update = (project: ProjectData) => {
 export const open = (projectId: number) => {
   return new Promise<requester.ApiResult>(resolve => {
     try {
-      requester.invoke(ENDPOINTS.open, projectId);
+      requester.invoke(ENDPOINTS.open, projectId).then(resolve);
     } catch (e) {
       resolve({
         error: true,
@@ -63,7 +63,7 @@ export const open = (projectId: number) => {
 export const list = (limit?: number) => {
   return new Promise<requester.ApiResult>(resolve => {
     try {
-      requester.invoke(ENDPOINTS.list, limit);
+      requester.invoke(ENDPOINTS.list, limit).then(resolve);
     } catch (e) {
       resolve({
         error: true,
@@ -79,7 +79,7 @@ export const list = (limit?: number) => {
 export const publish = (project: ProjectData) => {
   return new Promise<requester.ApiResult>(resolve => {
     try {
-      requester.invoke(ENDPOINTS.publish, project);
+      requester.invoke(ENDPOINTS.publish, project).then(resolve);
     } catch (e) {
       resolve({
         error: true,

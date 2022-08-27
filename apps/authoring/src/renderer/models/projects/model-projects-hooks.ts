@@ -14,21 +14,20 @@ export const useInit = () => {
   );
   const isProcessing = useProcessing();
   const dispatch = useDispatch();
-  const navigator = useNavigate();
   const data = useData();
 
-  if (isInit) {
+  if (isProcessing || isInit) {
     return isInit;
   }
 
+  dispatch(state.process(true));
+
   processor.dispatch = dispatch;
   processor.isProcessing = isProcessing;
-  processor.navigator = navigator;
+  processor.data = data;
 
-  Menu.File.onProjectCreate(create);
-
-  Menu.File.onProjectSave(() => {
-    update(data);
+  Menu.File.onProjectCreate(() => {
+    create();
   });
 
   Menu.File.onProjectOpen(() => {
@@ -39,9 +38,40 @@ export const useInit = () => {
     publish(data);
   });
 
-  dispatch(state.init(true));
+  toggleMenuItems().then(toggleRes => {
+    if (toggleRes.error) {
+      console.error(toggleRes);
+      return;
+    }
+
+    dispatch(state.init(true));
+  });
 
   return isInit;
+};
+
+export const useSave = () => {
+  const data = useData();
+  const isSaveable = useSelector(
+    (state: State.RootState) => state.projects.isSaveable
+  );
+
+  const hasProcessor = checkProcessor();
+
+  if (!hasProcessor) {
+    return isSaveable;
+  }
+
+  if (isSaveable || !data || !data.id) {
+    return isSaveable;
+  }
+  console.log('listening');
+  processor.dispatch(state.saveable(true));
+  Menu.File.onProjectSave(() => {
+    update(data);
+  });
+
+  return isSaveable;
 };
 
 export const useData = () => {
@@ -65,7 +95,7 @@ export const useExplorer = () => {
 };
 
 const checkProcessor = () => {
-  if (!processor.dispatch || !processor.navigator) {
+  if (!processor.dispatch) {
     console.error('projects processor not set!');
     return false;
   }
@@ -83,7 +113,7 @@ const toggleMenuItems = (isEnabled = false) => {
     try {
       let changes = [];
 
-      if (!isEnabled) {
+      if (isEnabled) {
         changes = [
           Menu.Global.disable(Menu.Global.ITEMS.projectsCreate),
           Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
@@ -221,6 +251,31 @@ export const publish = (data: ProjectData) => {
   });
 };
 
+export const list = (limit = 10) => {
+  return new Promise<requester.ApiResult>(resolve => {
+    const hasProcessor = checkProcessor();
+
+    if (!hasProcessor) {
+      resolve({
+        error: true,
+        message: 'Project processor not set',
+      });
+      return;
+    }
+
+    processor.dispatch(state.process(true));
+    api.list(limit).then(result => {
+      if (result.error) {
+        console.error(result);
+        return;
+      }
+
+      resolve(result);
+      processor.dispatch(state.process(false));
+    });
+  });
+};
+
 export default {
   useInit,
   useData,
@@ -229,4 +284,5 @@ export default {
   create,
   update,
   publish,
+  list,
 };
