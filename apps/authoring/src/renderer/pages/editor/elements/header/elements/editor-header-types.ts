@@ -1,7 +1,9 @@
+import { SaveResult } from '../../../../../../main/models/projects';
+
 export interface HeaderProps {
   courseName: string | undefined;
   courseDesc: string | undefined;
   courseAut: string | undefined;
-  publishFunc: () => void;
+  publishFunc: () => Promise<SaveResult>;
   disabled?: boolean;
 }

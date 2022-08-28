@@ -1,5 +1,7 @@
 import { Accordion, Button, Drawer, Icon } from '@owlui/lib';
 import React, { useState } from 'react';
+import { Toast, ToastContainer } from 'react-bootstrap';
+import { Portal } from '../../../../../../components/portal';
 import { HeaderProps } from '../editor-header-types';
 import * as styles from './header-publishbutton.module.scss';
 
@@ -11,6 +13,7 @@ export const PublishButton = ({
   disabled,
 }: HeaderProps) => {
   const [showDrawer, setShowDrawer] = useState(false);
+  const [showPubToast, setShowPubToast] = useState(false);
 
   const drawerAccordion = [
     {
@@ -114,6 +117,14 @@ export const PublishButton = ({
     },
   ];
 
+  const toggleShowDrawer = () => setShowDrawer(!showDrawer);
+
+  const handlePublish = async () => {
+    const publishRes = await publishFunc();
+
+    // TODO: Validate publishRes to display toast
+  };
+
   const drawerContent = {
     header: {
       content: (
@@ -134,7 +145,7 @@ export const PublishButton = ({
         <div className="d-flex justify-content-end my-3">
           <Button
             className={`btn btn-sm btn-success ms-2 ${styles.btnPublish}`}
-            onClick={publishFunc}
+            onClick={handlePublish}
             disabled={disabled}
           >
             <Icon icon="publish" />
@@ -144,8 +155,6 @@ export const PublishButton = ({
       </>
     ),
   };
-
-  const toggleShowDrawer = () => setShowDrawer(!showDrawer);
 
   return (
     <>
@@ -167,6 +176,20 @@ export const PublishButton = ({
         aria-labelledby="publishSettingsLabel"
         aria-hidden="true"
       />
+      <Portal>
+        <ToastContainer className="p-3" position="bottom-end">
+          <Toast
+            onClose={() => setShowPubToast(false)}
+            show={showPubToast}
+            delay={3000}
+            autohide
+          >
+            <Toast.Body>
+              Course successfuly published into your Downloads folder.
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
+      </Portal>
     </>
   );
 };

@@ -200,24 +200,27 @@ export class Project {
         this.__setProcessing(false);
       });
   };
-  publish = () => {
-    if (!this.data) {
-      console.error('Unable to publish: project files not set');
-    }
+  publish = (): Promise<SaveResult> => {
+    return new Promise((resolve, reject) => {
+      if (!this.data) {
+        console.error('Unable to publish: project files not set');
+      }
 
-    this.__setProcessing(true);
+      this.__setProcessing(true);
 
-    requester
-      .invoke(ENDPOINTS.publish, this.data)
-      .then((result: SaveResult) => {
-        if (result.error) {
-          this.__setProcessing(false);
-          console.error(result);
-          return;
-        }
+      requester
+        .invoke(ENDPOINTS.publish, this.data)
+        .then((result: SaveResult) => {
+          if (result.error) {
+            this.__setProcessing(false);
+            console.error(result);
+            reject(result);
+          }
 
-        console.log('Published', result);
-      });
+          console.log('Published', result);
+          resolve(result);
+        });
+    });
   };
   useProcessing = () => {
     const [isProcessing, setProcessState] = useState<boolean>(false);
