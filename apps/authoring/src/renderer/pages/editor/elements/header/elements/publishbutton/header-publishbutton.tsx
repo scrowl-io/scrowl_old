@@ -1,9 +1,16 @@
 import { Accordion, Button, Drawer, Icon } from '@owlui/lib';
 import React, { useState } from 'react';
+import { HeaderProps } from '../editor-header-types';
 import * as styles from './header-publishbutton.module.scss';
 
-export const PublishButton = () => {
-  const [showDrawer, setShowDrawer] = useState(true);
+export const PublishButton = ({
+  courseName,
+  courseDesc,
+  courseAut,
+  publishFunc,
+  disabled,
+}: HeaderProps) => {
+  const [showDrawer, setShowDrawer] = useState(false);
 
   const drawerAccordion = [
     {
@@ -19,7 +26,8 @@ export const PublishButton = () => {
               type="text"
               className="form-control form-control-sm"
               id="publish1"
-              value="Sexual Harrassment Prevention Training"
+              placeholder="Course Name"
+              defaultValue={courseName}
             />
           </div>
           <div className="mb-2">
@@ -30,6 +38,7 @@ export const PublishButton = () => {
               className="form-control form-control-sm"
               id="publish2"
               placeholder="Describe the Project"
+              defaultValue={courseDesc}
             ></textarea>
           </div>
           <div className="mb-2">
@@ -40,7 +49,8 @@ export const PublishButton = () => {
               type="text"
               className="form-control form-control-sm"
               id="publish3"
-              placeholder=""
+              placeholder="Course Authors"
+              defaultValue={courseAut}
             />
           </div>
         </>
@@ -74,7 +84,8 @@ export const PublishButton = () => {
               <select
                 className="form-select form-select-sm"
                 id="publish5"
-                value="Passed/Incomplete"
+                defaultValue="Passed/Incomplete"
+                onChange={() => console.log('Passed/Incomplete')}
               >
                 <option>Passed/Incomplete</option>
               </select>
@@ -94,7 +105,7 @@ export const PublishButton = () => {
                 className="form-control form-control-sm"
                 id="publish7"
                 placeholder=""
-                value="13kj83j"
+                defaultValue="13kj83j"
               />
             </div>
           </div>
@@ -123,6 +134,8 @@ export const PublishButton = () => {
         <div className="d-flex justify-content-end my-3">
           <Button
             className={`btn btn-sm btn-success ms-2 ${styles.btnPublish}`}
+            onClick={publishFunc}
+            disabled={disabled}
           >
             <Icon icon="publish" />
             Publish
@@ -139,6 +152,7 @@ export const PublishButton = () => {
       <Button
         className={`btn btn-sm btn-primary ms-2 ${styles.btnPublish}`}
         onClick={toggleShowDrawer}
+        disabled={disabled}
       >
         <Icon icon="publish" />
         Publish

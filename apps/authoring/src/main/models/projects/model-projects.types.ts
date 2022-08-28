@@ -80,6 +80,7 @@ export interface ProjectData extends InternalStorage.StorageData {
   opened_at?: string;
   name?: string;
   description?: string;
+  authors?: string;
   theme?: string;
   workingFile?: string;
   workingDir?: string;

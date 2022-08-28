@@ -35,6 +35,10 @@
     &:focus {
       border-color: $input-focus-border-color;
     }
+
+    &:disabled {
+      background-color: transparent;
+    }
   }
 
   &::after {

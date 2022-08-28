@@ -15,7 +15,12 @@ export const PageElement = () => {
   return (
     <>
       <main className={styles.editor}>
-        <Header />
+        <Header
+          courseName={projectData?.name}
+          courseDesc={projectData?.description}
+          courseAut={projectData?.authors}
+          publishFunc={project?.publish}
+        />
 
         <div className={styles.workspace}>
           <PaneDetails />
