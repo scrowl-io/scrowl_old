@@ -26,20 +26,20 @@ const createScormSource = (source: string, dist: string) => {
         'package',
         'content'
       );
-      const dest = join(dist, 'content');
+
       const opts = {
         filter: (src: string) => {
           return src.indexOf('manifest.json') === -1;
         },
       };
 
-      copy(source, dest, opts).then(copyRes => {
+      copy(source, dist, opts).then(copyRes => {
         if (copyRes.error) {
           resolve(copyRes);
           return;
         }
 
-        copy(templatesPath, dest).then(resolve);
+        copy(templatesPath, dist).then(resolve);
       });
     } catch (e) {
       resolve({
@@ -174,7 +174,10 @@ export const pack = (project: ProjectData) => {
 
     try {
       const source = join(pathTempFolder, project.id.toString());
-      const dest = join(pathTempFolder, 'dist');
+      const dest = join(pathTempFolder, 'dist/content');
+
+      console.log('publisher source:', source);
+      console.log('publisher dest:', dest);
 
       createScormSource(source, dest).then(sourceRes => {
         if (sourceRes.error) {
