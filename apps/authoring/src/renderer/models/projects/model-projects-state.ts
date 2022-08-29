@@ -9,6 +9,7 @@ export const config: StateConfig = {
     isInit: false,
     isExplorerModelOpen: false,
     isSaveable: false,
+    isListeningSave: false,
   },
   reducers: {
     update: (state, action) => {
@@ -26,13 +27,22 @@ export const config: StateConfig = {
     saveable: (state, action) => {
       state.isSaveable = action.payload;
     },
+    listeningSave: (state, action) => {
+      state.isListeningSave = action.payload;
+    },
   },
 };
 
 export const slice = createSlice(config);
 
-export const { update, process, init, toggleExplorer, saveable } =
-  slice.actions;
+export const {
+  update,
+  process,
+  init,
+  toggleExplorer,
+  saveable,
+  listeningSave,
+} = slice.actions;
 
 export const reducer = slice.reducer;
 

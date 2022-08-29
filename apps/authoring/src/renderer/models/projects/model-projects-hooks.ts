@@ -50,30 +50,6 @@ export const useInit = () => {
   return isInit;
 };
 
-export const useSave = () => {
-  const data = useData();
-  const isSaveable = useSelector(
-    (state: State.RootState) => state.projects.isSaveable
-  );
-
-  const hasProcessor = checkProcessor();
-
-  if (!hasProcessor) {
-    return isSaveable;
-  }
-
-  if (isSaveable || !data || !data.id) {
-    return isSaveable;
-  }
-  console.log('listening');
-  processor.dispatch(state.saveable(true));
-  Menu.File.onProjectSave(() => {
-    update(data);
-  });
-
-  return isSaveable;
-};
-
 export const useData = () => {
   return useSelector((state: State.RootState) => state.projects.data);
 };
@@ -94,9 +70,41 @@ export const useExplorer = () => {
   );
 };
 
+export const useSave = () => {
+  const data = useData();
+  const isSaveable = useSelector(
+    (state: State.RootState) => state.projects.isSaveable
+  );
+  const isListeningSave = useSelector(
+    (state: State.RootState) => state.projects.isListeningSave
+  );
+
+  const hasProcessor = checkProcessor();
+
+  if (!hasProcessor) {
+    console.error('projects processor not set');
+    return isSaveable;
+  }
+
+  if (isListeningSave || !isSaveable || !data || !data.id) {
+    return isSaveable;
+  }
+
+  Menu.File.onProjectSave(() => {
+    console.log('updating');
+    update(data);
+  });
+
+  setTimeout(() => {
+    processor.dispatch(state.listeningSave(true));
+  }, 0);
+
+  return isSaveable;
+};
+
 const checkProcessor = () => {
   if (!processor.dispatch) {
-    console.error('projects processor not set!');
+    console.error('projects processor not set');
     return false;
   }
 
@@ -173,6 +181,7 @@ export const create = (projectId?: number) => {
       }
 
       processor.dispatch(state.update(result.data.project));
+      processor.dispatch(state.saveable(true));
       processor.dispatch(state.process(false));
 
       if (processor.navigator) {
@@ -204,6 +213,7 @@ export const open = (projectId: number) => {
       }
 
       processor.dispatch(state.update(result.data.project));
+      processor.dispatch(state.saveable(true));
       processor.dispatch(state.process(false));
 
       if (processor.navigator) {

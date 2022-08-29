@@ -7,10 +7,8 @@ export const PageElement = () => {
   const isSaveable = Projects.useSave();
   const project = Projects.useData();
 
-  useEffect(() => {
-    console.log('updating');
-  }, [project, isSaveable]);
-
+  console.log('rendering');
+  console.log('isSavable', isSaveable);
   console.log('project', project);
 
   return (
