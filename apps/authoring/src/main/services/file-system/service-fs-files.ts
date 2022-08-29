@@ -14,13 +14,16 @@ export const pathTempFolder = path.join(app.getPath('temp'), 'scrowl');
 export const pathDownloadsFolder = app.getPath('downloads');
 
 export const getAssetPath = (sourceDir: string) => {
+  const assetPath = __dirname.replace(
+    join('services', 'file-system'),
+    sourceDir
+  );
+
   if (process.env.NODE_ENV === 'development') {
-    return __dirname;
+    return assetPath;
   }
 
-  return __dirname
-    .replace('Resources/app.asar/', '')
-    .replace(join('services', 'file-system'), sourceDir);
+  return assetPath.replace('Resources/app.asar/', '');
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
