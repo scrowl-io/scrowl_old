@@ -21,7 +21,6 @@ fs.getExt = pathName => {
 
 fs.isDirectory = pathName => {
   try {
-    
     if (!fs.existsSync(fs.normalize(pathName))) {
       throw new Error(`Path does not exist: ${pathName}`);
     }
@@ -102,7 +101,7 @@ fs.setFile = (pathName, contents) => {
 
   try {
     if (/.json$/.test(pathName) && typeof contents !== 'string') {
-      contents = prettyJson(JSON.parse(contents));
+      contents = prettyJson(contents);
     }
 
     fs.outputFileSync(filename, contents);

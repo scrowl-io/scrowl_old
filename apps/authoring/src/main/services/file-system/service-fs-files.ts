@@ -205,7 +205,6 @@ export const fileWriteSync = (
     }
 
     fs.outputFileSync(filename, contents);
-
     return {
       error: false,
       data: {
