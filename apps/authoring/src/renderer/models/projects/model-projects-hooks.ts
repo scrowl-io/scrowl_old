@@ -49,8 +49,15 @@ export const useProcessing = () => {
 
 export const useOpen = (to = '/editor') => {
   const navigator = useNavigate();
+  const isLoaded = useSelector(
+    (state: State.RootState) => state.projects.isLoaded
+  );
 
-  navigator(to);
+  if (isLoaded) {
+    setTimeout(() => {
+      navigator(to);
+    }, 1);
+  }
 };
 
 export const useExplorer = () => {

@@ -32,6 +32,7 @@ const AppRoutes = () => {
 
 const Main = (props: AppMainProps) => {
   Preferences.useOpen();
+  Projects.useOpen();
   Projects.useMenuEvents();
 
   return (
