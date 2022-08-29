@@ -1,29 +1,28 @@
 export const data = {
   name: 'Untitled Project',
-  sections: [
+  modules: [
     {
-      name: 'Lesson 1',
-      blocks: [
+      name: 'An Introduction to Harassment & Discrimination',
+      lessons: [
         {
-          elements: [
+          name: 'Building a Respectful Workplace',
+          slides: [
             {
-              type: 'button',
-              props: {
-                children: 'Click Me',
-                style: {
-                  top: '100px',
-                  left: '3rem',
+              name: 'Introduction',
+              template: {
+                version: '1.0.0',
+                slide: {
+                  aspect: '16:9',
                 },
-              },
-            },
-            {
-              type: 'heading',
-              props: {
-                children: 'Introduction',
-                type: 'h1',
-                style: {
-                  top: '1.5rem',
-                  left: '2.5rem',
+                meta: {
+                  name: 'image grid',
+                  component: 'ImageGrid',
+                },
+                elements: {
+                  componentExample: {
+                    editable: true,
+                    value: 'Hello World',
+                  },
                 },
               },
             },

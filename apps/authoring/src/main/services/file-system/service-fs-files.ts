@@ -112,6 +112,31 @@ export const dirTempSync = (prefix: string): DirectoryTempResult => {
   }
 };
 
+export const existsFile = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    try {
+      fs.pathExists(pathname).then(exists => {
+        resolve({
+          error: false,
+          data: {
+            exists,
+          },
+        });
+      });
+    } catch (e) {
+      resolve(createResultError(`Failed to check existence: ${pathname}`, e));
+    }
+  });
+};
+
+export const existsFileSave = (pathname: string) => {
+  return existsFile(path.join(`${pathSaveFolder}`, pathname));
+};
+
+export const existsFileTemp = (pathname: string) => {
+  return existsFile(path.join(`${pathTempFolder}`, pathname));
+};
+
 export const fileExistsSync = (pathname: string): FSResult => {
   try {
     return {
@@ -639,6 +664,9 @@ export default {
   fileWriteSync,
   fileCopySync,
   fileTempSync,
+  existsFile,
+  existsFileSave,
+  existsFileTemp,
   writeFile,
   writeFileTemp,
   writeFileSave,
