@@ -209,7 +209,9 @@ export const explore = (open = true) => {
     return;
   }
 
-  processor.dispatch(state.explore(open));
+  setTimeout(() => {
+    processor.dispatch(state.explore(open));
+  }, 1);
 };
 
 export const open = (projectId: number) => {
@@ -332,6 +334,7 @@ export default {
   useOpen,
   useMenuEvents,
   create,
+  explore,
   save,
   publish,
   list,
