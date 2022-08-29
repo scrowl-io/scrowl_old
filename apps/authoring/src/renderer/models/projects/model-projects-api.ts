@@ -50,7 +50,7 @@ export const open = (projectId: number) => {
     } catch (e) {
       resolve({
         error: true,
-        message: 'Failed to open project',
+        message: `Failed to open: ${projectId}`,
         data: {
           trace: e,
           projectId,

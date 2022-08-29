@@ -511,7 +511,7 @@ export const EVENTS: ProjectEvents = {
   },
   onOpen: {
     name: '/projects/open',
-    type: 'on',
+    type: 'invoke',
     fn: open,
   },
   list: {

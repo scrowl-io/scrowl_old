@@ -39,6 +39,8 @@ export const PageElement = () => {
       );
       return;
     }
+
+    Projects.open(projectId);
   };
 
   return (
