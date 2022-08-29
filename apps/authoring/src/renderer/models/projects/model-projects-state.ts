@@ -1,16 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { StateConfig } from '../../services/state/service-state.types';
+import { ProjectInitialState } from './model-projects.types';
+
+export const initialState: ProjectInitialState = {
+  data: {
+    name: '',
+  },
+  isProcessing: false,
+  isInit: false,
+  isExploring: false,
+  isLoaded: false,
+  isMenuReady: false,
+};
 
 export const config: StateConfig = {
   name: 'projects',
-  initialState: {
-    data: {},
-    isProcessing: false,
-    isInit: false,
-    isExplorerModelOpen: false,
-    isSaveable: false,
-    isListeningSave: false,
-  },
+  initialState: initialState,
   reducers: {
     update: (state, action) => {
       state.data = Object.assign(state.data, action.payload);
@@ -21,31 +26,26 @@ export const config: StateConfig = {
     init: (state, action) => {
       state.isInit = action.payload;
     },
-    toggleExplorer: (state, action) => {
-      state.isExplorerModelOpen = action.payload;
+    explore: (state, action) => {
+      state.isExploring = action.payload;
     },
-    saveable: (state, action) => {
-      state.isSaveable = action.payload;
+    loaded: (state, action) => {
+      state.isLoaded = action.payload;
     },
-    listeningSave: (state, action) => {
-      state.isListeningSave = action.payload;
+    menuReady: (state, action) => {
+      state.isMenuReady = action.payload;
     },
   },
 };
 
 export const slice = createSlice(config);
 
-export const {
-  update,
-  process,
-  init,
-  toggleExplorer,
-  saveable,
-  listeningSave,
-} = slice.actions;
+export const { update, process, init, explore, loaded, menuReady } =
+  slice.actions;
 
 export const reducer = slice.reducer;
 
 export default {
   config,
+  initialState,
 };

@@ -2,8 +2,11 @@ import { ProjectData } from '../../../main/models/projects';
 
 export type { ProjectData } from '../../../main/models/projects';
 
-export type ProjectObserverDataFn = React.Dispatch<ProjectData>;
-
-export type ProjectObserverProcessFn = React.Dispatch<boolean>;
-
-export type ProjectObserverImportFn = React.Dispatch<string>;
+export type ProjectInitialState = {
+  data: ProjectData;
+  isProcessing: boolean;
+  isInit: boolean;
+  isExploring: boolean;
+  isLoaded: boolean;
+  isMenuReady: boolean;
+};

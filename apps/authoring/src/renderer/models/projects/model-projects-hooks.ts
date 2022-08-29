@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Menu, State, requester } from '../../services';
@@ -26,18 +27,6 @@ export const useInit = () => {
   processor.isProcessing = isProcessing;
   processor.data = data;
 
-  Menu.File.onProjectCreate(() => {
-    create();
-  });
-
-  Menu.File.onProjectOpen(() => {
-    dispatch(state.toggleExplorer(true));
-  });
-
-  Menu.File.onProjectPublish(() => {
-    publish(data);
-  });
-
   toggleMenuItems().then(toggleRes => {
     if (toggleRes.error) {
       console.error(toggleRes);
@@ -65,41 +54,56 @@ export const useOpen = (to = '/editor') => {
 };
 
 export const useExplorer = () => {
-  return useSelector(
-    (state: State.RootState) => state.projects.isExplorerModelOpen
-  );
+  return useSelector((state: State.RootState) => state.projects.isExploring);
 };
 
-export const useSave = () => {
+export const useMenuEvents = () => {
   const data = useData();
-  const isSaveable = useSelector(
-    (state: State.RootState) => state.projects.isSaveable
+  const isLoaded = useSelector(
+    (state: State.RootState) => state.projects.isLoaded
   );
-  const isListeningSave = useSelector(
-    (state: State.RootState) => state.projects.isListeningSave
+  const isMenuReady = useSelector(
+    (state: State.RootState) => state.projects.isMenuReady
   );
+  const handleCreateEvent = () => {
+    create();
+  };
+  const handleExploreEvent = () => {
+    explore();
+  };
 
-  const hasProcessor = checkProcessor();
+  useEffect(() => {
+    const hasProcessor = checkProcessor();
+    const handleSaveEvent = () => {
+      save(data);
+    };
+    const handlePublishEvent = () => {
+      publish(data);
+    };
 
-  if (!hasProcessor) {
-    console.error('projects processor not set');
-    return isSaveable;
-  }
+    if (!isLoaded) {
+      Menu.File.onProjectCreate(handleCreateEvent);
+      Menu.File.onProjectOpen(handleExploreEvent);
 
-  if (isListeningSave || !isSaveable || !data || !data.id) {
-    return isSaveable;
-  }
+      if (hasProcessor) {
+        processor.dispatch(state.menuReady(true));
+      }
+    }
 
-  Menu.File.onProjectSave(() => {
-    console.log('updating');
-    update(data);
-  });
+    if (isMenuReady) {
+      Menu.File.onProjectSave(handleSaveEvent);
+      Menu.File.onProjectPublish(handlePublishEvent);
+    }
 
-  setTimeout(() => {
-    processor.dispatch(state.listeningSave(true));
-  }, 0);
+    return () => {
+      if (isMenuReady) {
+        Menu.File.offProjectSave(handleSaveEvent);
+        Menu.File.offProjectPublish(handlePublishEvent);
+      }
+    };
+  }, [isMenuReady, isLoaded, data]);
 
-  return isSaveable;
+  return isMenuReady;
 };
 
 const checkProcessor = () => {
@@ -181,7 +185,7 @@ export const create = (projectId?: number) => {
       }
 
       processor.dispatch(state.update(result.data.project));
-      processor.dispatch(state.saveable(true));
+      processor.dispatch(state.loaded(true));
       processor.dispatch(state.process(false));
 
       if (processor.navigator) {
@@ -189,6 +193,16 @@ export const create = (projectId?: number) => {
       }
     });
   });
+};
+
+export const explore = (open = true) => {
+  const hasProcessor = checkProcessor();
+
+  if (!hasProcessor) {
+    return;
+  }
+
+  processor.dispatch(state.explore(open));
 };
 
 export const open = (projectId: number) => {
@@ -213,7 +227,7 @@ export const open = (projectId: number) => {
       }
 
       processor.dispatch(state.update(result.data.project));
-      processor.dispatch(state.saveable(true));
+      processor.dispatch(state.loaded(true));
       processor.dispatch(state.process(false));
 
       if (processor.navigator) {
@@ -223,7 +237,7 @@ export const open = (projectId: number) => {
   });
 };
 
-export const update = (data: ProjectData) => {
+export const save = (data: ProjectData) => {
   const hasProcessor = checkProcessor();
 
   if (!hasProcessor) {
@@ -240,6 +254,24 @@ export const update = (data: ProjectData) => {
     processor.dispatch(state.update(result.data.project));
     processor.dispatch(state.process(false));
   });
+};
+
+export const update = (data: ProjectData, autoSave = false) => {
+  if (!processor.dispatch) {
+    console.error('preference processor not set!');
+    return;
+  }
+
+  if (processor.isProcessing) {
+    console.warn('preference update in progress...');
+    return;
+  }
+
+  if (!autoSave) {
+    processor.dispatch(state.update(data));
+  } else {
+    save(data);
+  }
 };
 
 export const publish = (data: ProjectData) => {
@@ -291,8 +323,9 @@ export default {
   useData,
   useProcessing,
   useOpen,
+  useMenuEvents,
   create,
-  update,
+  save,
   publish,
   list,
 };
