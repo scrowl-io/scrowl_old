@@ -97,8 +97,8 @@ export const useMenuEvents = () => {
 
     return () => {
       if (isMenuReady) {
-        Menu.File.offProjectSave(handleSaveEvent);
-        Menu.File.offProjectPublish(handlePublishEvent);
+        Menu.File.offProjectSave();
+        Menu.File.offProjectPublish();
       }
     };
   }, [isMenuReady, isLoaded, data]);

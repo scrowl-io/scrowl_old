@@ -23,7 +23,7 @@ export const onProjectSave = (listener: requester.Listener) => {
   requester.on(ENDPOINTS.projectSave, listener);
 };
 
-export const offProjectSave = (listener?: requester.Listener) => {
+export const offProjectSave = () => {
   requester.offAll(ENDPOINTS.projectSave);
 };
 
@@ -31,7 +31,7 @@ export const onProjectPublish = (listener: requester.Listener) => {
   requester.on(ENDPOINTS.projectPublish, listener);
 };
 
-export const offProjectPublish = (listener?: requester.Listener) => {
+export const offProjectPublish = () => {
   requester.offAll(ENDPOINTS.projectPublish);
 };
 
