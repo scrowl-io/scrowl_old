@@ -1,18 +1,35 @@
 import { Form, Button, FormDataProps } from '@owlui/lib';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 
+import { Modal } from 'react-bootstrap';
+
+type GlossaryItem = { name: string; description: string };
+type GlossaryData = Array<GlossaryItem>;
+type GlossaryDict = {
+  [key: string]: {
+    [key: string]: string;
+  };
+};
+
 interface GlossaryFormProps {
+  glossary: GlossaryData;
+  setGlossary: any;
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
+  glossaryData: GlossaryData;
+  editEntry?: boolean;
 }
 
 export const GlossaryForm = (props: GlossaryFormProps) => {
   const [termData, setTermData] = useState({
-    term: '',
-    definition: '',
+    name: '',
+    description: '',
   });
 
-  const { show, setShow } = props;
+  const { show, setShow, setGlossary, editEntry } = props;
+
+  console.log(editEntry);
+  console.log(show);
 
   const handleCancel = () => {
     setShow(!show);
@@ -21,14 +38,13 @@ export const GlossaryForm = (props: GlossaryFormProps) => {
   const handleChange = (e: React.BaseSyntheticEvent) => {
     const value =
       e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-
     setTermData({ ...termData, [e.target.name]: value });
   };
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(termData);
-    setTermData({ ...termData, term: '', definition: '' });
+    setGlossary((glossary: GlossaryData) => [...glossary, termData]);
+    handleCancel();
   };
 
   const formData: FormDataProps[] = [
@@ -36,14 +52,14 @@ export const GlossaryForm = (props: GlossaryFormProps) => {
       type: 'input',
       inputProps: {
         label: {
-          content: 'Term',
-          htmlFor: 'term',
+          content: 'Name',
+          htmlFor: 'name',
         },
         control: {
           onChange: handleChange,
-          id: 'term',
-          value: termData.term,
-          name: 'term',
+          id: 'name',
+          value: termData.name,
+          name: 'name',
           type: 'text',
           disabled: false,
           readOnly: false,
@@ -56,20 +72,20 @@ export const GlossaryForm = (props: GlossaryFormProps) => {
       type: 'input',
       inputProps: {
         label: {
-          content: 'Definition',
-          htmlFor: 'definition',
+          content: 'Description',
+          htmlFor: 'description',
         },
         control: {
           onChange: handleChange,
-          id: 'definition',
-          value: termData.definition,
-          name: 'definition',
+          id: 'description',
+          value: termData.description,
+          name: 'description',
           type: 'text',
           disabled: false,
           readOnly: false,
           plaintext: false,
           placeholder: 'Define the Term',
-          className: 'definition',
+          className: 'description',
         },
       },
     },

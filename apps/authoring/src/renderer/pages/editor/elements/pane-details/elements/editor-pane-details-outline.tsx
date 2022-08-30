@@ -119,7 +119,7 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
   const [open, setOpen] = useState(false);
   const itemId = `${id}-lesson-item`;
   const menuId = `${id}-lesson-menu`;
-  console.log(styles);
+
   return (
     <div className={styles.treeViewLesson} key={id}>
       <div className={styles.treeViewHeader}>
