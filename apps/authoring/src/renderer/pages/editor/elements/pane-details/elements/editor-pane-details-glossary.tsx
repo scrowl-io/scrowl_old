@@ -170,12 +170,12 @@ const AddGlossaryTermButton = (props: AddGlossary) => {
 
 export const TabGlossary = () => {
   const project = Projects.useData();
-  const projectData = project.data;
+  const glossaryData = project.glossary;
 
-  const [glossary, setGlossary] = useState([...projectData]);
+  const [glossary, setGlossary] = useState([...glossaryData]);
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
-  const glossaryDict = createGlossaryDict(project.glossary);
+  const glossaryDict = createGlossaryDict(glossary);
   const glossaryItems = createGlossaryItems(
     glossaryDict,
     toggleDrawer,
