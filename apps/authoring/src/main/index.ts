@@ -137,18 +137,34 @@ app.on('window-all-closed', () => {
   }
 });
 
-app
-  .whenReady()
-  .then(() => {
-    registerScrowlFileProtocol();
-    Menu.init(isDARWIN);
-    Requester.init();
-    createWindow();
+const createApp = () => {
+  app
+    .whenReady()
+    .then(() => {
+      registerScrowlFileProtocol();
+      Menu.init(isDARWIN);
+      Requester.init();
+      createWindow();
 
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
-    });
-  })
-  .catch(console.log);
+      app.on('activate', () => {
+        // On macOS it's common to re-create a window in the app when the
+        // dock icon is clicked and there are no other windows open.
+        if (mainWindow === null) createWindow();
+      });
+    })
+    .catch(console.log);
+};
+
+const setDev = async () => {
+  const utilDevPath = './util-dev.js';
+  const util = await import(utilDevPath);
+
+  util.updateDevEnv();
+  createApp();
+};
+
+if (isDevelopment) {
+  setDev();
+} else {
+  createApp();
+}

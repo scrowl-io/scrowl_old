@@ -42,6 +42,7 @@ release/build/*
 
 # build output
 dist/
+scripts/pipeline/dev.env.json
 
 # SCORM publisher folders
 src/main/services/publisher/project/dist

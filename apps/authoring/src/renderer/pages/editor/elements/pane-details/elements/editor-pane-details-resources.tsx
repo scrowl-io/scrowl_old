@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Listgroup, Icon, DrawerProps, Button, Drawer } from '@owlui/lib';
 import * as styles from '../editor-pane-details.module.scss';
-import { resourceData } from './mock-data';
+import { Projects } from '../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
 import { ResourceForm } from './forms/resource-form';
 
@@ -94,7 +94,8 @@ const AddResourceButton = () => {
 };
 
 export const TabResources = () => {
-  const list = resourceData.map(createItem);
+  const project = Projects.useData();
+  const list = project.resources.map(createItem);
   const tabStyles = `nav flex-column ${styles.tabResources}`;
 
   return (
