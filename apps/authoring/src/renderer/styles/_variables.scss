@@ -12,7 +12,6 @@ $primarys: (
   'primary-800': shade-color($primary, 60%),
   'primary-900': shade-color($primary, 80%),
 );
-
 $secondarys: (
   'secondary-100': tint-color($secondary, 80%),
   'secondary-200': tint-color($secondary, 60%),
@@ -24,7 +23,6 @@ $secondarys: (
   'secondary-800': shade-color($secondary, 60%),
   'secondary-900': shade-color($secondary, 80%),
 );
-
 $all-colors: map-merge-multiple(
   $blues,
   $purples,
@@ -47,21 +45,21 @@ $all-colors: map-merge-multiple(
 ) {
   @if $type == checks {
     background-image: repeating-linear-gradient(
-        45deg,
-        $color 25%,
-        transparent 25%,
-        transparent 75%,
-        $color 75%,
-        $color
-      ),
+      45deg,
+      $color 25%,
+      transparent 25%,
+      transparent 75%,
+      $color 75%,
+      $color
+    ),
       repeating-linear-gradient(
-        45deg,
-        $color 25%,
-        transparent 25%,
-        transparent 75%,
-        $color 75%,
-        $color
-      );
+      45deg,
+      $color 25%,
+      transparent 25%,
+      transparent 75%,
+      $color 75%,
+      $color
+    );
     background-position: 0 0, #{$size} #{$size};
     background-size: calc(2 * #{$size}) calc(2 * #{$size});
   }
@@ -149,7 +147,6 @@ $all-colors: map-merge-multiple(
     background-image: linear-gradient(45deg, $color 50%, transparent 50%);
     background-size: #{$size} #{$size};
   }
-
   background-color: $bg;
 }
 
@@ -168,43 +165,36 @@ $all-colors: map-merge-multiple(
   --#{$prefix}link-hover-color: #{$link-hover-color};
 
   // Global
-  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.125);
-  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.0625);
-
+  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgb(0 0 0 / 12.5%);
+  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgb(0 0 0 / 6.25%);
   --owl-input-color: var(--#{$prefix}body-color);
   --owl-input-bg: var(--#{$prefix}body-bg);
   --owl-input-placeholder-color: var(--#{$prefix}gray-600);
   --owl-input-border-color: var(--#{$prefix}gray-400);
-
   --owl-table-info-color: var(--#{$prefix}gray-900);
   --owl-table-info-bg: var(--#{$prefix}cyan-100);
   --owl-table-info-border-color: var(--#{$prefix}border-color);
-
   --owl-accordion-btn-color: var(--#{$prefix}gray-900);
   --owl-accordion-btn-bg: var(--#{$prefix}white);
   --owl-accordion-btn-active-color: var(--#{$prefix}black);
   --owl-accordion-btn-active-bg: var(--#{$prefix}gray-200);
-
   --owl-border-color: var(--#{$prefix}gray-500);
   --owl-border-width: var(--#{$prefix}border-width);
-
   --owl-dropdown-color: var(--#{$prefix}gray-800);
   --owl-dropdown-bg: var(--#{$prefix}white);
   --owl-dropdown-link-color: var(--#{$prefix}gray-900);
   --owl-dropdown-link-hover-color: var(--#{$prefix}black);
   --owl-dropdown-link-hover-bg: var(--#{$prefix}gray-200);
   --owl-dropdown-link-disabled-color: var(--#{$prefix}gray-500);
-
   --owl-label-color: var(--#{$prefix}gray-600);
-
   --owl-nav-tab-color: var(--#{$prefix}gray-600);
   --owl-nav-tab-active-color: var(--#{$prefix}gray-700);
-  --owl-transparent-hover-bg: rgba(0, 0, 0, 0.15);
+  --owl-transparent-hover-bg: rgb(0 0 0 / 15%);
 
   // Navbar
   --owl-navbar-bg: var(--#{$prefix}white);
   --owl-navbar-color: #{$navbar-light-color};
-  --owl-navbar-box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.125);
+  --owl-navbar-box-shadow: 0 1px 0 0 rgb(0 0 0 / 12.5%);
   --owl-navbar-hover-color: #{$navbar-light-hover-color};
   --owl-navbar-disabled-color: #{$navbar-light-disabled-color};
   --owl-navbar-active-color: #{$navbar-light-active-color};
@@ -230,7 +220,7 @@ $all-colors: map-merge-multiple(
 
   // Workspace
   --owl-workspace-bg: var(--#{$prefix}gray-200);
-  --owl-workspace-bg-accent: rgba(0, 0, 0, 0.05);
+  --owl-workspace-bg-accent: rgb(0 0 0 / 5%);
   --owl-workplace-color: var(--#{$prefix}body-color);
 
   // Template Browser
@@ -248,7 +238,6 @@ $all-colors: map-merge-multiple(
   --owl-color-slide: var(--#{$prefix}yellow);
   --owl-color-template: var(--#{$prefix}cyan);
   --owl-color-quiz: var(--#{$prefix}pink);
-
   --owl-selection-bg: var(--#{$prefix}yellow-100);
   --owl-selection-color: var(--#{$prefix}yellow-800);
   --owl-active-bg: var(--#{$prefix}primary);
@@ -290,7 +279,7 @@ $all-colors: map-merge-multiple(
   .btn-close {
     background: transparent
       url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='black'><path d='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/></svg>")
-      center/1em auto no-repeat;
+      center/0.75em auto no-repeat;
   }
 }
 
@@ -302,41 +291,35 @@ $all-colors: map-merge-multiple(
   --#{$prefix}link-hover-color: var(--#{$prefix}primary-300);
 
   // Global
-  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgba(0, 0, 0, 0.25);
-  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgba(0, 0, 0, 0.15);
-
+  --owl-box-shadow: 0.25rem 0.25rem 0 0 rgb(0 0 0 / 25%);
+  --owl-box-shadow-active: 0.5rem 0.5rem 0 0 rgb(0 0 0 / 15%);
   --owl-input-bg: var(--#{$prefix}gray-700);
   --owl-input-placeholder-color: var(--#{$prefix}gray-400);
   --owl-input-border-color: var(--#{$prefix}black);
-
   --owl-table-info-color: var(--#{$prefix}cyan-100);
   --owl-table-info-bg: var(--#{$prefix}cyan-800);
   --owl-table-info-border-color: var(--#{$prefix}cyan-900);
-
   --owl-accordion-btn-color: var(--#{$prefix}gray-100);
   --owl-accordion-btn-bg: var(--#{$prefix}gray-900);
   --owl-accordion-btn-active-color: var(--#{$prefix}white);
   --owl-accordion-btn-active-bg: var(--#{$prefix}black);
-
   --owl-border-color: var(--#{$prefix}black);
-
   --owl-dropdown-color: var(--#{$prefix}gray-200);
   --owl-dropdown-bg: var(--#{$prefix}gray-900);
   --owl-dropdown-link-color: var(--#{$prefix}white);
   --owl-dropdown-link-hover-color: var(--#{$prefix}white);
   --owl-dropdown-link-hover-bg: var(--#{$prefix}gray-800);
   --owl-dropdown-link-disabled-color: var(--#{$prefix}gray-600);
-
   --owl-label-color: var(--#{$prefix}gray-500);
-
   --owl-nav-tab-color: var(--#{$prefix}gray-500);
   --owl-nav-tab-active-color: var(--#{$prefix}gray-100);
-  --owl-transparent-hover-bg: rgba(255, 255, 255, 0.15);
+  --owl-transparent-hover-bg: rgb(255 255 255 / 15%);
 
   // Navbar
   --owl-navbar-bg: var(--#{$prefix}gray-900);
   --owl-navbar-color: var(--#{$prefix}white);
   --owl-navbar-box-shadow: 0 1px 0 0 var(--#{$prefix}gray-800);
+
   // --owl-navbar-hover-color: #{$navbar-light-hover-color};
   // --owl-navbar-disabled-color: #{$navbar-light-disabled-color};
   // --owl-navbar-active-color: #{$navbar-light-active-color};
@@ -355,13 +338,12 @@ $all-colors: map-merge-multiple(
   --owl-sidebar-hover-color: var(--#{$prefix}white);
   --owl-sidebar-header-bg: var(--#{$prefix}gray-800);
   --owl-sidebar-header-color: var(--#{$prefix}gray-500);
-
   --owl-chatbox-bg: var(--#{$prefix}gray-700);
   --owl-chatbox-bg-hover: var(--#{$prefix}gray-600);
 
   // Workspace
   --owl-workspace-bg: var(--#{$prefix}gray-800);
-  --owl-workspace-bg-accent: rgba(255, 255, 255, 0.08);
+  --owl-workspace-bg-accent: rgb(255 255 255 / 8%);
   --owl-workplace-color: var(--#{$prefix}body-color);
 
   // Template Browser
@@ -374,6 +356,7 @@ $all-colors: map-merge-multiple(
 
   // Color Palette
   --owl-color-default: var(--#{$prefix}gray-400);
+
   // --owl-color-module:    var(--#{$prefix}purple);
   // --owl-color-lesson:    var(--#{$prefix}orange);
   // --owl-color-slide:     var(--#{$prefix}yellow);
@@ -414,47 +397,37 @@ $all-colors: map-merge-multiple(
   }
 
   --owl-btn-border-radius: #{$btn-border-radius};
-
   --owl-heading-letterspacing: -0.025em;
   --owl-heading-lineheight: 1.1;
-
   --owl-font-size-sm: 0.75rem;
   --owl-font-size-xs: 0.688rem;
-
   --owl-cubic-bezier: cubic-bezier(0, 1, 0.5, 1);
-
   --owl-btn-letterspacing: 0.0125em;
-
   --owl-grabhandle-width: 1px;
   --owl-grabhandle-hover-width: 5px;
-
   --owl-label-letterspacing: 0.025em;
   --owl-label-weight: 700;
   --owl-label-texttransform: uppercase;
-
   --owl-navbar-height: 3.125rem;
-
   --owl-sidebar-width: 19rem;
   --owl-sidebar-minwidth: 16rem;
   --owl-sidebar-spacing: 1rem;
-
   --owl-workspace-spacing: 1.5rem;
-
   --owl-footer-height: 2rem;
 
-  @include lightMode();
+  @include lightMode;
 
   &.dark {
-    @include darkMode();
+    @include darkMode;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    @include darkMode();
+    @include darkMode;
 
     &.light {
-      @include lightMode();
+      @include lightMode;
     }
   }
 }

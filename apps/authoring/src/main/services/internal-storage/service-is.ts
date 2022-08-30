@@ -45,6 +45,11 @@ const foreignKey = (
   table.foreign(config.columnName).references(`${config.tableName}.id`);
 };
 
+// drops a table DANGEROUS!!!
+export const __tableDrop = (tableName: string) => {
+  return DB.schema.dropTableIfExists(tableName);
+};
+
 // creates a table in the DB based on a schema
 export const __tableCreate = (tableName: string, schema: StorageSchema) => {
   const processCol = (
@@ -81,6 +86,9 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
       case 'timestamp':
         table.timestamp(column.name).defaultTo(DB.fn.now());
         break;
+      case 'json':
+        table.json(column.name);
+        break;
       default:
         console.warn(
           `Unable to create column from table schema: column type ${column.type} not supported - ${tableName}/${column.name}`
@@ -108,25 +116,28 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
 
   return new Promise<StorageResult>(resolve => {
     try {
-      DB.schema.hasTable(tableName).then(exists => {
-        if (exists) {
-          resolve({
-            error: false,
-            data: {
-              created: false,
-              tableName,
-            },
-          });
-          return;
-        }
+      __tableDrop(tableName).then(() => {
+        //TODO this and the exists check needs to be replaced with a migration step
+        DB.schema.hasTable(tableName).then(exists => {
+          if (exists) {
+            resolve({
+              error: false,
+              data: {
+                created: false,
+                tableName,
+              },
+            });
+            return;
+          }
 
-        processTable().then(() => {
-          resolve({
-            error: false,
-            data: {
-              created: true,
-              tableName,
-            },
+          processTable().then(() => {
+            resolve({
+              error: false,
+              data: {
+                created: true,
+                tableName,
+              },
+            });
           });
         });
       });
@@ -140,11 +151,6 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
       });
     }
   });
-};
-
-// drops a table DANGEROUS!!!
-export const __tableDrop = (tableName: string) => {
-  return DB.schema.dropTableIfExists(tableName);
 };
 
 const returnItem = (tableName: string, ids: Array<number>) => {
@@ -356,8 +362,8 @@ export const init = () => {
 };
 
 export default {
-  __tableCreate,
   __tableDrop,
+  __tableCreate,
   create,
   read,
   update,

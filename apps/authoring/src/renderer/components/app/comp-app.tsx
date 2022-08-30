@@ -57,7 +57,7 @@ export const App = () => {
   useEffect(() => {
     const initializations = [Menu.Global.init()];
 
-    Promise.allSettled(initializations).then(([menuInit]) => {
+    Promise.allSettled(initializations).then(() => {
       setAppInit(true);
     });
 

@@ -11,6 +11,17 @@ import {
 
 export const pathSaveFolder = app.getPath('userData');
 export const pathTempFolder = path.join(app.getPath('temp'), 'scrowl');
+export const pathDownloadsFolder = app.getPath('downloads');
+
+export const getAssetPath = (sourceDir: string) => {
+  if (process.env.NODE_ENV === 'development') {
+    return __dirname;
+  }
+
+  return __dirname
+    .replace('Resources/app.asar/', '')
+    .replace(join('services', 'file-system'), sourceDir);
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const createResultError = (message: string, error?: any): FSResult => {
@@ -243,7 +254,7 @@ export const fileTempSync = (source: string, dest: string): FileDataResult => {
   return fileCopySync(source, destFile);
 };
 
-const writeFile = (pathname: string, contents: unknown) => {
+export const writeFile = (pathname: string, contents: unknown) => {
   return new Promise<FSResult>((resolve, reject) => {
     if (!pathname) {
       resolve(createResultError('Unable to write file: path required'));
@@ -341,7 +352,7 @@ export const writeFileSave = (filename: string, contents: unknown) => {
   });
 };
 
-const copy = (source: string, dest: string) => {
+export const copy = (source: string, dest: string, opts?: fs.CopyOptions) => {
   return new Promise<FSResult>(resolve => {
     if (!source) {
       resolve(
@@ -370,7 +381,7 @@ const copy = (source: string, dest: string) => {
         return;
       }
 
-      fs.copy(source, dest)
+      fs.copy(source, dest, opts)
         .then(() => {
           resolve({
             error: false,
@@ -443,7 +454,7 @@ export const copySaveToTemp = (source: string, dest: string) => {
   });
 };
 
-const readFile = (pathname: string) => {
+export const readFile = (pathname: string) => {
   return new Promise<FSResult>(resolve => {
     if (!pathname) {
       resolve(createResultError('Unable to read file: path required'));
@@ -458,7 +469,11 @@ const readFile = (pathname: string) => {
     }
 
     if (!existsRes.data.exists) {
-      resolve(createResultError('Unable to read file: file does not exist'));
+      resolve(
+        createResultError(
+          `Unable to read file: file does not exist ${pathname}`
+        )
+      );
       return;
     }
 
@@ -611,6 +626,7 @@ export const readDirSave = (pathname: string) => {
 export default {
   pathSaveFolder,
   pathTempFolder,
+  pathDownloadsFolder,
   join,
   ext,
   dirName,
@@ -621,12 +637,15 @@ export default {
   fileWriteSync,
   fileCopySync,
   fileTempSync,
+  writeFile,
   writeFileTemp,
   writeFileSave,
+  readFile,
   readFileTemp,
   readFileSave,
   readDirTemp,
   readDirSave,
+  copy,
   copyTempToSave,
   copySaveToTemp,
 };

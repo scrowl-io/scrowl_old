@@ -16,7 +16,7 @@ export const PageElement = () => {
   console.log('project model', project);
   const [recentProjects, setProjectList] = useState([]);
   const isProcessing = project.useProcessing();
-  const projectModelData = project.useProjectData();
+  const projectModelData = project.useData();
 
   useEffect(() => {
     project.list(10).then(res => {

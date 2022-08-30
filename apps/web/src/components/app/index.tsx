@@ -1,21 +1,25 @@
-import React from 'react'
-import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
-import pageHome from '../../pages/home/index'
+import React from 'react';
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import pageHome from '../../pages/home/index';
 
-const basename = '/'
-const pages = [pageHome]
+const basename = '/';
+const pages = [pageHome];
 
 const createAppRoutes = () => {
   return pages.map((page, index) => {
-    console.log('page route', page);
     return (
       <Route key={index} path={`${page.Route}`} element={<page.Element />} />
-    )
-  })
-}
+    );
+  });
+};
 
 export const App = () => {
-  const AppRoutes = createAppRoutes()
+  const AppRoutes = createAppRoutes();
 
   return (
     <Router>
@@ -26,9 +30,9 @@ export const App = () => {
         </Routes>
       </main>
     </Router>
-  )
-}
+  );
+};
 
 export default {
   App,
-}
+};
