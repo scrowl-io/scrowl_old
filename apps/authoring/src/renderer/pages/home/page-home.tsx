@@ -121,21 +121,20 @@ export const PageElement = () => {
         {recentProjects.length > 0 && (
           <>
             <h2 className="section-title">Recent Projects:</h2>
-            <div>
+            <ul>
               {recentProjects.map((project: ProjectData, index) => (
-                <button
-                  className="section-link"
-                  key={index}
-                  onClick={handleOpenProject}
-                  data-project-id={project.id}
-                >
-                  {project.name}
-                </button>
+                <li key={index}>
+                  <button
+                    className="section-link"
+                    onClick={handleOpenProject}
+                    data-project-id={project.id}
+                  >
+                    {project.name}
+                  </button>
+                </li>
               ))}
-              <Link className="section-link" to="">
-                More...
-              </Link>
-            </div>
+              <button className="section-link">More...</button>
+            </ul>
           </>
         )}
       </main>
