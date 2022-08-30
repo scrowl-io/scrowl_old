@@ -16,7 +16,7 @@ interface GlossaryFormProps {
   setGlossary: any;
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
-  glossaryData: GlossaryData;
+  glossaryData?: GlossaryData;
   editEntry?: boolean;
 }
 

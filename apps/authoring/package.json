@@ -22,12 +22,11 @@
     "setup": "node ./scripts/pipeline/setup.mjs",
     "prebuild": "yarn run clean",
     "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist --no-optimize",
-    "start:frontend": "parcel serve --target frontend --no-cache --port 5001",
-    "prestart:backend": "yarn run setup && parcel build --target backend --target preload --no-cache",
-    "start:backend": "wait-on http://localhost:5001 && nodemon --exec electron ./dist/main.js",
-    "watch:backend": "parcel watch ./src/main/index.ts ./src/main/preload.ts --no-cache --port 5000",
-    "prestart": "yarn run clean",
-    "start": "cross-env NODE_ENV=development PORT=5001 concurrently \"yarn run start:frontend\" \"yarn run start:backend\" \"yarn run watch:backend\"",
+    "start:frontend": "parcel serve --target frontend --no-cache --port 5001 --no-cache",
+    "start:backend": "parcel watch --target backend --target preload --target utilDev --port 5000 --no-cache",
+    "reload:backend": "wait-on http://localhost:5001 && nodemon --watch dist/main.js --exec electron ./dist/main.js",
+    "prestart": "yarn run clean && node ./scripts/pipeline/reset-dev-env.mjs",
+    "start": "cross-env NODE_ENV=development PORT=5001 concurrently \"yarn run start:frontend\" \"yarn run start:backend\" \"yarn run reload:backend\"",
     "package:test": "npx electron-builder build --dir",
     "postpackage:test": "npx asar extract release/build/mac/Scrowl.app/Contents/Resources/app.asar release/app",
     "prepackage": "yarn run build",
@@ -56,12 +55,20 @@
   "main": "./dist/main.js",
   "backend": "./dist/main.js",
   "preload": "./dist/preload.js",
+  "utilDev": "./dist/util-dev.js",
   "frontend": "./dist/renderer.html",
   "targets": {
     "main": false,
     "backend": {
       "context": "electron-main",
       "source": "./src/main/index.ts",
+      "engines": {
+        "node": "16.13.2"
+      }
+    },
+    "utilDev": {
+      "context": "electron-main",
+      "source": "./src/main/util-dev.ts",
       "engines": {
         "node": "16.13.2"
       }

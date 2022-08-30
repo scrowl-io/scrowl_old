@@ -2,14 +2,12 @@ import React, {
   BaseSyntheticEvent,
   Dispatch,
   SetStateAction,
-  useEffect,
   useState,
 } from 'react';
 import * as styles from '../editor-pane-details.module.scss';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
-
-import { glossaryData } from './mock-data';
-import { Icon, Drawer, DrawerProps, Button, Modal } from '@owlui/lib';
+import { Projects } from '../../../../../models';
+import { Icon, Drawer, DrawerProps, Button } from '@owlui/lib';
 import { GlossaryForm } from './forms/glossary-form';
 
 export type GlossaryItem = { name: string; description: string };
@@ -32,33 +30,6 @@ const glossaryTermMenuItems: Array<ActionMenuItem> = [
     iconStyle: 'Outlined',
   },
 ];
-
-const modalContent = {
-  size: 'sm',
-  header: {
-    bsProps: {
-      closeButton: true,
-      closeLabel: 'Close',
-    },
-    content: <h2>Modal Header</h2>,
-  },
-  body: {
-    content: (
-      <>
-        <h6>Inside the modal body</h6>
-        <hr />
-        <p>Example of text inside the modal body.</p>
-      </>
-    ),
-  },
-  footer: {
-    content: (
-      <>
-        <Button>Save Changes</Button>
-      </>
-    ),
-  },
-};
 
 const createGlossaryDict = (data: GlossaryData) => {
   const glossary: GlossaryDict = {};
@@ -97,7 +68,6 @@ const createGlossaryItems = (
       <GlossaryForm
         show={toggleDrawer}
         setShow={setToggleDrawer}
-        glossaryData={glossaryData}
         glossary={glossary}
         setGlossary={setGlossary}
         editEntry={true}
@@ -167,7 +137,6 @@ const AddGlossaryTermButton = (props: AddGlossary) => {
       <GlossaryForm
         show={toggleDrawer}
         setShow={setToggleDrawer}
-        glossaryData={glossaryData}
         glossary={props.glossary}
         setGlossary={props.setGlossary}
       />
@@ -200,10 +169,13 @@ const AddGlossaryTermButton = (props: AddGlossary) => {
 };
 
 export const TabGlossary = () => {
-  const [glossary, setGlossary] = useState([...glossaryData]);
+  const project = Projects.useData();
+  const projectData = project.data;
+
+  const [glossary, setGlossary] = useState([...projectData]);
   const [toggleDrawer, setToggleDrawer] = useState(false);
 
-  const glossaryDict = createGlossaryDict(glossary);
+  const glossaryDict = createGlossaryDict(project.glossary);
   const glossaryItems = createGlossaryItems(
     glossaryDict,
     toggleDrawer,

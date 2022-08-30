@@ -39,12 +39,6 @@ export const schema: InternalStorage.StorageSchema = [
       type: 'timestamp',
     },
   },
-  {
-    column: {
-      name: 'sections',
-      type: 'json',
-    },
-  },
 ];
 
 export default {
