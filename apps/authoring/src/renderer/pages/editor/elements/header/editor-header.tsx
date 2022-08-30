@@ -1,43 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as styles from './editor-header.module.scss';
 import * as toolbarStyles from '../../../../components/toolbar/comp-toolbar.module.scss';
+import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
 import { PreviewButton } from './elements';
 import { SaveTooltip } from './elements/save-tooltip';
 import { PublishButton } from './elements/publishbutton';
-import { HeaderProps } from './elements/editor-header-types';
 
-export const Header = ({
-  courseName,
-  courseDesc,
-  courseAut,
-  publishFunc,
-}: HeaderProps) => {
-  const [filename, setFilename] = useState(courseName);
+export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
   // piece of state should be updated in order to display the tooltip
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showSavetooltip, setShowSaveTooltip] = useState(false);
-  const disableElement = !filename ? true : false;
-
-  useEffect(() => {
-    setFilename(courseName);
-  }, [courseName]);
+  const disableElement = true;
+  const project = Projects.useData();
 
   const handleFilenameChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    setFilename(ev.currentTarget.value);
+    const name = ev.currentTarget.value;
+
+    Projects.update({ name });
   };
 
   return (
     <Toolbar>
       <Logo />
-      <div className={styles.filename} data-value={filename}>
+      <div className={styles.filename} data-value={project.name}>
         <input
           name="filename"
           id="filenameInput"
           className="form-control"
-          placeholder="Untitled Project"
-          value={filename || ''}
+          value={project.name}
+          placeholder=""
           onChange={handleFilenameChange}
           size={13}
           disabled={disableElement}
@@ -56,13 +49,7 @@ export const Header = ({
         <ul className={`${toolbarStyles.toolbarNav} align-items-center`}>
           <li className="scrowl-navbar__actions">
             <PreviewButton disabled={disableElement} />
-            <PublishButton
-              courseName={courseName}
-              courseDesc={courseDesc}
-              courseAut={courseAut}
-              publishFunc={publishFunc}
-              disabled={disableElement}
-            />
+            <PublishButton disabled={disableElement} />
           </li>
         </ul>
       </div>

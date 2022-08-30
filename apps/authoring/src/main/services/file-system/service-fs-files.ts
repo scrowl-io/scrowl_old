@@ -14,13 +14,16 @@ export const pathTempFolder = path.join(app.getPath('temp'), 'scrowl');
 export const pathDownloadsFolder = app.getPath('downloads');
 
 export const getAssetPath = (sourceDir: string) => {
-  if (process.env.NODE_ENV === 'development' && !sourceDir) {
-    return __dirname;
+  const assetPath = __dirname.replace(
+    join('services', 'file-system'),
+    sourceDir
+  );
+
+  if (process.env.NODE_ENV === 'development') {
+    return assetPath;
   }
 
-  return __dirname
-    .replace('Resources/app.asar/', '')
-    .replace(join('services', 'file-system'), sourceDir);
+  return assetPath.replace('Resources/app.asar/', '');
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -107,6 +110,31 @@ export const dirTempSync = (prefix: string): DirectoryTempResult => {
       message,
     };
   }
+};
+
+export const existsFile = (pathname: string) => {
+  return new Promise<FSResult>(resolve => {
+    try {
+      fs.pathExists(pathname).then(exists => {
+        resolve({
+          error: false,
+          data: {
+            exists,
+          },
+        });
+      });
+    } catch (e) {
+      resolve(createResultError(`Failed to check existence: ${pathname}`, e));
+    }
+  });
+};
+
+export const existsFileSave = (pathname: string) => {
+  return existsFile(path.join(`${pathSaveFolder}`, pathname));
+};
+
+export const existsFileTemp = (pathname: string) => {
+  return existsFile(path.join(`${pathTempFolder}`, pathname));
 };
 
 export const fileExistsSync = (pathname: string): FSResult => {
@@ -202,7 +230,6 @@ export const fileWriteSync = (
     }
 
     fs.outputFileSync(filename, contents);
-
     return {
       error: false,
       data: {
@@ -637,6 +664,9 @@ export default {
   fileWriteSync,
   fileCopySync,
   fileTempSync,
+  existsFile,
+  existsFileSave,
+  existsFileTemp,
   writeFile,
   writeFileTemp,
   writeFileSave,

@@ -73,6 +73,46 @@ export type ProjectEvents = {
  * This interface should be updated once
  * define the actual project structure.
  */
+export type ProjectGlossaryItem = {
+  name: string;
+  description: string;
+};
+
+export type ProjectResourceItem = {
+  name: string;
+  description?: string;
+};
+
+export type ProjectSlide = {
+  name: string;
+  template?: {
+    version: string;
+    slide: {
+      aspect: '4:3' | '16:9' | '16:10';
+    };
+    meta: {
+      name: string;
+      component: string;
+    };
+    elements: {
+      [key: string]: {
+        editable: boolean;
+        value: string | number | boolean;
+      };
+    };
+  };
+};
+
+export type ProjectLesson = {
+  name: string;
+  slides: Array<ProjectSlide>;
+};
+
+export type ProjectModule = {
+  name: string;
+  lessons: Array<ProjectLesson>;
+};
+
 export interface ProjectData extends InternalStorage.StorageData {
   id?: string;
   created_at?: string;
@@ -87,6 +127,9 @@ export interface ProjectData extends InternalStorage.StorageData {
   workingImports?: Array<string>;
   saveFile?: string;
   saveDir?: string;
+  glossary?: Array<ProjectGlossaryItem>;
+  resources?: Array<ProjectResourceItem>;
+  modules?: Array<ProjectModule>;
 }
 
 interface CreateResultSuccess

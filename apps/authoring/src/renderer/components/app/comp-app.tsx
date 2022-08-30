@@ -5,7 +5,7 @@ import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
 import { Menu } from '../../services';
 import { Editor, PageNavProps } from '../../pages';
-import { Preferences } from '../../models';
+import { Preferences, Projects } from '../../models';
 
 const routeList: PageNavProps = [];
 
@@ -31,6 +31,8 @@ const AppRoutes = () => {
 
 const Main = (props: AppMainProps) => {
   Preferences.useOpen();
+  Projects.useOpen();
+  Projects.useMenuEvents();
 
   return (
     <div {...props}>
@@ -48,22 +50,32 @@ export const Loader = () => {
 export const App = () => {
   const preference = Preferences.useData();
   const prefInit = Preferences.useInit();
+  const projectInit = Projects.useInit();
   const [appTheme, setAppTheme] = useState('');
   const [appInit, setAppInit] = useState(false);
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
+    let ready = false;
     const initializations = [Menu.Global.init()];
 
     Promise.allSettled(initializations).then(() => {
+      if (ready) {
+        return;
+      }
+
       setAppInit(true);
+
+      if (appInit && prefInit && projectInit) {
+        setAppTheme(`theme--${preference.theme}`);
+        setAppReady(true);
+      }
     });
 
-    if (appInit && prefInit) {
-      setAppTheme(`theme--${preference.theme}`);
-      setAppReady(true);
-    }
-  }, [appInit, appTheme, preference, prefInit]);
+    return () => {
+      ready = true;
+    };
+  }, [appInit, appTheme, preference, prefInit, projectInit]);
 
   return (
     <Router>{appReady ? <Main className={appTheme} /> : <Loader />}</Router>
