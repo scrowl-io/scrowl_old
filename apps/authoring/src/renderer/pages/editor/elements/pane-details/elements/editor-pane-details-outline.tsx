@@ -4,7 +4,6 @@ import { Icon, Button } from '@owlui/lib';
 import Collapse from 'react-bootstrap/Collapse';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
 import { Projects } from '../../../../../models';
-
 export type SlideTreeItem = {
   name: string;
 };
@@ -29,6 +28,7 @@ const menuItemAction = (e: React.BaseSyntheticEvent) => {
   console.log(e.target.firstChild.textContent);
 };
 
+// change all these functions into functions that interact with the state
 const moduleMenuItems: Array<ActionMenuItem> = [
   {
     label: 'Add Lesson',
