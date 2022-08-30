@@ -1,6 +1,8 @@
 import { contextBridge, ipcRenderer } from 'electron';
 import { RegisterEventType, RegisterEvent } from './services/requester';
 
+export type Listener = (...args: unknown[]) => void;
+
 let eventList: Array<RegisterEvent> = [];
 
 const updateEventList = async (): Promise<{
@@ -39,7 +41,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
         return ipcRenderer.invoke(endpoint, ...args);
       }
     },
-    async on(endpoint: string, listener: (...args: unknown[]) => void) {
+    async on(endpoint: string, listener: Listener) {
       // listens to a 'send' event from the backend
       const validEvents = await getValidEvents('send');
 
@@ -55,7 +57,34 @@ contextBridge.exposeInMainWorld('electronAPI', {
         ipcRenderer.send(endpoint, ...args);
       }
     },
+    async removeListener(endpoint: string, listener: Listener) {
+      if (!endpoint) {
+        console.error(
+          'Unable to remove listener from endpoint: endpoint required'
+        );
+        return;
+      }
+
+      if (!listener) {
+        console.error(
+          'Unable to remove listener from endpoint: listener required'
+        );
+        return;
+      }
+      // removes the listener from the endpoint
+      const validEvents = await getValidEvents();
+
+      if (validEvents.indexOf(endpoint) !== -1) {
+        ipcRenderer.removeListener(endpoint, listener);
+      }
+    },
     async removeAllListeners(endpoint: string) {
+      if (!endpoint) {
+        console.error(
+          'Unable to remove ALL listeners from endpoint: endpoint required'
+        );
+        return;
+      }
       // removes all callbacks from an endpoint
       // DANGREROUS //
       const validEvents = await getValidEvents();
