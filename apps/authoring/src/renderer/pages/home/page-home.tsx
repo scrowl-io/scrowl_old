@@ -3,7 +3,8 @@ import * as styles from './page-home.module.scss';
 import { PageNavItems } from './page-home-routes';
 import { NavigationBar } from '../../components/navigationbar';
 import { Project, ProjectData } from '../../models';
-
+import { ModalOutline } from '../../components/modal/index';
+import { ModalDefaultProps } from '@owlui/lib';
 const project = new Project();
 
 export const PageElement = () => {
@@ -12,6 +13,10 @@ export const PageElement = () => {
   const [recentProjects, setProjectList] = useState([]);
   const isProcessing = project.useProcessing();
   const projectModelData = project.useData();
+
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => setShowModal(!showModal);
 
   useEffect(() => {
     project.list(10).then(res => {
@@ -31,6 +36,10 @@ export const PageElement = () => {
       console.log('recentProjects', res.data.projects);
     });
   }, []);
+
+  const handleOpenModal = (ev: React.MouseEvent<HTMLButtonElement>) => {
+    ev.preventDefault();
+  };
 
   const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
@@ -56,12 +65,53 @@ export const PageElement = () => {
 
   console.log(projectModelData);
 
+  const testProps = {
+    header: {
+      content: 'Test Header',
+    },
+    body: {
+      content: 'Test Body',
+    },
+    footer: {
+      content: 'Test Footer',
+    },
+  };
+
+  const modalContent: ModalDefaultProps = {
+    size: 'sm',
+    header: {
+      bsProps: {
+        closeButton: true,
+        closeLabel: 'Close',
+      },
+      content: <h2>Modal Header</h2>,
+    },
+    body: {
+      content: (
+        <>
+          <h6>Inside the modal body</h6>
+          <hr />
+          <p>Example of text inside the modal body.</p>
+        </>
+      ),
+    },
+    footer: {
+      content: (
+        <>
+          <button>Save Changes</button>
+        </>
+      ),
+    },
+  };
+
   return (
     <>
       <NavigationBar pages={PageNavItems} />
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
         <h1>Home Page</h1>
+        {/* <ModalOutline {...modalContent} /> */}
+        <button onClick={toggleModal}>TEST MODAL</button>
         {recentProjects.length > 0 && (
           <>
             <h3>Recent Projects:</h3>

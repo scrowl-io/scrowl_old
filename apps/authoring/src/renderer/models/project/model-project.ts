@@ -18,6 +18,7 @@ const ENDPOINTS: ProjectEventApi = {
   save: '/projects/save',
   open: '/projects/open',
   list: '/projects/list',
+  recent: '/projects/list/recent',
   import: 'project/import-file',
   publish: '/projects/publish',
 };
@@ -51,6 +52,7 @@ export class Project {
     });
 
     Menu.File.onProjectOpen((ev, result) => {
+      console.log('project open');
       if (result.error) {
         console.error(result);
         return;

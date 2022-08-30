@@ -248,6 +248,8 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
   });
 };
 
+export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {};
+
 export const open = function (ev: Requester.RequestEvent, projectId: number) {
   if (!projectId) {
     Requester.send(EVENTS.open.name, {
@@ -462,6 +464,15 @@ export const EVENTS: ProjectEvents = {
   import: {
     name: 'project/import-file',
     type: 'send',
+  },
+  recent: {
+    name: '/projects/list/recent',
+    type: 'invoke',
+  },
+  onRecent: {
+    name: '/projects/list/recent',
+    type: 'invoke',
+    fn: list,
   },
   onImport: {
     name: 'project/import-file',
