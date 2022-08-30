@@ -66,7 +66,9 @@ export const create = () => {
         }
 
         project = createRes.data.item;
-        project.modules = data.modules;
+        project.modules = data.modules || [];
+        project.glossary = data.glossary || [];
+        project.resources = data.resources || [];
         writeProjectTemp(
           project,
           'manifest.json',
@@ -112,7 +114,12 @@ export const save = (
     }
 
     // update the project in the DB
-    const { modules, ...data } = project;
+    // eslint-disable-next-line prefer-const
+    let { modules, glossary, resources, ...data } = project;
+    modules = modules || [];
+    glossary = glossary || [];
+    resources = resources || [];
+
     IS.update(table.name, data, { id: data.id })
       .then(updateRes => {
         if (updateRes.error) {
@@ -129,7 +136,11 @@ export const save = (
           return;
         }
 
-        const updatedProject = Object.assign(updateRes.data.item, { modules });
+        const updatedProject = Object.assign(updateRes.data.item, {
+          modules,
+          glossary,
+          resources,
+        });
         // write the new manifest
         writeProjectTemp(
           updatedProject,

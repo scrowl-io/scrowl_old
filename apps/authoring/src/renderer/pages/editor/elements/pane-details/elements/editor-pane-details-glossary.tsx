@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import * as styles from '../editor-pane-details.module.scss';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
-
-import { glossaryData } from './mock-data';
+import { Projects } from '../../../../../models';
 import { Icon, Drawer, DrawerProps, Button } from '@owlui/lib';
 import { GlossaryForm } from './forms/glossary-form';
 
@@ -114,7 +113,8 @@ const AddGlossaryTermButton = () => {
 };
 
 export const TabGlossary = () => {
-  const glossaryDict = createGlossaryDict(glossaryData);
+  const project = Projects.useData();
+  const glossaryDict = createGlossaryDict(project.glossary);
   const glossaryItems = createGlossaryItems(glossaryDict);
 
   return (

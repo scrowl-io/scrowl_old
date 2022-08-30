@@ -55,6 +55,10 @@ export const useExplorer = () => {
   return useSelector((state: State.RootState) => state.projects.isExploring);
 };
 
+export const useLoaded = () => {
+  return useSelector((state: State.RootState) => state.projects.isLoaded);
+};
+
 export const useMenuEvents = () => {
   const data = useData();
   const isLoaded = useSelector(
@@ -125,16 +129,12 @@ const toggleMenuItems = (isEnabled = false) => {
 
       if (isEnabled) {
         changes = [
-          Menu.Global.disable(Menu.Global.ITEMS.projectsCreate),
-          Menu.Global.disable(Menu.Global.ITEMS.projectOpen),
           Menu.Global.enable(Menu.Global.ITEMS.projectSave),
           Menu.Global.enable(Menu.Global.ITEMS.projectPublish),
           Menu.Global.enable(Menu.Global.ITEMS.importFile),
         ];
       } else {
         changes = [
-          Menu.Global.enable(Menu.Global.ITEMS.projectsCreate),
-          Menu.Global.enable(Menu.Global.ITEMS.projectOpen),
           Menu.Global.disable(Menu.Global.ITEMS.projectSave),
           Menu.Global.disable(Menu.Global.ITEMS.projectPublish),
           Menu.Global.disable(Menu.Global.ITEMS.importFile),
@@ -324,6 +324,7 @@ export default {
   useProcessing,
   useOpen,
   useMenuEvents,
+  useLoaded,
   create,
   explore,
   save,

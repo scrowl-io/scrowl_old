@@ -3,7 +3,7 @@ import * as styles from '../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import Collapse from 'react-bootstrap/Collapse';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
-import { outlineData } from './mock-data';
+import { Projects } from '../../../../../models';
 
 export type SlideTreeItem = {
   name: string;
@@ -207,10 +207,11 @@ const TreeViewModules = (data: ProjectTree) => {
 };
 
 export const TabOutline = () => {
+  const project = Projects.useData();
   const tabStyles = `${styles.tabOutline} tree-view nav flex-column`;
-  const outlineTree = TreeViewModules(outlineData);
+  const treeView = TreeViewModules(project.modules);
 
-  return <div className={tabStyles}>{outlineTree}</div>;
+  return <div className={tabStyles}>{treeView}</div>;
 };
 
 export default {
