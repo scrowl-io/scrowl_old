@@ -114,10 +114,9 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
     });
   };
 
-  return new Promise<StorageResult>(resolve => {
-    try {
-      __tableDrop(tableName).then(() => {
-        //TODO this and the exists check needs to be replaced with a migration step
+  const __create = () => {
+    return new Promise<StorageResult>(resolve => {
+      try {
         DB.schema.hasTable(tableName).then(exists => {
           if (exists) {
             resolve({
@@ -140,7 +139,37 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
             });
           });
         });
-      });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to create table',
+          data: {
+            tableName,
+            trace: e,
+          },
+        });
+      }
+    });
+  };
+
+  const isDroppable = () => {
+    if (process.env.NODE_ENV !== 'development') {
+      return false; //TODO write migration step for tables when in PROD
+    }
+
+    const restart = parseInt(process.env.restart || '0');
+    return restart <= 1;
+  };
+
+  return new Promise<StorageResult>(resolve => {
+    try {
+      if (isDroppable()) {
+        __tableDrop(tableName).then(() => {
+          __create().then(resolve);
+        });
+      } else {
+        __create().then(resolve);
+      }
     } catch (e) {
       resolve({
         error: true,

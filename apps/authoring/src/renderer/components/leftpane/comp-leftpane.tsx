@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Input, InputProps, Button, Listgroup, Icon } from '@owlui/lib';
+import { Tabs, Input, Button, Listgroup, Icon } from '@owlui/lib';
 
 import { Outline, topOutlineItems } from '../accordion';
 import { GlossaryCard } from '../card';
@@ -61,7 +61,7 @@ const tabItems = [
   },
 ];
 
-const inputProps: InputProps = {
+const inputProps = {
   control: {
     id: 'search',
     type: 'text',
