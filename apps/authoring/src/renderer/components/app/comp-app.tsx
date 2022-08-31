@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  MemoryRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 import * as styles from './styles/comp-app.module.scss';
 import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
@@ -31,9 +36,25 @@ const AppRoutes = () => {
 };
 
 const Main = (props: AppMainProps) => {
-  Preferences.useOpen();
+  const navigate = useNavigate();
+
   Projects.useOpen();
   Projects.useMenuEvents();
+
+  useEffect(() => {
+    Menu.File.onPreferencesOpen(() => {
+      navigate('/settings/theme');
+    });
+
+    Menu.File.onGetStarted(() => {
+      navigate('/home');
+    });
+
+    return () => {
+      Menu.File.offGetStarted();
+      Menu.File.offPreferencesOpen();
+    };
+  }, [navigate]);
 
   return (
     <div {...props}>

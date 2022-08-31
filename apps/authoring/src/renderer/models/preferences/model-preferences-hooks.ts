@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Menu, State } from '../../services';
@@ -16,11 +17,7 @@ export const useProcessing = () => {
 };
 
 export const useOpen = (to = '/settings/theme') => {
-  const navigator = useNavigate();
-
-  Menu.File.onPreferencesOpen(() => {
-    navigator(to);
-  });
+  console.error('called use open from');
 };
 
 const processor: State.StateProcessor = {};
