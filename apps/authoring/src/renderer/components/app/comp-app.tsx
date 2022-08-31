@@ -10,7 +10,7 @@ import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
 import { TitleBar } from './elements';
 import { Menu } from '../../services';
-import { Editor, PageNavProps } from '../../pages';
+import { Home, PageNavProps } from '../../pages';
 import { Preferences, Projects } from '../../models';
 
 const routeList: PageNavProps = [];
@@ -30,7 +30,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       {pageRouteElements}
-      <Route path="/" element={<Editor.PageElement />} />
+      <Route path="/" element={<Home.PageElement />} />
     </Routes>
   );
 };
