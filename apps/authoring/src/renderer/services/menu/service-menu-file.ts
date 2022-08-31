@@ -9,14 +9,23 @@ export const ENDPOINTS: MenuEventsFileApi = {
   importFile: 'project/import-file',
   preferencesCreate: '/preferences/create',
   preferencesOpen: '/preferences/open',
+  getStarted: '/get-started',
 };
 
 export const onProjectCreate = (listener: requester.Listener) => {
   requester.on(ENDPOINTS.projectsCreate, listener);
 };
 
+export const offProjectCreate = () => {
+  requester.offAll(ENDPOINTS.projectsCreate);
+};
+
 export const onProjectOpen = (listener: requester.Listener) => {
   requester.on(ENDPOINTS.projectOpen, listener);
+};
+
+export const offProjectOpen = () => {
+  requester.offAll(ENDPOINTS.projectOpen);
 };
 
 export const onProjectSave = (listener: requester.Listener) => {
@@ -47,6 +56,18 @@ export const onPreferencesOpen = (listener: requester.Listener) => {
   requester.on(ENDPOINTS.preferencesOpen, listener);
 };
 
+export const offPreferencesOpen = () => {
+  requester.offAll(ENDPOINTS.preferencesOpen);
+};
+
+export const onGetStarted = (listener: requester.Listener) => {
+  requester.on(ENDPOINTS.getStarted, listener);
+};
+
+export const offGetStarted = () => {
+  requester.offAll(ENDPOINTS.getStarted);
+};
+
 export default {
   onProjectCreate,
   onProjectOpen,
@@ -54,4 +75,5 @@ export default {
   onImportFile,
   onPreferencesCreate,
   onPreferencesOpen,
+  onGetStarted,
 };
