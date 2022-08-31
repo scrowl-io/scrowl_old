@@ -32,22 +32,18 @@ const menuItemAction = (e: React.BaseSyntheticEvent) => {
 
 const addLesson = (project: ProjectData, index: number) => {
   const newLesson = { name: 'untitled', slides: [{ name: 'untitled' }] };
-  const lessonsLength = project?.modules?[index].lessons.length;
+  const lessonsLength = project?.modules?.[index].lessons.length || 0;
 
   Projects.update({
     ...project,
-    modules: project?.modules?.splice(
-      index,
-      0, 
-      {
-        ...project.modules[index], 
-        lessons: project.modules[index].lessons.splice(
-          lessonsLength,
-          0,
-          newLesson
-        )
-      }
-    )
+    modules: project?.modules?.splice(index, 0, {
+      ...project.modules[index],
+      lessons: project.modules[index].lessons.splice(
+        lessonsLength,
+        0,
+        newLesson
+      ),
+    }),
   });
 };
 
@@ -183,12 +179,57 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
 
   const { project } = Projects.useData();
 
-  const moduleMenuItems: Array<ActionMenuItem> = [
+  // const moduleMenuItems: Array<ActionMenuItem> = [
+  //   {
+  //     label: 'Add Lesson',
+  //     icon: 'widgets',
+  //     iconStyle: 'Outlined',
+  //     // action: addLesson(idx),
+  //   },
+  //   {
+  //     label: 'Rename',
+  //     icon: 'edit',
+  //     iconStyle: 'Outlined',
+  //     // action: menuItemAction,
+  //   },
+  //   {
+  //     label: 'Duplicate',
+  //     icon: 'content_copy',
+  //     iconStyle: 'Outlined',
+  //     // action: index => duplicateModule(project, index),
+  //   },
+  //   {
+  //     label: 'Add Module After',
+  //     icon: 'folder',
+  //     iconStyle: 'Outlined',
+  //     // action: index => addModule(project, index),
+  //   },
+  //   {
+  //     label: 'Move Up',
+  //     icon: 'arrow_upward',
+  //     iconStyle: 'Outlined',
+  //     // action: menuItemAction,
+  //   },
+  //   {
+  //     label: 'Move Down',
+  //     icon: 'arrow_downward',
+  //     iconStyle: 'Outlined',
+  //     // action: menuItemAction,
+  //   },
+  //   {
+  //     label: 'Delete Module',
+  //     icon: 'delete',
+  //     iconStyle: 'Outlined',
+  //     // action: index => deleteModule(project, index),
+  //   },
+  // ];
+
+  const buildActionMenuItems = (index: number) => [
     {
       label: 'Add Lesson',
       icon: 'widgets',
       iconStyle: 'Outlined',
-      action: index => addLesson(project, index),
+      action: addLesson(project, index),
     },
     {
       label: 'Rename',
@@ -200,13 +241,13 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
       label: 'Duplicate',
       icon: 'content_copy',
       iconStyle: 'Outlined',
-      action: index => duplicateModule(project, index),
+      action: duplicateModule(project, index),
     },
     {
       label: 'Add Module After',
       icon: 'folder',
       iconStyle: 'Outlined',
-      action: index => addModule(project, index),
+      action: addModule(project, index),
     },
     {
       label: 'Move Up',
@@ -224,7 +265,7 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
       label: 'Delete Module',
       icon: 'delete',
       iconStyle: 'Outlined',
-      action: index => deleteModule(project, index),
+      action: deleteModule(project, index),
     },
   ];
 
@@ -250,7 +291,7 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
           </div>
         </Button>
         <ActionMenu
-          menu-items={moduleMenuItems}
+          menu-items={buildActionMenuItems(idx)}
           title="title"
           children={<></>}
         />
