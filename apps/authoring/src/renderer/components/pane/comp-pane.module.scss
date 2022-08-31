@@ -1,6 +1,5 @@
-@use '../../styles/variables';
 @import '../../styles/bs';
-@import '../../styles/osg';
+@import '../../styles/variables';
 
 .pane {
   &--left {
@@ -28,7 +27,7 @@
   }
 
   &__heading {
-    @include owlLabelStyle();
+    @include typeface-label();
     display: flex;
     align-items: center;
     justify-content: space-between;
