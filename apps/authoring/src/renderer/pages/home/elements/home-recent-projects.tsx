@@ -1,19 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Projects } from '../../../models';
 
-export const RecentProjects = () => {
-  const [recentProjects, setRecentProjects] = useState([]);
+export type RecentProjectsCommons = {
+  hasProjects: boolean;
+  projectList: Array<Projects.ProjectData>;
+};
 
-  useEffect(() => {
-    Projects.list().then(results => {
-      if (results.error) {
-        console.error(results);
-        return;
-      }
+export type RecentProjectsProps = Partial<RecentProjectsCommons> &
+  React.AllHTMLAttributes<HTMLDivElement>;
 
-      setRecentProjects(results.data.projects);
-    });
-  }, []);
+export const RecentProjects = (props: RecentProjectsProps) => {
+  const hasProjects = props.hasProjects || false;
+  const projectList = props.projectList || [];
 
   const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
@@ -39,24 +37,22 @@ export const RecentProjects = () => {
 
   return (
     <div>
-      {recentProjects.length === 0 ? (
+      {!hasProjects ? (
         <></>
       ) : (
         <>
           <h2 className="section-title">Recent</h2>
           <ul>
-            {recentProjects.map(
-              (project: Projects.ProjectData, index: number) => (
-                <button
-                  className="section-link"
-                  key={index}
-                  onClick={handleOpenProject}
-                  data-project-id={project.id}
-                >
-                  {project.name}
-                </button>
-              )
-            )}
+            {projectList.map((project: Projects.ProjectData, index: number) => (
+              <button
+                className="section-link"
+                key={index}
+                onClick={handleOpenProject}
+                data-project-id={project.id}
+              >
+                {project.name}
+              </button>
+            ))}
             <div style={{ marginTop: '2rem' }}>
               <button className="section-link">More...</button>
             </div>

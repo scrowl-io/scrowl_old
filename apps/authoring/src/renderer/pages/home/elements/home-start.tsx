@@ -2,7 +2,15 @@ import React from 'react';
 import { Icon } from '@owlui/lib';
 import { Projects } from '../../../models';
 
-export const Start = () => {
+export type StartCommons = {
+  hasProjects: boolean;
+};
+
+export type StartProps = Partial<StartCommons> &
+  React.AllHTMLAttributes<HTMLDivElement>;
+
+export const Start = (props: StartProps) => {
+  const hasProjects = props.hasProjects;
   const handleNewProject = () => {
     Projects.create();
   };
@@ -21,12 +29,16 @@ export const Start = () => {
             New Project...
           </button>
         </li>
-        <li>
-          <button className="section-link" onClick={handleOpenProject}>
-            <Icon display="Outlined" icon="folder_open" />
-            Open...
-          </button>
-        </li>
+        {!hasProjects ? (
+          <></>
+        ) : (
+          <li>
+            <button className="section-link" onClick={handleOpenProject}>
+              <Icon display="Outlined" icon="folder_open" />
+              Open...
+            </button>
+          </li>
+        )}
       </ul>
     </div>
   );
