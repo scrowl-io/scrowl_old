@@ -5,7 +5,6 @@ import { Projects } from '../../models';
 import { RecentProjects, Start, Tutorials } from './elements';
 
 export const PageElement = () => {
-  const isProcessing = Projects.useProcessing();
   const [projectList, setProjectList] = useState([]);
   const [hasProjects, setHasProjects] = useState(false);
 
