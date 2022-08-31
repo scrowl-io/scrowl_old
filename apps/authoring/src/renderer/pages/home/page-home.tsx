@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as styles from './page-home.module.scss';
-import { PageNavItems } from './page-home-routes';
-import { NavigationBar } from '../../components/navigationbar';
+import { Logo } from '../../components/logo/comp-logo';
 import { Projects } from '../../models';
+import { RecentProjects, Start, Tutorials } from './elements';
 
 export const PageElement = () => {
-  const isProcessing = Projects.useProcessing();
-  const [recentProjects, setRecentProjects] = useState([]);
+  const [projectList, setProjectList] = useState([]);
+  const [hasProjects, setHasProjects] = useState(false);
 
   useEffect(() => {
     Projects.list().then(results => {
@@ -15,60 +15,28 @@ export const PageElement = () => {
         return;
       }
 
-      setRecentProjects(results.data.projects);
+      setProjectList(results.data.projects);
+      const hasProjects = results.data.projects.length > 0;
+      setHasProjects(hasProjects);
     });
-  }, []);
-
-  console.log('recentProjects', recentProjects, isProcessing);
-
-  const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
-    ev.preventDefault();
-
-    const projectBtn = ev.currentTarget;
-
-    if (!projectBtn.dataset.projectId) {
-      console.error(`Unable to open project: project id required`);
-      return;
-    }
-
-    const projectId = parseInt(projectBtn.dataset.projectId);
-
-    if (isNaN(projectId)) {
-      console.error(
-        `Unable to open project: malformed id - ${projectBtn.dataset.projectId}`
-      );
-      return;
-    }
-
-    Projects.open(projectId);
-  };
+  }, [hasProjects]);
 
   return (
-    <>
-      <NavigationBar pages={PageNavItems} />
-      <main className={styles.main}>
-        <div>{isProcessing ? <div>Loading...</div> : ''}</div>
-        <h1>Home Page</h1>
-        {recentProjects.length > 0 && (
-          <>
-            <h3>Recent Projects:</h3>
-            <div>
-              {recentProjects.map(
-                (project: Projects.ProjectData, index: number) => (
-                  <button
-                    key={index}
-                    onClick={handleOpenProject}
-                    data-project-id={project.id}
-                  >
-                    {project.name}
-                  </button>
-                )
-              )}
-            </div>
-          </>
-        )}
-      </main>
-    </>
+    <main className={styles.main}>
+      <div className="section-title-wrap">
+        <Logo />
+        <h1 className="section-title">Scrowl Authoring</h1>
+      </div>
+
+      <div className="section-row">
+        <Start hasProjects={hasProjects} />
+        <Tutorials />
+      </div>
+
+      <div style={{ marginTop: '2rem' }}>
+        <RecentProjects hasProjects={hasProjects} projectList={projectList} />
+      </div>
+    </main>
   );
 };
 

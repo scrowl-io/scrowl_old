@@ -1,6 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { Menu, State } from '../../services';
+import { State } from '../../services';
 import * as api from './model-preferences-api';
 import * as state from './model-preferences-state';
 import { PreferenceData } from './model-preferences.types';
@@ -13,14 +12,6 @@ export const useProcessing = () => {
   return useSelector(
     (state: State.RootState) => state.preferences.isProcessing
   );
-};
-
-export const useOpen = (to = '/settings/theme') => {
-  const navigator = useNavigate();
-
-  Menu.File.onPreferencesOpen(() => {
-    navigator(to);
-  });
 };
 
 const processor: State.StateProcessor = {};
@@ -100,7 +91,6 @@ export const update = (data: PreferenceData, autoSave = false) => {
 export default {
   useData,
   useProcessing,
-  useOpen,
   useInit,
   save,
   update,
