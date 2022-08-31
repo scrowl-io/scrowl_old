@@ -248,7 +248,9 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
   });
 };
 
-export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {};
+export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
+  console.log('listing recent projects');
+};
 
 export const open = function (ev: Requester.RequestEvent, projectId: number) {
   if (!projectId) {
@@ -465,19 +467,19 @@ export const EVENTS: ProjectEvents = {
     name: 'project/import-file',
     type: 'send',
   },
-  recent: {
-    name: '/projects/list/recent',
-    type: 'invoke',
-  },
-  onRecent: {
-    name: '/projects/list/recent',
-    type: 'invoke',
-    fn: list,
-  },
   onImport: {
     name: 'project/import-file',
     type: 'invoke',
     fn: importFile,
+  },
+  recent: {
+    name: '/projects/list/recent',
+    type: 'send',
+  },
+  onRecent: {
+    name: '/projects/list/recent',
+    type: 'on',
+    fn: listRecent,
   },
   publish: {
     name: '/projects/publish',

@@ -78,7 +78,6 @@ export const PageElement = () => {
   };
 
   const modalContent: ModalDefaultProps = {
-    size: 'sm',
     header: {
       bsProps: {
         closeButton: true,
@@ -110,7 +109,7 @@ export const PageElement = () => {
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
         <h1>Home Page</h1>
-        {/* <ModalOutline {...modalContent} /> */}
+        <ModalOutline modalContent={modalContent} />
         <button onClick={toggleModal}>TEST MODAL</button>
         {recentProjects.length > 0 && (
           <>

@@ -52,7 +52,7 @@ export class Project {
     });
 
     Menu.File.onProjectOpen((ev, result) => {
-      console.log('project open');
+      console.log(ev, 'project open');
       if (result.error) {
         console.error(result);
         return;
