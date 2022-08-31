@@ -121,12 +121,6 @@ export interface ProjectData extends InternalStorage.StorageData {
   name?: string;
   description?: string;
   authors?: string;
-  theme?: string;
-  workingFile?: string;
-  workingDir?: string;
-  workingImports?: Array<string>;
-  saveFile?: string;
-  saveDir?: string;
   glossary?: Array<ProjectGlossaryItem>;
   resources?: Array<ProjectResourceItem>;
   modules?: Array<ProjectModule>;

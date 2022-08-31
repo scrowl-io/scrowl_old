@@ -176,9 +176,6 @@ export const pack = (project: ProjectData) => {
       const source = join(pathTempFolder, project.id.toString());
       const dest = join(pathTempFolder, 'dist/content');
 
-      console.log('publisher source:', source);
-      console.log('publisher dest:', dest);
-
       createScormSource(source, dest).then(sourceRes => {
         if (sourceRes.error) {
           resolve(sourceRes);
