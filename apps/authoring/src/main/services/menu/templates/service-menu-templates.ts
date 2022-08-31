@@ -1,5 +1,6 @@
 import { MenuItemConstructorOptions } from 'electron';
 import { MenuItemEventsFile, MenuItemEventsApp } from '../service-menu.types';
+import { registerAll } from '../../requester';
 import * as menuApp from './service-menu-items-app';
 import * as menuFile from './service-menu-items-file';
 
@@ -17,7 +18,8 @@ export const createMenu = (
   }
 
   template.push(menuFile.template);
-  EVENTS = Object.assign(EVENTS, menuFile.EVENTS);
+  EVENTS = Object.assign(EVENTS, menuApp.EVENTS, menuFile.EVENTS);
+  registerAll(EVENTS);
 
   return {
     template,
