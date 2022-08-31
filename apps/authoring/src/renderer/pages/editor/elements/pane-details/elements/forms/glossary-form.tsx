@@ -1,23 +1,18 @@
 import { Form, Button, FormDataProps } from '@owlui/lib';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { Modal } from 'react-bootstrap';
-
-type GlossaryItem = { name: string; description: string };
-type GlossaryData = Array<GlossaryItem>;
-type GlossaryDict = {
-  [key: string]: {
-    [key: string]: string;
-  };
-};
-
+import { Projects } from '../../../../../../models';
+import { ProjectData } from '../../../../../../models/projects';
+import { GlossaryItem, GlossaryData } from '../editor-pane-details-glossary';
 interface GlossaryFormProps {
   glossary: GlossaryData;
-  setGlossary: any;
+  setGlossary: Dispatch<SetStateAction<GlossaryData>>;
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
   glossaryData?: GlossaryData;
   editEntry?: boolean;
+  project: ProjectData;
 }
 
 export const GlossaryForm = (props: GlossaryFormProps) => {
@@ -26,25 +21,25 @@ export const GlossaryForm = (props: GlossaryFormProps) => {
     description: '',
   });
 
-  const { show, setShow, setGlossary, editEntry } = props;
+  const { show, setShow, setGlossary, glossary } = props;
 
-  console.log(editEntry);
-  console.log(show);
+  useEffect(() => {
+    Projects.update({ glossary });
+  }, [glossary]);
 
   const handleCancel = () => {
     setShow(!show);
   };
 
   const handleChange = (e: React.BaseSyntheticEvent) => {
-    const value =
-      e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    const value = e.target.value;
     setTermData({ ...termData, [e.target.name]: value });
   };
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     setGlossary((glossary: GlossaryData) => [...glossary, termData]);
-    handleCancel();
+    setShow(!show);
   };
 
   const formData: FormDataProps[] = [

@@ -9,6 +9,7 @@ import { ActionMenu, ActionMenuItem } from '../../../../../components';
 import { Projects } from '../../../../../models';
 import { Icon, Drawer, DrawerProps, Button } from '@owlui/lib';
 import { GlossaryForm } from './forms/glossary-form';
+import { ProjectData } from '../../../../../models/projects';
 
 export type GlossaryItem = { name: string; description: string };
 export type GlossaryData = Array<GlossaryItem>;
@@ -56,24 +57,24 @@ const createGlossaryItems = (
 ) => {
   const headings = Object.keys(data).sort();
 
-  const glossaryDrawer: DrawerProps = {
-    header: {
-      content: <h4>Add Glossary Term</h4>,
-      bsProps: {
-        closeButton: true,
-        className: styles.owluiOffcanvasHeader,
-      },
-    },
-    body: (
-      <GlossaryForm
-        show={toggleDrawer}
-        setShow={setToggleDrawer}
-        glossary={glossary}
-        setGlossary={setGlossary}
-        editEntry={true}
-      />
-    ),
-  };
+  // const glossaryDrawer: DrawerProps = {
+  //   header: {
+  //     content: <h4>Add Glossary Term</h4>,
+  //     bsProps: {
+  //       closeButton: true,
+  //       className: styles.owluiOffcanvasHeader,
+  //     },
+  //   },
+  //   body: (
+  //     <GlossaryForm
+  //       show={toggleDrawer}
+  //       setShow={setToggleDrawer}
+  //       glossary={glossary}
+  //       setGlossary={setGlossary}
+  //       editEntry={true}
+  //     />
+  //   ),
+  // };
 
   const toggleShow = (e: BaseSyntheticEvent) => {
     console.log(e.target);
@@ -115,15 +116,16 @@ const createGlossaryItems = (
   });
 };
 
-interface AddGlossary {
+interface AddToGlossaryProps {
   glossary: GlossaryData;
   setGlossary: Dispatch<SetStateAction<GlossaryData>>;
   toggleDrawer: boolean;
   setToggleDrawer: Dispatch<SetStateAction<boolean>>;
+  project: ProjectData;
 }
 
-const AddGlossaryTermButton = (props: AddGlossary) => {
-  const { toggleDrawer, setToggleDrawer } = props;
+const AddGlossaryTermButton = (props: AddToGlossaryProps) => {
+  const { toggleDrawer, setToggleDrawer, project } = props;
 
   const glossaryDrawer: DrawerProps = {
     header: {
@@ -139,6 +141,7 @@ const AddGlossaryTermButton = (props: AddGlossary) => {
         setShow={setToggleDrawer}
         glossary={props.glossary}
         setGlossary={props.setGlossary}
+        project={project}
       />
     ),
   };
@@ -170,6 +173,7 @@ const AddGlossaryTermButton = (props: AddGlossary) => {
 
 export const TabGlossary = () => {
   const project = Projects.useData();
+
   const glossaryData = project.glossary;
 
   const [glossary, setGlossary] = useState([...glossaryData]);
@@ -192,6 +196,7 @@ export const TabGlossary = () => {
         setGlossary={setGlossary}
         toggleDrawer={toggleDrawer}
         setToggleDrawer={setToggleDrawer}
+        project={project}
       />
     </div>
   );
