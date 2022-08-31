@@ -1,5 +1,9 @@
 @import '../../../../../../styles/osg';
 
+/* stylelint-disable */
+--scrowl-box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5);
+/* stylelint-enable */
+
 .btn-publish {
   display: flex;
   align-items: center;
@@ -16,9 +20,7 @@
   }
 
   &:focus {
-    /* stylelint-disable */
-    box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5);
-    /* stylelint-enable */
+    box-shadow: var(--scrowl-box-shadow);
   }
 
   &.btn-success {
@@ -42,8 +44,8 @@
 .publish-drawer-header {
   .owlui-offcanvas-header {
     --bs-offcanvas-padding-y: 0.5rem;
-
     border-bottom: var(--owl-border-color) solid var(--bs-border-width);
+
     .owlui-offcanvas-title {
       margin: 0;
 
@@ -60,7 +62,6 @@
     .owlui-accordion-button {
       --bs-accordion-btn-padding-y: 0.75rem;
       --bs-accordion-inner-border-radius: -1px;
-
       font-weight: 600;
       font-size: 0.875rem;
       letter-spacing: 0.0125em;
@@ -70,18 +71,18 @@
       }
 
       &:focus {
-        box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5);
+        box-shadow: var(--scrowl-box-shadow);
       }
 
       &:not(.collapse) {
-        --bs-accordion-active-color: #000;
+        --bs-accordion-active-color: #000000;
         --bs-accordion-active-bg: #e9ecef;
       }
     }
 
     .form-control {
       &:focus {
-        box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5);
+        box-shadow: var(--scrowl-box-shadow);
       }
     }
   }
