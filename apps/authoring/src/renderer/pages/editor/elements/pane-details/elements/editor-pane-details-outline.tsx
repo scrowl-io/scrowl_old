@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as styles from '../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import Collapse from 'react-bootstrap/Collapse';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
 import { Projects } from '../../../../../models';
+import { ProjectData } from '../../../../../models/projects';
 
 export type SlideTreeItem = {
   name: string;
@@ -29,50 +30,63 @@ const menuItemAction = (e: React.BaseSyntheticEvent) => {
   console.log(e.target.firstChild.textContent);
 };
 
-const moduleMenuItems: Array<ActionMenuItem> = [
-  {
-    label: 'Add Lesson',
-    icon: 'widgets',
-    iconStyle: 'Outlined',
-    action: menuItemAction,
-  },
-  {
-    label: 'Rename',
-    icon: 'edit',
-    iconStyle: 'Outlined',
-    action: menuItemAction,
-  },
-  {
-    label: 'Duplicate',
-    icon: 'content_copy',
-    iconStyle: 'Outlined',
-    action: menuItemAction,
-  },
-  {
-    label: 'Add Module After',
-    icon: 'folder',
-    iconStyle: 'Outlined',
-    action: menuItemAction,
-  },
-  {
-    label: 'Move Up',
-    icon: 'arrow_upward',
-    iconStyle: 'Outlined',
-    action: menuItemAction,
-  },
-  {
-    label: 'Move Down',
-    icon: 'arrow_downward',
-    iconStyle: 'Outlined',
-    action: menuItemAction,
-  },
-  {
-    label: 'Delete Module',
-    icon: 'delete',
-    iconStyle: 'Outlined',
-    action: menuItemAction,
-  },
-];
+const addLesson = (project: ProjectData, index: number) => {
+  const newLesson = { name: 'untitled', slides: [{ name: 'untitled' }] };
+  const lessonsLength = project?.modules?[index].lessons.length;
+
+  Projects.update({
+    ...project,
+    modules: project?.modules?.splice(
+      index,
+      0, 
+      {
+        ...project.modules[index], 
+        lessons: project.modules[index].lessons.splice(
+          lessonsLength,
+          0,
+          newLesson
+        )
+      }
+    )
+  });
+};
+
+const duplicateModule = (project: ProjectData, index: number) => {
+  Projects.update({
+    payload: {
+      ...project,
+      modules: project?.modules?.splice(index, 0, project.modules[index]),
+    },
+  });
+};
+
+const addModule = (project: ProjectData, index: number | null) => {
+  const newModule = {
+    name: 'untitled',
+    lessons: [{ name: 'untitled', slides: [{ name: 'untitled' }] }],
+  };
+
+  Projects.update({
+    payload: {
+      ...project,
+      modules: project?.modules?.splice(
+        !index ? project.modules.length : index,
+        0,
+        newModule
+      ),
+    },
+  });
+};
+
+const deleteModule = (project: ProjectData, index: number) => {
+  Projects.update({
+    payload: {
+      ...project,
+      modules: project?.modules?.splice(index, 0),
+    },
+  });
+};
+
 const lessonMenuItems: Array<ActionMenuItem> = [
   {
     label: 'Add Slide',
@@ -166,6 +180,54 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
   const [open, setOpen] = useState(false);
   const itemId = `tree-item-module-${idx}-item`;
   const menuId = `tree-item-module-${idx}-menu`;
+
+  const { project } = Projects.useData();
+
+  const moduleMenuItems: Array<ActionMenuItem> = [
+    {
+      label: 'Add Lesson',
+      icon: 'widgets',
+      iconStyle: 'Outlined',
+      action: index => addLesson(project, index),
+    },
+    {
+      label: 'Rename',
+      icon: 'edit',
+      iconStyle: 'Outlined',
+      action: menuItemAction,
+    },
+    {
+      label: 'Duplicate',
+      icon: 'content_copy',
+      iconStyle: 'Outlined',
+      action: index => duplicateModule(project, index),
+    },
+    {
+      label: 'Add Module After',
+      icon: 'folder',
+      iconStyle: 'Outlined',
+      action: index => addModule(project, index),
+    },
+    {
+      label: 'Move Up',
+      icon: 'arrow_upward',
+      iconStyle: 'Outlined',
+      action: menuItemAction,
+    },
+    {
+      label: 'Move Down',
+      icon: 'arrow_downward',
+      iconStyle: 'Outlined',
+      action: menuItemAction,
+    },
+    {
+      label: 'Delete Module',
+      icon: 'delete',
+      iconStyle: 'Outlined',
+      action: index => deleteModule(project, index),
+    },
+  ];
+
   return (
     <div className={styles.treeViewModule} key={idx}>
       <div className={styles.treeViewHeader}>
@@ -211,7 +273,12 @@ export const TabOutline = () => {
   const tabStyles = `${styles.tabOutline} tree-view nav flex-column`;
   const treeView = TreeViewModules(project.modules);
 
-  return <div className={tabStyles}>{treeView}</div>;
+  return (
+    <div className={tabStyles}>
+      {treeView}
+      <button onClick={() => addModule(project, null)}>Add Module</button>
+    </div>
+  );
 };
 
 export default {
