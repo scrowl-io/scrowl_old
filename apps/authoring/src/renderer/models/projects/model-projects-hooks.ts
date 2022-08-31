@@ -98,6 +98,9 @@ export const useMenuEvents = () => {
     }
 
     return () => {
+      Menu.File.offProjectCreate();
+      Menu.File.offProjectOpen();
+
       if (isMenuReady) {
         Menu.File.offProjectSave();
         Menu.File.offProjectPublish();
