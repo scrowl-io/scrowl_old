@@ -2,18 +2,38 @@ import { Accordion, Button, Drawer, Icon } from '@owlui/lib';
 import React, { useState } from 'react';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import { Portal } from '../../../../../../components/portal';
-import { HeaderProps } from '../editor-header-types';
+import { Projects } from '../../../../../../models';
 import * as styles from './header-publishbutton.module.scss';
 
-export const PublishButton = ({
-  courseName,
-  courseDesc,
-  courseAut,
-  publishFunc,
-  disabled,
-}: HeaderProps) => {
+export const PublishButton = ({ disabled }: { disabled: boolean }) => {
+  const project = Projects.useData();
   const [showDrawer, setShowDrawer] = useState(false);
   const [showPubToast, setShowPubToast] = useState(false);
+  const [repData, setRepData] = useState({
+    lmsLessonTitle: '',
+    lmsReportStatus: '',
+    lmsIdentifier: '',
+  });
+
+  const handleInputChange = (
+    ev: React.FormEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const target = ev.currentTarget;
+    const name = target.name;
+    const value = target.value;
+
+    if (Object.prototype.hasOwnProperty.call(repData, name)) {
+      const newRepData = { ...repData };
+
+      newRepData[name as keyof typeof repData] = value;
+
+      setRepData(newRepData);
+    }
+
+    Projects.update({ [target.name]: target.value });
+  };
 
   const drawerAccordion = [
     {
@@ -27,10 +47,12 @@ export const PublishButton = ({
             </label>
             <input
               type="text"
+              name="name"
               className="form-control form-control-sm"
               id="publish1"
               placeholder="Course Name"
-              defaultValue={courseName}
+              value={project.name}
+              onChange={handleInputChange}
             />
           </div>
           <div className="mb-2">
@@ -38,10 +60,12 @@ export const PublishButton = ({
               Course Description
             </label>
             <textarea
+              name="description"
               className="form-control form-control-sm"
               id="publish2"
               placeholder="Describe the Project"
-              defaultValue={courseDesc}
+              value={project.description}
+              onChange={handleInputChange}
             ></textarea>
           </div>
           <div className="mb-2">
@@ -50,10 +74,12 @@ export const PublishButton = ({
             </label>
             <input
               type="text"
+              name="authors"
               className="form-control form-control-sm"
               id="publish3"
               placeholder="Course Authors"
-              defaultValue={courseAut}
+              value={project.authors}
+              onChange={handleInputChange}
             />
           </div>
         </>
@@ -70,9 +96,10 @@ export const PublishButton = ({
             </label>
             <input
               type="text"
+              name="lmsLessonTitle"
               className="form-control form-control-sm"
               id="publish6"
-              placeholder=""
+              onChange={handleInputChange}
             />
           </div>
 
@@ -85,12 +112,15 @@ export const PublishButton = ({
             </label>
             <div className="col-7">
               <select
+                name="lmsReportStatus"
                 className="form-select form-select-sm"
                 id="publish5"
-                defaultValue="Passed/Incomplete"
-                onChange={() => console.log('Passed/Incomplete')}
+                value={repData.lmsReportStatus}
+                onChange={handleInputChange}
               >
-                <option>Passed/Incomplete</option>
+                <option value="Passed/Incomplete">Passed/Incomplete</option>
+                <option value="Passed">Passed</option>
+                <option value="Incomplete">Incomplete</option>
               </select>
             </div>
           </div>
@@ -105,10 +135,10 @@ export const PublishButton = ({
             <div className="col-7">
               <input
                 type="text"
+                name="lmsIdentifier"
                 className="form-control form-control-sm"
                 id="publish7"
-                placeholder=""
-                defaultValue="13kj83j"
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -119,10 +149,10 @@ export const PublishButton = ({
 
   const toggleShowDrawer = () => setShowDrawer(!showDrawer);
 
-  const handlePublish = async () => {
-    const publishRes = await publishFunc();
-
-    // TODO: Validate publishRes to display toast
+  const handlePublish = () => {
+    // TODO: Make the publish async and returning some value we can validate to display a toast or a message to update the frontend.
+    Projects.publish(project);
+    setShowPubToast(true);
   };
 
   const drawerContent = {
@@ -177,13 +207,16 @@ export const PublishButton = ({
         aria-hidden="true"
       />
       <Portal>
-        <ToastContainer className="p-3" position="bottom-end">
+        <ToastContainer className="p-3" position="bottom-center">
           <Toast
             onClose={() => setShowPubToast(false)}
             show={showPubToast}
             delay={3000}
             autohide
           >
+            <Toast.Header>
+              <strong className="me-auto">Published!</strong>
+            </Toast.Header>
             <Toast.Body>
               Course successfuly published into your Downloads folder.
             </Toast.Body>

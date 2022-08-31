@@ -2,6 +2,8 @@ import { ProjectData } from './model-projects.types';
 
 export const data: ProjectData = {
   name: 'Untitled Project',
+  description: '',
+  authors: '',
   modules: [
     {
       name: 'An Introduction to Harassment & Discrimination',

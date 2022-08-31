@@ -12,8 +12,8 @@ export const Header = () => {
   // piece of state should be updated in order to display the tooltip
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showSavetooltip, setShowSaveTooltip] = useState(false);
-  const disableElement = true;
   const project = Projects.useData();
+  const disableElement = !project.name.trim();
 
   const handleFilenameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const name = ev.currentTarget.value;

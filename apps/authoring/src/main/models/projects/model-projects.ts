@@ -55,17 +55,20 @@ export const create = () => {
     try {
       let project: ProjectData = {
         name: data.name,
+        authors: data.authors,
       };
 
       // create a new entity in the DB
-      IS.create(table.name, project).then(createRes => {
+      IS.create(table.name, { name: data.name }).then(createRes => {
         if (createRes.error) {
           createRes.message = 'Unable to create project';
           resolve(createRes);
           return;
         }
 
-        project = createRes.data.item;
+        const dbProjectData = createRes.data.item;
+
+        project = { ...project, ...dbProjectData };
         project.modules = data.modules || [];
         project.glossary = data.glossary || [];
         project.resources = data.resources || [];
