@@ -12,7 +12,13 @@
   right: 0;
   align-items: center;
   justify-content: center;
-  @include pattern-bg(dots, 1px, var(--owl-start-bg-accent), var(--owl-start-bg));
+
+  @include pattern-bg(
+    dots,
+    1px,
+    var(--owl-start-bg-accent),
+    var(--owl-start-bg)
+  );
 }
 
 .home {

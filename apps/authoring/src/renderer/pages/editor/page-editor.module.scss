@@ -18,8 +18,14 @@
   flex-grow: 1;
   color: var(--owl-workspace-color);
   background: var(--owl-workspace-bg);
-  @include pattern-bg(dots, 1px, var(--owl-workspace-bg-accent), var(--owl-workspace-bg));
   overflow-y: auto;
+
+  @include pattern-bg(
+    dots,
+    1px,
+    var(--owl-workspace-bg-accent),
+    var(--owl-workspace-bg)
+  );
 
   &__body {
     flex: 1 1 auto;
