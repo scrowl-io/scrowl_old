@@ -26,6 +26,7 @@ const createScormSource = (source: string, dist: string) => {
         'package',
         'content'
       );
+      const dest = join(dist, 'content');
 
       const opts = {
         filter: (src: string) => {
@@ -33,7 +34,7 @@ const createScormSource = (source: string, dist: string) => {
         },
       };
 
-      copy(source, dist, opts).then(copyRes => {
+      copy(source, dest, opts).then(copyRes => {
         if (copyRes.error) {
           resolve(copyRes);
           return;
@@ -174,7 +175,7 @@ export const pack = (project: ProjectData) => {
 
     try {
       const source = join(pathTempFolder, project.id.toString());
-      const dest = join(pathTempFolder, 'dist/content');
+      const dest = join(pathTempFolder, 'dist');
 
       createScormSource(source, dest).then(sourceRes => {
         if (sourceRes.error) {
