@@ -1,7 +1,7 @@
 {
   "name": "@scrowl/authoring",
   "productName": "scrowl-authoring",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "description": "A tool used to create online training materials",
   "license": "MIT",
   "keywords": [],
@@ -173,7 +173,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.33",
+    "@owlui/lib": "^0.0.34",
     "@reduxjs/toolkit": "^1.8.5",
     "@scrowl/player": "^0.0.1",
     "adm-zip": "^0.5.9",
