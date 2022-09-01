@@ -40,4 +40,4 @@ jobs:
           prerelease: true
           title: Development Build
           files: |
-            'apps/authoring/release/build/*.dmg'
+            apps/authoring/release/build/Scrowl-*.dmg
