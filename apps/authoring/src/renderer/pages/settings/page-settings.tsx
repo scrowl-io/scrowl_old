@@ -26,7 +26,7 @@ export const PageElement = () => {
         <div className={styles.settings__header}>
           <h1>
             <Logo href="/home/*" />
-            Settings Page
+            Settings
           </h1>
         </div>
         <Tabs defaultActiveKey="theme">
