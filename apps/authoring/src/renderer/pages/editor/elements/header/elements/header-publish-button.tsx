@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Accordion, Button, Drawer, Icon } from '@owlui/lib';
 import { Toast, ToastContainer } from 'react-bootstrap';
 import * as styles from '../editor-header.module.scss';
-import { Portal } from '../../../../../components/portal';
+import { Portal } from '../../../../../components';
 import { Projects } from '../../../../../models';
 
 export const PublishButton = ({ disabled }: { disabled: boolean }) => {
