@@ -28,24 +28,6 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
   );
 };
 
-// <Portal>
-//  <ToastContainer className="p-3" position="bottom-center">
-//    <Toast
-//      onClose={() => setShowPubToast(false)}
-//      show={showPubToast}
-//      delay={3000}
-//       autohide
-//      >
-//            <Toast.Header>
-//              <strong className="me-auto">Published!</strong>
-//            </Toast.Header>
-//            <Toast.Body>
-//             Course successfuly published into your Downloads folder.
-//            </Toast.Body>
-//          </Toast>
-//        </ToastContainer>
-//      </Portal>
-
 export default {
   PublishButton,
 };

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as styles from '../editor-header.module.scss';
 import { Button, Drawer, DrawerDefaultProps, Icon } from '@owlui/lib';
 import { PublishDrawerContent } from './header-publish-drawer-content';
+import { PublishToaster } from './header-publish-toaster';
 import { Projects } from '../../../../../models';
 
 export type PublishDrawerCommons = {
@@ -12,16 +13,25 @@ export type PublishDrawerProps = PublishDrawerCommons &
   Partial<DrawerDefaultProps>;
 
 export const PublishDrawer = (props: PublishDrawerProps) => {
+  const [toasterShow, setToasterShow] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState('');
   const { project, ...localProps } = props;
+
+  const hideToaster = () => {
+    setToasterShow(false);
+  };
 
   const handlePublish = () => {
     Projects.publish(project).then(res => {
+      let msg = 'Project was successfully published';
+
       if (res.error) {
         console.error(res);
-        return;
+        msg = 'Project failed to published';
       }
 
-      console.log('published course');
+      setToasterMessage(msg);
+      setToasterShow(true);
     });
   };
 
@@ -57,14 +67,24 @@ export const PublishDrawer = (props: PublishDrawerProps) => {
   };
 
   return (
-    <Drawer
-      drawer={drawerContent}
-      {...localProps}
-      placement="end"
-      id="publishSettings"
-      aria-labelledby="publishSettingsLabel"
-      aria-hidden="true"
-    />
+    <>
+      <Drawer
+        drawer={drawerContent}
+        {...localProps}
+        placement="end"
+        id="publishSettings"
+        aria-labelledby="publishSettingsLabel"
+        aria-hidden="true"
+      />
+      <PublishToaster
+        title="Publisher Result"
+        message={toasterMessage}
+        show={toasterShow}
+        autohide
+        delay={3000}
+        onClose={hideToaster}
+      />
+    </>
   );
 };
 
