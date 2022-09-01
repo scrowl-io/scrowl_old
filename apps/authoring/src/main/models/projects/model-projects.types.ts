@@ -120,7 +120,11 @@ export interface ProjectData extends InternalStorage.StorageData {
   opened_at?: string;
   name?: string;
   description?: string;
-  authors?: string;
+  scormConfig?: {
+    name?: string;
+    description?: string;
+    authors?: string;
+  };
   glossary?: Array<ProjectGlossaryItem>;
   resources?: Array<ProjectResourceItem>;
   modules?: Array<ProjectModule>;

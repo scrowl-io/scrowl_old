@@ -116,32 +116,27 @@ const toScormCase = (str: string) => {
     .toLowerCase();
 };
 
-const createScormPackage = (source: string, projectName?: string) => {
+const createScormPackage = (
+  source: string,
+  config: ProjectData['scormConfig']
+) => {
   return new Promise<ApiResult>(resolve => {
-    if (!projectName) {
-      resolve({
-        error: true,
-        message: 'Unable to create scorm package: project name missing',
-      });
-      return;
-    }
-
     try {
-      const config = {
+      const opts = {
         version: '1.2',
-        organization: 'OSG',
         language: 'en-US',
         startingPage: 'content/index.html',
         source: source,
         package: {
-          name: toScormCase(projectName),
-          version: '0.0.1',
+          name: toScormCase(config?.name || ''),
+          author: config?.authors,
+          description: config?.description,
           zip: true,
           outputFolder: pathDownloadsFolder,
         },
       };
 
-      packager(config, (message: string) => {
+      packager(opts, (message: string) => {
         resolve({
           error: false,
           data: {
@@ -156,7 +151,7 @@ const createScormPackage = (source: string, projectName?: string) => {
         data: {
           trace: e,
           path: source,
-          projectName,
+          config,
         },
       });
     }
@@ -189,7 +184,7 @@ export const pack = (project: ProjectData) => {
             return;
           }
 
-          createScormPackage(dest, project.name).then(resolve);
+          createScormPackage(dest, project.scormConfig).then(resolve);
         });
       });
     } catch (e) {
