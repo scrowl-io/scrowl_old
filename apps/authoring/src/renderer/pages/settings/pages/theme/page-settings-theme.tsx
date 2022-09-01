@@ -9,7 +9,7 @@ export const Element = () => {
   console.log('advanced prefs', preference);
 
   const handleChangeTheme = () => {
-    const theme = preference.theme === 'light' ? 'dark' : 'light';
+    const theme = preference.theme === 'default' ? 'dark' : 'default';
 
     Preferences.update({ theme });
   };
