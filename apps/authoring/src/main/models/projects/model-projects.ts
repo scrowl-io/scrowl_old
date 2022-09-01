@@ -55,23 +55,23 @@ export const create = () => {
     try {
       let project: ProjectData = {
         name: data.name,
-        authors: data.authors,
       };
 
       // create a new entity in the DB
-      IS.create(table.name, { name: data.name }).then(createRes => {
+      IS.create(table.name, project).then(createRes => {
         if (createRes.error) {
           createRes.message = 'Unable to create project';
           resolve(createRes);
           return;
         }
 
-        const dbProjectData = createRes.data.item;
-
-        project = { ...project, ...dbProjectData };
-        project.modules = data.modules || [];
-        project.glossary = data.glossary || [];
-        project.resources = data.resources || [];
+        project = {
+          ...createRes.data.item,
+          authors: data.authors,
+          modules: data.modules || [],
+          glossary: data.glossary || [],
+          resources: data.resources || [],
+        };
         writeProjectTemp(
           project,
           'manifest.json',
@@ -118,10 +118,11 @@ export const save = (
 
     // update the project in the DB
     // eslint-disable-next-line prefer-const
-    let { modules, glossary, resources, ...data } = project;
+    let { modules, glossary, resources, authors, ...data } = project;
     modules = modules || [];
     glossary = glossary || [];
     resources = resources || [];
+    authors = authors || '';
 
     IS.update(table.name, data, { id: data.id })
       .then(updateRes => {
@@ -140,6 +141,7 @@ export const save = (
         }
 
         const updatedProject = Object.assign(updateRes.data.item, {
+          authors,
           modules,
           glossary,
           resources,
