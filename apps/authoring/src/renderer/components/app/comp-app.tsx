@@ -62,6 +62,7 @@ const Main = (props: AppMainProps) => {
       <div className={styles.content}>
         <AppRoutes />
       </div>
+      {/* <ProjectExplorerModal /> */}
     </div>
   );
 };
