@@ -13,6 +13,12 @@ export const logEventAction = (ev: React.MouseEvent<Element, MouseEvent>) => {
   console.log('user event', ev);
 };
 
+export const addLeadZero = (val: number | string) => {
+  return `0${val}`.slice(-2);
+};
+
 export default {
   deepCopy,
+  logEventAction,
+  addLeadZero,
 };
