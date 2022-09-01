@@ -1,9 +1,9 @@
-import { Accordion, Button, Drawer, Icon } from '@owlui/lib';
 import React, { useState } from 'react';
+import { Accordion, Button, Drawer, Icon } from '@owlui/lib';
 import { Toast, ToastContainer } from 'react-bootstrap';
-import { Portal } from '../../../../../../components/portal';
-import { Projects } from '../../../../../../models';
-import * as styles from './header-publishbutton.module.scss';
+import * as styles from '../editor-header.module.scss';
+import { Portal } from '../../../../../components/portal';
+import { Projects } from '../../../../../models';
 
 export const PublishButton = ({ disabled }: { disabled: boolean }) => {
   const project = Projects.useData();

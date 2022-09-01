@@ -1,6 +1,6 @@
-import { Button, Icon } from '@owlui/lib';
 import React from 'react';
-import * as styles from './header-previewbutton.module.scss';
+import { Button, Icon } from '@owlui/lib';
+import * as styles from '../editor-header.module.scss';
 
 export const PreviewButton = ({ disabled }: { disabled: boolean }) => {
   return (

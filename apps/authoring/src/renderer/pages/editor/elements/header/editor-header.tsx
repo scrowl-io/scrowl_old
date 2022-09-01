@@ -3,9 +3,7 @@ import * as styles from './editor-header.module.scss';
 import * as toolbarStyles from '../../../../components/toolbar/comp-toolbar.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
-import { PreviewButton } from './elements';
-import { SaveTooltip } from './elements/save-tooltip';
-import { PublishButton } from './elements/publishbutton';
+import { PreviewButton, PublishButton, SaveTooltip } from './elements';
 
 export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
