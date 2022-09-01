@@ -1,5 +1,5 @@
 name: releases-dev
-on: 
+on:
   workflow_dispatch:
   push:
     branches:
@@ -23,10 +23,10 @@ jobs:
           node-version: 16.13.2 # matching Elctron's version of node
           cache: 'yarn'
           cache-dependency-path: 'yarn.lock'
-      
+
       - name: Install
         run: yarn install --frozen-lockfile
-      
+
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -34,10 +34,10 @@ jobs:
 
       - name: Pre-Release
         uses: marvinpinto/action-automatic-releases@latest
-        with: 
+        with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           automatic_release_tag: latest
           prerelease: true
           title: Development Build
-            files: |
-              '**/release/*.dmg'
+          files: |
+            '**/release/*.dmg'
