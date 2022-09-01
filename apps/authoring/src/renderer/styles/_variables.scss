@@ -3,9 +3,6 @@
 @import '@owlui/lib/src/theme/global/_typography.scss';
 
 @mixin lightMode {
-  --titlebar-color: var(--bs-body-color);
-  --titlebar-bg: var(--bs-gray-100);
-
   .btn-ghost-primary {
     @include button-outline-variant(
       $gray-700,
@@ -43,9 +40,6 @@
 }
 
 @mixin darkMode {
-  --titlebar-color: var(--bs-body-color);
-  --titlebar-bg: var(--bs-gray-900);
-
   .btn-ghost-primary {
     @include button-outline-variant(
       $gray-300,
@@ -62,5 +56,6 @@
 }
 
 .theme--default {
+  --bs-link-color: var(--bs-link-blue-500);
   @include lightMode;
 }
