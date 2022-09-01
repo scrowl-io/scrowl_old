@@ -15,7 +15,8 @@
   overflow-y: auto;
 
   @include pattern-bg(
-    dots, 1px,
+    dots,
+    1px,
     var(--owl-start-bg-accent),
     var(--owl-start-bg)
   );
