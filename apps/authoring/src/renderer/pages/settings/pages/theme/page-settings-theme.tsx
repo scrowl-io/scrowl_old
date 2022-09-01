@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
 import { Preferences } from '../../../../models';
 
 export const route = 'theme';
@@ -15,11 +16,30 @@ export const Element = () => {
   };
 
   return (
-    <div>
-      <p>This is the advanced preferences page</p>
-      <button onClick={handleChangeTheme}>
-        Change Theme {preference.theme}
-      </button>
+    <div className="settings__section">
+      <h2 className="h3">Theme Prefererences</h2>
+      <Form>
+        <Form.Label for="themeSelector">Editor Theme</Form.Label>
+        <br />
+        <Form.Check
+          inline
+          label="Default"
+          name="themeSelector"
+          type="radio"
+          id="themeSelectorDefault"
+          onChange={handleChangeTheme}
+          checked={preference.theme === 'default'}
+        />
+        <Form.Check
+          inline
+          label="Dark"
+          name="themeSelector"
+          type="radio"
+          id="themeSelectorDark"
+          onChange={handleChangeTheme}
+          checked={preference.theme === 'dark'}
+        />
+      </Form>
     </div>
   );
 };

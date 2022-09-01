@@ -1,10 +1,11 @@
 import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+
+import { Tabs, Tab } from 'react-bootstrap';
+import { Button, Icon } from '@owlui/lib';
 import * as styles from './page-settings.module.scss';
 import * as Pages from './pages';
 import { Preferences } from '../../models';
-import { PageNavItems } from './page-settings-routes';
-import { NavigationBar } from '../../components/navigationbar';
+import { Logo } from '../../components/logo';
 
 export const PageElement = () => {
   const preference = Preferences.useData();
@@ -15,32 +16,35 @@ export const PageElement = () => {
   };
 
   return (
-    <>
-      <NavigationBar pages={PageNavItems} />
-      <main className={styles.settings}>
-        <h1>Settings Page</h1>
-
-        <nav>
-          <Link to={Pages.Theme.route}>Theme</Link>
-          <Link to={Pages.Advanced.route}>Advanced</Link>
-        </nav>
-
-        <Routes>
-          <Route path={Pages.Theme.route} element={<Pages.Theme.Element />} />
-          <Route
-            path={Pages.Advanced.route}
-            element={<Pages.Advanced.Element />}
-          />
-          <Route path="*" element={<Pages.Theme.Element />} />
-        </Routes>
+    <main className={styles.main}>
+      <div className={styles.settings}>
+        {/* TODO: Make this go back to the last non-settings page you came from */}
+        <Button variant="link" href="/" className="mb-3">
+          <Icon icon="arrow_back" />
+          Back
+        </Button>
+        <div className={styles.settings__header}>
+          <h1>
+            <Logo href="/home/*" />
+            Settings Page
+          </h1>
+        </div>
+        <Tabs defaultActiveKey="theme">
+          <Tab eventKey="theme" title="Theme">
+            <Pages.Theme.Element />
+          </Tab>
+          <Tab eventKey="advanced" title="Advanced">
+            <Pages.Advanced.Element />
+          </Tab>
+        </Tabs>
 
         <div>
-          <button onClick={() => handleSave()}>
+          <Button variant="success" onClick={() => handleSave()}>
             {prefProcessing ? 'Saving...' : 'Save'}
-          </button>
+          </Button>
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   );
 };
 
