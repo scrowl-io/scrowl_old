@@ -85,66 +85,6 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
         </>
       ),
     },
-    {
-      id: '2',
-      label: 'Reporting & Tracking',
-      view: (
-        <>
-          <div className="mb-2">
-            <label htmlFor="publish6" className="form-label">
-              LMS Lesson Title
-            </label>
-            <input
-              type="text"
-              name="lmsLessonTitle"
-              className="form-control form-control-sm"
-              id="publish6"
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="row mb-2">
-            <label
-              htmlFor="publish5"
-              className="col-5 form-label col-form-label col-form-label-sm"
-            >
-              Report Status to LMS as
-            </label>
-            <div className="col-7">
-              <select
-                name="lmsReportStatus"
-                className="form-select form-select-sm"
-                id="publish5"
-                value={repData.lmsReportStatus}
-                onChange={handleInputChange}
-              >
-                <option value="Passed/Incomplete">Passed/Incomplete</option>
-                <option value="Passed">Passed</option>
-                <option value="Incomplete">Incomplete</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="row mb-2">
-            <label
-              htmlFor="publish7"
-              className="col-5 form-label col-form-label col-form-label-sm"
-            >
-              LMS Identifier
-            </label>
-            <div className="col-7">
-              <input
-                type="text"
-                name="lmsIdentifier"
-                className="form-control form-control-sm"
-                id="publish7"
-                onChange={handleInputChange}
-              />
-            </div>
-          </div>
-        </>
-      ),
-    },
   ];
 
   const toggleShowDrawer = () => setShowDrawer(!showDrawer);
