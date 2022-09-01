@@ -4,13 +4,24 @@ import { PageNavItems } from './page-home-routes';
 import { NavigationBar } from '../../components/navigationbar';
 import { Project, ProjectData } from '../../models';
 import { ModalOutline } from '../../components/modal/index';
-import { ModalDefaultProps } from '@owlui/lib';
+import {
+  Table,
+  TableDefaultProps,
+  TableData,
+  TableRowItem,
+  ModalDefaultProps,
+  Input,
+  InputProps,
+} from '@owlui/lib';
 const project = new Project();
 
 export const PageElement = () => {
   project.ready();
   console.log('project model', project);
   const [recentProjects, setProjectList] = useState([]);
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
+
   const isProcessing = project.useProcessing();
   const projectModelData = project.useData();
 
@@ -36,6 +47,110 @@ export const PageElement = () => {
       console.log('recentProjects', res.data.projects);
     });
   }, []);
+
+  // const handleFilterResults = (searchValue: string) => {
+  //   setSearchInput(searchValue);
+  //   const filteredData = recentProjects.filter(item => {
+  //     return Object.values(item)
+  //       .join('')
+  //       .toLowerCase()
+  //       .includes(searchInput.toLowerCase());
+  //   });
+  //   setFilteredResults(filteredData);
+  // };
+
+  const searchItems = (searchValue: string) => {
+    setSearchInput(searchValue);
+    if (searchInput !== '') {
+      const filteredData = recentProjects.filter(item => {
+        return Object.values(item)
+          .join('')
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+      setFilteredResults(filteredData);
+      console.log('Form input', searchValue);
+    } else {
+      setFilteredResults(recentProjects);
+    }
+  };
+
+  const recentProjectTableItems = (): TableRowItem[] => {
+    const projectTableItem: TableRowItem = {};
+    const projectItems: TableRowItem[] = recentProjects.map(
+      (project): TableRowItem => {
+        const { name, created_at, updated_at } = project;
+
+        projectTableItem.projectName = name;
+        projectTableItem.createdAt = created_at;
+        projectTableItem.lastModifiedAt = updated_at;
+
+        return projectTableItem;
+      }
+    );
+
+    return projectItems;
+  };
+
+  const inputProps: InputProps = {
+    label: {
+      content: 'Project Name',
+      htmlFor: 'input',
+    },
+    control: {
+      id: 'text',
+      type: 'text',
+      disabled: false,
+      readOnly: false,
+      plaintext: false,
+      placeholder: 'e.g. Safety',
+    },
+  };
+
+  const projectsData: TableData = {
+    caption: 'Table 1. List of The Office characters.',
+    columns: [
+      {
+        label: '#',
+        field: 'id',
+      },
+      {
+        label: 'Project Name',
+        field: 'projectName',
+      },
+      {
+        label: 'Created At',
+        field: 'createdAt',
+      },
+      {
+        label: 'Last Modified At',
+        field: 'lastModifiedAt',
+      },
+    ],
+    items: recentProjectTableItems(),
+    // items: [
+    //   {
+    //     id: 1,
+    //     projectName: 'Michael',
+    //     createdAt: 'Scott',
+    //     lastModifiedAt: 'mscott',
+    //   },
+    //   {
+    //     id: 2,
+    //     projectName: 'Oscar',
+    //     createdAt: 'Martinez',
+    //     lastModifiedAt: 'omartinez',
+    //   },
+    //   {
+    //     id: 3,
+    //     projectName: 'Meredith',
+    //     createdAt: 'Palmer',
+    //     lastModifiedAt: 'mpalmer',
+    //   },
+    // ],
+  };
+
+  console.log('test project table', recentProjectTableItems());
 
   const handleOpenModal = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
@@ -109,7 +224,17 @@ export const PageElement = () => {
       <main className={styles.main}>
         <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
         <h1>Home Page</h1>
-        <ModalOutline modalContent={modalContent} />
+        {/* <ModalOutline modalContent={modalContent} /> */}
+        <div style={{ padding: '1rem' }}>
+          <Input
+            onChange={event =>
+              searchItems((event.target as HTMLInputElement).value)
+            }
+            inputProps={inputProps}
+          />
+          <Table tableData={projectsData} />
+        </div>
+
         <button onClick={toggleModal}>TEST MODAL</button>
         {recentProjects.length > 0 && (
           <>
