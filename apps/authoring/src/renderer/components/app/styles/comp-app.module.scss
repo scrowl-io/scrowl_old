@@ -14,23 +14,6 @@
 body {
   overflow: hidden;
 }
-
-.title-bar {
-  height: $owl-sys-size-appbar-height;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--owl-titlebar-color);
-  border-bottom: var(--owl-border-width) solid var(--owl-border-color);
-  background: var(--owl-titlebar-bg);
-  user-select: none;
-
-  &__title {
-    font-size: $owl-ref-typeface-size-xs;
-    font-weight: 500;
-  }
-}
-
 .content {
   overflow: hidden;
 }
