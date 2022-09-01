@@ -56,6 +56,5 @@
 }
 
 .theme--default {
-  --bs-link-color: var(--bs-link-blue-500);
   @include lightMode;
 }
