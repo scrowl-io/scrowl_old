@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import * as styles from './page-home.module.scss';
 import { PageNavItems } from './page-home-routes';
 import { NavigationBar } from '../../components/navigationbar';
-import { Project, ProjectData } from '../../models';
+// import { Project } from '../../models/project/model-project';
+import { Preferences, Projects } from '../../models';
+import { ProjectData } from '../../../main/models/projects';
 import { ModalOutline } from '../../components/modal/index';
+import { Logo } from '../../components/logo/comp-logo';
+import { RecentProjects, Start, Tutorials } from './elements';
 import {
   Table,
   TableDefaultProps,
@@ -11,40 +15,41 @@ import {
   TableRowItem,
   ModalDefaultProps,
   Input,
-  InputProps,
+  TextInputProps,
+  TextInputDefaultProps,
 } from '@owlui/lib';
-const project = new Project();
+// const project = new Project();
+
+// export const PageElement = () => {
+//   project.ready();
+//   console.log('project model', project);
+//   const [recentProjects, setProjectList] = useState([]);
+//   const [filteredResults, setFilteredResults] = useState([]);
+//   const [searchInput, setSearchInput] = useState('');
+
+//   const isProcessing = project.useProcessing();
+//   const projectModelData = project.useData();
 
 export const PageElement = () => {
-  project.ready();
-  console.log('project model', project);
-  const [recentProjects, setProjectList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
+  const [hasProjects, setHasProjects] = useState(false);
   const [filteredResults, setFilteredResults] = useState([]);
   const [searchInput, setSearchInput] = useState('');
-
-  const isProcessing = project.useProcessing();
-  const projectModelData = project.useData();
 
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => setShowModal(!showModal);
 
   useEffect(() => {
-    project.list(10).then(res => {
-      if (res.err) {
-        console.warn(res);
+    Projects.list().then(results => {
+      if (results.error) {
+        console.error(results);
         return;
       }
 
-      /*
-      Create a project, see a log message
-      After project is created, shut down app and restart
-      Then you'll have console log of recent projects, coming from UE
-      Get UI into home page screen - then we can add interactivity
-      */
-
-      setProjectList(res.data.projects);
-      console.log('recentProjects', res.data.projects);
+      setProjectList(results.data.projects);
+      const hasProjects = results.data.projects.length > 0;
+      setHasProjects(hasProjects);
     });
   }, []);
 
@@ -62,7 +67,7 @@ export const PageElement = () => {
   const searchItems = (searchValue: string) => {
     setSearchInput(searchValue);
     if (searchInput !== '') {
-      const filteredData = recentProjects.filter(item => {
+      const filteredData = projectList.filter(item => {
         return Object.values(item)
           .join('')
           .toLowerCase()
@@ -71,14 +76,14 @@ export const PageElement = () => {
       setFilteredResults(filteredData);
       console.log('Form input', searchValue);
     } else {
-      setFilteredResults(recentProjects);
+      setFilteredResults(projectList);
     }
   };
 
   const recentProjectTableItems = (): TableRowItem[] => {
     const projectTableItem: TableRowItem = {};
-    const projectItems: TableRowItem[] = recentProjects.map(
-      (project): TableRowItem => {
+    const projectItems: TableRowItem[] = projectList.map(
+      (project: any): TableRowItem => {
         const { name, created_at, updated_at } = project;
 
         projectTableItem.projectName = name;
@@ -92,7 +97,7 @@ export const PageElement = () => {
     return projectItems;
   };
 
-  const inputProps: InputProps = {
+  const inputProps: TextInputProps = {
     label: {
       content: 'Project Name',
       htmlFor: 'input',
@@ -175,10 +180,10 @@ export const PageElement = () => {
       return;
     }
 
-    project.open(projectId);
+    // project.open(projectId);
   };
 
-  console.log(projectModelData);
+  // console.log(projectModelData);
 
   const testProps = {
     header: {
@@ -219,41 +224,21 @@ export const PageElement = () => {
   };
 
   return (
-    <>
-      <NavigationBar pages={PageNavItems} />
-      <main className={styles.main}>
-        <div>{isProcessing ? <div>WORKING ON IT</div> : ''}</div>
-        <h1>Home Page</h1>
-        {/* <ModalOutline modalContent={modalContent} /> */}
-        <div style={{ padding: '1rem' }}>
-          <Input
-            onChange={event =>
-              searchItems((event.target as HTMLInputElement).value)
-            }
-            inputProps={inputProps}
-          />
-          <Table tableData={projectsData} />
-        </div>
+    <main className={styles.main}>
+      <div className="section-title-wrap">
+        <Logo />
+        <h1 className="section-title">Scrowl Authoring</h1>
+      </div>
 
-        <button onClick={toggleModal}>TEST MODAL</button>
-        {recentProjects.length > 0 && (
-          <>
-            <h3>Recent Projects:</h3>
-            <div>
-              {recentProjects.map((project: ProjectData, index) => (
-                <button
-                  key={index}
-                  onClick={handleOpenProject}
-                  data-project-id={project.id}
-                >
-                  {project.name}
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-      </main>
-    </>
+      <div className="section-row">
+        <Start hasProjects={hasProjects} />
+        <Tutorials />
+      </div>
+
+      <div style={{ marginTop: '2rem' }}>
+        <RecentProjects hasProjects={hasProjects} projectList={projectList} />
+      </div>
+    </main>
   );
 };
 

@@ -12,6 +12,7 @@ import {
 } from '../../services';
 import * as table from './model-projects-schema';
 import { data } from './model-project.mock';
+import { requester } from '../../../renderer/services';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -54,7 +55,6 @@ export const create = () => {
     try {
       let project: ProjectData = {
         name: data.name,
-        sections: JSON.stringify(data.sections),
       };
 
       // create a new entity in the DB
@@ -66,8 +66,9 @@ export const create = () => {
         }
 
         project = createRes.data.item;
-        project.sections = JSON.parse(project.sections);
-        console.log('writing project');
+        project.modules = data.modules || [];
+        project.glossary = data.glossary || [];
+        project.resources = data.resources || [];
         writeProjectTemp(
           project,
           'manifest.json',
@@ -113,9 +114,13 @@ export const save = (
     }
 
     // update the project in the DB
-    const data = project;
-    data.sections = JSON.stringify(data.sections);
-    IS.update(table.name, project, { id: project.id })
+    // eslint-disable-next-line prefer-const
+    let { modules, glossary, resources, ...data } = project;
+    modules = modules || [];
+    glossary = glossary || [];
+    resources = resources || [];
+
+    IS.update(table.name, data, { id: data.id })
       .then(updateRes => {
         if (updateRes.error) {
           resolve(updateRes);
@@ -131,8 +136,11 @@ export const save = (
           return;
         }
 
-        const updatedProject = updateRes.data.item;
-        updatedProject.sections = JSON.parse(updatedProject.sections);
+        const updatedProject = Object.assign(updateRes.data.item, {
+          modules,
+          glossary,
+          resources,
+        });
         // write the new manifest
         writeProjectTemp(
           updatedProject,
@@ -180,15 +188,48 @@ export const save = (
 };
 
 export const list = (ev: Requester.RequestEvent, limit?: number) => {
+  const checkProjectExists = (project: ProjectData) => {
+    return new Promise<requester.ApiResult>(resolve => {
+      try {
+        fs.existsFileSave(fs.join(`${project.id}`, 'manifest.json')).then(
+          res => {
+            if (res.error) {
+              resolve(res);
+              return;
+            }
+
+            resolve({
+              error: false,
+              data: {
+                exists: res.data.exists,
+                project,
+              },
+            });
+          }
+        );
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to check project existence',
+          data: {
+            trace: e,
+            project,
+          },
+        });
+      }
+    });
+  };
+
   return new Promise<Requester.ApiResult>(resolve => {
     const getProjectsManifests = (projectRecords: Array<ProjectData>) => {
       const filePromises = projectRecords.map(project => {
-        return fs.readFileSave(fs.join(`${project.id}`, 'manifest.json'));
+        return checkProjectExists(project);
       });
 
       try {
         Promise.allSettled(filePromises).then(fileResults => {
           const projects: Array<ProjectData | undefined> = [];
+
           fileResults.forEach(result => {
             if (result.status === 'rejected') {
               return;
@@ -196,11 +237,11 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
 
             const fileRes = result.value;
 
-            if (fileRes.error) {
+            if (fileRes.error || !fileRes.data.exists) {
               return;
             }
 
-            projects.push(fileRes.data.contents);
+            projects.push(fileRes.data.project);
           });
 
           resolve({
@@ -225,6 +266,7 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
       const orderBy: IS.StorageOrder = [
         {
           column: 'updated_at',
+          order: 'desc',
         },
       ];
 
@@ -234,7 +276,17 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
           return;
         }
 
-        getProjectsManifests(readRes.data.items);
+        if (readRes.data.items.length) {
+          getProjectsManifests(readRes.data.items);
+          return;
+        }
+
+        resolve({
+          error: false,
+          data: {
+            projects: [],
+          },
+        });
       });
     } catch (e) {
       resolve({
@@ -252,64 +304,83 @@ export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
   console.log('listing recent projects');
 };
 
-export const open = function (ev: Requester.RequestEvent, projectId: number) {
-  if (!projectId) {
-    Requester.send(EVENTS.open.name, {
-      error: true,
-      message: 'Unable to open: project id required',
-    });
-    return;
-  }
+export const open = (ev: Requester.RequestEvent, projectId: number) => {
+  const updateTempFolder = () => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        const from = projectId.toString();
+        const to = projectId.toString();
 
-  // track the opening of the project
-  const updateProjectData = () => {
+        fs.copyTempToSave(from, to).then(copyRes => {
+          if (copyRes.error) {
+            resolve(copyRes);
+            return;
+          }
+
+          fs.readFileSave(fs.join(`${projectId}`, 'manifest.json')).then(
+            resolve
+          );
+        });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to open temporary project folder',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    });
+  };
+
+  const openProject = (project: ProjectData) => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        project.opened_at = IS.getTimestamp();
+        save(ev, project, true).then(resolve);
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to update project while writing meta data',
+          data: {
+            trace: e,
+            projectId,
+          },
+        });
+      }
+    });
+  };
+
+  return new Promise<Requester.ApiResult>(resolve => {
+    if (!projectId) {
+      resolve({
+        error: true,
+        message: 'Unable to open: project id required',
+      });
+      return;
+    }
+
     try {
-      IS.read(table.name, { id: projectId }).then(readRes => {
-        if (readRes.error) {
-          Requester.send(EVENTS.open.name, readRes);
+      updateTempFolder().then(tempRes => {
+        if (tempRes.error) {
+          resolve(tempRes);
           return;
         }
 
-        const project = readRes.data.items[0];
-
-        project.opened_at = IS.getTimestamp();
-        save(ev, project, true).then(saveRes => {
-          Requester.send(EVENTS.open.name, saveRes);
-        });
+        const data = tempRes.data.contents;
+        openProject(data).then(resolve);
       });
     } catch (e) {
-      Requester.send(EVENTS.open.name, {
+      resolve({
         error: true,
-        message: 'Failed to update project while opening',
+        message: 'Failed to open project',
         data: {
           trace: e,
+          projectId,
         },
       });
     }
-  };
-
-  // copy the project from the save folder to the temp folder
-  try {
-    const from = projectId.toString();
-    const to = projectId.toString();
-
-    fs.copyTempToSave(from, to).then(copyRes => {
-      if (copyRes.error) {
-        Requester.send(EVENTS.open.name, copyRes);
-        return;
-      }
-
-      updateProjectData();
-    });
-  } catch (e) {
-    Requester.send(EVENTS.open.name, {
-      error: true,
-      message: `Failed to open project: ${projectId}`,
-      data: {
-        trace: e,
-      },
-    });
-  }
+  });
 };
 
 export const importFile = (
@@ -455,7 +526,7 @@ export const EVENTS: ProjectEvents = {
   },
   onOpen: {
     name: '/projects/open',
-    type: 'on',
+    type: 'invoke',
     fn: open,
   },
   list: {

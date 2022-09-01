@@ -43,6 +43,12 @@ export interface MenuEventPreferencesOpen
   name: Preferences.PreferenceEventOpen['name'];
 }
 
+export interface MenuEventGetStarted
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  id: 'get-started';
+  name: '/get-started';
+}
+
 export interface MenuEventItemList
   extends Omit<Requester.RegisterEvent, 'name'> {
   name: 'menu/items';
@@ -70,7 +76,8 @@ export type MenuItemEventNames =
   | MenuEventPublishProject['name']
   | MenuEventImportFile['name']
   | MenuEventPreferencesCreate['name']
-  | MenuEventPreferencesOpen['name'];
+  | MenuEventPreferencesOpen['name']
+  | MenuEventGetStarted['name'];
 
 export type MenuItemEvent =
   | MenuEventCreateProject
@@ -79,7 +86,8 @@ export type MenuItemEvent =
   | MenuEventPublishProject
   | MenuEventImportFile
   | MenuEventPreferencesCreate
-  | MenuEventPreferencesOpen;
+  | MenuEventPreferencesOpen
+  | MenuEventGetStarted;
 
 export type MenuItemEventsFile = {
   projectsCreate: MenuEventCreateProject;
@@ -97,16 +105,19 @@ export type MenuEventsFileApi = {
   importFile: MenuEventImportFile['name'];
   preferencesCreate: MenuEventPreferencesCreate['name'];
   preferencesOpen: MenuEventPreferencesOpen['name'];
+  getStarted: MenuEventGetStarted['name'];
 };
 
 export type MenuItemEventsApp = {
-  preferencesCreate: MenuEventPreferencesCreate;
+  preferencesCreate?: MenuEventPreferencesCreate;
   preferencesOpen: MenuEventPreferencesOpen;
+  getStarted: MenuEventGetStarted;
 };
 
 export type MenuEventsAppApi = {
   preferencesCreate: MenuEventPreferencesCreate['name'];
   preferencesOpen: MenuEventPreferencesOpen['name'];
+  getStarted: MenuEventGetStarted['name'];
 };
 
 export type MenuItems = Partial<MenuItemEventsApp> &

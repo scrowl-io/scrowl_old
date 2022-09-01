@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import {
+  MemoryRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 import * as styles from './styles/comp-app.module.scss';
 import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
 import { TitleBar } from './elements';
 import { Menu } from '../../services';
-import { Editor, PageNavProps } from '../../pages';
-import { Preferences } from '../../models';
+import { Home, PageNavProps } from '../../pages';
+import { Preferences, Projects } from '../../models';
 
 const routeList: PageNavProps = [];
 
@@ -25,13 +30,31 @@ const AppRoutes = () => {
   return (
     <Routes>
       {pageRouteElements}
-      <Route path="/" element={<Editor.PageElement />} />
+      <Route path="/" element={<Home.PageElement />} />
     </Routes>
   );
 };
 
 const Main = (props: AppMainProps) => {
-  Preferences.useOpen();
+  const navigate = useNavigate();
+
+  Projects.useOpen();
+  Projects.useMenuEvents();
+
+  useEffect(() => {
+    Menu.File.onPreferencesOpen(() => {
+      navigate('/settings/theme');
+    });
+
+    Menu.File.onGetStarted(() => {
+      navigate('/home');
+    });
+
+    return () => {
+      Menu.File.offGetStarted();
+      Menu.File.offPreferencesOpen();
+    };
+  }, [navigate]);
 
   return (
     <div {...props}>
@@ -39,6 +62,7 @@ const Main = (props: AppMainProps) => {
       <div className={styles.content}>
         <AppRoutes />
       </div>
+      {/* <ProjectExplorerModal /> */}
     </div>
   );
 };
@@ -50,22 +74,32 @@ export const Loader = () => {
 export const App = () => {
   const preference = Preferences.useData();
   const prefInit = Preferences.useInit();
+  const projectInit = Projects.useInit();
   const [appTheme, setAppTheme] = useState('');
   const [appInit, setAppInit] = useState(false);
   const [appReady, setAppReady] = useState(false);
 
   useEffect(() => {
+    let ready = false;
     const initializations = [Menu.Global.init()];
 
     Promise.allSettled(initializations).then(() => {
-      setAppInit(true);
-    });
+      if (ready) {
+        return;
+      }
 
-    if (appInit && prefInit) {
-      setAppTheme(`theme--${preference.theme}`);
-      setAppReady(true);
-    }
-  }, [appInit, appTheme, preference, prefInit]);
+      setAppInit(true);
+
+      if (appInit && prefInit && projectInit) {
+        setAppTheme(`theme--${preference.theme}`);
+        setAppReady(true);
+      }
+
+      return () => {
+        ready = true;
+      };
+    });
+  }, [appInit, appTheme, preference, prefInit, projectInit]);
 
   return (
     <Router>{appReady ? <Main className={appTheme} /> : <Loader />}</Router>
