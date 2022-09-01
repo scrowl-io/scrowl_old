@@ -6,19 +6,30 @@ export type PublishDrawerContentProps = {
   project: Projects.ProjectData;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const deepCopy = (obj?: any) => {
+  if (!obj) {
+    return;
+  }
+
+  return JSON.parse(JSON.stringify(obj));
+};
+
 export const PublishDrawerFormSettings = ({
   project,
 }: PublishDrawerContentProps) => {
+  const scormConfig = deepCopy(project.scormConfig || {});
   const handleInputChange = (
     ev: React.FormEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const target = ev.currentTarget;
-    const name = target.name;
+    const prop = target.name;
     const value = target.value;
-    console.log('input data', name, value);
-    // Projects.update({ [target.name]: target.value });
+
+    scormConfig[prop] = value;
+    Projects.update({ scormConfig });
   };
 
   return (
@@ -33,7 +44,7 @@ export const PublishDrawerFormSettings = ({
           className="form-control form-control-sm"
           id="publish1"
           placeholder="Course Name"
-          value={project.name}
+          value={scormConfig.name}
           onChange={handleInputChange}
         />
       </div>
@@ -46,7 +57,7 @@ export const PublishDrawerFormSettings = ({
           className="form-control form-control-sm"
           id="publish2"
           placeholder="Describe the Project"
-          value={project.description}
+          value={scormConfig.description}
           onChange={handleInputChange}
         ></textarea>
       </div>
@@ -60,7 +71,7 @@ export const PublishDrawerFormSettings = ({
           className="form-control form-control-sm"
           id="publish3"
           placeholder="Course Authors"
-          value={project.authors}
+          value={scormConfig.authors}
           onChange={handleInputChange}
         />
       </div>

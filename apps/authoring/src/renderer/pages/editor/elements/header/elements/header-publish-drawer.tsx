@@ -13,8 +13,16 @@ export type PublishDrawerProps = PublishDrawerCommons &
 
 export const PublishDrawer = (props: PublishDrawerProps) => {
   const { project, ...localProps } = props;
+
   const handlePublish = () => {
-    console.log('publishing');
+    Projects.publish(project).then(res => {
+      if (res.error) {
+        console.error(res);
+        return;
+      }
+
+      console.log('published course');
+    });
   };
 
   const drawerContent = {

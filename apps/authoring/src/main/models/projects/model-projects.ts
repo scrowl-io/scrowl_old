@@ -67,7 +67,7 @@ export const create = () => {
 
         project = {
           ...createRes.data.item,
-          authors: data.authors,
+          scormConfig: data.scormConfig,
           modules: data.modules || [],
           glossary: data.glossary || [],
           resources: data.resources || [],
@@ -118,11 +118,10 @@ export const save = (
 
     // update the project in the DB
     // eslint-disable-next-line prefer-const
-    let { modules, glossary, resources, authors, ...data } = project;
+    let { modules, glossary, resources, scormConfig, ...data } = project;
     modules = modules || [];
     glossary = glossary || [];
     resources = resources || [];
-    authors = authors || '';
 
     IS.update(table.name, data, { id: data.id })
       .then(updateRes => {
@@ -141,7 +140,7 @@ export const save = (
         }
 
         const updatedProject = Object.assign(updateRes.data.item, {
-          authors,
+          scormConfig,
           modules,
           glossary,
           resources,
@@ -488,7 +487,13 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
     }
 
     try {
-      Publisher.pack(project).then(resolve);
+      save(ev, project, true).then(saveRes => {
+        if (saveRes.error) {
+          resolve(saveRes);
+        }
+
+        Publisher.pack(saveRes.data.project).then(resolve);
+      });
     } catch (e) {
       resolve({
         error: true,
