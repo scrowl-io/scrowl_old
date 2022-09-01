@@ -2,6 +2,7 @@ import React, {
   BaseSyntheticEvent,
   Dispatch,
   SetStateAction,
+  useEffect,
   useState,
 } from 'react';
 import * as styles from '../editor-pane-details.module.scss';
@@ -18,19 +19,6 @@ export type GlossaryDict = {
     [key: string]: string;
   };
 };
-
-const glossaryTermMenuItems: Array<ActionMenuItem> = [
-  {
-    label: 'Edit',
-    icon: 'edit',
-    iconStyle: 'Outlined',
-  },
-  {
-    label: 'Delete Term',
-    icon: 'delete',
-    iconStyle: 'Outlined',
-  },
-];
 
 const createGlossaryDict = (data: GlossaryData) => {
   const glossary: GlossaryDict = {};
@@ -50,48 +38,18 @@ const createGlossaryDict = (data: GlossaryData) => {
 
 const createGlossaryItems = (
   data: GlossaryDict,
-  toggleDrawer: boolean,
-  setToggleDrawer: Dispatch<SetStateAction<boolean>>,
-  glossary: GlossaryData,
-  setGlossary: Dispatch<SetStateAction<any>>
+  glossaryTermMenuItems: Array<ActionMenuItem>
 ) => {
   const headings = Object.keys(data).sort();
-
-  // const glossaryDrawer: DrawerProps = {
-  //   header: {
-  //     content: <h4>Add Glossary Term</h4>,
-  //     bsProps: {
-  //       closeButton: true,
-  //       className: styles.owluiOffcanvasHeader,
-  //     },
-  //   },
-  //   body: (
-  //     <GlossaryForm
-  //       show={toggleDrawer}
-  //       setShow={setToggleDrawer}
-  //       glossary={glossary}
-  //       setGlossary={setGlossary}
-  //       editEntry={true}
-  //     />
-  //   ),
-  // };
-
-  const toggleShow = (e: BaseSyntheticEvent) => {
-    console.log(e.target);
-    setToggleDrawer(!toggleDrawer);
-  };
 
   return headings.map((heading: string, idxH: number) => {
     const entries = Object.keys(data[heading]).sort();
     const glossaryItemElements = entries.map((entry, idxE) => {
       return (
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <div
           className={styles.tabGlossaryTerm}
           key={idxE}
-          onClick={toggleShow}
-          role="cell"
-          id={`glossary-item-${idxE}`}
+          id={`glossary-item-${entry}`}
         >
           <div className="d-flex justify-content-between">
             <dt className={styles.tabGlossaryTermWord}>{entry}</dt>
@@ -122,10 +80,13 @@ interface AddToGlossaryProps {
   toggleDrawer: boolean;
   setToggleDrawer: Dispatch<SetStateAction<boolean>>;
   project: ProjectData;
+  termData: GlossaryItem;
+  setTermData: Dispatch<SetStateAction<GlossaryItem>>;
 }
 
 const AddGlossaryTermButton = (props: AddToGlossaryProps) => {
-  const { toggleDrawer, setToggleDrawer, project } = props;
+  const { toggleDrawer, setToggleDrawer, project, termData, setTermData } =
+    props;
 
   const glossaryDrawer: DrawerProps = {
     header: {
@@ -142,11 +103,16 @@ const AddGlossaryTermButton = (props: AddToGlossaryProps) => {
         glossary={props.glossary}
         setGlossary={props.setGlossary}
         project={project}
+        termData={termData}
+        setTermData={setTermData}
       />
     ),
   };
 
   const toggleShow = () => {
+    if (!toggleDrawer) {
+      setTermData({ name: '', description: '' });
+    }
     setToggleDrawer(!toggleDrawer);
   };
 
@@ -178,15 +144,62 @@ export const TabGlossary = () => {
 
   const [glossary, setGlossary] = useState([...glossaryData]);
   const [toggleDrawer, setToggleDrawer] = useState(false);
+  const [termData, setTermData] = useState({
+    name: '',
+    description: '',
+  });
+
+  const findTermByElementID = (e: BaseSyntheticEvent) => {
+    const targetID =
+      e.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode
+        .id;
+    const termName = targetID.split('-')[2];
+
+    const glossaryTerm = glossary.filter(term => {
+      return term.name === termName;
+    });
+    const termObj = glossaryTerm[0];
+    return termObj;
+  };
+
+  const editTerm = (e: BaseSyntheticEvent) => {
+    const termObj = findTermByElementID(e);
+    setTermData({ ...termData, ...termObj });
+    setToggleDrawer(!toggleDrawer);
+  };
+
+  const deleteTerm = (e: BaseSyntheticEvent) => {
+    const termObj = findTermByElementID(e);
+    const newGlossary = glossary.filter(term => {
+      return term.name !== termObj.name;
+    });
+    setGlossary(newGlossary);
+  };
+
+  const glossaryTermMenuItems: Array<ActionMenuItem> = [
+    {
+      label: 'Edit',
+      icon: 'edit',
+      iconStyle: 'Outlined',
+      action: editTerm,
+    },
+    {
+      label: 'Delete Term',
+      icon: 'delete',
+      iconStyle: 'Outlined',
+      action: deleteTerm,
+    },
+  ];
 
   const glossaryDict = createGlossaryDict(glossary);
   const glossaryItems = createGlossaryItems(
     glossaryDict,
-    toggleDrawer,
-    setToggleDrawer,
-    glossary,
-    setGlossary
+    glossaryTermMenuItems
   );
+
+  useEffect(() => {
+    Projects.update({ glossary });
+  }, [glossary]);
 
   return (
     <div className={styles.tabGlossary}>
@@ -197,6 +210,8 @@ export const TabGlossary = () => {
         toggleDrawer={toggleDrawer}
         setToggleDrawer={setToggleDrawer}
         project={project}
+        termData={termData}
+        setTermData={setTermData}
       />
     </div>
   );

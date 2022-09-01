@@ -1,7 +1,6 @@
 import { Form, Button, FormDataProps } from '@owlui/lib';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import { Modal } from 'react-bootstrap';
 import { Projects } from '../../../../../../models';
 import { ProjectData } from '../../../../../../models/projects';
 import { GlossaryItem, GlossaryData } from '../editor-pane-details-glossary';
@@ -13,15 +12,12 @@ interface GlossaryFormProps {
   glossaryData?: GlossaryData;
   editEntry?: boolean;
   project: ProjectData;
+  termData: GlossaryItem;
+  setTermData: Dispatch<SetStateAction<GlossaryItem>>;
 }
 
 export const GlossaryForm = (props: GlossaryFormProps) => {
-  const [termData, setTermData] = useState({
-    name: '',
-    description: '',
-  });
-
-  const { show, setShow, setGlossary, glossary } = props;
+  const { show, setShow, setGlossary, glossary, termData, setTermData } = props;
 
   useEffect(() => {
     Projects.update({ glossary });
@@ -36,9 +32,33 @@ export const GlossaryForm = (props: GlossaryFormProps) => {
     setTermData({ ...termData, [e.target.name]: value });
   };
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: React.BaseSyntheticEvent) => {
     e.preventDefault();
+
+    const nameAlreadyExists = glossary.filter(term => {
+      return term.name === termData.name;
+    });
+    const descriptionAlreadyExists = glossary.filter(term => {
+      return term.description === termData.description;
+    });
+
+    const oldDesc = descriptionAlreadyExists[0];
+    const oldTerm = nameAlreadyExists[0];
+
+    if (oldTerm) {
+      const newGlossary = glossary.filter(term => {
+        return term.name !== termData.name;
+      });
+      setGlossary(newGlossary);
+    } else if (oldDesc) {
+      const newGlossary = glossary.filter(term => {
+        return term.description !== termData.description;
+      });
+      setGlossary(newGlossary);
+    }
+
     setGlossary((glossary: GlossaryData) => [...glossary, termData]);
+    setTermData({ name: '', description: '' });
     setShow(!show);
   };
 
