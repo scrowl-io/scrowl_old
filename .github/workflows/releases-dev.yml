@@ -39,5 +39,4 @@ jobs:
           automatic_release_tag: latest
           prerelease: true
           title: Development Build
-            files: |
-              ./apps/authoring/release/build/*.dmg
+            files: ./apps/authoring/release/build/*.dmg
