@@ -1,7 +1,7 @@
 {
   "name": "@scrowl/authoring",
   "productName": "scrowl-authoring",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A tool used to create online training materials",
   "license": "MIT",
   "keywords": [],
