@@ -44,10 +44,9 @@ export const RecentProjects = (props: RecentProjectsProps) => {
           <h2>Recent</h2>
           <Nav className="flex-column">
             {projectList.map((project: Projects.ProjectData, index: number) => (
-              <Nav.Item>
+              <Nav.Item key={index}>
                 <Button
                   variant="link"
-                  key={index}
                   onClick={handleOpenProject}
                   data-project-id={project.id}
                 >
