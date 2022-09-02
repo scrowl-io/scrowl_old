@@ -13,17 +13,7 @@
   justify-content: center;
   overflow-y: auto;
   background: var(--owl-start-bg);
-}
 
-.settings__container {
-  position: relative;
-  width: 100%;
-  max-width: 70rem;
-  padding: $owl-sys-space-start;
-  color: var(--owl-start-color);
-}
-
-.settings {
   &__header {
     user-select: none;
 
@@ -37,4 +27,12 @@
   &__section {
     padding: $owl-sys-space-start 0;
   }
+}
+
+.settings__container {
+  position: relative;
+  width: 100%;
+  max-width: 70rem;
+  padding: $owl-sys-space-start;
+  color: var(--owl-start-color);
 }

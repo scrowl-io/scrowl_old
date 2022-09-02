@@ -13,19 +13,7 @@
   justify-content: center;
   overflow-y: auto;
   background: var(--owl-start-bg);
-}
 
-.home__container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 70rem;
-  padding: $owl-sys-space-start;
-  color: var(--owl-start-color);
-}
-
-.home {
   &__header {
     padding: 0 $nav-link-padding-x;
     flex: 1 0 100%;
@@ -57,4 +45,14 @@
       padding: $nav-link-padding-y $nav-link-padding-x;
     }
   }
+}
+
+.home__container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 70rem;
+  padding: $owl-sys-space-start;
+  color: var(--owl-start-color);
 }
