@@ -56,6 +56,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
           placeholder: 'Term Description...',
           value: data.description,
           onChange: handleFormChangeDescription,
+          as: 'textarea',
         },
       },
     },
