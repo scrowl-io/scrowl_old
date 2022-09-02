@@ -2,6 +2,8 @@
 @import '../../../../styles/variables';
 
 .filename {
+  --owl-input-color: var(--bs-body-color);
+
   display: inline-grid;
   align-items: center;
   position: relative;
