@@ -10,6 +10,15 @@ import {
 import * as styles from '../editor-pane-details.module.scss';
 import { Projects } from '../../../../../models';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const deepCopy = (obj?: any) => {
+  if (!obj) {
+    return;
+  }
+
+  return JSON.parse(JSON.stringify(obj));
+};
+
 export const TabGlossary = () => {
   const createGlossaryDict = (terms: GlossaryData) => {
     const dict: GlossaryDict = {};
@@ -32,6 +41,7 @@ export const TabGlossary = () => {
 
   const project = Projects.useData();
   const glossaryDict = createGlossaryDict(project.glossary);
+  const glossary = deepCopy(project.glossary);
   const [activeTerm, setActiveTerm] = useState({ name: '', description: '' });
   const [activeTermIdx, setActiveTermIdx] = useState(-1);
   const [isGlossaryDrawerOpen, setGlossaryDrawerOpen] = useState(false);
@@ -42,11 +52,7 @@ export const TabGlossary = () => {
     setGlossaryDrawerOpen(true);
   };
 
-  const handleGlossaryDelete = (idx: number) => {
-    console.log('deleting glossary term', idx, project.glossary[idx]);
-  };
-
-  const handleGlossaryOpen = () => {
+  const handleGlossaryAdd = () => {
     setActiveTerm({ name: '', description: '' });
     setActiveTermIdx(-1);
     setGlossaryDrawerOpen(true);
@@ -56,12 +62,23 @@ export const TabGlossary = () => {
     setGlossaryDrawerOpen(false);
   };
 
-  const handleGlossaryTermUpdate = (term: GlossaryItem) => {
+  const handleGlossaryDelete = (idx: number) => {
+    console.log('deleting glossary term', idx, glossary[idx]);
+  };
+
+  const handleGlossaryUpdate = (term: GlossaryItem) => {
+    console.log('updating glossary', activeTermIdx, term);
+
     if (activeTermIdx === -1) {
-      console.log('adding new term', activeTermIdx, term);
+      // adding new term
+      glossary.push(term);
     } else {
-      console.log('updating term', activeTermIdx, term);
+      // updating term
+      glossary[activeTermIdx] = term;
     }
+
+    Projects.update({ glossary });
+    handleGlossaryDrawerClose();
   };
 
   return (
@@ -71,12 +88,12 @@ export const TabGlossary = () => {
         onEdit={handleGlossaryEdit}
         onDelete={handleGlossaryDelete}
       />
-      <GlossaryAddBtn onClick={handleGlossaryOpen} />
+      <GlossaryAddBtn onClick={handleGlossaryAdd} />
       <GlossaryDrawer
         show={isGlossaryDrawerOpen}
         onHide={handleGlossaryDrawerClose}
         term={activeTerm}
-        onSubmit={handleGlossaryTermUpdate}
+        onSubmit={handleGlossaryUpdate}
       />
     </div>
   );
