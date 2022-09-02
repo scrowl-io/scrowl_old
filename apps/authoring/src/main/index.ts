@@ -86,6 +86,9 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+    }
+
+    if (isDevelopment) {
       mainWindow.webContents.openDevTools({ mode: 'detach' });
     }
   });
