@@ -63,12 +63,11 @@ export const TabGlossary = () => {
   };
 
   const handleGlossaryDelete = (idx: number) => {
-    console.log('deleting glossary term', idx, glossary[idx]);
+    glossary.splice(idx, 1);
+    Projects.update({ glossary });
   };
 
   const handleGlossaryUpdate = (term: GlossaryItem) => {
-    console.log('updating glossary', activeTermIdx, term);
-
     if (activeTermIdx === -1) {
       // adding new term
       glossary.push(term);

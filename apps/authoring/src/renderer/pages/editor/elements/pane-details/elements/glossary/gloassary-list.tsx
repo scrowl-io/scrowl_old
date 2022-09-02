@@ -11,8 +11,16 @@ export const GlossaryListEntries = ({
   const entires = Object.keys(glossary).sort();
   const getEntryIndex = (ev: React.MouseEvent<Element, MouseEvent>) => {
     const target = ev.target as HTMLElement;
-    const actionBtn = target.parentElement?.parentElement
-      ?.parentElement as HTMLElement;
+
+    let actionBtn;
+
+    if (target.nodeName === 'SPAN') {
+      actionBtn = target.parentElement?.parentElement?.parentElement
+        ?.parentElement as HTMLElement;
+    } else {
+      actionBtn = target.parentElement?.parentElement
+        ?.parentElement as HTMLElement;
+    }
 
     if (!actionBtn || actionBtn.dataset.idx === undefined) {
       return;
