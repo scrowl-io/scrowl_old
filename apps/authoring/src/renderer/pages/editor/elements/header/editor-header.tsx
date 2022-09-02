@@ -3,9 +3,7 @@ import * as styles from './editor-header.module.scss';
 import * as toolbarStyles from '../../../../components/toolbar/comp-toolbar.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
-import { PreviewButton } from './elements';
-import { SaveTooltip } from './elements/save-tooltip';
-import { PublishButton } from './elements/publishbutton';
+import { PreviewButton, PublishButton, SaveTooltip } from './elements';
 
 export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
@@ -13,6 +11,7 @@ export const Header = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showSavetooltip, setShowSaveTooltip] = useState(false);
   const project = Projects.useData();
+  const disableElement = !project.name.trim();
 
   const handleFilenameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const name = ev.currentTarget.value;
@@ -31,7 +30,8 @@ export const Header = () => {
           value={project.name}
           placeholder=""
           onChange={handleFilenameChange}
-          size={2}
+          size={13}
+          disabled={disableElement}
         />
       </div>
       <div className={`collapse ${toolbarStyles.toolbarCollapse}`}>
@@ -46,8 +46,8 @@ export const Header = () => {
         </ul>
         <ul className={`${toolbarStyles.toolbarNav} align-items-center`}>
           <li className="scrowl-navbar__actions">
-            <PreviewButton />
-            <PublishButton />
+            <PreviewButton disabled={disableElement} />
+            <PublishButton disabled={disableElement} />
           </li>
         </ul>
       </div>
