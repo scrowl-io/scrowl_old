@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from 'react-bootstrap';
 import { Preferences } from '../../../../models';
 
 export const route = 'theme';
@@ -6,20 +7,37 @@ export const route = 'theme';
 export const Element = () => {
   const preference = Preferences.useData();
 
-  console.log('advanced prefs', preference);
-
   const handleChangeTheme = () => {
-    const theme = preference.theme === 'light' ? 'dark' : 'light';
+    const theme = preference.theme === 'default' ? 'dark' : 'default';
 
     Preferences.update({ theme });
   };
 
   return (
-    <div>
-      <p>This is the advanced preferences page</p>
-      <button onClick={handleChangeTheme}>
-        Change Theme {preference.theme}
-      </button>
+    <div className="settings__section">
+      <h2 className="h3">Theme Preferences</h2>
+      <Form>
+        <Form.Label htmlFor="themeSelector">Editor Theme</Form.Label>
+        <br />
+        <Form.Check
+          inline
+          label="Default"
+          name="themeSelector"
+          type="radio"
+          id="themeSelectorDefault"
+          onChange={handleChangeTheme}
+          checked={preference.theme === 'default'}
+        />
+        <Form.Check
+          inline
+          label="Dark"
+          name="themeSelector"
+          type="radio"
+          id="themeSelectorDark"
+          onChange={handleChangeTheme}
+          checked={preference.theme === 'dark'}
+        />
+      </Form>
     </div>
   );
 };
