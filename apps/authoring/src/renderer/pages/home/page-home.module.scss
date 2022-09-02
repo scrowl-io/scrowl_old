@@ -1,9 +1,8 @@
 @import '@owlui/lib/src/theme/global/bootstrap';
 @import '@owlui/lib/src/theme/global/tokens';
-@import '../../styles/patterns';
 
-.main {
-  display: flex;
+.home {
+  display: grid;
   flex-wrap: nowrap;
   position: fixed;
   top: 0;
@@ -12,25 +11,8 @@
   right: 0;
   align-items: center;
   justify-content: center;
-
-  @include pattern-bg(
-    dots,
-    1px,
-    var(--owl-start-bg-accent),
-    var(--owl-start-bg)
-  );
-}
-
-.home {
-  align-self: center;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 70rem;
-  padding: $owl-sys-space-start;
-  color: var(--owl-start-color);
   overflow-y: auto;
+  background: var(--owl-start-bg);
 
   &__header {
     padding: 0 $nav-link-padding-x;
@@ -63,4 +45,14 @@
       padding: $nav-link-padding-y $nav-link-padding-x;
     }
   }
+}
+
+.home__container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 70rem;
+  padding: $owl-sys-space-start;
+  color: var(--owl-start-color);
 }

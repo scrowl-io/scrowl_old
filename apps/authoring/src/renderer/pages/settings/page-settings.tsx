@@ -21,8 +21,8 @@ export const PageElement = () => {
   };
 
   return (
-    <main className={styles.main}>
-      <div className={styles.settings}>
+    <main className={styles.settings}>
+      <div className={styles.settings__container}>
         <Button onClick={handlePrevPage} variant="link" className="mb-3">
           <Icon icon="arrow_back" />
           Back
