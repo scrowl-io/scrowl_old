@@ -154,7 +154,7 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
 
   const isDroppable = () => {
     if (process.env.NODE_ENV !== 'development') {
-      return false; //TODO write migration step for tables when in PROD
+      return true; //TODO write migration step for tables when in PROD
     }
 
     const restart = parseInt(process.env.restart || '0');
