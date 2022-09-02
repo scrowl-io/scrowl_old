@@ -14,6 +14,23 @@ import { deepCopy } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
+  // for the renmaing modal, use the owl ui modal by following the BS example https://react-bootstrap.github.io/components/modal/
+  // REMINDER the owl ui modal implements the header, body, footer as props: i.e. packages/modal/src/Default/stories/Default-index.stories.tsx
+  // the modal should be in its own file: for example: editor-tree-view-modules-rename.tsx
+  // create a new component that wraps the modal
+  // the component should accept the expected props as well as an onSubmit fn prop and a module prop
+  // in the modal footer place a cancel and update btn
+  // the cancel btn will call the fn from the onHide prop
+  // the update btn will call the fn from the onSubmit prop
+  // look to how the TabGlossary of details-glossary.tsx implements the GlossaryDrawer component how that uses the GlossaryForm
+  // the flow of logic/events you're looking to copy are the onHide and onSubmit
+  // rename modal should implement the module prop in a similar fashion to the term prop and data state of the GlossaryForm
+  // the onSubmit fn should just need to update the module `modules[idx] = module` and then the project `Projects.update({ modules })`
+
+  // As for delete, you can add a delete confirmation modal if you wish following a similar implementation to the rename modal,
+  // or you can skip it and just immediately remove it.
+
+  // you will have to repeat this process for the lesson and slide components
   const { tree, project, idx } = props;
   const module: ModuleTreeItem = deepCopy(tree);
   const modules = deepCopy(project.modules);
@@ -54,8 +71,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       action: () => {
         if (!modules) return;
 
-        // open rename modal
-        // on success, change the name to the returned value from the modal, then Projects.update();
+        // change the rename modal open state here
       },
     },
     {
@@ -197,6 +213,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
           />
         </div>
       </Collapse>
+      {/* add the rename modal component here */}
     </div>
   );
 };
