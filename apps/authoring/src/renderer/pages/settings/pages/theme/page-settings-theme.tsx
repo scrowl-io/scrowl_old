@@ -15,7 +15,7 @@ export const Element = () => {
 
   return (
     <div className="settings__section">
-      <h2 className="h3">Theme Prefererences</h2>
+      <h2 className="h3">Theme Preferences</h2>
       <Form>
         <Form.Label htmlFor="themeSelector">Editor Theme</Form.Label>
         <br />
