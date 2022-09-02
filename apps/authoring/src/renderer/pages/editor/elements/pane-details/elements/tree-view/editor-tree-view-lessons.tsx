@@ -37,6 +37,91 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
         Projects.update({ modules });
       },
     },
+    {
+      label: 'Rename',
+      icon: 'edit',
+      iconStyle: 'Outlined',
+      action: () => {
+        console.log('rename');
+      },
+    },
+    {
+      label: 'Duplicate',
+      icon: 'content_copy',
+      iconStyle: 'Outlined',
+      action: () => {
+        lessonModule.lessons.splice(idx + 1, 0, lesson);
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Add Lesson',
+      icon: 'widgets',
+      iconStyle: 'Outlined',
+      action: () => {
+        const newLesson: LessonTreeItem = {
+          name: 'Untitled Lesson',
+          slides: [
+            {
+              name: 'Untitled Slide',
+            },
+          ],
+        };
+
+        lessonModule.lessons.push(newLesson);
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Move Up',
+      icon: 'arrow_upward',
+      iconStyle: 'Outlined',
+      action: () => {
+        if (lessonModule.lessons.length <= 1 || idx <= 0) {
+          console.log('Invalid operation');
+          return;
+        }
+        [lessonModule.lessons[idx - 1], lessonModule.lessons[idx]] = [
+          lessonModule.lessons[idx],
+          lessonModule.lessons[idx - 1],
+        ];
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Move Down',
+      icon: 'arrow_downward',
+      iconStyle: 'Outlined',
+      action: () => {
+        if (
+          lessonModule.lessons.length <= 1 ||
+          lessonModule.lessons.length - 1 <= idx
+        ) {
+          console.log('Invalid operation');
+          return;
+        }
+        [lessonModule.lessons[idx], lessonModule.lessons[idx + 1]] = [
+          lessonModule.lessons[idx + 1],
+          lessonModule.lessons[idx],
+        ];
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Delete Lesson',
+      icon: 'delete',
+      iconStyle: 'Outlined',
+      action: () => {
+        lessonModule.lessons.splice(idx, 1);
+        // confirm({
+        //   headerText: 'Header',
+        //   descriptionText: 'Description',
+        //   acceptConfirm: () => Projects.update({ modules }),
+        //   cancelConfirm: () => console.log('cancelled'),
+        // });
+        Projects.update({ modules });
+      },
+    },
   ];
 
   return (

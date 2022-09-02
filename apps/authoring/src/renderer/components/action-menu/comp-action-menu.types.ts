@@ -1,6 +1,7 @@
 import { IconType, DropdownDefaultCommons } from '@owlui/lib';
 
 export type ActionMenuItem = {
+  // name: string; // <- for filtering invalid action menu items, i.e. can't move module up that's already first
   label: string;
   icon: IconType;
   iconStyle: 'Filled' | 'Outlined';
