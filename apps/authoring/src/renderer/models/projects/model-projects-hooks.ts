@@ -240,6 +240,25 @@ export const open = (projectId: number) => {
   });
 };
 
+export const preview = () => {
+  const hasProcessor = checkProcessor();
+
+  if (!hasProcessor) {
+    return;
+  }
+
+  processor.dispatch(state.process(true));
+
+  api.preview().then(result => {
+    if (result.error) {
+      console.error(result);
+      return;
+    }
+
+    processor.dispatch(state.process(false));
+  });
+};
+
 export const save = (data: ProjectData) => {
   const hasProcessor = checkProcessor();
 

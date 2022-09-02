@@ -13,6 +13,9 @@ import {
 import * as table from './model-projects-schema';
 import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
+import { BrowserWindow } from 'electron';
+import { resolveHtmlPath } from '../../util';
+import { createPreviewWindow } from '../..';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -507,6 +510,29 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
   });
 };
 
+export const preview = (ev: Requester.RequestEvent) => {
+  return new Promise<Requester.ApiResult>((resolve, reject) => {
+    try {
+      createPreviewWindow();
+
+      resolve({
+        error: false,
+        data: {
+          message: 'Preview...',
+        },
+      });
+    } catch (e) {
+      reject({
+        error: true,
+        message: 'Failed to preview project.',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 export const EVENTS: ProjectEvents = {
   create: {
     name: '/projects/create',
@@ -534,6 +560,11 @@ export const EVENTS: ProjectEvents = {
     name: '/projects/open',
     type: 'invoke',
     fn: open,
+  },
+  onPreview: {
+    name: '/projects/preview',
+    type: 'invoke',
+    fn: preview,
   },
   list: {
     name: '/projects/list',

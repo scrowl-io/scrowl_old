@@ -5,6 +5,7 @@ const ENDPOINTS: ProjectEventApi = {
   create: '/projects/create',
   save: '/projects/save',
   open: '/projects/open',
+  preview: '/projects/preview',
   list: '/projects/list',
   import: 'project/import-file',
   publish: '/projects/publish',
@@ -54,6 +55,22 @@ export const open = (projectId: number) => {
         data: {
           trace: e,
           projectId,
+        },
+      });
+    }
+  });
+};
+
+export const preview = () => {
+  return new Promise<requester.ApiResult>(resolve => {
+    try {
+      requester.invoke(ENDPOINTS.preview).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: `Failed to preview course.`,
+        data: {
+          trace: e,
         },
       });
     }

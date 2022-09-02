@@ -15,6 +15,11 @@ export interface ProjectEventOpen
   name: '/projects/open';
 }
 
+export interface ProjectEventPreview
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  name: '/projects/preview';
+}
+
 export interface ProjectEventList
   extends Omit<Requester.RegisterEvent, 'name'> {
   name: '/projects/list';
@@ -34,6 +39,7 @@ export type ProjectEventApi = {
   create: ProjectEventCreate['name'];
   save: ProjectEventSave['name'];
   open: ProjectEventOpen['name'];
+  preview: ProjectEventPreview['name'];
   list: ProjectEventList['name'];
   import: ProjectEventImport['name'];
   publish: ProjectEventPublish['name'];
@@ -43,6 +49,7 @@ export type ProjectEventNames =
   | ProjectEventCreate['name']
   | ProjectEventSave['name']
   | ProjectEventOpen['name']
+  | ProjectEventPreview['name']
   | ProjectEventList['name']
   | ProjectEventImport['name']
   | ProjectEventPublish['name'];
@@ -51,6 +58,7 @@ export type ProjectEvent =
   | ProjectEventCreate
   | ProjectEventSave
   | ProjectEventOpen
+  | ProjectEventPreview
   | ProjectEventList
   | ProjectEventImport
   | ProjectEventPublish;
@@ -62,6 +70,7 @@ export type ProjectEvents = {
   onSave: ProjectEventSave;
   open: ProjectEventOpen;
   onOpen: ProjectEventOpen;
+  onPreview: ProjectEventPreview;
   list: ProjectEventList;
   import: ProjectEventImport;
   onImport: ProjectEventImport;

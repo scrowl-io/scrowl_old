@@ -21,7 +21,7 @@ import { Menu, Publisher, Requester } from './services';
 
 const __rootdir = path.join(__dirname, '../../');
 
-let mainWindow: BrowserWindow | null = null;
+let mainWindow: BrowserWindow | undefined;
 
 const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
@@ -32,12 +32,12 @@ const installExtensions = () => {
   return Promise.all([installExtension(REACT_DEVELOPER_TOOLS)]);
 };
 
-const createWindow = async () => {
+const createWindow = (modal?: boolean, parent?: BrowserWindow) => {
   if (isDevelopment) {
     electronDebug();
-    const installResult = await installExtensions();
-
-    console.log(`\n\nAdded Extensions: ${installResult}\n\n`);
+    installExtensions().then(result => {
+      console.log(`\n\nAdded Extensions: ${result}\n\n`);
+    });
   }
 
   const RESOURCES_PATH = app.isPackaged
@@ -60,11 +60,18 @@ const createWindow = async () => {
       },
     };
 
+    if (modal && parent) {
+      browserWindowConfig.modal = modal;
+      browserWindowConfig.parent = parent;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      browserWindowConfig.webPreferences!.preload = '';
+    }
+
     try {
       return new BrowserWindow(browserWindowConfig);
     } catch (error) {
       console.error(preloadPath, '\n', error);
-      return null;
+      return undefined;
     }
   }
 
@@ -75,7 +82,7 @@ const createWindow = async () => {
   }
 
   Publisher.init();
-  await initModels();
+  initModels();
   mainWindow.loadURL(resolveHtmlPath('renderer.html'));
 
   mainWindow.on('ready-to-show', () => {
@@ -91,7 +98,7 @@ const createWindow = async () => {
   });
 
   mainWindow.on('closed', () => {
-    mainWindow = null;
+    mainWindow = undefined;
   });
 
   // Open urls in the user's browser
@@ -99,6 +106,8 @@ const createWindow = async () => {
     shell.openExternal(edata.url);
     return { action: 'deny' };
   });
+
+  return;
 };
 
 /**
@@ -152,6 +161,23 @@ const createApp = () => {
       });
     })
     .catch(console.log);
+};
+
+export const createPreviewWindow = () => {
+  const previewWindow = new BrowserWindow({
+    parent: mainWindow,
+    modal: true,
+    show: false,
+    width: 1024,
+    minWidth: 1024,
+    height: 728,
+  });
+
+  previewWindow?.loadURL('https://github.com');
+
+  previewWindow?.once('ready-to-show', () => {
+    previewWindow?.show();
+  });
 };
 
 const setDev = async () => {
