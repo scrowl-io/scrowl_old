@@ -1,8 +1,8 @@
 @import '@owlui/lib/src/theme/global/bootstrap';
 @import '@owlui/lib/src/theme/global/tokens';
 
-.main {
-  display: flex;
+.home {
+  display: grid;
   flex-wrap: nowrap;
   position: fixed;
   top: 0;
@@ -12,10 +12,10 @@
   align-items: center;
   justify-content: center;
   background: var(--owl-start-bg);
+  overflow-y: auto;
 }
 
-.home {
-  align-self: center;
+.home__container {
   position: relative;
   display: flex;
   justify-content: center;
@@ -23,8 +23,9 @@
   max-width: 70rem;
   padding: $owl-sys-space-start;
   color: var(--owl-start-color);
-  overflow-y: auto;
+}
 
+.home {
   &__header {
     padding: 0 $nav-link-padding-x;
     flex: 1 0 100%;

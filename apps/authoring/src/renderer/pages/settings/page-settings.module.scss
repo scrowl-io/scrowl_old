@@ -1,7 +1,7 @@
 @import '@owlui/lib/src/theme/global/bootstrap';
 @import '@owlui/lib/src/theme/global/tokens';
 
-.main {
+.settings {
   display: flex;
   flex-wrap: nowrap;
   position: fixed;
@@ -15,13 +15,15 @@
   background: var(--owl-start-bg);
 }
 
-.settings {
+.settings__container {
   position: relative;
   width: 100%;
   max-width: 70rem;
   padding: $owl-sys-space-start;
   color: var(--owl-start-color);
+}
 
+.settings {
   &__header {
     user-select: none;
 
