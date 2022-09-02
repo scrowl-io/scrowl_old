@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as styles from './comp-logo.module.scss';
 import { LogoProps } from './comp-logo.types';
 
@@ -57,18 +58,23 @@ export const Logo = ({ sizing, className, ...props }: LogoProps) => {
       <path d="m53.61 37.99c-.04 4.03-12.03 3.98-12 0 .03-3.31 2.69-6 6-6s6.03 2.69 6 6z" />
     </svg>
   );
-  let localProps;
 
   if (props.href) {
-    localProps = props as React.AllHTMLAttributes<HTMLAnchorElement>;
+    const { href, ...localProps } =
+      props as React.AllHTMLAttributes<HTMLAnchorElement>;
 
     return (
-      <a className={logoClasses} aria-label="Scrowl Logo" {...localProps}>
+      <Link
+        to={href || ''}
+        className={logoClasses}
+        aria-label="Scrowl Logo"
+        {...localProps}
+      >
         {svg}
-      </a>
+      </Link>
     );
   } else {
-    localProps = props as React.AllHTMLAttributes<HTMLDivElement>;
+    const localProps = props as React.AllHTMLAttributes<HTMLDivElement>;
 
     return (
       <div className={logoClasses} aria-label="Scrowl Logo" {...localProps}>

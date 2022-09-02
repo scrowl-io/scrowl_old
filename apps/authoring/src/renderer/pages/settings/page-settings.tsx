@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { Tabs, Tab } from 'react-bootstrap';
 import { Button, Icon } from '@owlui/lib';
 import * as styles from './page-settings.module.scss';
@@ -10,6 +10,11 @@ import { Logo } from '../../components/logo';
 export const PageElement = () => {
   const preference = Preferences.useData();
   const prefProcessing = Preferences.useProcessing();
+  const navigate = useNavigate();
+
+  const handlePrevPage = () => {
+    navigate(-1);
+  };
 
   const handleSave = () => {
     Preferences.save(preference);
@@ -18,8 +23,7 @@ export const PageElement = () => {
   return (
     <main className={styles.main}>
       <div className={styles.settings}>
-        {/* TODO: Make this go back to the last non-settings page you came from */}
-        <Button variant="link" href="/" className="mb-3">
+        <Button onClick={handlePrevPage} variant="link" className="mb-3">
           <Icon icon="arrow_back" />
           Back
         </Button>
