@@ -21,37 +21,38 @@ export const Header = () => {
 
   return (
     <Toolbar>
-      {/* TODO: Use the route for Home rather than a slash */}
-      <Logo href="/" sizing="sm" />
-      <div className={styles.filename} data-value={project.name}>
-        <input
-          name="filename"
-          id="filenameInput"
-          className="form-control"
-          value={project.name}
-          placeholder=""
-          onChange={handleFilenameChange}
-          size={13}
-          disabled={disableElement}
-        />
+      <div className="navbar navbar-expand scrowl__navbar">
+        <Logo href="/" sizing="sm" />
+        <div className={styles.filename} data-value={project.name}>
+          <input
+            name="filename"
+            id="filenameInput"
+            className="form-control"
+            value={project.name}
+            placeholder=""
+            onChange={handleFilenameChange}
+            size={13}
+            disabled={disableElement}
+          />
+        </div>
+        <div className={`collapse ${toolbarStyles.toolbarCollapse}`}>
+          <ul
+            className={`${toolbarStyles.toolbarNav} align-items-center me-auto`}
+          >
+            {showSavetooltip && (
+              <li className="nav-item">
+                <SaveTooltip />
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
-      <div className={`collapse ${toolbarStyles.toolbarCollapse}`}>
-        <ul
-          className={`${toolbarStyles.toolbarNav} align-items-center me-auto`}
-        >
-          {showSavetooltip && (
-            <li className="nav-item">
-              <SaveTooltip />
-            </li>
-          )}
-        </ul>
-        <ul className={`${toolbarStyles.toolbarNav} align-items-center`}>
-          <li className="scrowl-navbar__actions">
-            <PreviewButton disabled={disableElement} />
-            <PublishButton disabled={disableElement} />
-          </li>
-        </ul>
-      </div>
+      <ul className="navbar-nav align-items-center">
+        <li className="scrowl-navbar__actions">
+          <PreviewButton disabled={disableElement} />
+          <PublishButton disabled={disableElement} />
+        </li>
+      </ul>
     </Toolbar>
   );
 };
