@@ -1,4 +1,6 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
+import { Icon, Button } from '@owlui/lib';
 
 export const Tutorials = () => {
   const handleCreateProject = () => {
@@ -6,16 +8,17 @@ export const Tutorials = () => {
   };
 
   return (
-    <div>
-      <h2 className="section-title">Getting Started</h2>
-      <ul>
-        <li>
-          <button className="section-link" onClick={handleCreateProject}>
+    <>
+      <h2>Getting Started</h2>
+      <Nav className="flex-column">
+        <Nav.Item>
+          <Button variant="link" onClick={handleCreateProject}>
+            <Icon display="Filled" icon="assistant" />
             Beginner Tutorial Project...
-          </button>
-        </li>
-      </ul>
-    </div>
+          </Button>
+        </Nav.Item>
+      </Nav>
+    </>
   );
 };
 

@@ -45,5 +45,5 @@ export interface PreferenceData extends InternalStorage.StorageData {
   id?: string;
   created_at?: string;
   updated_at?: string;
-  theme?: 'dark' | 'light';
+  theme?: 'dark' | 'default';
 }
