@@ -31,7 +31,7 @@ export const PaneDetails = () => {
 
   return (
     <Pane>
-      <Tabs items={tabItems} className={styles.paneDetailsTabs} size="Sm" />
+      <Tabs items={tabItems} size="Sm" />
     </Pane>
   );
 };

@@ -50,9 +50,8 @@ const createWindow = async () => {
 
   function getBrowserWindow(preloadPath: string) {
     const browserWindowConfig: BrowserWindowConstructorOptions = {
-      titleBarStyle: 'hidden',
       show: false,
-      width: 1024,
+      width: 1440,
       minWidth: 1024,
       height: 728,
       icon: getAssetPath('icon.png'),
@@ -87,6 +86,9 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+    }
+
+    if (isDevelopment) {
       mainWindow.webContents.openDevTools({ mode: 'detach' });
     }
   });

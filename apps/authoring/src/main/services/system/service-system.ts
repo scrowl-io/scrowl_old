@@ -4,7 +4,7 @@ import { ApiResult } from '../requester';
 export const getPreferences = () => {
   return new Promise<ApiResult>(resolve => {
     try {
-      const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+      const theme = nativeTheme.shouldUseDarkColors ? 'dark' : 'default';
 
       resolve({
         error: false,

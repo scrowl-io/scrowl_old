@@ -1,3 +1,4 @@
+import React from 'react';
 import { IconType, DropdownDefaultCommons } from '@owlui/lib';
 
 export type ActionMenuItem = {
@@ -8,12 +9,11 @@ export type ActionMenuItem = {
   action?: (e: React.MouseEvent) => void;
 };
 
-export interface ActionMenuCommons {
-  menuItems: Array<ActionMenuItem>;
-}
-
-export interface ActionMenuProps extends Omit<DropdownDefaultCommons, 'items'> {
+export interface ActionMenuCommons
+  extends Omit<DropdownDefaultCommons, 'items'> {
   title: string;
   children: React.ReactNode;
   'menu-items'?: Array<ActionMenuItem>;
 }
+
+export type ActionMenuProps = ActionMenuCommons;

@@ -1,0 +1,75 @@
+
+@mixin pattern-bg($type: lines, $size: 10px, $color: currentColor, $bg: transparent) {
+  @if $type == checks {
+    background-image:
+      repeating-linear-gradient(45deg, $color 25%, transparent 25%, transparent 75%, $color 75%, $color),
+      repeating-linear-gradient(45deg, $color 25%, transparent 25%, transparent 75%, $color 75%, $color);
+    background-position: 0 0, #{$size} #{$size};
+    background-size: calc(2 * #{$size}) calc(2 * #{$size});
+  }
+
+  @if $type == grid {
+    background-image:
+      linear-gradient($color 1px, transparent 1px),
+      linear-gradient(90deg, $color 1px, transparent 1px);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == dots {
+    background-image: radial-gradient($color #{$size}, transparent #{$size});
+    background-size: calc(10 * #{$size}) calc(10 * #{$size});
+  }
+
+  @if $type == dots--cross {
+    background-image:
+      radial-gradient($color #{$size}, transparent #{$size}),
+      radial-gradient($color #{$size}, transparent #{$size});
+    background-size: calc(20 * #{$size}) calc(20 * #{$size});
+    background-position: 0 0, calc(10 * #{$size}) calc(10 * #{$size});
+  }
+
+  @if $type == lines {
+    background-image: repeating-linear-gradient(135deg, $color 0, $color 1px, transparent 0, transparent 50%);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == lines--h{
+    background-image: repeating-linear-gradient(0deg, $color, $color 1px, transparent 1px, transparent);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == lines--v {
+    background-image: repeating-linear-gradient(to right, $color, $color 1px, transparent 1px, transparent);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == stripes {
+    background: repeating-linear-gradient(135deg, transparent, transparent #{$size}, $color #{$size}, $color calc(2 * #{$size}));
+  }
+
+  @if $type == stripes--h {
+    background-image: linear-gradient(0deg, transparent 50%, $color 50%);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == stripes--v {
+    background-image: linear-gradient(90deg, transparent 50%, $color 50%);
+    background-size: #{$size} #{$size};
+  }
+
+  @if $type == zigzag {
+    background:
+      linear-gradient(135deg, $color 25%, transparent 25%) -#{$size} 0,
+      linear-gradient(225deg, $color 25%, transparent 25%) -#{$size} 0,
+      linear-gradient(315deg, $color 25%, transparent 25%),
+      linear-gradient(45deg, $color 25%, transparent 25%);
+    background-size: calc(2 * #{$size}) calc(2 * #{$size});
+  }
+
+  @if $type == triangles {
+    background-image: linear-gradient(45deg, $color 50%, transparent 50%);
+    background-size: #{$size} #{$size};
+  }
+
+  background-color: $bg;
+}

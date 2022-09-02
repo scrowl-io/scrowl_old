@@ -1,4 +1,5 @@
 import React from 'react';
+import { Alert } from 'react-bootstrap';
 import { Preferences } from '../../../../models';
 
 export const route = 'advanced';
@@ -8,18 +9,10 @@ export const Element = () => {
 
   console.log('advanced prefs', preference);
 
-  const handleChangeTheme = () => {
-    const theme = preference.theme === 'light' ? 'dark' : 'light';
-
-    Preferences.update({ theme });
-  };
-
   return (
-    <div>
-      <p>This is the advanced preferences page</p>
-      <button onClick={handleChangeTheme}>
-        Change Theme {preference.theme}
-      </button>
+    <div className="settings__section">
+      <h2 className="h3">Advanced Prefererences</h2>
+      <Alert variant="info">This is the advanced preferences page</Alert>
     </div>
   );
 };
