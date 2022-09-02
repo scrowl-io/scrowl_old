@@ -293,7 +293,8 @@
   &__item {
     display: flex;
     flex-grow: 1;
-    padding: 0.66em calc(var(--owl-sidebar-spacing) / 2) 0.66em 1.75em;
+    padding: 0.66rem 0.5rem 0.66rem 1.75rem;
+    margin: 0;
     line-height: 1.4;
     color: inherit;
     font-size: var(--owl-font-size-sm);
