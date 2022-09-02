@@ -92,6 +92,8 @@
 
 .tab-resources {
   margin-top: calc(var(--owl-sidebar-spacing) / 2);
+  max-height: calc(100% - 66px);
+  overflow-y: auto;
 
   & .owlui-list-group-item {
     position: relative;
@@ -143,6 +145,8 @@
 .tab-glossary {
   margin-top: calc(var(--owl-sidebar-spacing) / 2);
   font-size: 0.875rem;
+  max-height: calc(100% - 66px);
+  overflow-y: auto;
 
   &__list {
     border: 0;
