@@ -7,8 +7,6 @@ export const route = 'theme';
 export const Element = () => {
   const preference = Preferences.useData();
 
-  console.log('advanced prefs', preference);
-
   const handleChangeTheme = () => {
     const theme = preference.theme === 'default' ? 'dark' : 'default';
 
@@ -19,7 +17,7 @@ export const Element = () => {
     <div className="settings__section">
       <h2 className="h3">Theme Prefererences</h2>
       <Form>
-        <Form.Label for="themeSelector">Editor Theme</Form.Label>
+        <Form.Label htmlFor="themeSelector">Editor Theme</Form.Label>
         <br />
         <Form.Check
           inline
