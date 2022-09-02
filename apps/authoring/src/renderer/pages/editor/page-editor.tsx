@@ -9,6 +9,7 @@ export const PageElement = () => {
         <Header />
 
         <PaneDetails />
+
         <div className={styles.workspace}>
           <div className="workspace__body">Workspace</div>
         </div>

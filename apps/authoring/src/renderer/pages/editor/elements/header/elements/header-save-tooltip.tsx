@@ -1,6 +1,6 @@
 import React from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-import * as styles from './header-save-tooltip.module.scss';
+import * as styles from '../editor-header.module.scss';
 
 export const SaveTooltip = () => {
   return (

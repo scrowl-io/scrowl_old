@@ -2,6 +2,12 @@ import { ProjectData } from './model-projects.types';
 
 export const data: ProjectData = {
   name: 'Untitled Project',
+  description: '',
+  scormConfig: {
+    name: 'Untitled Course',
+    description: '',
+    authors: '',
+  },
   modules: [
     {
       name: 'An Introduction to Harassment & Discrimination',
