@@ -25,7 +25,7 @@ const makeActionMenu = (
           onClick={item.action}
         >
           <Icon display={item.iconStyle} icon={item.icon} />
-          <div>{item.label}</div>
+          <span>{item.label}</span>
         </div>
       ),
     };
