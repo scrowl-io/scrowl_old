@@ -63,7 +63,9 @@ export const TabGlossary = () => {
   };
 
   const handleGlossaryDelete = (idx: number) => {
-    console.log('deleting glossary term', idx, glossary[idx]);
+    console.log('deleting glossary term', idx);
+    glossary.splice(idx, 1);
+    Projects.update({ glossary });
   };
 
   const handleGlossaryUpdate = (term: GlossaryItem) => {
