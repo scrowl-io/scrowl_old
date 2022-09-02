@@ -38,6 +38,81 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         Projects.update({ modules });
       },
     },
+    {
+      label: 'Duplicate',
+      icon: 'content_copy',
+      iconStyle: 'Outlined',
+      action: () => {
+        if (!modules) {
+          return;
+        }
+
+        slideLesson.slides.splice(idx + 1, 0, slide);
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Add Slide',
+      icon: 'folder',
+      iconStyle: 'Outlined',
+      action: () => {
+        const newSlide: SlideTreeItem = {
+          name: 'Untitled Slide',
+        };
+        slideLesson.slides.splice(idx + 1, 0, newSlide);
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Move Up',
+      icon: 'arrow_upward',
+      iconStyle: 'Outlined',
+      action: () => {
+        if (slideLesson.slides.length <= 1 || idx <= 0) {
+          console.log('Invalid operation');
+          return;
+        }
+        [slideLesson.slides[idx - 1], slideLesson.slides[idx]] = [
+          slideLesson.slides[idx],
+          slideLesson.slides[idx - 1],
+        ];
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Move Down',
+      icon: 'arrow_downward',
+      iconStyle: 'Outlined',
+      action: () => {
+        if (
+          slideLesson.slides.length <= 1 ||
+          slideLesson.slides.length - 1 <= idx
+        ) {
+          console.log('Invalid operation');
+          return;
+        }
+        [slideLesson.slides[idx], slideLesson.slides[idx + 1]] = [
+          slideLesson.slides[idx + 1],
+          slideLesson.slides[idx],
+        ];
+        Projects.update({ modules });
+      },
+    },
+    {
+      label: 'Delete Slide',
+      icon: 'delete',
+      iconStyle: 'Outlined',
+      action: () => {
+        slideLesson.slides.splice(idx, 1);
+        // confirm({
+        //   headerText: 'Header',
+        //   descriptionText: 'Description',
+        //   acceptConfirm: () => Projects.update({ modules }),
+        //   cancelConfirm: () => console.log('cancelled'),
+        // });
+        Projects.update({ modules });
+      },
+    },
   ];
 
   return (
