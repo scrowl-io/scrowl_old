@@ -2,13 +2,28 @@ import React from 'react';
 import * as styles from './comp-logo.module.scss';
 import { LogoProps } from './comp-logo.types';
 
-export const Logo = ({ href }: LogoProps) => {
+export const Logo = ({ sizing, className, ...props }: LogoProps) => {
+  const getSize = () => {
+    if (!sizing) {
+      return 50;
+    }
+
+    switch (sizing) {
+      case 'sm':
+        return 32;
+      default:
+        return 50;
+    }
+  };
+
+  const logoClasses = `${styles.logo} ${className}`;
+  const dim = getSize();
   const svg = (
     <svg
       viewBox="0 0 125 125"
       xmlns="http://www.w3.org/2000/svg"
-      width="50"
-      height="50"
+      width={dim}
+      height={dim}
     >
       <path
         d="m98.85 98.56c.77.86 2.12.89 2.93.06 11.67-11.98 12.29-31.21.83-43.71-6.92-7.55-21.31-1.72-32.93 8.14-.87.74-.97 2.03-.21 2.88z"
@@ -42,20 +57,25 @@ export const Logo = ({ href }: LogoProps) => {
       <path d="m53.61 37.99c-.04 4.03-12.03 3.98-12 0 .03-3.31 2.69-6 6-6s6.03 2.69 6 6z" />
     </svg>
   );
+  let localProps;
 
-  return (
-    <>
-      {href ? (
-        <a className={styles.logo} href={href} aria-label="Scrowl Logo">
-          {svg}
-        </a>
-      ) : (
-        <div className={styles.logo} aria-label="Scrowl Logo">
-          {svg}
-        </div>
-      )}
-    </>
-  );
+  if (props.href) {
+    localProps = props as React.AllHTMLAttributes<HTMLAnchorElement>;
+
+    return (
+      <a className={logoClasses} aria-label="Scrowl Logo" {...localProps}>
+        {svg}
+      </a>
+    );
+  } else {
+    localProps = props as React.AllHTMLAttributes<HTMLDivElement>;
+
+    return (
+      <div className={logoClasses} aria-label="Scrowl Logo" {...localProps}>
+        {svg}
+      </div>
+    );
+  }
 };
 
 export default {
