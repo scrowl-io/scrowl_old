@@ -1,6 +1,5 @@
 @import '@owlui/lib/src/theme/global/bootstrap';
 @import '@owlui/lib/src/theme/global/tokens';
-@import '../../styles/patterns';
 
 .main {
   display: flex;
@@ -13,13 +12,7 @@
   align-items: flex-start;
   justify-content: center;
   overflow-y: auto;
-
-  @include pattern-bg(
-    dots,
-    1px,
-    var(--owl-start-bg-accent),
-    var(--owl-start-bg)
-  );
+  background: var(--owl-start-bg);
 }
 
 .settings {
