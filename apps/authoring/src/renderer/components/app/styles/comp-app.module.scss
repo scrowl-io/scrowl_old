@@ -1,4 +1,5 @@
-@import './reset';
+@import '@owlui/lib/src/theme/global/tokens';
+@import '../../../styles/patterns';
 @import './forms';
 
 :global .drag {
@@ -10,40 +11,20 @@
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
   overflow: hidden;
 }
 
-section {
-  width: 100%;
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-
-  > div {
-    display: block;
-    width: 90%;
-    max-width: 900px;
-    margin: auto;
-  }
+.content {
+  overflow: hidden;
 }
 
-.title-bar {
-  height: 40px;
+.scrowl__footer {
+  height: $owl-sys-size-footer-height;
   display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   align-items: center;
-  justify-content: center;
-  color: var(--color-font-dark);
-  border-bottom: 2px solid var(--bs-border-color);
-
-  &__title {
-    user-select: none;
-    font-size: 0.8rem;
-    font-weight: bold;
-  }
+  padding: 0 0.5rem;
+  color: var(--owl-footer-color);
+  background: var(--owl-footer-bg);
 }

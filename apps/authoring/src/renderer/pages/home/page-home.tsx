@@ -23,18 +23,25 @@ export const PageElement = () => {
 
   return (
     <main className={styles.main}>
-      <div className="section-title-wrap">
-        <Logo />
-        <h1 className="section-title">Scrowl Authoring</h1>
-      </div>
+      <div className={styles.home}>
+        <div className={styles.home__header}>
+          <h1>
+            <Logo />
+            Scrowl Authoring
+          </h1>
+        </div>
 
-      <div className="section-row">
-        <Start hasProjects={hasProjects} />
-        <Tutorials />
-      </div>
+        <div className={styles.home__section}>
+          <Start hasProjects={hasProjects} />
+        </div>
 
-      <div style={{ marginTop: '2rem' }}>
-        <RecentProjects hasProjects={hasProjects} projectList={projectList} />
+        <div className={styles.home__section}>
+          <Tutorials />
+        </div>
+
+        <div className={styles.home__section}>
+          <RecentProjects hasProjects={hasProjects} projectList={projectList} />
+        </div>
       </div>
     </main>
   );

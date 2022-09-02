@@ -1,7 +1,2 @@
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'bootstrap/scss/mixins';
-@import 'bootstrap/scss/maps';
-@import 'bootstrap/scss/utilities';
-@import 'bootstrap/scss/helpers';
-@import 'bootstrap/scss/utilities/api';
+@import '@owlui/lib/src/theme/global/bootstrap';
+@import '@owlui/lib/src/theme/global/typography';

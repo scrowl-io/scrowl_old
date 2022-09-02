@@ -21,7 +21,8 @@ export const Header = () => {
 
   return (
     <Toolbar>
-      <Logo />
+      {/* TODO: Use the route for Home rather than a slash */}
+      <Logo href="/" sizing="sm" />
       <div className={styles.filename} data-value={project.name}>
         <input
           name="filename"
