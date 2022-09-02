@@ -10,7 +10,7 @@ import {
   TreeViewModuleProps,
   LessonTreeItem,
 } from './editor-tree-view.types';
-import { deepCopy, logEventAction } from './utils';
+import { deepCopy } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
@@ -23,6 +23,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
 
   const moduleMenuItems: Array<ActionMenuItem> = [
     {
+      // name: 'add_lesson', // TEMP: use for filtering (i.e. can't move module up that's first in list)
       label: 'Add Lesson',
       icon: 'widgets',
       iconStyle: 'Outlined',
@@ -46,42 +47,119 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       },
     },
     {
+      // name: 'rename_module',
       label: 'Rename',
       icon: 'edit',
       iconStyle: 'Outlined',
-      action: logEventAction,
+      action: () => {
+        if (!modules) return;
+
+        // open rename modal
+        // on success, change the name to the returned value from the modal, then Projects.update();
+      },
     },
     {
+      // name: 'duplicate_module',
       label: 'Duplicate',
       icon: 'content_copy',
       iconStyle: 'Outlined',
-      action: logEventAction,
+      action: () => {
+        if (!modules) {
+          return;
+        }
+
+        modules.splice(idx + 1, 0, module);
+        Projects.update({ modules });
+      },
     },
     {
+      // name: 'add_module_after',
       label: 'Add Module After',
       icon: 'folder',
       iconStyle: 'Outlined',
-      action: logEventAction,
+      action: () => {
+        const newModule: ModuleTreeItem = {
+          name: 'Untitled Module',
+          lessons: [
+            {
+              name: 'Untitled Lesson',
+              slides: [{ name: 'Untitled Slide' }],
+            },
+          ],
+        };
+
+        modules.push(newModule);
+        Projects.update({ modules });
+      },
     },
     {
+      // name: 'move_up',
       label: 'Move Up',
       icon: 'arrow_upward',
       iconStyle: 'Outlined',
-      action: logEventAction,
+      action: () => {
+        if (!modules) {
+          return;
+        }
+
+        if (modules.length <= 1 || idx <= 0) {
+          console.log('Invalid operation');
+          return;
+        }
+        [modules[idx - 1], modules[idx]] = [modules[idx], modules[idx - 1]];
+        Projects.update({ modules });
+      },
     },
     {
+      // name: 'move_down',
       label: 'Move Down',
       icon: 'arrow_downward',
       iconStyle: 'Outlined',
-      action: logEventAction,
+      action: () => {
+        if (!modules) {
+          return;
+        }
+
+        if (modules.length <= 1 || modules.length - 1 <= idx) {
+          console.log('Invalid operation');
+          return;
+        }
+        [modules[idx], modules[idx + 1]] = [modules[idx + 1], modules[idx]];
+        Projects.update({ modules });
+      },
     },
     {
+      // name: 'delete_module',
       label: 'Delete Module',
       icon: 'delete',
       iconStyle: 'Outlined',
-      action: logEventAction,
+      action: () => {
+        if (!modules) {
+          return;
+        }
+
+        modules.splice(idx, 1);
+        // confirm({
+        //   headerText: 'Header',
+        //   descriptionText: 'Description',
+        //   acceptConfirm: () => Projects.update({ modules }),
+        //   cancelConfirm: () => console.log('cancelled'),
+        // });
+        Projects.update({ modules });
+      },
     },
   ];
+
+  // const filteredMenuItems = (moduleMenuItem: ) => {
+  //   switch (moduleMenuItem.name) {
+  //     case 'move_up':
+  //       return idx > 0;
+  //     case 'move_down':
+  //       return idx <= modules.length;
+  //     default:
+  //       return true;
+  //   }
+  // };
 
   return (
     <div className={styles.treeViewModule} key={idx}>
