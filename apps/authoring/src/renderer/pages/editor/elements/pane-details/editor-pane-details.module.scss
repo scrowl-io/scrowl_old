@@ -201,7 +201,6 @@
   }
 
   &__owl-offcanvas-form {
-    top: 1.5em !important;
     display: grid;
     min-height: 100%;
     grid-auto-flow: row;
@@ -244,10 +243,6 @@
     input {
       color: var(--owl-input-color);
       background-color: var(--owl-input-bg);
-    }
-
-    .btn-close {
-      background-color: yellow;
     }
 
     .glossary-form-button-set button {
