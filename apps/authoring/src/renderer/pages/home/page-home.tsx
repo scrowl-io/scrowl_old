@@ -22,8 +22,8 @@ export const PageElement = () => {
   }, [hasProjects]);
 
   return (
-    <main className={styles.main}>
-      <div className={styles.home}>
+    <main className={styles.home}>
+      <div className={styles.home__container}>
         <div className={styles.home__header}>
           <h1>
             <Logo />

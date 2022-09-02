@@ -27,7 +27,7 @@ export const Header = () => {
           <input
             name="filename"
             id="filenameInput"
-            className="form-control"
+            className="owlui-form-control"
             value={project.name}
             placeholder=""
             onChange={handleFilenameChange}
@@ -36,9 +36,7 @@ export const Header = () => {
           />
         </div>
         <div className={`collapse`}>
-          <ul
-            className={`align-items-center me-auto`}
-          >
+          <ul className={`align-items-center me-auto`}>
             {showSavetooltip && (
               <li className="nav-item">
                 <SaveTooltip />
