@@ -35,9 +35,9 @@ export const Header = () => {
             disabled={disableElement}
           />
         </div>
-        <div className={`collapse ${toolbarStyles.toolbarCollapse}`}>
+        <div className={`collapse`}>
           <ul
-            className={`${toolbarStyles.toolbarNav} align-items-center me-auto`}
+            className={`align-items-center me-auto`}
           >
             {showSavetooltip && (
               <li className="nav-item">
