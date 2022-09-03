@@ -41,7 +41,7 @@ export type ProjectEventApi = {
   open: ProjectEventOpen['name'];
   list: ProjectEventList['name'];
   import: ProjectEventImport['name'];
-  recent: ProjectEventListRecent['name'];
+  listRecent: ProjectEventListRecent['name'];
   publish: ProjectEventPublish['name'];
 };
 
@@ -73,8 +73,7 @@ export type ProjectEvents = {
   list: ProjectEventList;
   import: ProjectEventImport;
   onImport: ProjectEventImport;
-  recent: ProjectEventListRecent;
-  onRecent: ProjectEventListRecent;
+  listRecent: ProjectEventListRecent;
   publish: ProjectEventPublish;
   onPublish: ProjectEventPublish;
 };

@@ -3,7 +3,7 @@ import { Projects } from '../../../models';
 
 export type RecentProjectsCommons = {
   hasProjects: boolean;
-  projectList: Array<Projects.ProjectData>;
+  recentProjectList: Array<Projects.ProjectData>;
 };
 
 export type RecentProjectsProps = Partial<RecentProjectsCommons> &
@@ -11,7 +11,7 @@ export type RecentProjectsProps = Partial<RecentProjectsCommons> &
 
 export const RecentProjects = (props: RecentProjectsProps) => {
   const hasProjects = props.hasProjects || false;
-  const projectList = props.projectList || [];
+  const recentProjectList = props.recentProjectList || [];
 
   const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
@@ -43,16 +43,18 @@ export const RecentProjects = (props: RecentProjectsProps) => {
         <>
           <h2 className="section-title">Recent</h2>
           <ul>
-            {projectList.map((project: Projects.ProjectData, index: number) => (
-              <button
-                className="section-link"
-                key={index}
-                onClick={handleOpenProject}
-                data-project-id={project.id}
-              >
-                {project.name}
-              </button>
-            ))}
+            {recentProjectList.map(
+              (project: Projects.ProjectData, index: number) => (
+                <button
+                  className="section-link"
+                  key={index}
+                  onClick={handleOpenProject}
+                  data-project-id={project.id}
+                >
+                  {project.name}
+                </button>
+              )
+            )}
             <div style={{ marginTop: '2rem' }}>
               <button className="section-link">More...</button>
             </div>

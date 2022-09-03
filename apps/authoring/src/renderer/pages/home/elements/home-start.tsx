@@ -16,7 +16,7 @@ export const Start = (props: StartProps) => {
   };
 
   const handleOpenProject = () => {
-    // Projects.explore();
+    Projects.explore();
   };
 
   return (

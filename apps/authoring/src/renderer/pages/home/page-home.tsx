@@ -8,8 +8,10 @@ import { ProjectData } from '../../../main/models/projects';
 import { ModalOutline } from '../../components/modal/index';
 import { Logo } from '../../components/logo/comp-logo';
 import { RecentProjects, Start, Tutorials } from './elements';
+import { ProjectExplorerModal } from '../../components/projectExplorerModal/index';
+import { TitleBar, AppInput, Table } from '../../components/app/elements';
+
 import {
-  Table,
   TableDefaultProps,
   TableData,
   TableRowItem,
@@ -32,13 +34,45 @@ import {
 
 export const PageElement = () => {
   const [projectList, setProjectList] = useState([]);
+  const [recentProjectList, setRecentProjectList] = useState([]);
   const [hasProjects, setHasProjects] = useState(false);
-  const [filteredResults, setFilteredResults] = useState([]);
+  const [tableList, setTableList] = useState<TableRowItem[]>([]);
+  const [filteredResults, setFilteredResults] = useState<TableRowItem[]>([]);
   const [searchInput, setSearchInput] = useState('');
 
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => setShowModal(!showModal);
+
+  const recentProjectTableItems = (): TableRowItem[] => {
+    const projectItems: TableRowItem[] = projectList.map(
+      (project: any): TableRowItem => {
+        const { name, created_at, updated_at } = project;
+        const projectTableItem: TableRowItem = {};
+        projectTableItem.projectName = name;
+        projectTableItem.createdAt = created_at;
+        projectTableItem.lastModifiedAt = updated_at;
+
+        return projectTableItem;
+      }
+    );
+    console.log('projectItems', projectItems);
+    return projectItems;
+  };
+
+  useEffect(() => {
+    Projects.listRecent().then(results => {
+      if (results.error) {
+        console.error(results);
+        return;
+      }
+
+      setRecentProjectList(results.data.projects);
+
+      const hasProjects = results.data.projects.length > 0;
+      setHasProjects(hasProjects);
+    });
+  }, []);
 
   useEffect(() => {
     Projects.list().then(results => {
@@ -48,114 +82,77 @@ export const PageElement = () => {
       }
 
       setProjectList(results.data.projects);
+
       const hasProjects = results.data.projects.length > 0;
       setHasProjects(hasProjects);
     });
   }, []);
 
-  // const handleFilterResults = (searchValue: string) => {
-  //   setSearchInput(searchValue);
-  //   const filteredData = recentProjects.filter(item => {
-  //     return Object.values(item)
-  //       .join('')
-  //       .toLowerCase()
-  //       .includes(searchInput.toLowerCase());
-  //   });
-  //   setFilteredResults(filteredData);
-  // };
+  console.log('projectList', projectList);
 
   const searchItems = (searchValue: string) => {
     setSearchInput(searchValue);
-    if (searchInput !== '') {
-      const filteredData = projectList.filter(item => {
-        return Object.values(item)
-          .join('')
-          .toLowerCase()
-          .includes(searchInput.toLowerCase());
+    // const testArr: TableRowItem[] = [];
+    // projectList.forEach((p: any) => {
+    //   testArr.push(p.name);
+    // });
+
+    // console.log('testArr', testArr);
+    // if (searchInput !== '') {
+    // const filteredData = projectList.filter((f: any) =>
+    //   Object.values(f)
+    //     .join('')
+    //     .toLowerCase()
+    //     .includes(searchInput.toLowerCase())
+    // );
+
+    // const filteredData = projectList.filter((project: any) => {
+    // project.name.includes(searchInput) || searchInput === '';
+    // });
+    if (searchValue !== '') {
+      filterData(searchValue);
+    }
+
+    // console.log('filteredData', filteredData);
+
+    // .map(f => f);
+    //const filteredData = projectList.filter((item: TableRowItem) => {
+    // console.log('item', Object.values(item).join('').toLowerCase());
+    // return Object.values(item)
+    //   .join('')
+    //   .toLowerCase()
+    //   .includes(searchInput.toLowerCase());
+
+    //});
+
+    // const filteredData = testArr.filter((word: any) => {
+    //   word.includes(searchInput || searchInput === '');
+    // });
+
+    // setProjectList(filteredData);
+    // } else {
+    // setProjectList(projectList);
+    // }
+  };;
+
+  const filterData = (value: string) => {
+    const lowerCaseValue = value.toLowerCase().trim();
+    if (!lowerCaseValue) {
+      return projectList;
+    } else {
+      const filteredData = projectList.filter((item: any) => {
+        return Object.keys(item).some(key => {
+          console.log('icecream', typeof item[key]);
+          if (item[key] !== null) {
+            return item[key].toString().toLowerCase().includes(lowerCaseValue);
+          }
+        });
       });
       setFilteredResults(filteredData);
-      console.log('Form input', searchValue);
-    } else {
-      setFilteredResults(projectList);
     }
   };
 
-  const recentProjectTableItems = (): TableRowItem[] => {
-    const projectTableItem: TableRowItem = {};
-    const projectItems: TableRowItem[] = projectList.map(
-      (project: any): TableRowItem => {
-        const { name, created_at, updated_at } = project;
-
-        projectTableItem.projectName = name;
-        projectTableItem.createdAt = created_at;
-        projectTableItem.lastModifiedAt = updated_at;
-
-        return projectTableItem;
-      }
-    );
-
-    return projectItems;
-  };
-
-  const inputProps: TextInputProps = {
-    label: {
-      content: 'Project Name',
-      htmlFor: 'input',
-    },
-    control: {
-      id: 'text',
-      type: 'text',
-      disabled: false,
-      readOnly: false,
-      plaintext: false,
-      placeholder: 'e.g. Safety',
-    },
-  };
-
-  const projectsData: TableData = {
-    caption: 'Table 1. List of The Office characters.',
-    columns: [
-      {
-        label: '#',
-        field: 'id',
-      },
-      {
-        label: 'Project Name',
-        field: 'projectName',
-      },
-      {
-        label: 'Created At',
-        field: 'createdAt',
-      },
-      {
-        label: 'Last Modified At',
-        field: 'lastModifiedAt',
-      },
-    ],
-    items: recentProjectTableItems(),
-    // items: [
-    //   {
-    //     id: 1,
-    //     projectName: 'Michael',
-    //     createdAt: 'Scott',
-    //     lastModifiedAt: 'mscott',
-    //   },
-    //   {
-    //     id: 2,
-    //     projectName: 'Oscar',
-    //     createdAt: 'Martinez',
-    //     lastModifiedAt: 'omartinez',
-    //   },
-    //   {
-    //     id: 3,
-    //     projectName: 'Meredith',
-    //     createdAt: 'Palmer',
-    //     lastModifiedAt: 'mpalmer',
-    //   },
-    // ],
-  };
-
-  console.log('test project table', recentProjectTableItems());
+  console.log('Form input', filteredResults);
 
   const handleOpenModal = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
@@ -185,18 +182,33 @@ export const PageElement = () => {
 
   // console.log(projectModelData);
 
-  const testProps = {
-    header: {
-      content: 'Test Header',
-    },
-    body: {
-      content: 'Test Body',
-    },
-    footer: {
-      content: 'Test Footer',
-    },
+  const projectsData: TableData = {
+    caption: 'Table 1. List of The Office characters.',
+    columns: [
+      {
+        label: '#',
+        field: 'id',
+      },
+      {
+        label: 'Project Name',
+        field: 'name',
+      },
+      {
+        label: 'Created At',
+        field: 'created_at',
+      },
+      {
+        label: 'Last Modified At',
+        field: 'updated_at',
+      },
+    ],
+    items: searchInput.length < 1 ? projectList : filteredResults,
+    // items: projectList,
   };
 
+  console.log('searchInput.length', searchInput.length);
+
+  console.log('After Filter', projectList);
   const modalContent: ModalDefaultProps = {
     header: {
       bsProps: {
@@ -208,9 +220,13 @@ export const PageElement = () => {
     body: {
       content: (
         <>
-          <h6>Inside the modal body</h6>
+          <AppInput
+            searchItems={searchItems}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+          />
           <hr />
-          <p>Example of text inside the modal body.</p>
+          <Table projectsData={projectsData} />
         </>
       ),
     },
@@ -223,8 +239,12 @@ export const PageElement = () => {
     },
   };
 
+  const { header, body, footer } = modalContent;
+  console.log('projectList', recentProjectList);
+
   return (
     <main className={styles.main}>
+      <ProjectExplorerModal header={header} body={body} footer={footer} />
       <div className="section-title-wrap">
         <Logo />
         <h1 className="section-title">Scrowl Authoring</h1>
@@ -236,7 +256,10 @@ export const PageElement = () => {
       </div>
 
       <div style={{ marginTop: '2rem' }}>
-        <RecentProjects hasProjects={hasProjects} projectList={projectList} />
+        <RecentProjects
+          hasProjects={hasProjects}
+          recentProjectList={recentProjectList}
+        />
       </div>
     </main>
   );

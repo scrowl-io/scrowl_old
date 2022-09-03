@@ -39,6 +39,10 @@ export const useInit = () => {
   return isInit;
 };
 
+export const closeExplorer = () => {
+  return processor.dispatch(state.explore(false));
+};
+
 export const useData = () => {
   return useSelector((state: State.RootState) => state.projects.data);
 };
@@ -321,6 +325,31 @@ export const list = (limit = 10) => {
   });
 };
 
+export const listRecent = (limit = 10) => {
+  return new Promise<requester.ApiResult>(resolve => {
+    const hasProcessor = checkProcessor();
+
+    if (!hasProcessor) {
+      resolve({
+        error: true,
+        message: 'Project processor not set',
+      });
+      return;
+    }
+
+    processor.dispatch(state.process(true));
+    api.listRecent(limit).then(result => {
+      if (result.error) {
+        console.error(result);
+        return;
+      }
+
+      resolve(result);
+      processor.dispatch(state.process(false));
+    });
+  });
+};
+
 export default {
   useInit,
   useData,
@@ -333,4 +362,5 @@ export default {
   save,
   publish,
   list,
+  listRecent,
 };

@@ -8,10 +8,12 @@ import {
 import * as styles from './styles/comp-app.module.scss';
 import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
-import { TitleBar } from './elements';
+import { TitleBar, AppInput, Table } from './elements';
 import { Menu } from '../../services';
 import { Home, PageNavProps } from '../../pages';
 import { Preferences, Projects } from '../../models';
+import { ProjectExplorerModal } from '../projectExplorerModal/index';
+import { ModalDefaultProps, TextInputProps } from '@owlui/lib';
 
 const routeList: PageNavProps = [];
 
@@ -56,13 +58,37 @@ const Main = (props: AppMainProps) => {
     };
   }, [navigate]);
 
+  const modalContent: ModalDefaultProps = {
+    header: {
+      bsProps: {
+        closeButton: true,
+        closeLabel: 'Close',
+      },
+      content: <h2>Modal Header</h2>,
+    },
+    body: {
+      content: (
+        <>
+          <AppInput />
+          <hr />
+          <Table />
+        </>
+      ),
+    },
+    footer: {
+      content: <></>,
+    },
+  };
+
+  const { header, body, footer } = modalContent;
+
   return (
     <div {...props}>
       <TitleBar routes={routeList} />
       <div className={styles.content}>
         <AppRoutes />
       </div>
-      {/* <ProjectExplorerModal /> */}
+      {/* <ProjectExplorerModal header={header} body={body} footer={footer} /> */}
     </div>
   );
 };
