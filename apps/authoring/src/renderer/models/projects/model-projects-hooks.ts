@@ -135,12 +135,16 @@ const toggleMenuItems = (isEnabled = false) => {
           Menu.Global.enable(Menu.Global.ITEMS.projectSave),
           Menu.Global.enable(Menu.Global.ITEMS.projectPublish),
           Menu.Global.enable(Menu.Global.ITEMS.importFile),
+          Menu.Global.enable(Menu.Global.ITEMS.templateAdd),
+          Menu.Global.enable(Menu.Global.ITEMS.templateOpen),
         ];
       } else {
         changes = [
           Menu.Global.disable(Menu.Global.ITEMS.projectSave),
           Menu.Global.disable(Menu.Global.ITEMS.projectPublish),
           Menu.Global.disable(Menu.Global.ITEMS.importFile),
+          Menu.Global.disable(Menu.Global.ITEMS.templateAdd),
+          Menu.Global.disable(Menu.Global.ITEMS.templateOpen),
         ];
       }
 

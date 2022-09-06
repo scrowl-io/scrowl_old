@@ -110,7 +110,7 @@ export const template: MenuItemConstructorOptions = {
       click: (MenuItem, window, ev: KeyboardEvent) => {
         send(EVENTS.templateOpen.name);
       },
-      accelerator: 'CmdOrCtrl+t',
+      accelerator: 'CmdOrCtrl+Shift+t',
     },
   ],
 };
