@@ -50,9 +50,8 @@ const createWindow = async () => {
 
   function getBrowserWindow(preloadPath: string) {
     const browserWindowConfig: BrowserWindowConstructorOptions = {
-      titleBarStyle: 'hidden',
       show: false,
-      width: 1024,
+      width: 1440,
       minWidth: 1024,
       height: 728,
       icon: getAssetPath('icon.png'),
@@ -87,6 +86,9 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+    }
+
+    if (isDevelopment) {
       mainWindow.webContents.openDevTools({ mode: 'detach' });
     }
   });
@@ -137,18 +139,34 @@ app.on('window-all-closed', () => {
   }
 });
 
-app
-  .whenReady()
-  .then(() => {
-    registerScrowlFileProtocol();
-    Menu.init(isDARWIN);
-    Requester.init();
-    createWindow();
+const createApp = () => {
+  app
+    .whenReady()
+    .then(() => {
+      registerScrowlFileProtocol();
+      Menu.init(isDARWIN);
+      Requester.init();
+      createWindow();
 
-    app.on('activate', () => {
-      // On macOS it's common to re-create a window in the app when the
-      // dock icon is clicked and there are no other windows open.
-      if (mainWindow === null) createWindow();
-    });
-  })
-  .catch(console.log);
+      app.on('activate', () => {
+        // On macOS it's common to re-create a window in the app when the
+        // dock icon is clicked and there are no other windows open.
+        if (mainWindow === null) createWindow();
+      });
+    })
+    .catch(console.log);
+};
+
+const setDev = async () => {
+  const utilDevPath = './util-dev.js';
+  const util = await import(utilDevPath);
+
+  util.updateDevEnv();
+  createApp();
+};
+
+if (isDevelopment) {
+  setDev();
+} else {
+  createApp();
+}

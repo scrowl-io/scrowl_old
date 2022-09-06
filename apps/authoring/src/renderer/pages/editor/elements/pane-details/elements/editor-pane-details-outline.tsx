@@ -3,7 +3,7 @@ import * as styles from '../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import Collapse from 'react-bootstrap/Collapse';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
-import { outlineData } from './mock-data';
+import { Projects } from '../../../../../models';
 
 export type SlideTreeItem = {
   name: string;
@@ -25,41 +25,52 @@ export type ModuleTreeItem = {
 
 export type ProjectTree = Array<ModuleTreeItem>;
 
+const menuItemAction = (e: React.BaseSyntheticEvent) => {
+  console.log(e.target.firstChild.textContent);
+};
+
 const moduleMenuItems: Array<ActionMenuItem> = [
   {
     label: 'Add Lesson',
     icon: 'widgets',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Rename',
     icon: 'edit',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Duplicate',
     icon: 'content_copy',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Add Module After',
     icon: 'folder',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Move Up',
     icon: 'arrow_upward',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Move Down',
     icon: 'arrow_downward',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
   {
     label: 'Delete Module',
     icon: 'delete',
     iconStyle: 'Outlined',
+    action: menuItemAction,
   },
 ];
 const lessonMenuItems: Array<ActionMenuItem> = [
@@ -108,6 +119,7 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
   const [open, setOpen] = useState(false);
   const itemId = `${id}-lesson-item`;
   const menuId = `${id}-lesson-menu`;
+
   return (
     <div className={styles.treeViewLesson} key={id}>
       <div className={styles.treeViewHeader}>
@@ -119,13 +131,15 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
           onClick={() => setOpen(!open)}
           variant="link"
         >
-          <span className={styles.treeViewItemIconHandle}>
-            <Icon icon="arrow_drop_down" display="Filled" />
-          </span>
-          <span className={styles.treeViewItemIconDetail}>
-            <Icon icon="widgets" display="Outlined" />
-          </span>
-          <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          <div className="lesson-icons">
+            <span className={styles.treeViewItemIconHandle}>
+              <Icon icon="arrow_drop_down" display="Filled" />
+            </span>
+            <span className={styles.treeViewItemIconDetail}>
+              <Icon icon="widgets" display={open ? 'Outlined' : 'Filled'} />
+            </span>
+            <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          </div>
         </Button>
         <ActionMenu
           menu-items={lessonMenuItems}
@@ -134,7 +148,7 @@ const TreeViewLesson = (tree: LessonTreeItem, id: string) => {
         />
       </div>
       <Collapse in={open}>
-        <div className="nav flex-column collapse" id={menuId}>
+        <div className="nav flex-column" id={menuId}>
           {TreeViewSlides(tree.slides, itemId)}
         </div>
       </Collapse>
@@ -163,13 +177,15 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
           onClick={() => setOpen(!open)}
           variant="link"
         >
-          <span className={styles.treeViewItemIconHandle}>
-            <Icon icon="arrow_drop_down" display="Filled" />
-          </span>
-          <span className={styles.treeViewItemIconDetail}>
-            <Icon icon="folder" display="Filled" />
-          </span>
-          <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          <div className="module-icons">
+            <span className={styles.treeViewItemIconHandle}>
+              <Icon icon="arrow_drop_down" display="Filled" />
+            </span>
+            <span className={styles.treeViewItemIconDetail}>
+              <Icon icon="folder" display={open ? 'Outlined' : 'Filled'} />
+            </span>
+            <span className={styles.treeViewItemLabel}>{tree.name}</span>
+          </div>
         </Button>
         <ActionMenu
           menu-items={moduleMenuItems}
@@ -178,7 +194,7 @@ const TreeViewModule = (tree: ModuleTreeItem, idx: number) => {
         />
       </div>
       <Collapse in={open}>
-        <div className="nav flex-column collapse" id={menuId}>
+        <div className="nav flex-column" id={menuId}>
           {TreeViewLessons(tree.lessons, itemId)}
         </div>
       </Collapse>
@@ -191,10 +207,11 @@ const TreeViewModules = (data: ProjectTree) => {
 };
 
 export const TabOutline = () => {
+  const project = Projects.useData();
   const tabStyles = `${styles.tabOutline} tree-view nav flex-column`;
-  const outlineTree = TreeViewModules(outlineData);
+  const treeView = TreeViewModules(project.modules);
 
-  return <div className={tabStyles}>{outlineTree}</div>;
+  return <div className={tabStyles}>{treeView}</div>;
 };
 
 export default {

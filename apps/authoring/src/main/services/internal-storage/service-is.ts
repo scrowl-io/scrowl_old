@@ -45,6 +45,11 @@ const foreignKey = (
   table.foreign(config.columnName).references(`${config.tableName}.id`);
 };
 
+// drops a table DANGEROUS!!!
+export const __tableDrop = (tableName: string) => {
+  return DB.schema.dropTableIfExists(tableName);
+};
+
 // creates a table in the DB based on a schema
 export const __tableCreate = (tableName: string, schema: StorageSchema) => {
   const processCol = (
@@ -81,6 +86,9 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
       case 'timestamp':
         table.timestamp(column.name).defaultTo(DB.fn.now());
         break;
+      case 'json':
+        table.json(column.name);
+        break;
       default:
         console.warn(
           `Unable to create column from table schema: column type ${column.type} not supported - ${tableName}/${column.name}`
@@ -106,30 +114,62 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
     });
   };
 
-  return new Promise<StorageResult>(resolve => {
-    try {
-      DB.schema.hasTable(tableName).then(exists => {
-        if (exists) {
-          resolve({
-            error: false,
-            data: {
-              created: false,
-              tableName,
-            },
-          });
-          return;
-        }
+  const __create = () => {
+    return new Promise<StorageResult>(resolve => {
+      try {
+        DB.schema.hasTable(tableName).then(exists => {
+          if (exists) {
+            resolve({
+              error: false,
+              data: {
+                created: false,
+                tableName,
+              },
+            });
+            return;
+          }
 
-        processTable().then(() => {
-          resolve({
-            error: false,
-            data: {
-              created: true,
-              tableName,
-            },
+          processTable().then(() => {
+            resolve({
+              error: false,
+              data: {
+                created: true,
+                tableName,
+              },
+            });
           });
         });
-      });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to create table',
+          data: {
+            tableName,
+            trace: e,
+          },
+        });
+      }
+    });
+  };
+
+  const isDroppable = () => {
+    if (process.env.NODE_ENV !== 'development') {
+      return true; //TODO write migration step for tables when in PROD
+    }
+
+    const restart = parseInt(process.env.restart || '0');
+    return restart <= 1;
+  };
+
+  return new Promise<StorageResult>(resolve => {
+    try {
+      if (isDroppable()) {
+        __tableDrop(tableName).then(() => {
+          __create().then(resolve);
+        });
+      } else {
+        __create().then(resolve);
+      }
     } catch (e) {
       resolve({
         error: true,
@@ -140,11 +180,6 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
       });
     }
   });
-};
-
-// drops a table DANGEROUS!!!
-export const __tableDrop = (tableName: string) => {
-  return DB.schema.dropTableIfExists(tableName);
 };
 
 const returnItem = (tableName: string, ids: Array<number>) => {
@@ -356,8 +391,8 @@ export const init = () => {
 };
 
 export default {
-  __tableCreate,
   __tableDrop,
+  __tableCreate,
   create,
   read,
   update,

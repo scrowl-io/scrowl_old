@@ -1,46 +1,57 @@
 import { Requester } from '..';
-import { Templates } from '../../models';
+import { Templates, Project, Preferences } from '../../models';
 
 export interface MenuEventCreateProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'new-project';
-  name: '/projects/create';
+  name: Project.ProjectEventCreate['name'];
 }
 
 export interface MenuEventOpenProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'open-project';
-  name: '/projects/open';
+  name: Project.ProjectEventOpen['name'];
 }
 
 export interface MenuEventSaveProject
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'save-project';
-  name: '/projects/save';
+  name: Project.ProjectEventSave['name'];
+}
+
+export interface MenuEventPublishProject
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  id: 'publish-project';
+  name: Project.ProjectEventPublish['name'];
 }
 
 export interface MenuEventImportFile
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'import-file';
-  name: 'menu/project/import';
+  name: Project.ProjectEventImport['name'];
 }
-
 export interface MenuEventImportTemplate
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'import-template';
   name: Templates.TemplateEventApi['import'];
 }
 
-export interface MenuEventAboutOpen
+export interface MenuEventPreferencesCreate
   extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'about-open';
-  name: 'menu/about/open';
+  id: 'preferences-create';
+  name: Preferences.PreferenceEventCreate['name'];
 }
 
 export interface MenuEventPreferencesOpen
   extends Omit<Requester.RegisterEvent, 'name'> {
   id: 'preferences-open';
-  name: 'menu/preferences/open';
+  name: Preferences.PreferenceEventOpen['name'];
+}
+
+export interface MenuEventGetStarted
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  id: 'get-started';
+  name: '/get-started';
 }
 
 export interface MenuEventItemList
@@ -67,24 +78,31 @@ export type MenuItemEventNames =
   | MenuEventCreateProject['name']
   | MenuEventOpenProject['name']
   | MenuEventSaveProject['name']
+  | MenuEventPublishProject['name']
   | MenuEventImportFile['name']
-  | MenuEventAboutOpen['name']
   | MenuEventPreferencesOpen['name']
-  | MenuEventImportTemplate['name'];
+  | MenuEventImportTemplate['name']
+  | MenuEventPreferencesCreate['name']
+  | MenuEventPreferencesOpen['name']
+  | MenuEventGetStarted['name'];
 
 export type MenuItemEvent =
   | MenuEventCreateProject
   | MenuEventOpenProject
   | MenuEventSaveProject
+  | MenuEventPublishProject
   | MenuEventImportFile
-  | MenuEventAboutOpen
   | MenuEventPreferencesOpen
-  | MenuEventImportTemplate;
+  | MenuEventImportTemplate
+  | MenuEventPreferencesCreate
+  | MenuEventPreferencesOpen
+  | MenuEventGetStarted;
 
 export type MenuItemEventsFile = {
   projectsCreate: MenuEventCreateProject;
   projectOpen: MenuEventOpenProject;
   projectSave: MenuEventSaveProject;
+  projectPublish: MenuEventPublishProject;
   importFile: MenuEventImportFile;
   importTemplate: MenuEventImportTemplate;
 };
@@ -93,18 +111,24 @@ export type MenuEventsFileApi = {
   projectsCreate: MenuEventCreateProject['name'];
   projectOpen: MenuEventOpenProject['name'];
   projectSave: MenuEventSaveProject['name'];
+  projectPublish: MenuEventPublishProject['name'];
   importFile: MenuEventImportFile['name'];
   importTemplate: MenuEventImportTemplate['name'];
+  preferencesCreate: MenuEventPreferencesCreate['name'];
+  preferencesOpen: MenuEventPreferencesOpen['name'];
+  getStarted: MenuEventGetStarted['name'];
 };
 
 export type MenuItemEventsApp = {
-  aboutOpen: MenuEventAboutOpen;
+  preferencesCreate?: MenuEventPreferencesCreate;
   preferencesOpen: MenuEventPreferencesOpen;
+  getStarted: MenuEventGetStarted;
 };
 
 export type MenuEventsAppApi = {
-  aboutOpen: MenuEventAboutOpen['name'];
+  preferencesCreate: MenuEventPreferencesCreate['name'];
   preferencesOpen: MenuEventPreferencesOpen['name'];
+  getStarted: MenuEventGetStarted['name'];
 };
 
 export type MenuItems = Partial<MenuItemEventsApp> &

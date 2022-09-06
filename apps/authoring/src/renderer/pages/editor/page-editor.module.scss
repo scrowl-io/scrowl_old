@@ -1,11 +1,28 @@
+@import '@owlui/lib/src/theme/global/tokens';
+
 .editor {
-  width: 100%;
-  height: 100%;
-  background-color: var(--bs-gray-200);
+  display: flex;
+  flex-wrap: nowrap;
+  position: fixed;
+  top: $owl-sys-size-navbar-height;
+  bottom: $owl-sys-size-footer-height;
+  left: 0;
+  right: 0;
 }
 
 .workspace {
+  position: relative;
   display: flex;
-  flex-direction: row;
-  height: calc(100% - 50px);
+  flex-direction: column;
+  flex-grow: 1;
+  color: var(--owl-workspace-color);
+  background: var(--owl-workspace-bg);
+  overflow-y: auto;
+
+  &__body {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

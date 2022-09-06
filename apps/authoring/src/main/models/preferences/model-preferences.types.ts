@@ -1,39 +1,49 @@
-import { InternalStorage, Requester } from '../../services';
+import { Requester, InternalStorage } from '../../services';
 
-export type PreferenceAppearance = 'light' | 'dark';
-
-export interface PreferenceData extends InternalStorage.StorageData {
-  appearance: PreferenceAppearance;
-  save_folder_path: string;
-}
-
-export interface PreferenceEventList
+export interface PreferenceEventCreate
   extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'preferences/get';
+  name: '/preferences/create';
 }
 
 export interface PreferenceEventGet
   extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'preferences/get/preference';
+  name: '/preferences';
 }
 
-export interface PreferenceEventSet
+export interface PreferenceEventSave
   extends Omit<Requester.RegisterEvent, 'name'> {
-  name: 'preferences/set';
+  name: '/preferences/save';
 }
+
+export interface PreferenceEventOpen
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  name: '/preferences/open';
+}
+
+export type PreferenceEventApi = {
+  create: PreferenceEventCreate['name'];
+  get: PreferenceEventGet['name'];
+  save: PreferenceEventSave['name'];
+  open: PreferenceEventOpen['name'];
+};
 
 export type PreferenceEventNames =
-  | PreferenceEventList['name']
+  | PreferenceEventCreate['name']
   | PreferenceEventGet['name']
-  | PreferenceEventSet['name'];
-
-export type PreferenceEvent =
-  | PreferenceEventList
-  | PreferenceEventGet
-  | PreferenceEventSet;
+  | PreferenceEventSave['name']
+  | PreferenceEventOpen['name'];
 
 export type PreferenceEvents = {
-  list: PreferenceEventList;
+  create: PreferenceEventCreate;
+  onCreate: PreferenceEventCreate;
   get: PreferenceEventGet;
-  set: PreferenceEventSet;
+  save: PreferenceEventSave;
+  open: PreferenceEventOpen;
 };
+
+export interface PreferenceData extends InternalStorage.StorageData {
+  id?: string;
+  created_at?: string;
+  updated_at?: string;
+  theme?: 'dark' | 'default';
+}

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { ActionMenuProps, ActionMenuItem } from './comp-action-menu.types';
 import {
@@ -18,7 +20,10 @@ const makeActionMenu = (
     return {
       id: idx.toString(),
       label: (
-        <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <div
+          className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center"
+          onClick={item.action}
+        >
           <Icon display={item.iconStyle} icon={item.icon} />
           <span>{item.label}</span>
         </div>

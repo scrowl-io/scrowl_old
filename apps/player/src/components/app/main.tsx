@@ -7,11 +7,10 @@ import {
 } from 'react-router-dom';
 import * as styles from './app.module.scss';
 import { get as getManifest } from './manifest';
-import { ProjectConfig } from '../project/project.types';
+import { ProjectConfig, LayoutItemProps } from '../project/project.types';
 import { createLayout } from '../project';
 import { Element as Nav } from '../navigation';
 import { NavigationDrawerContentTypes } from '@owlui/lib';
-import { LayoutItemProps } from '../project/project.types';
 import { Element as Error } from './error';
 
 const createRoutes = (manifestData: ProjectConfig) => {

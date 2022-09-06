@@ -1,2 +1,2 @@
-export * from './project';
-export * from './templates';
+export * as Projects from './projects';
+export * as Preferences from './preferences';

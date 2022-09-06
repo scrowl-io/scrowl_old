@@ -1,45 +1,58 @@
-.nav {
-  &__title {
-    font-size: 1.8rem;
-    padding-left: 0.25rem;
+@import '@owlui/lib/src/theme/global/bootstrap';
+@import '@owlui/lib/src/theme/global/tokens';
 
-    &__icon {
-      font-size: inherit;
+.home {
+  display: grid;
+  flex-wrap: nowrap;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  background: var(--owl-start-bg);
+
+  &__header {
+    padding: 0 $nav-link-padding-x;
+    flex: 1 0 100%;
+    user-select: none;
+
+    .logo {
       margin-right: 0.5rem;
+      display: inline-block;
+      vertical-align: bottom;
     }
   }
 
-  &__actions {
-    margin-top: 2rem;
-  }
+  &__section {
+    padding: $owl-sys-space-start 0;
+    flex: 1 0 50%;
+    min-width: 20rem;
+    user-select: none;
 
-  &__divider {
-    margin-top: 0.5rem;
-    height: 1px;
-    background-color: var(--bs-border-color);
+    h2 {
+      padding: 0 $nav-link-padding-x;
+    }
+
+    .owlui-icons,
+    .owlui-icons-outlined {
+      margin-right: 0.5em;
+    }
+
+    .owlui-nav-item {
+      padding: $nav-link-padding-y $nav-link-padding-x;
+    }
   }
 }
 
-.main {
-  height: calc(100vh - 40px);
-  width: 100vw;
-  background-color: var(--bs-gray-200);
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-.section-title {
-  font-weight: bold;
-  color: var(--bs-primary);
-  margin-bottom: 1rem;
-}
-
-.files-list {
-  table {
-    font-size: 0.7rem;
-  }
-
-  thead {
-    background-color: var(--bs-border-color);
-  }
+.home__container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 70rem;
+  padding: $owl-sys-space-start;
+  color: var(--owl-start-color);
 }

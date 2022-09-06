@@ -17,8 +17,8 @@ const sourceMap = {
       overwrite: true,
       filter: (source, dest) => {
         return source.indexOf('.d.ts') === -1;
-      }
-    }
+      },
+    },
   },
 };
 
@@ -48,7 +48,7 @@ const findPath = (source, includePaths) => {
 };
 
 const copyDir = (source, options) => {
-  fs.copySync(source, options.dest, options.options)
+  fs.copySync(source, options.dest, options.options);
 };
 
 const copyFile = (source, options) => {

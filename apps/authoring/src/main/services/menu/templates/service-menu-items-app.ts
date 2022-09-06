@@ -1,29 +1,20 @@
 import { MenuItemConstructorOptions } from 'electron';
-import { send, registerAll } from '../../requester';
 import { MenuItemEventsApp } from '../service-menu.types';
+import { Preferences } from '../../../models';
+import { send } from '../../requester';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
-const aboutHandler = () => {
-  console.log('Open about Scrowl window...');
-};
-
-const preferencesHandler = () => {
-  console.log('Open preferences window...');
-};
-
 export const EVENTS: MenuItemEventsApp = {
-  aboutOpen: {
-    id: 'about-open',
-    name: 'menu/about/open',
-    type: 'on',
-    fn: aboutHandler,
-  },
   preferencesOpen: {
     id: 'preferences-open',
-    name: 'menu/preferences/open',
-    type: 'on',
-    fn: preferencesHandler,
+    name: '/preferences/open',
+    type: 'send',
+  },
+  getStarted: {
+    id: 'get-started',
+    name: '/get-started',
+    type: 'send',
   },
 };
 
@@ -31,20 +22,19 @@ export const template: MenuItemConstructorOptions = {
   label: 'Scrowl',
   submenu: [
     {
-      label: 'About Scrowl',
-      id: EVENTS.aboutOpen.id,
-      click: () => {
-        send(EVENTS.aboutOpen.name);
-      },
-    },
-    separator,
-    {
       label: 'Preferences…',
       id: EVENTS.preferencesOpen.id,
       click: () => {
-        send(EVENTS.preferencesOpen.name);
+        Preferences.open();
       },
       accelerator: 'CmdOrCtrl+,',
+    },
+    {
+      label: 'Get Started',
+      id: EVENTS.getStarted.id,
+      click: () => {
+        send(EVENTS.getStarted.name);
+      },
     },
     separator,
     {
@@ -60,12 +50,6 @@ export const template: MenuItemConstructorOptions = {
   ],
 };
 
-export const init = () => {
-  registerAll(EVENTS);
-};
-
 export default {
-  EVENTS,
-  init,
   template,
 };
