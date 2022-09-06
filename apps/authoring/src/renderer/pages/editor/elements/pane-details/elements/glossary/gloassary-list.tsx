@@ -113,7 +113,7 @@ export const GlossaryList = ({
       {headings.map((heading, idx: number) => {
         return (
           <div key={idx}>
-            <header>{heading}</header>
+            <header className={styles.tabGlossaryHeader}>{heading}</header>
             <GlossaryListEntries
               glossary={glossary[heading]}
               onEdit={onEdit}
