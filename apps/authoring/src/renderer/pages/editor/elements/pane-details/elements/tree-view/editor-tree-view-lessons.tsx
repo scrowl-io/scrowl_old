@@ -30,7 +30,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       iconStyle: 'Outlined',
       action: () => {
         const newSlide: SlideTreeItem = {
-          name: 'Umtitled Slide',
+          name: 'Untitled Slide',
         };
 
         lesson.slides.push(newSlide);

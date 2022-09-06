@@ -12,6 +12,7 @@ import {
 } from './editor-tree-view.types';
 import { deepCopy } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
+import { RenameModal } from './editor-tree-view-modules-rename';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
   // for the renmaing modal, use the owl ui modal by following the BS example https://react-bootstrap.github.io/components/modal/
@@ -213,7 +214,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
           />
         </div>
       </Collapse>
-      {/* add the rename modal component here */}
+      <RenameModal />
     </div>
   );
 };
