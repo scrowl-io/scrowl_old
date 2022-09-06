@@ -2,7 +2,6 @@
 import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
 import { send } from '../../requester';
-import { Templates } from '../../../models';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
@@ -33,10 +32,15 @@ export const EVENTS: MenuItemEventsFile = {
     name: 'project/import-file',
     type: 'send',
   },
-  importTemplate: {
-    id: 'import-template',
-    name: '/templates/import',
-    type: 'invoke',
+  templateAdd: {
+    id: 'template-add',
+    name: '/templates/add',
+    type: 'send',
+  },
+  templateOpen: {
+    id: 'template-open',
+    name: '/templates/open',
+    type: 'send',
   },
 };
 
@@ -91,11 +95,20 @@ export const template: MenuItemConstructorOptions = {
       accelerator: 'CmdOrCtrl+I',
     },
     {
-      label: 'Import Template',
-      id: EVENTS.importTemplate.id,
+      label: 'Add Template',
+      id: EVENTS.templateAdd.id,
       enabled: false,
       click: (MenuItem, window, ev: KeyboardEvent) => {
-        Templates.importTemplate();
+        send(EVENTS.templateAdd.name);
+      },
+      accelerator: 'CmdOrCtrl+t',
+    },
+    {
+      label: 'Explore Templates',
+      id: EVENTS.templateOpen.id,
+      enabled: false,
+      click: (MenuItem, window, ev: KeyboardEvent) => {
+        send(EVENTS.templateOpen.name);
       },
       accelerator: 'CmdOrCtrl+t',
     },

@@ -3,30 +3,27 @@ import { TemplateEvents } from './model-templates.types';
 import { InternalStorage as IS, Requester } from '../../services';
 import * as table from './model-templates-schema';
 
-export const importTemplate = () => {
+export const add = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      const result = {
-        error: false as const,
+      resolve({
+        error: false,
         data: {
-          template: {
-            name: 'Example Template',
-          },
+          items: [
+            {
+              name: 'Example Template',
+            },
+          ],
         },
-      };
-
-      resolve(result);
-      Requester.send(EVENTS.import.name, result);
+      });
     } catch (e) {
-      const result = {
-        error: true as const,
-        message: 'Failed to import template',
+      resolve({
+        error: true,
+        message: 'Failed to add template',
         data: {
           trace: e,
         },
-      };
-      resolve(result);
-      Requester.send(EVENTS.import.name, result);
+      });
     }
   });
 };
@@ -80,26 +77,26 @@ export const load = () => {
 };
 
 export const EVENTS: TemplateEvents = {
-  import: {
-    name: '/templates/import',
+  add: {
+    name: '/templates/add', // sends menu event to frontend
     type: 'send',
   },
-  onImport: {
-    name: '/templates/import',
+  onAdd: {
+    name: '/templates/add', // allows user to add/import/install a new template
     type: 'invoke',
-    fn: importTemplate,
+    fn: add,
   },
   open: {
-    name: '/templates/open',
+    name: '/templates/open', // sends menu event to open the explorer modal
     type: 'send',
   },
   list: {
-    name: '/templates/list',
+    name: '/templates/list', // gets list of templates
     type: 'invoke',
     fn: list,
   },
   load: {
-    name: '/templates/load',
+    name: '/templates/load', // makes template available to canvas
     type: 'invoke',
     fn: load,
   },
@@ -132,7 +129,7 @@ export const init = () => {
 export const Templates: Model = {
   EVENTS,
   init,
-  importTemplate,
+  add,
   list,
   load,
 };

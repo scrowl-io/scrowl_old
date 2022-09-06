@@ -30,10 +30,16 @@ export interface MenuEventImportFile
   id: 'import-file';
   name: Project.ProjectEventImport['name'];
 }
-export interface MenuEventImportTemplate
+export interface MenuEventTemplateAdd
   extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'import-template';
-  name: Templates.TemplateEventApi['import'];
+  id: 'template-add';
+  name: Templates.TemplateEventApi['add'];
+}
+
+export interface MenuEventTemplateOpen
+  extends Omit<Requester.RegisterEvent, 'name'> {
+  id: 'template-open';
+  name: Templates.TemplateEventApi['open'];
 }
 
 export interface MenuEventPreferencesCreate
@@ -81,10 +87,11 @@ export type MenuItemEventNames =
   | MenuEventPublishProject['name']
   | MenuEventImportFile['name']
   | MenuEventPreferencesOpen['name']
-  | MenuEventImportTemplate['name']
   | MenuEventPreferencesCreate['name']
   | MenuEventPreferencesOpen['name']
-  | MenuEventGetStarted['name'];
+  | MenuEventGetStarted['name']
+  | MenuEventTemplateAdd['name']
+  | MenuEventTemplateOpen['name'];
 
 export type MenuItemEvent =
   | MenuEventCreateProject
@@ -93,10 +100,11 @@ export type MenuItemEvent =
   | MenuEventPublishProject
   | MenuEventImportFile
   | MenuEventPreferencesOpen
-  | MenuEventImportTemplate
   | MenuEventPreferencesCreate
   | MenuEventPreferencesOpen
-  | MenuEventGetStarted;
+  | MenuEventGetStarted
+  | MenuEventTemplateAdd
+  | MenuEventTemplateOpen;
 
 export type MenuItemEventsFile = {
   projectsCreate: MenuEventCreateProject;
@@ -104,7 +112,8 @@ export type MenuItemEventsFile = {
   projectSave: MenuEventSaveProject;
   projectPublish: MenuEventPublishProject;
   importFile: MenuEventImportFile;
-  importTemplate: MenuEventImportTemplate;
+  templateAdd: MenuEventTemplateAdd;
+  templateOpen: MenuEventTemplateOpen;
 };
 
 export type MenuEventsFileApi = {
@@ -113,10 +122,11 @@ export type MenuEventsFileApi = {
   projectSave: MenuEventSaveProject['name'];
   projectPublish: MenuEventPublishProject['name'];
   importFile: MenuEventImportFile['name'];
-  importTemplate: MenuEventImportTemplate['name'];
   preferencesCreate: MenuEventPreferencesCreate['name'];
   preferencesOpen: MenuEventPreferencesOpen['name'];
   getStarted: MenuEventGetStarted['name'];
+  templateAdd: MenuEventTemplateAdd['name'];
+  templateOpen: MenuEventTemplateOpen['name'];
 };
 
 export type MenuItemEventsApp = {

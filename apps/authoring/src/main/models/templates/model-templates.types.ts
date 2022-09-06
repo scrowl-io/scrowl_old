@@ -1,8 +1,8 @@
 import { Requester, FileSystem, InternalStorage } from '../../services';
 
-export interface TemplateEventImport
+export interface TemplateEventAdd
   extends Omit<Requester.RegisterEvent, 'name'> {
-  name: '/templates/import';
+  name: '/templates/add';
 }
 
 export interface TemplateEventOpen
@@ -21,21 +21,21 @@ export interface TemplateEventLoad
 }
 
 export type TemplateEventApi = {
-  import: TemplateEventImport['name'];
+  add: TemplateEventAdd['name'];
   open: TemplateEventOpen['name'];
   list: TemplateEventList['name'];
   load: TemplateEventLoad['name'];
 };
 
 export type TemplateEventNames =
-  | TemplateEventImport['name']
+  | TemplateEventAdd['name']
   | TemplateEventOpen['name']
   | TemplateEventList['name']
   | TemplateEventLoad['name'];
 
 export type TemplateEvents = {
-  import: TemplateEventImport;
-  onImport: TemplateEventImport;
+  add: TemplateEventAdd;
+  onAdd: TemplateEventAdd;
   open: TemplateEventOpen;
   list: TemplateEventList;
   load: TemplateEventLoad;

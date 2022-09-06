@@ -6,18 +6,12 @@ export const ENDPOINTS: MenuEventsFileApi = {
   projectOpen: '/projects/open',
   projectSave: '/projects/save',
   importFile: 'project/import-file',
-  importTemplate: '/templates/import',
   projectPublish: '/projects/publish',
   preferencesCreate: '/preferences/create',
   preferencesOpen: '/preferences/open',
   getStarted: '/get-started',
-};
-
-const registerListener = (
-  endpoint: typeof ENDPOINTS[keyof typeof ENDPOINTS],
-  listener: requester.Listener
-) => {
-  requester.on(endpoint, listener);
+  templateAdd: '/templates/add',
+  templateOpen: '/templates/open',
 };
 
 export const onProjectCreate = (listener: requester.Listener) => {
@@ -76,8 +70,20 @@ export const offGetStarted = () => {
   requester.offAll(ENDPOINTS.getStarted);
 };
 
-export const onImportTemplate = (listener: requester.Listener) => {
-  registerListener(ENDPOINTS.importTemplate, listener);
+export const onTemplateAdd = (listener: requester.Listener) => {
+  requester.on(ENDPOINTS.templateAdd, listener);
+};
+
+export const offTemplateAdd = () => {
+  requester.offAll(ENDPOINTS.templateAdd);
+};
+
+export const onTemplateOpen = (listener: requester.Listener) => {
+  requester.on(ENDPOINTS.templateOpen, listener);
+};
+
+export const offTemplateOpen = () => {
+  requester.offAll(ENDPOINTS.templateOpen);
 };
 
 export default {
@@ -85,8 +91,11 @@ export default {
   onProjectOpen,
   onProjectSave,
   onImportFile,
-  onImportTemplate,
   onPreferencesCreate,
   onPreferencesOpen,
   onGetStarted,
+  onTemplateAdd,
+  offTemplateAdd,
+  onTemplateOpen,
+  offTemplateOpen,
 };
