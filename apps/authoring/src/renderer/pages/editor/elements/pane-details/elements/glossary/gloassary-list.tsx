@@ -8,7 +8,9 @@ export const GlossaryListEntries = ({
   onEdit,
   onDelete,
 }: GlossaryListEntriesProps) => {
-  const entires = Object.keys(glossary).sort();
+  const entries = Object.keys(glossary).sort((a, b) => {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  });
   const getEntryIndex = (ev: React.MouseEvent<Element, MouseEvent>) => {
     const target = ev.target as HTMLElement;
 
@@ -69,7 +71,7 @@ export const GlossaryListEntries = ({
 
   return (
     <>
-      {entires.map((entry: string, idx: number) => {
+      {entries.map((entry: string, idx: number) => {
         return (
           <div
             className={styles.tabGlossaryTerm}
@@ -111,7 +113,7 @@ export const GlossaryList = ({
       {headings.map((heading, idx: number) => {
         return (
           <div key={idx}>
-            <header>{heading}</header>
+            <header className={styles.tabGlossaryHeader}>{heading}</header>
             <GlossaryListEntries
               glossary={glossary[heading]}
               onEdit={onEdit}

@@ -168,6 +168,13 @@
     }
   }
 
+  &__header {
+    padding-left: calc(var(--owl-sidebar-spacing));
+    background-color: var(--owl-sidebar-header-bg);
+    color: var(--owl-sidebar-header-color);
+    font-weight: 700;
+  }
+
   &__term {
     position: relative;
     padding: calc(var(--owl-sidebar-spacing) / 2);
