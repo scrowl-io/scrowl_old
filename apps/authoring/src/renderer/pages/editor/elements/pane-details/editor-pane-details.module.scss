@@ -296,7 +296,7 @@
     }
 
     & .owlui-dropdown-toggle {
-      top: 0.6em;
+      top: 0.3em;
     }
 
     &:hover {
@@ -307,13 +307,18 @@
   &__item {
     display: flex;
     flex-grow: 1;
-    padding: 0.66rem 0.5rem 0.66rem 1.75rem;
+    padding: 3px 8px 7.92px 21px;
     margin: 0;
     line-height: 1.4;
     color: inherit;
     font-size: var(--owl-font-size-sm);
     text-decoration: none;
     text-align: left;
+
+    .module-icons,
+    .lesson-icons {
+      display: flex;
+    }
 
     &[aria-expanded='true'] {
       .tree-view__item__icon--handle {
@@ -333,7 +338,7 @@
       color: var(--owl-color-default);
 
       &--handle {
-        margin: 0;
+        margin: 4px 0 0;
         width: auto;
         height: auto;
         transform: rotate(270deg);
@@ -341,6 +346,7 @@
         align-self: baseline;
         position: absolute;
         left: 0;
+        top: 0;
         transition: transform 0.1s linear;
       }
 
@@ -349,7 +355,7 @@
         line-height: 1rem;
         font-size: 0.9rem;
         position: relative;
-        top: 0.3rem;
+        top: 0.2rem;
       }
     }
 
