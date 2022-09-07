@@ -45,14 +45,15 @@ export const RecentProjects = (props: RecentProjectsProps) => {
           <ul>
             {recentProjectList.map(
               (project: Projects.ProjectData, index: number) => (
-                <button
-                  className="section-link"
-                  key={index}
-                  onClick={handleOpenProject}
-                  data-project-id={project.id}
-                >
-                  {project.name}
-                </button>
+                <div key={index}>
+                  <button
+                    className="section-link"
+                    onClick={handleOpenProject}
+                    data-project-id={project.id}
+                  >
+                    {project.name}
+                  </button>
+                </div>
               )
             )}
             <div style={{ marginTop: '2rem' }}>

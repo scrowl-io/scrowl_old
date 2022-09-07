@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@owlui/lib';
 import { Projects } from '../../../models';
-
+import { useNavigate } from 'react-router-dom';
 export type StartCommons = {
   hasProjects: boolean;
 };
@@ -11,12 +11,14 @@ export type StartProps = Partial<StartCommons> &
 
 export const Start = (props: StartProps) => {
   const hasProjects = props.hasProjects;
+  const navigate = useNavigate();
   const handleNewProject = () => {
     Projects.create();
   };
 
   const handleOpenProject = () => {
     Projects.explore();
+    navigate('/editor');
   };
 
   return (

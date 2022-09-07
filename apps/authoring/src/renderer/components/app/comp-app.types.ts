@@ -1,5 +1,6 @@
 import React from 'react';
 import { PageRoutesProps, PageNavProps } from '../../pages';
+import { ProjectData } from '../../../main/models/projects';
 
 export interface AppPageProps {
   PageRoutes: PageRoutesProps;
