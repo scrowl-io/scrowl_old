@@ -11,14 +11,12 @@ export type StartProps = Partial<StartCommons> &
 
 export const Start = (props: StartProps) => {
   const hasProjects = props.hasProjects;
-  const navigate = useNavigate();
   const handleNewProject = () => {
     Projects.create();
   };
 
   const handleOpenProject = () => {
     Projects.explore();
-    navigate('/editor');
   };
 
   return (
