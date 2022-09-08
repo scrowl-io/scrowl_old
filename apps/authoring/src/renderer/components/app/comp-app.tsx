@@ -8,20 +8,13 @@ import {
 import * as styles from './styles/comp-app.module.scss';
 import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
-import { TitleBar, AppInput, Table } from './elements';
+import { TitleBar } from './elements';
 import { Menu } from '../../services';
 import { Home, PageNavProps } from '../../pages';
 import { Preferences, Projects } from '../../models';
 import { ProjectExplorerModal } from '../projectExplorerModal/index';
 
-// import { ModalDefaultProps, TextInputProps } from '@owlui/lib';
-
-import {
-  TableDefaultProps,
-  TableData,
-  TableRowItem,
-  ModalDefaultProps,
-} from '@owlui/lib';
+import { TableRowItem } from '@owlui/lib';
 
 const routeList: PageNavProps = [];
 
@@ -46,13 +39,7 @@ const AppRoutes = () => {
 };
 
 const Main = (props: AppMainProps) => {
-  const [filteredResults, setFilteredResults] = useState<TableRowItem[]>([]);
-  const [searchInput, setSearchInput] = useState('');
-
   const navigate = useNavigate();
-
-  // const { projectList } = props;
-  console.log('projectList from main app', props);
 
   Projects.useOpen();
   Projects.useMenuEvents();
@@ -71,78 +58,6 @@ const Main = (props: AppMainProps) => {
       Menu.File.offPreferencesOpen();
     };
   }, [navigate]);
-
-  // const filterData = (value: string) => {
-  //   const lowerCaseValue = value.toLowerCase().trim();
-  //   if (!lowerCaseValue) {
-  //     return projectList;
-  //   } else {
-  //     const filteredData = projectList.filter(item => {
-  //       return (Object.keys(item) as (keyof typeof item)[]).some(key => {
-  //         if (item[key] !== null) {
-  //           return item[key].toString().toLowerCase().includes(lowerCaseValue);
-  //         }
-  //       });
-  //     });
-  //     setFilteredResults(filteredData);
-  //   }
-  // };
-
-  // const searchItems = (searchValue: string) => {
-  //   setSearchInput(searchValue);
-
-  //   if (searchValue !== '') {
-  //     filterData(searchValue);
-  //   }
-  // };
-
-  // const projectsData: TableData = {
-  //   caption: 'Table 1. List of The Office characters.',
-  //   columns: [
-  //     {
-  //       label: '#',
-  //       field: 'id',
-  //     },
-  //     {
-  //       label: 'Project Name',
-  //       field: 'name',
-  //     },
-  //     {
-  //       label: 'Created At',
-  //       field: 'created_at',
-  //     },
-  //     {
-  //       label: 'Last Modified At',
-  //       field: 'updated_at',
-  //     },
-  //   ],
-  //   items: searchInput.length < 1 ? projectList : filteredResults,
-  // };
-
-  // const modalContent: ModalDefaultProps = {
-  //   header: {
-  //     bsProps: {
-  //       closeButton: true,
-  //       closeLabel: 'Close',
-  //     },
-  //     content: <h2>SCROWL Project Search</h2>,
-  //   },
-  //   body: {
-  //     content: (
-  //       <>
-  //         <AppInput
-  //           searchItems={searchItems}
-  //           searchInput={searchInput}
-  //           setSearchInput={setSearchInput}
-  //         />
-  //         <hr />
-  //         <Table projectsData={projectsData} />
-  //       </>
-  //     ),
-  //   },
-  // };
-
-  // const { header, body, footer } = modalContent;
 
   return (
     <div {...props}>
@@ -166,7 +81,6 @@ export const App = () => {
   const [appTheme, setAppTheme] = useState('');
   const [appInit, setAppInit] = useState(false);
   const [appReady, setAppReady] = useState(false);
-  const [projectList, setProjectList] = useState([]);
 
   useEffect(() => {
     let ready = false;

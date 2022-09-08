@@ -1,15 +1,8 @@
-import React, { ReactNode, useEffect, useState } from 'react';
-import {
-  Modal,
-  ModalDefaultProps,
-  Input,
-  TableData,
-  TableRowItem,
-} from '@owlui/lib';
+import React, { useEffect, useState } from 'react';
+import { Modal, ModalDefaultProps, TableData, TableRowItem } from '@owlui/lib';
 import { useExplorer, closeExplorer } from '../../models/projects/index';
 import { Projects } from '../../models';
 import { AppInput, Table } from '../../components/app/elements';
-import { Link } from 'react-router-dom';
 
 const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
   const [filteredResults, setFilteredResults] = useState<TableRowItem[]>([]);
@@ -61,16 +54,6 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
     }
   };
 
-  const convertProjectList = (): TableRowItem[] => {
-    const convertedProjectList = projectList.map((project: any) => {
-      return <button onClick={handleOpenProject}>{project.name}</button>;
-    });
-
-    return convertedProjectList;
-  };
-
-  console.log('convertProjectList', convertProjectList());
-
   const projectsData: TableData = {
     caption: 'Table 1. List of The Office characters.',
     columns: [
@@ -96,13 +79,9 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
 
   return (
     <>
-      <AppInput
-        searchItems={searchItems}
-        searchInput={searchInput}
-        setSearchInput={setSearchInput}
-      />
+      <AppInput searchItems={searchItems} searchInput={searchInput} />
       <hr />
-      <Table projectsData={projectsData} />
+      <Table tableData={projectsData} />
     </>
   );
 };

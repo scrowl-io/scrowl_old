@@ -4,14 +4,6 @@ import { Projects } from '../../models';
 import { Logo } from '../../components/logo/comp-logo';
 import { RecentProjects, Start, Tutorials } from './elements';
 
-// const project = new Project();
-
-// export const PageElement = () => {
-//   project.ready();
-
-//   const isProcessing = project.useProcessing();
-//   const projectModelData = project.useData();
-
 export const PageElement = () => {
   const [recentProjectList, setRecentProjectList] = useState([]);
   const [hasProjects, setHasProjects] = useState(false);
@@ -29,8 +21,6 @@ export const PageElement = () => {
       setHasProjects(hasProjects);
     });
   }, []);
-
-  console.log('projectList', recentProjectList);
 
   return (
     <main className={styles.main}>

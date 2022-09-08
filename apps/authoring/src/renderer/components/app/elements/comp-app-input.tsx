@@ -1,11 +1,8 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import * as styles from '../styles/comp-app.module.scss';
-import { TitleBarProps } from './comp-app-titlebar.types';
+import { Input, TextInputProps } from '@owlui/lib';
+import { TextInputCommons } from './comp-app-titlebar.types';
 
-import { Input, TextInputProps, TextInputDefaultProps } from '@owlui/lib';
-
-export const Element = ({ searchItems, setSearchInput, searchInput }: any) => {
+export const Element = ({ searchItems, searchInput }: TextInputCommons) => {
   const inputProps: TextInputProps = {
     label: {
       content: 'Project Search',
@@ -20,16 +17,10 @@ export const Element = ({ searchItems, setSearchInput, searchInput }: any) => {
       placeholder: 'e.g. Safety Training',
       value: searchInput,
       onChange: e => searchItems((e.target as HTMLInputElement).value),
-      // onChange: e => setSearchInput((e.target as HTMLInputElement).value),
     },
   };
 
-  return (
-    <Input
-      // onChange={e => searchItems((e.target as HTMLInputElement).value)}
-      inputProps={inputProps}
-    />
-  );
+  return <Input inputProps={inputProps} />;
 };
 
 export default {
