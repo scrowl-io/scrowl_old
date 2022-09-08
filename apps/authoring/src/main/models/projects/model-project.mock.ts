@@ -27,9 +27,30 @@ export const data: ProjectData = {
                   component: 'ImageGrid',
                 },
                 elements: {
-                  componentExample: {
+                  title: {
                     editable: true,
-                    value: 'Hello World',
+                    value: 'Building a Respectful Workplace',
+                    type: 'text',
+                    label: 'title',
+                  },
+                  subtitle: {
+                    editable: true,
+                    value: 'Introduction',
+                    type: 'text',
+                    label: 'subtitle',
+                  },
+                  body: {
+                    editable: true,
+                    value:
+                      'Respect in the workplace is a fundamental human right. All employees—regardless of their differences—deserve to be treated with dignity and fairness. Building a culture of respect leads to a more successful and enjoyable work experience for everyone',
+                    type: 'textarea',
+                    label: 'body',
+                  },
+                  courseDuration: {
+                    editable: true,
+                    value: '25',
+                    type: 'number',
+                    label: 'course Duration',
                   },
                 },
               },
