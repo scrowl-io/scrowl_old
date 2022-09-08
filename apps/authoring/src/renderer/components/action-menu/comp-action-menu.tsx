@@ -20,9 +20,12 @@ const makeActionMenu = (
     return {
       id: idx.toString(),
       label: (
-        <div className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center">
+        <div
+          className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center"
+          onClick={item.action}
+        >
           <Icon display={item.iconStyle} icon={item.icon} />
-          <div onClick={item.action}>{item.label}</div>
+          <span>{item.label}</span>
         </div>
       ),
     };

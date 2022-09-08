@@ -8,9 +8,14 @@ export const PageElement = () => {
       <main className={styles.editor}>
         <Header />
 
+        <PaneDetails />
+
         <div className={styles.workspace}>
-          <PaneDetails />
+          <div className="workspace__body">Workspace</div>
         </div>
+        <div className="pane pane--right">Right Bar</div>
+
+        <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
       </main>
     </>
   );

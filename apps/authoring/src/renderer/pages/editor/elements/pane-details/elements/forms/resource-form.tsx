@@ -29,7 +29,6 @@ export const ResourceForm = (props: ResourceFormProps) => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    console.log(resourceData);
     setResourceData({
       ...resourceData,
       name: '',

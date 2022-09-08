@@ -1,4 +1,6 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
+import { Button } from '@owlui/lib';
 import { Projects } from '../../../models';
 
 export type RecentProjectsCommons = {
@@ -36,30 +38,29 @@ export const RecentProjects = (props: RecentProjectsProps) => {
   };
 
   return (
-    <div>
-      {!hasProjects ? (
-        <></>
-      ) : (
+    <>
+      {hasProjects && (
         <>
-          <h2 className="section-title">Recent</h2>
-          <ul>
+          <h2>Recent</h2>
+          <Nav className="flex-column">
             {projectList.map((project: Projects.ProjectData, index: number) => (
-              <button
-                className="section-link"
-                key={index}
-                onClick={handleOpenProject}
-                data-project-id={project.id}
-              >
-                {project.name}
-              </button>
+              <Nav.Item key={index}>
+                <Button
+                  variant="link"
+                  onClick={handleOpenProject}
+                  data-project-id={project.id}
+                >
+                  {project.name}
+                </Button>
+              </Nav.Item>
             ))}
-            <div style={{ marginTop: '2rem' }}>
-              <button className="section-link">More...</button>
-            </div>
-          </ul>
+            <Nav.Item>
+              <Button variant="link">More...</Button>
+            </Nav.Item>
+          </Nav>
         </>
       )}
-    </div>
+    </>
   );
 };
 
