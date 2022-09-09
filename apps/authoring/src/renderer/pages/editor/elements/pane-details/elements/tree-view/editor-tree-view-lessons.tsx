@@ -13,6 +13,7 @@ import {
 } from './editor-tree-view.types';
 import { TreeViewSlides } from './editor-tree-view-slides';
 import { deepCopy } from './utils';
+import { RenameModal } from '../modals/editor-modal-rename';
 
 const TreeViewLesson = (props: TreeViewLessonProps) => {
   const { tree, idx, moduleIdx, project } = props;
@@ -22,6 +23,8 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
   const modules = deepCopy(project.modules);
   const lessonModule: ModuleTreeItem = modules[moduleIdx];
   const lesson: LessonTreeItem = lessonModule.lessons[idx];
+  const [showModalRename, setModalRename] = useState(false);
+  const toggleModalRename = () => setModalRename(!showModalRename);
 
   const lessonMenuItems: Array<ActionMenuItem> = [
     {
@@ -42,7 +45,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'edit',
       iconStyle: 'Outlined',
       action: () => {
-        console.log('rename');
+        toggleModalRename();
       },
     },
     {
@@ -124,6 +127,11 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     },
   ];
 
+  const handleRename = (name: string) => {
+    lesson.name = name;
+    Projects.update({ modules });
+  };
+
   return (
     <div className={styles.treeViewLesson} key={idx}>
       <div className={styles.treeViewHeader}>
@@ -161,6 +169,13 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
           />
         </div>
       </Collapse>
+      <RenameModal
+        label="Rename Lesson"
+        value={tree.name}
+        onSubmit={handleRename}
+        show={showModalRename}
+        onHide={toggleModalRename}
+      />
     </div>
   );
 };
