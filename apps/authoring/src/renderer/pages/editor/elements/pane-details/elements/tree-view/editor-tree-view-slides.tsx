@@ -98,12 +98,6 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       iconStyle: 'Outlined',
       action: () => {
         slideLesson.slides.splice(idx, 1);
-        // confirm({
-        //   headerText: 'Header',
-        //   descriptionText: 'Description',
-        //   acceptConfirm: () => Projects.update({ modules }),
-        //   cancelConfirm: () => console.log('cancelled'),
-        // });
         Projects.update({ modules });
       },
     },
