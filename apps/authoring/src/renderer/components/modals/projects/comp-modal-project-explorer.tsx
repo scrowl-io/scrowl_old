@@ -14,6 +14,7 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
   const [filteredResults, setFilteredResults] = useState<TableRowItem[]>([]);
   const [searchInput, setSearchInput] = useState('');
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
 

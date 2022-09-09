@@ -13,8 +13,6 @@ import { Home, PageNavProps } from '../../pages';
 import { Preferences, Projects } from '../../models';
 import { ModalProjectExplorer } from '../modals';
 
-import { TableRowItem } from '@owlui/lib';
-
 const routeList: PageNavProps = [];
 
 const AppRoutes = () => {

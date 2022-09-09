@@ -43,7 +43,6 @@ export const PageElement = () => {
         <div className={styles.home__section}>
           <RecentProjects hasProjects={hasProjects} projectList={projectList} />
         </div>
-
       </div>
     </main>
   );
