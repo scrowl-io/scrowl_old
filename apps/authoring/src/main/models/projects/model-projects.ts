@@ -191,6 +191,119 @@ export const save = (
   });
 };
 
+export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
+  const checkProjectExists = (project: ProjectData) => {
+    return new Promise<requester.ApiResult>(resolve => {
+      try {
+        fs.existsFileSave(fs.join(`${project.id}`, 'manifest.json')).then(
+          res => {
+            if (res.error) {
+              resolve(res);
+              return;
+            }
+
+            resolve({
+              error: false,
+              data: {
+                exists: res.data.exists,
+                project,
+              },
+            });
+          }
+        );
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to check project existence',
+          data: {
+            trace: e,
+            project,
+          },
+        });
+      }
+    });
+  };
+
+  return new Promise<Requester.ApiResult>(resolve => {
+    const getProjectsManifests = (projectRecords: Array<ProjectData>) => {
+      const filePromises = projectRecords.map(project => {
+        return checkProjectExists(project);
+      });
+
+      try {
+        Promise.allSettled(filePromises).then(fileResults => {
+          const projects: Array<ProjectData | undefined> = [];
+
+          fileResults.forEach(result => {
+            if (result.status === 'rejected') {
+              return;
+            }
+
+            const fileRes = result.value;
+
+            if (fileRes.error || !fileRes.data.exists) {
+              return;
+            }
+
+            projects.push(fileRes.data.project);
+          });
+
+          resolve({
+            error: false,
+            data: {
+              projects,
+            },
+          });
+        });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to read projects files',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    };
+
+    try {
+      const orderBy: IS.StorageOrder = [
+        {
+          column: 'updated_at',
+          order: 'desc',
+        },
+      ];
+
+      IS.read(table.name, undefined, orderBy, limit).then(readRes => {
+        if (readRes.error) {
+          resolve(readRes);
+          return;
+        }
+
+        if (readRes.data.items.length) {
+          getProjectsManifests(readRes.data.items);
+          return;
+        }
+
+        resolve({
+          error: false,
+          data: {
+            projects: [],
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to read projects from storage',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 export const list = (ev: Requester.RequestEvent, limit?: number) => {
   const checkProjectExists = (project: ProjectData) => {
     return new Promise<requester.ApiResult>(resolve => {
@@ -549,6 +662,12 @@ export const EVENTS: ProjectEvents = {
     type: 'invoke',
     fn: importFile,
   },
+  listRecent: {
+    name: '/projects/list/recent',
+    type: 'invoke',
+    fn: listRecent,
+  },
+
   publish: {
     name: '/projects/publish',
     type: 'send',

@@ -6,6 +6,7 @@ const ENDPOINTS: ProjectEventApi = {
   save: '/projects/save',
   open: '/projects/open',
   list: '/projects/list',
+  listRecent: '/projects/list/recent',
   import: 'project/import-file',
   publish: '/projects/publish',
 };
@@ -60,6 +61,22 @@ export const open = (projectId: number) => {
   });
 };
 
+export const listRecent = (limit?: number) => {
+  return new Promise<requester.ApiResult>(resolve => {
+    try {
+      requester.invoke(ENDPOINTS.listRecent, limit).then(resolve);
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to list recent projects',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 export const list = (limit?: number) => {
   return new Promise<requester.ApiResult>(resolve => {
     try {
@@ -99,5 +116,6 @@ export default {
   update,
   open,
   list,
+  listRecent,
   publish,
 };

@@ -23,6 +23,14 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
   const handleFormSubmit = () => {
     onSubmit(data);
   };
+  const handleKeyboardSubmit = (e: React.KeyboardEvent) => {
+    const cancelButton = document.querySelector('.glossary-cancel-button');
+    const cancelIsFocused = document.activeElement === cancelButton;
+    if (e.key === 'Enter' && !cancelIsFocused) {
+      e.preventDefault();
+      onSubmit(data);
+    }
+  };
   const form = [
     {
       type: 'input',
@@ -56,13 +64,14 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
           placeholder: 'Term Description...',
           value: data.description,
           onChange: handleFormChangeDescription,
+          as: 'textarea',
         },
       },
     },
   ];
 
   return (
-    <Form formData={form}>
+    <Form formData={form} onKeyDown={handleKeyboardSubmit}>
       <div className="glossary-form-button-set d-flex justify-content-end">
         <Button
           className="glossary-cancel-button"
