@@ -107,6 +107,8 @@ export type ProjectSlide = {
       [key: string]: {
         editable: boolean;
         value: string | number | boolean;
+        type: string;
+        label: string;
       };
     };
   };
