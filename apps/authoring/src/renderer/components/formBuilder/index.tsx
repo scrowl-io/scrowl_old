@@ -1,11 +1,10 @@
 import React from 'react';
-import { Form, Input, FormDataProps } from '@owlui/lib';
+import { Form, FormDataProps } from '@owlui/lib';
 
 const formComponents: FormDataProps[] = [];
 
 const createFormElement = (formElements: any) => {
   Object.entries(formElements).forEach((element: any) => {
-    console.log(element);
     const obj = {
       type: 'input',
       inputProps: {

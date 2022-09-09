@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { Button, Form, FormDataProps } from '@owlui/lib';
+import React from 'react';
 import { Projects } from '../../../../../models';
-import { GeneratedForm } from '../../../../../components/formCreator';
+import { GeneratedForm } from '../../../../../components/formBuilder';
 
 export const RightPaneContentForm = () => {
   const project = Projects.useData();
