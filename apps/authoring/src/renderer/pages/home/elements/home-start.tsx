@@ -2,7 +2,7 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Icon, Button } from '@owlui/lib';
 import { Projects } from '../../../models';
-import { useNavigate } from 'react-router-dom';
+
 export type StartCommons = {
   hasProjects: boolean;
 };
