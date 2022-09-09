@@ -1,0 +1,9 @@
+@import '../../styles/bs';
+@import '../../styles/variables';
+@import '@owlui/lib/src/theme/global/tokens';
+
+.form-builder {
+  .textarea {
+    height: 10em;
+  }
+}
