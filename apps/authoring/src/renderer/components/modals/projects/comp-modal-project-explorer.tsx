@@ -4,14 +4,14 @@ import {
   ModalDefaultProps,
   Table,
   TableData,
-  TableRowItem,
+  TableRowCommons,
   Input,
   TextInputProps,
 } from '@owlui/lib';
 import { Projects } from '../../../models';
 
 const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
-  const [filteredResults, setFilteredResults] = useState<TableRowItem[]>([]);
+  const [filteredResults, setFilteredResults] = useState<TableRowCommons[]>([]);
   const [searchInput, setSearchInput] = useState('');
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

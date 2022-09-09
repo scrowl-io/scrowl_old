@@ -1,12 +1,9 @@
 import React from 'react';
-import { IconType, DropdownDefaultCommons } from '@owlui/lib';
+import { DropdownDefaultCommons, IconsDefaultProps } from '@owlui/lib';
 
-export type ActionMenuItem = {
-  // name: string; // <- for filtering invalid action menu items, i.e. can't move module up that's already first
+export type ActionMenuItem = IconsDefaultProps & {
   label: string;
-  icon: IconType;
-  iconStyle: 'Filled' | 'Outlined';
-  action?: (e: React.MouseEvent) => void;
+  actionHandler?: (ev: React.MouseEvent<Element, MouseEvent>) => void;
 };
 
 export interface ActionMenuCommons
