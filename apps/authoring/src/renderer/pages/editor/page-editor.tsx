@@ -1,19 +1,21 @@
 import React from 'react';
 import * as styles from './page-editor.module.scss';
 import { Header, PaneDetails } from './elements';
-import { ModalOutline } from '../../components/modal/index';
-// import { Project } from '../../models';
-
-// const project = new Project();
 
 export const PageElement = () => {
   return (
     <>
       <main className={styles.editor}>
         <Header />
+        <PaneDetails />
+
         <div className={styles.workspace}>
-          <PaneDetails />
+          <div className="workspace__body">Workspace</div>
         </div>
+
+        <div className="pane pane--right">Right Bar</div>
+
+        <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
       </main>
     </>
   );

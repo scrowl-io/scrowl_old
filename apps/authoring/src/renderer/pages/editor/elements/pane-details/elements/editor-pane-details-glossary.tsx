@@ -1,126 +1,99 @@
 import React, { useState } from 'react';
+import {
+  GlossaryData,
+  GlossaryDict,
+  GlossaryItem,
+  GlossaryList,
+  GlossaryAddBtn,
+  GlossaryDrawer,
+} from './glossary';
 import * as styles from '../editor-pane-details.module.scss';
-import { ActionMenu, ActionMenuItem } from '../../../../../components';
 import { Projects } from '../../../../../models';
-import { Icon, Drawer, DrawerProps, Button } from '@owlui/lib';
-import { GlossaryForm } from './forms/glossary-form';
 
-export type GlossaryItem = { name: string; description: string };
-export type GlossaryData = Array<GlossaryItem>;
-export type GlossaryDict = {
-  [key: string]: {
-    [key: string]: string;
-  };
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const deepCopy = (obj?: any) => {
+  if (!obj) {
+    return;
+  }
 
-const glossaryTermMenuItems: Array<ActionMenuItem> = [
-  {
-    label: 'Edit',
-    icon: 'edit',
-    iconStyle: 'Outlined',
-  },
-  {
-    label: 'Delete Term',
-    icon: 'delete',
-    iconStyle: 'Outlined',
-  },
-];
-
-const createGlossaryDict = (data: GlossaryData) => {
-  const glossary: GlossaryDict = {};
-
-  data.forEach((item: GlossaryItem) => {
-    const firstLetter = item.name.substring(0, 1);
-
-    if (glossary[firstLetter] === undefined) {
-      glossary[firstLetter] = {};
-    }
-
-    glossary[firstLetter][item.name] = item.description;
-  });
-
-  return glossary;
-};
-
-const createGlossaryItems = (data: GlossaryDict) => {
-  const headings = Object.keys(data).sort();
-
-  return headings.map((heading: string, idxH: number) => {
-    const entries = Object.keys(data[heading]).sort();
-    const glossaryItemElements = entries.map((entry, idxE) => {
-      return (
-        <div className={styles.tabGlossaryTerm} key={idxE}>
-          <div className="d-flex justify-content-between">
-            <dt className={styles.tabGlossaryTermWord}>{entry}</dt>
-            <ActionMenu
-              menu-items={glossaryTermMenuItems}
-              title="title"
-              children={<></>}
-            />
-          </div>
-          <dd className={styles.tabGlossaryTermDefinition}>
-            {data[heading][entry]}
-          </dd>
-        </div>
-      );
-    });
-    return (
-      <div key={idxH}>
-        <header>{heading}</header>
-        {glossaryItemElements}
-      </div>
-    );
-  });
-};
-
-const AddGlossaryTermButton = () => {
-  const [toggleDrawer, setToggleDrawer] = useState(false);
-
-  const glossaryDrawer: DrawerProps = {
-    header: {
-      content: <h4>Add Glossary Term</h4>,
-      bsProps: {
-        closeButton: true,
-        className: styles.owluiOffcanvasHeader,
-      },
-    },
-    body: <GlossaryForm show={toggleDrawer} setShow={setToggleDrawer} />,
-  };
-
-  const toggleShow = () => {
-    setToggleDrawer(!toggleDrawer);
-  };
-
-  return (
-    <div className={styles.owlStickyAddItem}>
-      <Button
-        className={styles.owlStickyAddItemButton}
-        data-bs-toggle="offcanvas"
-        data-bs-target="#addResource"
-        aria-controls="addResource"
-        onClick={toggleShow}
-      >
-        Add a new term to the glossary... <Icon icon="add_circle" />
-      </Button>
-      <Drawer
-        drawer={glossaryDrawer}
-        show={toggleDrawer}
-        onHide={toggleShow}
-        className={styles.tabGlossaryOwlOffcanvasForm}
-      />
-    </div>
-  );
+  return JSON.parse(JSON.stringify(obj));
 };
 
 export const TabGlossary = () => {
+  const createGlossaryDict = (terms: GlossaryData) => {
+    const dict: GlossaryDict = {};
+
+    terms.forEach((item: GlossaryItem, idx: number) => {
+      const heading = item.name.substring(0, 1).toUpperCase();
+
+      if (dict[heading] === undefined) {
+        dict[heading] = {};
+      }
+
+      dict[heading][item.name] = {
+        idx,
+        description: item.description,
+      };
+    });
+
+    return dict;
+  };
+
   const project = Projects.useData();
   const glossaryDict = createGlossaryDict(project.glossary);
-  const glossaryItems = createGlossaryItems(glossaryDict);
+  const glossary = deepCopy(project.glossary);
+  const [activeTerm, setActiveTerm] = useState({ name: '', description: '' });
+  const [activeTermIdx, setActiveTermIdx] = useState(-1);
+  const [isGlossaryDrawerOpen, setGlossaryDrawerOpen] = useState(false);
+
+  const handleGlossaryEdit = (idx: number) => {
+    setActiveTerm(project.glossary[idx]);
+    setActiveTermIdx(idx);
+    setGlossaryDrawerOpen(true);
+  };
+
+  const handleGlossaryAdd = () => {
+    setActiveTerm({ name: '', description: '' });
+    setActiveTermIdx(-1);
+    setGlossaryDrawerOpen(true);
+  };
+
+  const handleGlossaryDrawerClose = () => {
+    setGlossaryDrawerOpen(false);
+  };
+
+  const handleGlossaryDelete = (idx: number) => {
+    glossary.splice(idx, 1);
+    Projects.update({ glossary });
+  };
+
+  const handleGlossaryUpdate = (term: GlossaryItem) => {
+    if (activeTermIdx === -1) {
+      // adding new term
+      glossary.push(term);
+    } else {
+      // updating term
+      glossary[activeTermIdx] = term;
+    }
+
+    Projects.update({ glossary });
+    handleGlossaryDrawerClose();
+  };
 
   return (
     <div className={styles.tabGlossary}>
-      <dl className={styles.tabGlossaryList}>{glossaryItems}</dl>
-      <AddGlossaryTermButton />
+      <GlossaryList
+        glossary={glossaryDict}
+        onEdit={handleGlossaryEdit}
+        onDelete={handleGlossaryDelete}
+      />
+      <GlossaryAddBtn onClick={handleGlossaryAdd} />
+      <GlossaryDrawer
+        show={isGlossaryDrawerOpen}
+        onHide={handleGlossaryDrawerClose}
+        term={activeTerm}
+        onSubmit={handleGlossaryUpdate}
+      />
     </div>
   );
 };

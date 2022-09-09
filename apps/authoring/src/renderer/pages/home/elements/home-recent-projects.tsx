@@ -1,9 +1,11 @@
 import React from 'react';
+import { Nav } from 'react-bootstrap';
+import { Button } from '@owlui/lib';
 import { Projects } from '../../../models';
 
 export type RecentProjectsCommons = {
   hasProjects: boolean;
-  recentProjectList: Array<Projects.ProjectData>;
+  projectList: Array<Projects.ProjectData>;
 };
 
 export type RecentProjectsProps = Partial<RecentProjectsCommons> &
@@ -11,7 +13,7 @@ export type RecentProjectsProps = Partial<RecentProjectsCommons> &
 
 export const RecentProjects = (props: RecentProjectsProps) => {
   const hasProjects = props.hasProjects || false;
-  const recentProjectList = props.recentProjectList || [];
+  const projectList = props.projectList || [];
 
   const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
@@ -36,33 +38,29 @@ export const RecentProjects = (props: RecentProjectsProps) => {
   };
 
   return (
-    <div>
-      {!hasProjects ? (
-        <></>
-      ) : (
+    <>
+      {hasProjects && (
         <>
-          <h2 className="section-title">Recent</h2>
-          <ul>
-            {recentProjectList.map(
-              (project: Projects.ProjectData, index: number) => (
-                <div key={index}>
-                  <button
-                    className="section-link"
-                    onClick={handleOpenProject}
-                    data-project-id={project.id}
-                  >
-                    {project.name}
-                  </button>
-                </div>
-              )
-            )}
-            <div style={{ marginTop: '2rem' }}>
-              <button className="section-link">More...</button>
-            </div>
-          </ul>
+          <h2>Recent</h2>
+          <Nav className="flex-column">
+            {projectList.map((project: Projects.ProjectData, index: number) => (
+              <Nav.Item key={index}>
+                <Button
+                  variant="link"
+                  onClick={handleOpenProject}
+                  data-project-id={project.id}
+                >
+                  {project.name}
+                </Button>
+              </Nav.Item>
+            ))}
+            <Nav.Item>
+              <Button variant="link">More...</Button>
+            </Nav.Item>
+          </Nav>
         </>
       )}
-    </div>
+    </>
   );
 };
 

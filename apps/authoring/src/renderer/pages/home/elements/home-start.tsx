@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon } from '@owlui/lib';
+import { Nav } from 'react-bootstrap';
+import { Icon, Button } from '@owlui/lib';
 import { Projects } from '../../../models';
 import { useNavigate } from 'react-router-dom';
 export type StartCommons = {
@@ -20,27 +21,25 @@ export const Start = (props: StartProps) => {
   };
 
   return (
-    <div>
-      <h2 className="section-title">Start</h2>
-      <ul>
-        <li>
-          <button className="section-link" onClick={handleNewProject}>
+    <>
+      <h2>Start</h2>
+      <Nav className="flex-column">
+        <Nav.Item>
+          <Button variant="link" onClick={handleNewProject}>
             <Icon display="Outlined" icon="library_add" />
-            New Project...
-          </button>
-        </li>
-        {!hasProjects ? (
-          <></>
-        ) : (
-          <li>
-            <button className="section-link" onClick={handleOpenProject}>
+            New Project
+          </Button>
+        </Nav.Item>
+        {hasProjects && (
+          <Nav.Item>
+            <Button variant="link" onClick={handleOpenProject}>
               <Icon display="Outlined" icon="folder_open" />
               Open...
-            </button>
-          </li>
+            </Button>
+          </Nav.Item>
         )}
-      </ul>
-    </div>
+      </Nav>
+    </>
   );
 };
 

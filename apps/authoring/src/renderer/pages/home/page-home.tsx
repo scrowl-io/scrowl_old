@@ -5,7 +5,7 @@ import { Logo } from '../../components/logo/comp-logo';
 import { RecentProjects, Start, Tutorials } from './elements';
 
 export const PageElement = () => {
-  const [recentProjectList, setRecentProjectList] = useState([]);
+  const [projectList, setProjectList] = useState([]);
   const [hasProjects, setHasProjects] = useState(false);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ export const PageElement = () => {
         return;
       }
 
-      setRecentProjectList(results.data.projects);
+      setProjectList(results.data.projects);
 
       const hasProjects = results.data.projects.length > 0;
       setHasProjects(hasProjects);
@@ -23,22 +23,27 @@ export const PageElement = () => {
   }, []);
 
   return (
-    <main className={styles.main}>
-      <div className="section-title-wrap">
-        <Logo />
-        <h1 className="section-title">Scrowl Authoring</h1>
-      </div>
+    <main className={styles.home}>
+      <div className={styles.home__container}>
+        <div className={styles.home__header}>
+          <h1>
+            <Logo />
+            Scrowl Authoring
+          </h1>
+        </div>
 
-      <div className="section-row">
-        <Start hasProjects={hasProjects} />
-        <Tutorials />
-      </div>
+        <div className={styles.home__section}>
+          <Start hasProjects={hasProjects} />
+        </div>
 
-      <div style={{ marginTop: '2rem' }}>
-        <RecentProjects
-          hasProjects={hasProjects}
-          recentProjectList={recentProjectList}
-        />
+        <div className={styles.home__section}>
+          <Tutorials />
+        </div>
+
+        <div className={styles.home__section}>
+          <RecentProjects hasProjects={hasProjects} projectList={projectList} />
+        </div>
+
       </div>
     </main>
   );
