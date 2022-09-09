@@ -17,7 +17,7 @@ export const Start = (props: StartProps) => {
   };
 
   const handleOpenProject = () => {
-    // Projects.explore();
+    Projects.explore();
   };
 
   return (
@@ -26,14 +26,14 @@ export const Start = (props: StartProps) => {
       <Nav className="flex-column">
         <Nav.Item>
           <Button variant="link" onClick={handleNewProject}>
-            <Icon display="Outlined" icon="library_add" />
+            <Icon display="outlined" icon="library_add" />
             New Project
           </Button>
         </Nav.Item>
         {hasProjects && (
           <Nav.Item>
             <Button variant="link" onClick={handleOpenProject}>
-              <Icon display="Outlined" icon="folder_open" />
+              <Icon display="outlined" icon="folder_open" />
               Open...
             </Button>
           </Nav.Item>

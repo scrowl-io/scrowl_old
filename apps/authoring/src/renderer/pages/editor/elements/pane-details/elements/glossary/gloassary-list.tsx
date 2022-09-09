@@ -40,8 +40,8 @@ export const GlossaryListEntries = ({
     {
       label: 'Edit',
       icon: 'edit',
-      iconStyle: 'Outlined',
-      action: (ev: React.MouseEvent<Element, MouseEvent>) => {
+      display: 'outlined',
+      actionHandler: (ev: React.MouseEvent<Element, MouseEvent>) => {
         const idx = getEntryIndex(ev);
 
         if (idx === undefined) {
@@ -55,8 +55,8 @@ export const GlossaryListEntries = ({
     {
       label: 'Delete',
       icon: 'delete',
-      iconStyle: 'Outlined',
-      action: (ev: React.MouseEvent<Element, MouseEvent>) => {
+      display: 'outlined',
+      actionHandler: (ev: React.MouseEvent<Element, MouseEvent>) => {
         const idx = getEntryIndex(ev);
 
         if (idx === undefined) {

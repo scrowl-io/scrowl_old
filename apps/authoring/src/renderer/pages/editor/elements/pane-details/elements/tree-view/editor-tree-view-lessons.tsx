@@ -30,8 +30,8 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     {
       label: 'Add Slide',
       icon: 'crop_square',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         const newSlide: SlideTreeItem = {
           name: 'Untitled Slide',
         };
@@ -43,16 +43,16 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     {
       label: 'Rename',
       icon: 'edit',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         toggleModalRename();
       },
     },
     {
       label: 'Duplicate',
       icon: 'content_copy',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         lessonModule.lessons.splice(idx + 1, 0, lesson);
         Projects.update({ modules });
       },
@@ -60,8 +60,8 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     {
       label: 'Add Lesson',
       icon: 'widgets',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         const newLesson: LessonTreeItem = {
           name: 'Untitled Lesson',
           slides: [
@@ -78,8 +78,8 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     {
       label: 'Move Up',
       icon: 'arrow_upward',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (lessonModule.lessons.length <= 1 || idx <= 0) {
           console.log('Invalid operation');
           return;
@@ -94,8 +94,8 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     {
       label: 'Move Down',
       icon: 'arrow_downward',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (
           lessonModule.lessons.length <= 1 ||
           lessonModule.lessons.length - 1 <= idx
@@ -113,8 +113,8 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     {
       label: 'Delete Lesson',
       icon: 'delete',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         lessonModule.lessons.splice(idx, 1);
         Projects.update({ modules });
       },
@@ -139,10 +139,10 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
         >
           <div className="lesson-icons">
             <span className={styles.treeViewItemIconHandle}>
-              <Icon icon="arrow_drop_down" display="Filled" />
+              <Icon icon="arrow_drop_down" display="outlined" filled />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="widgets" display={open ? 'Outlined' : 'Filled'} />
+              <Icon icon="widgets" display="outlined" filled={open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>

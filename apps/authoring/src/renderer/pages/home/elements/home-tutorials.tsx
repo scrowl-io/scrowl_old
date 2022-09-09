@@ -13,7 +13,7 @@ export const Tutorials = () => {
       <Nav className="flex-column">
         <Nav.Item>
           <Button variant="link" onClick={handleCreateProject}>
-            <Icon display="Filled" icon="assistant" />
+            <Icon display="outlined" filled icon="assistant" />
             Beginner Tutorial Project...
           </Button>
         </Nav.Item>

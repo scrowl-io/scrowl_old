@@ -27,16 +27,16 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     {
       label: 'Rename',
       icon: 'edit',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         toggleModalRename();
       },
     },
     {
       label: 'Duplicate',
       icon: 'content_copy',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (!modules) {
           return;
         }
@@ -48,8 +48,8 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     {
       label: 'Add Slide',
       icon: 'folder',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         const newSlide: SlideTreeItem = {
           name: 'Untitled Slide',
         };
@@ -60,8 +60,8 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     {
       label: 'Move Up',
       icon: 'arrow_upward',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (slideLesson.slides.length <= 1 || idx <= 0) {
           console.log('Invalid operation');
           return;
@@ -76,8 +76,8 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     {
       label: 'Move Down',
       icon: 'arrow_downward',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (
           slideLesson.slides.length <= 1 ||
           slideLesson.slides.length - 1 <= idx
@@ -95,8 +95,8 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     {
       label: 'Delete Slide',
       icon: 'delete',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         slideLesson.slides.splice(idx, 1);
         Projects.update({ modules });
       },
@@ -113,7 +113,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       <div className={styles.treeViewHeader}>
         <Button id={itemId} className={styles.treeViewItem} variant="link">
           <span className={styles.treeViewItemIconDetail}>
-            <Icon icon="check_box_outline_blank" display="Filled" />
+            <Icon icon="check_box_outline_blank" display="outlined" filled />
           </span>
           <span className={styles.treeViewItemLabel}>{tree.name}</span>
         </Button>

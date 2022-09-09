@@ -29,8 +29,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       // name: 'add_lesson', // TEMP: use for filtering (i.e. can't move module up that's first in list)
       label: 'Add Lesson',
       icon: 'widgets',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (!modules) {
           return;
         }
@@ -53,8 +53,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       // name: 'rename_module',
       label: 'Rename',
       icon: 'edit',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         toggleModalRename();
       },
     },
@@ -62,8 +62,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       // name: 'duplicate_module',
       label: 'Duplicate',
       icon: 'content_copy',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (!modules) {
           return;
         }
@@ -76,8 +76,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       // name: 'add_module_after',
       label: 'Add Module After',
       icon: 'folder',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         const newModule: ModuleTreeItem = {
           name: 'Untitled Module',
           lessons: [
@@ -96,8 +96,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       // name: 'move_up',
       label: 'Move Up',
       icon: 'arrow_upward',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (!modules) {
           return;
         }
@@ -114,8 +114,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       // name: 'move_down',
       label: 'Move Down',
       icon: 'arrow_downward',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (!modules) {
           return;
         }
@@ -132,8 +132,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       // name: 'delete_module',
       label: 'Delete Module',
       icon: 'delete',
-      iconStyle: 'Outlined',
-      action: () => {
+      display: 'outlined',
+      actionHandler: () => {
         if (!modules) {
           return;
         }
@@ -174,10 +174,10 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
         >
           <div className="module-icons">
             <span className={styles.treeViewItemIconHandle}>
-              <Icon icon="arrow_drop_down" display="Filled" />
+              <Icon icon="arrow_drop_down" display="outlined" filled />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="folder" display={open ? 'Outlined' : 'Filled'} />
+              <Icon icon="folder" display="outlined" filled={open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>
