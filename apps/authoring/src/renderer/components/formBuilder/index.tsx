@@ -28,7 +28,6 @@ const createFormElement = (formElements: any) => {
 
 export const GeneratedForm = (props: any) => {
   const formElements = props.elements;
-  console.log(formElements);
   createFormElement(formElements);
 
   return (
