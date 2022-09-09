@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import {
   Modal,
-  ModalDefaultProps,
   Table,
   TableData,
-  TableRowCommons,
   Input,
   TextInputProps,
+  Button,
 } from '@owlui/lib';
 import { Projects } from '../../../models';
 
-const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
-  const [filteredResults, setFilteredResults] = useState<TableRowCommons[]>([]);
-  const [searchInput, setSearchInput] = useState('');
+export type ProjectExplorerBodyProps = {
+  show: boolean;
+};
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export type ProjectExlporerTableItem = {
+  id?: string;
+  name?: string;
+  link?: JSX.Element;
+  created_at?: string;
+  updated_at?: string;
+};
+
+const ProjectExplorerBody = ({ show }: ProjectExplorerBodyProps) => {
   const handleOpenProject = (ev: React.MouseEvent<HTMLButtonElement>) => {
     ev.preventDefault();
 
@@ -36,40 +43,33 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
 
     Projects.open(projectId);
   };
-
-  const filterData = (value: string) => {
-    const lowerCaseValue = value.toLowerCase().trim();
-    if (!lowerCaseValue) {
-      return projectList;
-    } else {
-      const filteredData = projectList.filter((item: string) => {
-        return (Object.keys(item) as (keyof typeof item)[]).some(key => {
-          if (item[key] !== null) {
-            return item[key].toString().toLowerCase().includes(lowerCaseValue);
-          }
-        });
-      });
-      setFilteredResults(filteredData);
-    }
-  };
+  const [sourceItems, setSourceItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
 
   const searchItems = (searchValue: string) => {
     setSearchInput(searchValue);
 
-    if (searchValue !== '') {
-      filterData(searchValue);
+    if (searchValue === '') {
+      setFilteredItems(sourceItems);
+      return;
     }
-  };
 
+    const searchedItems = sourceItems.filter(
+      (item: ProjectExlporerTableItem) => {
+        const lookup = item.name ? item.name.toLowerCase() : '';
+
+        return lookup.includes(searchValue.toLowerCase());
+      }
+    );
+
+    setFilteredItems(searchedItems);
+  };
   const projectsData: TableData = {
     columns: [
       {
-        label: '#',
-        field: 'id',
-      },
-      {
         label: 'Project Name',
-        field: 'name',
+        field: 'link',
       },
       {
         label: 'Created At',
@@ -80,7 +80,7 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
         field: 'updated_at',
       },
     ],
-    items: searchInput.length < 1 ? projectList : filteredResults,
+    items: filteredItems,
   };
   const searchInputOpts: TextInputProps = {
     label: {
@@ -99,6 +99,42 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
     },
   };
 
+  useEffect(() => {
+    if (!show) {
+      return;
+    }
+
+    Projects.list().then(results => {
+      if (results.error) {
+        console.error(results);
+        return;
+      }
+
+      const items = results.data.projects.map(
+        (project: Projects.ProjectData): ProjectExlporerTableItem => {
+          return {
+            id: project.id,
+            name: project.name,
+            link: (
+              <Button
+                variant="link"
+                data-project-id={project.id}
+                onClick={handleOpenProject}
+              >
+                {project.name}
+              </Button>
+            ),
+            created_at: project.created_at,
+            updated_at: project.updated_at,
+          };
+        }
+      );
+
+      setSourceItems(items);
+      setFilteredItems(items);
+    });
+  }, [show]);
+
   return (
     <>
       <Input inputProps={searchInputOpts} />
@@ -110,7 +146,6 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
 
 export const ModalProjectExplorer = () => {
   const showModalExplorer = Projects.useExplorer();
-  const [projectList, setProjectList] = useState([]);
   const header = {
     bsProps: {
       closeButton: true,
@@ -119,23 +154,8 @@ export const ModalProjectExplorer = () => {
     content: <></>,
   };
   const body = {
-    content: <ProjectExplorerBody projectList={projectList} />,
+    content: <ProjectExplorerBody show={showModalExplorer} />,
   };
-
-  useEffect(() => {
-    if (!showModalExplorer) {
-      setProjectList([]);
-      return;
-    }
-    Projects.list().then(results => {
-      if (results.error) {
-        console.error(results);
-        return;
-      }
-
-      setProjectList(results.data.projects);
-    });
-  }, [showModalExplorer]);
 
   return (
     <Modal
