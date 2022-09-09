@@ -12,7 +12,7 @@ import {
 } from './editor-tree-view.types';
 import { deepCopy } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
-import { RenameModal } from './editor-tree-view-modules-rename';
+import { RenameModal } from '../modals/editor-modal-rename';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
   // for the renmaing modal, use the owl ui modal by following the BS example https://react-bootstrap.github.io/components/modal/
@@ -38,6 +38,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const [open, setOpen] = useState(false);
   const itemId = `tree-item-module-${idx}-item`;
   const menuId = `tree-item-module-${idx}-menu`;
+  const [showModalRename, setModalRename] = useState(false);
+  const toggleModalRename = () => setModalRename(!showModalRename);
 
   const moduleMenuItems: Array<ActionMenuItem> = [
     {
@@ -70,9 +72,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       icon: 'edit',
       iconStyle: 'Outlined',
       action: () => {
-        if (!modules) return;
-
-        // change the rename modal open state here
+        toggleModalRename();
       },
     },
     {
@@ -178,6 +178,12 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   //   }
   // };
 
+  const handleRename = (name: string) => {
+    module.name = name;
+    modules[idx] = module;
+    Projects.update({ modules });
+  };
+
   return (
     <div className={styles.treeViewModule} key={idx}>
       <div className={styles.treeViewHeader}>
@@ -214,7 +220,13 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
           />
         </div>
       </Collapse>
-      <RenameModal />
+      <RenameModal
+        label="Rename Module"
+        value={tree.name}
+        onSubmit={handleRename}
+        show={showModalRename}
+        onHide={toggleModalRename}
+      />
     </div>
   );
 };
