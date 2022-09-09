@@ -4,9 +4,11 @@ import { Tabs } from '@owlui/lib';
 import { Pane } from '../../../../components';
 import { Projects } from '../../../../models';
 import { RightPaneContentForm } from './content/right-pane-content-form';
+import { useActiveSlide } from '../../page-editor-hooks';
 
 export const RightPane = () => {
   const isLoaded = Projects.useLoaded();
+  const activeSlide = useActiveSlide();
   const tabItems = [
     {
       id: '1',
