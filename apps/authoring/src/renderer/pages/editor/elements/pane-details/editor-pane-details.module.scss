@@ -223,12 +223,12 @@
 
       div,
       h4 {
-        margin-bottom: 0;
+        margin-bottom: .2rem;
+        margin-top: .2rem;
       }
 
       h4 {
-        font-weight: 700;
-        font-size: 1.3em;
+        font-weight: 600;
       }
 
       .btn-close {
@@ -384,5 +384,23 @@
 
   &--lesson .nav {
     box-shadow: -2px 0 0 0 var(--owl-color-lesson);
+  }
+}
+
+.owlui-form-label{
+  color: var(--owl-typeface-label-color);
+}
+
+.owlui-offcanvas-header{
+  font-weight: normal !important;
+}
+
+.glossary-cancel-button{
+  font-weight: normal;
+  color:var(--bs-link-blue-500);
+
+  &:hover{
+    text-decoration: underline;
+    color:var(--bs-link-blue-500)
   }
 }
