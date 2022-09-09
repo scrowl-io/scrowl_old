@@ -236,6 +236,7 @@ export const open = (projectId: number) => {
       processor.dispatch(state.update(result.data.project));
       processor.dispatch(state.loaded(true));
       processor.dispatch(state.process(false));
+      closeExplorer();
 
       if (processor.navigator) {
         processor.navigator(defaultRoute);
