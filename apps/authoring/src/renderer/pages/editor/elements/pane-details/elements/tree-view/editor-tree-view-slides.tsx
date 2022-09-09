@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import { Projects } from '../../../../../../models';
@@ -10,7 +10,8 @@ import {
   TreeViewSlidesProps,
   TreeViewSlideProps,
 } from './editor-tree-view.types';
-import { deepCopy, addLeadZero } from './utils';
+import { deepCopy } from './utils';
+import { RenameModal } from '../modals/editor-modal-rename';
 
 const TreeViewSlide = (props: TreeViewSlideProps) => {
   const { tree, idx, moduleIdx, lessonIdx, project } = props;
@@ -19,6 +20,8 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
   const slideModule: ModuleTreeItem = modules[moduleIdx];
   const slideLesson: LessonTreeItem = slideModule.lessons[lessonIdx];
   const slide: SlideTreeItem = slideLesson.slides[idx];
+  const [showModalRename, setModalRename] = useState(false);
+  const toggleModalRename = () => setModalRename(!showModalRename);
 
   const slideMenuItems: Array<ActionMenuItem> = [
     {
@@ -26,16 +29,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       icon: 'edit',
       iconStyle: 'Outlined',
       action: () => {
-        const now = new Date();
-        const y = now.getFullYear().toString().slice(-2);
-        const m = addLeadZero(now.getMonth() + 1);
-        const d = addLeadZero(now.getDate());
-        const hh = addLeadZero(now.getHours());
-        const mm = addLeadZero(now.getMinutes());
-        const ss = addLeadZero(now.getSeconds());
-
-        slide.name = `${y}/${m}/${d} - ${hh}:${mm}:${ss}`;
-        Projects.update({ modules });
+        toggleModalRename();
       },
     },
     {
@@ -115,6 +109,11 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     },
   ];
 
+  const handleRename = (name: string) => {
+    slide.name = name;
+    Projects.update({ modules });
+  };
+
   return (
     <div className={styles.treeViewSlide} key={idx}>
       <div className={styles.treeViewHeader}>
@@ -130,6 +129,13 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
           children={<></>}
         />
       </div>
+      <RenameModal
+        label="Rename Lesson"
+        value={tree.name}
+        onSubmit={handleRename}
+        show={showModalRename}
+        onHide={toggleModalRename}
+      />
     </div>
   );
 };
