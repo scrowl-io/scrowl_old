@@ -92,6 +92,31 @@ export type ProjectResourceItem = {
   description?: string;
 };
 
+export type ManifestElementText = {
+  value: string;
+  type: 'text';
+  label: string;
+};
+
+export type ManifestElementTextarea = {
+  value: string;
+  type: 'textarea';
+  label: string;
+};
+
+export type ManifestElementNumber = {
+  value: number;
+  type: 'number';
+  label: string;
+};
+
+export type ManifestElements = {
+  [key: string]:
+    | ManifestElementText
+    | ManifestElementNumber
+    | ManifestElementTextarea;
+};
+
 export type ProjectSlide = {
   name: string;
   template?: {
@@ -103,14 +128,7 @@ export type ProjectSlide = {
       name: string;
       component: string;
     };
-    elements: {
-      [key: string]: {
-        editable: boolean;
-        value: string | number | boolean;
-        type: string;
-        label: string;
-      };
-    };
+    elements: ManifestElements;
   };
 };
 

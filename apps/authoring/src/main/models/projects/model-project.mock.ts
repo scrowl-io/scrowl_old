@@ -1,4 +1,43 @@
-import { ProjectData } from './model-projects.types';
+import { ProjectData, ProjectSlide } from './model-projects.types';
+
+export const mockSlide = (name: string): ProjectSlide => {
+  return {
+    name: name,
+    template: {
+      version: '1.0.0',
+      slide: {
+        aspect: '16:9',
+      },
+      meta: {
+        name: 'image grid',
+        component: 'ImageGrid',
+      },
+      elements: {
+        title: {
+          value: 'Building a Respectful Workplace',
+          type: 'text',
+          label: 'title',
+        },
+        subtitle: {
+          value: 'Introduction',
+          type: 'text',
+          label: 'subtitle',
+        },
+        body: {
+          value:
+            'Respect in the workplace is a fundamental human right. All employees—regardless of their differences—deserve to be treated with dignity and fairness. Building a culture of respect leads to a more successful and enjoyable work experience for everyone',
+          type: 'textarea',
+          label: 'body',
+        },
+        courseDuration: {
+          value: 25,
+          type: 'number',
+          label: 'course Duration',
+        },
+      },
+    },
+  };
+};
 
 export const data: ProjectData = {
   name: 'Untitled Project',
@@ -14,61 +53,14 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'Building a Respectful Workplace',
-          slides: [
-            {
-              name: 'Introduction',
-              template: {
-                version: '1.0.0',
-                slide: {
-                  aspect: '16:9',
-                },
-                meta: {
-                  name: 'image grid',
-                  component: 'ImageGrid',
-                },
-                elements: {
-                  title: {
-                    editable: true,
-                    value: 'Building a Respectful Workplace',
-                    type: 'text',
-                    label: 'title',
-                  },
-                  subtitle: {
-                    editable: true,
-                    value: 'Introduction',
-                    type: 'text',
-                    label: 'subtitle',
-                  },
-                  body: {
-                    editable: true,
-                    value:
-                      'Respect in the workplace is a fundamental human right. All employees—regardless of their differences—deserve to be treated with dignity and fairness. Building a culture of respect leads to a more successful and enjoyable work experience for everyone',
-                    type: 'textarea',
-                    label: 'body',
-                  },
-                  courseDuration: {
-                    editable: true,
-                    value: '25',
-                    type: 'number',
-                    label: 'course Duration',
-                  },
-                },
-              },
-            },
-          ],
+          slides: [mockSlide('Introduction')],
         },
         {
           name: 'What is Harassment vs. Discrimination?',
           slides: [
-            {
-              name: 'Slide 1',
-            },
-            {
-              name: 'Slide 2',
-            },
-            {
-              name: 'Slide 3',
-            },
+            mockSlide('Slide 1'),
+            mockSlide('Slide 2'),
+            mockSlide('Slide 3'),
           ],
         },
       ],
@@ -78,11 +70,7 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'What is Sexual Harassment?',
-          slides: [
-            {
-              name: 'Slide 1',
-            },
-          ],
+          slides: [mockSlide('Slide 4')],
         },
       ],
     },
@@ -92,15 +80,9 @@ export const data: ProjectData = {
         {
           name: 'Preventing Sexual Harassment as a Supervisor',
           slides: [
-            {
-              name: 'Slide 1',
-            },
-            {
-              name: 'Slide 2',
-            },
-            {
-              name: 'Slide 3',
-            },
+            mockSlide('Slide 5'),
+            mockSlide('Slide 6'),
+            mockSlide('Slide 7'),
           ],
         },
       ],
@@ -110,14 +92,7 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'Final Thoughts',
-          slides: [
-            {
-              name: 'Slide 1',
-            },
-            {
-              name: 'Slide 2',
-            },
-          ],
+          slides: [mockSlide('Slide 8'), mockSlide('Slide 9')],
         },
       ],
     },
