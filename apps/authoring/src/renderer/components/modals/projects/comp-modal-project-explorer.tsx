@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, ModalDefaultProps, TableData, TableRowItem } from '@owlui/lib';
-import { useExplorer, closeExplorer } from '../../models/projects/index';
-import { Projects } from '../../models';
-import { AppInput, Table } from '../../components/app/elements';
+import {
+  Modal,
+  ModalDefaultProps,
+  Table,
+  TableData,
+  TableRowItem,
+  Input,
+  TextInputProps,
+} from '@owlui/lib';
+import { Projects } from '../../../models';
 
 const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
   const [filteredResults, setFilteredResults] = useState<TableRowItem[]>([]);
@@ -55,7 +61,6 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
   };
 
   const projectsData: TableData = {
-    caption: 'Table 1. List of The Office characters.',
     columns: [
       {
         label: '#',
@@ -76,19 +81,45 @@ const ProjectExplorerBody = ({ projectList }: ModalDefaultProps) => {
     ],
     items: searchInput.length < 1 ? projectList : filteredResults,
   };
+  const searchInputOpts: TextInputProps = {
+    label: {
+      content: 'Project Search',
+      htmlFor: 'text',
+    },
+    control: {
+      id: 'text',
+      type: 'text',
+      disabled: false,
+      readOnly: false,
+      plaintext: false,
+      placeholder: 'e.g. Safety Training',
+      value: searchInput,
+      onChange: e => searchItems((e.target as HTMLInputElement).value),
+    },
+  };
 
   return (
     <>
-      <AppInput searchItems={searchItems} searchInput={searchInput} />
+      <Input inputProps={searchInputOpts} />
       <hr />
       <Table tableData={projectsData} />
     </>
   );
 };
 
-export const ProjectExplorerModal = () => {
-  const showModalExplorer = useExplorer();
+export const ModalProjectExplorer = () => {
+  const showModalExplorer = Projects.useExplorer();
   const [projectList, setProjectList] = useState([]);
+  const header = {
+    bsProps: {
+      closeButton: true,
+      closeLabel: 'Close',
+    },
+    content: <></>,
+  };
+  const body = {
+    content: <ProjectExplorerBody projectList={projectList} />,
+  };
 
   useEffect(() => {
     if (!showModalExplorer) {
@@ -105,33 +136,16 @@ export const ProjectExplorerModal = () => {
     });
   }, [showModalExplorer]);
 
-  const modalContent: ModalDefaultProps = {
-    header: {
-      bsProps: {
-        closeButton: true,
-        closeLabel: 'Close',
-      },
-      content: <></>,
-    },
-    body: {
-      content: <ProjectExplorerBody projectList={projectList} />,
-    },
-  };
-
-  const { header, body, footer } = modalContent;
-  console.log('projectList from project explorer', projectList);
-
   return (
     <Modal
       show={showModalExplorer}
-      onHide={closeExplorer}
+      onHide={Projects.closeExplorer}
       header={header}
       body={body}
-      footer={footer}
     />
   );
 };
 
 export default {
-  ProjectExplorerModal,
+  ModalProjectExplorer,
 };

@@ -11,7 +11,7 @@ import { pageRoutes } from './comp-app-routes';
 import { Menu } from '../../services';
 import { Home, PageNavProps } from '../../pages';
 import { Preferences, Projects } from '../../models';
-import { ProjectExplorerModal } from '../projectExplorerModal/index';
+import { ModalProjectExplorer } from '../modals';
 
 import { TableRowItem } from '@owlui/lib';
 
@@ -63,7 +63,7 @@ const Main = (props: AppMainProps) => {
       <div className={styles.content}>
         <AppRoutes />
       </div>
-      <ProjectExplorerModal />
+      <ModalProjectExplorer />
     </div>
   );
 };
