@@ -27,6 +27,7 @@ const isDevelopment =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 const isDARWIN = process.platform === 'darwin';
+let isQuitting = false;
 
 const installExtensions = () => {
   return Promise.all([installExtension(REACT_DEVELOPER_TOOLS)]);
@@ -93,8 +94,29 @@ const createWindow = async () => {
     }
   });
 
+  mainWindow.on('close', (ev: Electron.Event) => {
+    try {
+      if (process.platform === 'darwin') {
+        if (isQuitting) {
+          mainWindow = null;
+        } else {
+          ev.preventDefault();
+          mainWindow?.hide();
+        }
+      }
+    } catch (err) {
+      console.error('window failed to closed', err);
+    }
+  });
+
   mainWindow.on('closed', () => {
     mainWindow = null;
+  });
+
+  app.on('activate', () => {
+    if (process.platform === 'darwin' && mainWindow !== null) {
+      mainWindow.show();
+    }
   });
 
   // Open urls in the user's browser
@@ -131,11 +153,19 @@ const registerScrowlFileProtocol = () => {
  * Add event listeners...
  */
 
+app.on('before-quit', () => {
+  isQuitting = true;
+});
+
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
+  try {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  } catch (err) {
+    console.error('app failed to quit', err);
   }
 });
 
