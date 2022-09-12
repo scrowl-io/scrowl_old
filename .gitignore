@@ -79,3 +79,4 @@ jspm_packages/
 
 # DynamoDB Local files
 .dynamodb/
+apps/authoring/scripts/pipeline/dev.env.json

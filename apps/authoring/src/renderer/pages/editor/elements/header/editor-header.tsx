@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import * as styles from './editor-header.module.scss';
-import * as toolbarStyles from '../../../../components/toolbar/comp-toolbar.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
 import { PreviewButton, PublishButton, SaveTooltip } from './elements';

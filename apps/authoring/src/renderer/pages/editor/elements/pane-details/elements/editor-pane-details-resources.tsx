@@ -9,17 +9,17 @@ const resourcesMenuItems: Array<ActionMenuItem> = [
   {
     label: 'Edit',
     icon: 'edit',
-    iconStyle: 'Outlined',
+    display: 'outlined',
   },
   {
     label: 'Preview',
     icon: 'visibility',
-    iconStyle: 'Outlined',
+    display: 'outlined',
   },
   {
     label: 'Delete Resource',
     icon: 'delete',
-    iconStyle: 'Outlined',
+    display: 'outlined',
   },
 ];
 
@@ -31,7 +31,7 @@ const createItem = (
   const header = (
     <div className="d-flex resource-header justify-content-between">
       <div className="d-flex resource-header-left">
-        <Icon display="Filled" icon="description" />
+        <Icon display="outlined" filled icon="description" />
         <span className="resource-header-link">{item.name}</span>
       </div>
 
