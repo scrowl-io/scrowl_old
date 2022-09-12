@@ -88,7 +88,7 @@
         color: var(--owl-input-placeholder-color);
       }
 
-      .owlui-icons{
+      .owlui-icons {
         font-size: 1.65em;
       }
     }
@@ -174,9 +174,9 @@
 
   &__header {
     padding-left: calc(var(--owl-sidebar-spacing));
-    padding-top: .25rem;
-    padding-bottom: .25rem;
-    font-size: .75rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-size: 0.75rem;
     background-color: var(--owl-sidebar-header-bg);
     color: var(--owl-sidebar-header-color);
     font-weight: 700;
@@ -186,7 +186,7 @@
     position: relative;
     padding: calc(var(--owl-sidebar-spacing) / 2);
     padding-left: var(--owl-sidebar-spacing);
-    font-size: .75rem;
+    font-size: 0.75rem;
     line-height: 1.4;
     color: var(--bs-body-color);
 
@@ -204,6 +204,7 @@
       display: block;
       margin-top: 0.25em;
       line-height: 1.4;
+      word-wrap: break-word;
     }
 
     &:hover {
@@ -231,12 +232,12 @@
 
       div,
       h4 {
-        margin-bottom: 0;
+        margin-bottom: 0.2rem;
+        margin-top: 0.2rem;
       }
 
       h4 {
-        font-weight: 700;
-        font-size: 1.3em;
+        font-weight: 600;
       }
 
       .btn-close {
@@ -268,12 +269,8 @@
       border-radius: 0.25em;
     }
 
-    .glossary-submit-button,
-    .glossary-cancel-button {
-      margin-left: 0.5em;
-      font-weight: 600;
-      padding-right: 1em;
-      padding-left: 1em;
+    .glossary-submit-button {
+      margin: 0;
     }
   }
 }
@@ -394,4 +391,12 @@
   &--lesson .nav {
     box-shadow: -2px 0 0 0 var(--owl-color-lesson);
   }
+}
+
+.owlui-form-label {
+  color: var(--owl-typeface-label-color);
+}
+
+.owlui-offcanvas-header {
+  font-weight: normal !important;
 }
