@@ -32,7 +32,7 @@ export const mockSlide = (name: string): ProjectSlide => {
         courseDuration: {
           value: 25,
           type: 'number',
-          label: 'course Duration',
+          label: 'courseDuration',
         },
       },
     },

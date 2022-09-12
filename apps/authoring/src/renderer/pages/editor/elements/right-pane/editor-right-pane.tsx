@@ -15,7 +15,7 @@ export const RightPane = () => {
       title: 'Content',
       view: (
         <div className={styles.templateOptionsContent}>
-          <RightPaneContentForm />
+          <RightPaneContentForm activeSlide={activeSlide} />
         </div>
       ),
     },
