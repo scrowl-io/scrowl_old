@@ -4,3 +4,4 @@ export * from './toolbar';
 export * from './pane';
 export * from './action-menu';
 export * from './portal';
+export * from './formBuilder';

@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Projects } from '../../../../../models';
-import { GeneratedForm } from '../../../../../components/formBuilder';
+import { FormBuilder, FormBuilderCommons } from '../../../../../components';
+import { deepCopy } from './utils';
+import { updateActiveSlide } from '../../../page-editor-hooks';
 
-export const RightPaneContentForm = ({ activeSlide }: any) => {
-  const project = Projects.useData();
-  const formTemplate = project.modules[0].lessons[0].slides[0].template;
+export type ContentFormProps = {
+  activeSlide: Projects.ProjectSlide;
+};
 
-  const [formData, setFormData] = useState({ ...formTemplate.elements });
+export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
+  const slide = deepCopy(activeSlide);
+  const handleOnSubmit = () => {
+    console.log('submitting');
+  };
+
+  const handleOnUpdate = (data: FormBuilderCommons['formData']) => {
+    slide.template.elements = Object.assign(slide.template.elements, data);
+
+    updateActiveSlide(slide);
+  };
+
+  if (!activeSlide.template) {
+    return <></>;
+  }
+
+  console.log('active slide', activeSlide);
 
   return (
     <div>
-      <GeneratedForm formData={formData} setFormData={setFormData} />
+      <FormBuilder
+        name={activeSlide.name}
+        formData={activeSlide.template.elements}
+        onUpdate={handleOnUpdate}
+        onSubmit={handleOnSubmit}
+      />
     </div>
   );
 };

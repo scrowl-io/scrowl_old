@@ -10,6 +10,7 @@ export const useInit = () => {
     (state: State.RootState) => state.preferences.isInit
   );
   const dispatch = useDispatch();
+  processor.dispatch = dispatch;
 
   if (isInit) {
     return isInit;
@@ -19,7 +20,6 @@ export const useInit = () => {
     dispatch(state.init(true));
   }, 1);
 
-  processor.dispatch = dispatch;
   return isInit;
 };
 

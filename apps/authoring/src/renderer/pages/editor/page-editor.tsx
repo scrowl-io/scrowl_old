@@ -8,7 +8,7 @@ export const PageElement = () => {
 
   return (
     <>
-      {isInit ? (
+      {!isInit ? (
         <div>Loading...</div>
       ) : (
         <main className={styles.editor}>
