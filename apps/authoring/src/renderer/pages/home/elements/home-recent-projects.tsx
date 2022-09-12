@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { Button } from '@owlui/lib';
@@ -36,6 +37,9 @@ export const RecentProjects = (props: RecentProjectsProps) => {
 
     Projects.open(projectId);
   };
+  const handleMoreProjects = (ev: React.MouseEvent<HTMLButtonElement>) => {
+    Projects.explore();
+  };
 
   return (
     <>
@@ -55,7 +59,9 @@ export const RecentProjects = (props: RecentProjectsProps) => {
               </Nav.Item>
             ))}
             <Nav.Item>
-              <Button variant="link">More...</Button>
+              <Button variant="link" onClick={handleMoreProjects}>
+                More...
+              </Button>
             </Nav.Item>
           </Nav>
         </>

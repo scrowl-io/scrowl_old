@@ -1,5 +1,4 @@
 import React from 'react';
-import * as styles from './editor-pane-details.module.scss';
 import { Tabs } from '@owlui/lib';
 import { Pane } from '../../../../components';
 import { TabOutline, TabGlossary, TabResources } from './elements';
@@ -31,7 +30,7 @@ export const PaneDetails = () => {
 
   return (
     <Pane>
-      <Tabs items={tabItems} size="Sm" />
+      <Tabs items={tabItems} pxScale="Sm" />
     </Pane>
   );
 };

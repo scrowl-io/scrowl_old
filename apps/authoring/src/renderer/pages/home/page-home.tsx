@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as styles from './page-home.module.scss';
-import { Logo } from '../../components/logo/comp-logo';
 import { Projects } from '../../models';
+import { Logo } from '../../components/logo/comp-logo';
 import { RecentProjects, Start, Tutorials } from './elements';
 
 export const PageElement = () => {
@@ -9,17 +9,18 @@ export const PageElement = () => {
   const [hasProjects, setHasProjects] = useState(false);
 
   useEffect(() => {
-    Projects.list().then(results => {
+    Projects.listRecent().then(results => {
       if (results.error) {
         console.error(results);
         return;
       }
 
       setProjectList(results.data.projects);
+
       const hasProjects = results.data.projects.length > 0;
       setHasProjects(hasProjects);
     });
-  }, [hasProjects]);
+  }, []);
 
   return (
     <main className={styles.home}>

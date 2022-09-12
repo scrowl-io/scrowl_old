@@ -1,11 +1,9 @@
 import React from 'react';
-import { IconType, DropdownDefaultCommons } from '@owlui/lib';
+import { DropdownDefaultCommons, IconsDefaultProps } from '@owlui/lib';
 
-export type ActionMenuItem = {
+export type ActionMenuItem = IconsDefaultProps & {
   label: string;
-  icon: IconType;
-  iconStyle: 'Filled' | 'Outlined';
-  action?: (e: React.MouseEvent) => void;
+  actionHandler?: (ev: React.MouseEvent<Element, MouseEvent>) => void;
 };
 
 export interface ActionMenuCommons
