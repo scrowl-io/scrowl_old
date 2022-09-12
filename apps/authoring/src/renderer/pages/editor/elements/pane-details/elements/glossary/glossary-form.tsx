@@ -76,7 +76,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
         <Button
           className="glossary-cancel-button"
           onClick={onHide}
-          variant="light"
+          variant="link"
         >
           Cancel
         </Button>
