@@ -11,6 +11,7 @@ import { pageRoutes } from './comp-app-routes';
 import { Menu } from '../../services';
 import { Home, PageNavProps } from '../../pages';
 import { Preferences, Projects } from '../../models';
+import { ModalProjectExplorer } from '../modals';
 
 const routeList: PageNavProps = [];
 
@@ -60,7 +61,7 @@ const Main = (props: AppMainProps) => {
       <div className={styles.content}>
         <AppRoutes />
       </div>
-      {/* <ProjectExplorerModal /> */}
+      <ModalProjectExplorer />
     </div>
   );
 };

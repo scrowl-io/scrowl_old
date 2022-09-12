@@ -10,26 +10,33 @@ import {
 } from '@owlui/lib';
 
 const ActionMenuBtn = (
-  <Icon display="Outlined" icon="more_vert" style={{ fontSize: '15px' }} />
+  <Icon
+    display="outlined"
+    filled
+    icon="more_vert"
+    style={{ fontSize: '15px' }}
+  />
 );
 
 const makeActionMenu = (
   items: Array<ActionMenuItem>
 ): Array<DropdownItemProps> => {
-  return items.map((item: ActionMenuItem, idx: number) => {
-    return {
-      id: idx.toString(),
-      label: (
-        <div
-          className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center"
-          onClick={item.action}
-        >
-          <Icon display={item.iconStyle} icon={item.icon} />
-          <span>{item.label}</span>
-        </div>
-      ),
-    };
-  });
+  return items.map(
+    ({ actionHandler, label, ...props }: ActionMenuItem, idx: number) => {
+      return {
+        id: idx.toString(),
+        label: (
+          <div
+            className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center"
+            onClick={actionHandler}
+          >
+            <Icon {...props} />
+            <span>{label}</span>
+          </div>
+        ),
+      };
+    }
+  );
 };
 
 export const ActionMenu = (props: ActionMenuProps) => {
