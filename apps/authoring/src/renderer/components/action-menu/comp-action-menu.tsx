@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { ActionMenuProps, ActionMenuItem } from './comp-action-menu.types';
+import * as styles from './comp-action-menu.module.scss';
 import {
   Dropdown,
   DropdownItemProps,
@@ -21,15 +22,13 @@ const ActionMenuBtn = (
 const makeActionMenu = (
   items: Array<ActionMenuItem>
 ): Array<DropdownItemProps> => {
+  const classes = `dropdown-item-wrapper left-pane-dropdown d-flex align-items-center`;
   return items.map(
     ({ actionHandler, label, ...props }: ActionMenuItem, idx: number) => {
       return {
         id: idx.toString(),
         label: (
-          <div
-            className="dropdown-item-wrapper left-pane-dropdown d-flex align-items-center"
-            onClick={actionHandler}
-          >
+          <div className={classes} onClick={actionHandler}>
             <Icon {...props} />
             <span>{label}</span>
           </div>
@@ -60,7 +59,13 @@ export const ActionMenu = (props: ActionMenuProps) => {
     locals
   );
 
-  return <Dropdown {...dropdownProps}></Dropdown>;
+  return (
+    <Dropdown
+      align="end"
+      className={styles.actionMenu}
+      {...dropdownProps}
+    ></Dropdown>
+  );
 };
 
 export default {

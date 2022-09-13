@@ -320,6 +320,11 @@
       display: flex;
     }
 
+    &:focus {
+      text-decoration: none;
+      color: currentColor;
+    }
+
     &[aria-expanded='true'] {
       .tree-view__item__icon--handle {
         transform: rotate(360deg);
@@ -348,6 +353,7 @@
         left: 0;
         top: 0;
         transition: transform 0.1s linear;
+        color: var(--bs-gray-600);
       }
 
       &--detail {
@@ -361,10 +367,6 @@
 
     &:hover {
       text-decoration: underline;
-      color: currentColor;
-    }
-
-    &:focus {
       color: currentColor;
     }
 
