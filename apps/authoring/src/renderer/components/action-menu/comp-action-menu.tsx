@@ -15,7 +15,7 @@ const ActionMenuBtn = (
     display="outlined"
     filled
     icon="more_vert"
-    style={{ fontSize: '15px' }}
+    style={{ fontSize: '15px', fontWeight: 1000 }}
   />
 );
 
