@@ -11,9 +11,10 @@ export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
           resolve(sysRes);
           return;
         }
-        const { theme } = sysRes.data;
+        // const { theme } = sysRes.data;
+        // temporary defaulting to the 'default' theme: https://app.shortcut.com/osgca/story/1469/qa-w35-general-bugs
         let preference: PreferenceData = {
-          theme,
+          theme: 'default',
         };
 
         IS.create(table.name, preference).then(createRes => {
