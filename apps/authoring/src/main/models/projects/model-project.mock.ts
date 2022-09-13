@@ -1,41 +1,11 @@
 import { ProjectData, ProjectSlide } from './model-projects.types';
+import { TemplateManifest } from '../templates';
+import templateManifestIntro from '../templates/assets/template-introduction/manifest.json';
 
 export const mockSlide = (name: string): ProjectSlide => {
   return {
     name: name,
-    template: {
-      version: '1.0.0',
-      slide: {
-        aspect: '16:9',
-      },
-      meta: {
-        name: 'image grid',
-        component: 'ImageGrid',
-      },
-      elements: {
-        title: {
-          value: 'Building a Respectful Workplace',
-          type: 'text',
-          label: 'title',
-        },
-        subtitle: {
-          value: 'Introduction',
-          type: 'text',
-          label: 'subtitle',
-        },
-        body: {
-          value:
-            'Respect in the workplace is a fundamental human right. All employees—regardless of their differences—deserve to be treated with dignity and fairness. Building a culture of respect leads to a more successful and enjoyable work experience for everyone',
-          type: 'textarea',
-          label: 'body',
-        },
-        courseDuration: {
-          value: 25,
-          type: 'number',
-          label: 'courseDuration',
-        },
-      },
-    },
+    template: templateManifestIntro as TemplateManifest,
   };
 };
 
