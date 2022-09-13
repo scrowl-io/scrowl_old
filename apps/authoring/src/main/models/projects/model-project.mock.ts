@@ -1,7 +1,7 @@
 import { ProjectData } from './model-projects.types';
 
 export const data: ProjectData = {
-  name: 'Untitled Project',
+  name: 'MyCourseProject',
   description: '',
   scormConfig: {
     name: 'Untitled Course',

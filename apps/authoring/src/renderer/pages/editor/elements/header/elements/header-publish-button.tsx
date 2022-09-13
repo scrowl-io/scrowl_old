@@ -16,7 +16,7 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
         onClick={toggleShowDrawer}
         disabled={disabled}
       >
-        <Icon icon="publish" />
+        <Icon icon="history_edu" />
         Publish
       </Button>
       <PublishDrawer

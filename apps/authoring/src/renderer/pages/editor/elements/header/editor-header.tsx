@@ -28,7 +28,7 @@ export const Header = () => {
             id="filenameInput"
             className="owlui-form-control"
             value={project.name}
-            placeholder=""
+            placeholder="Untitled Project"
             onChange={handleFilenameChange}
             size={13}
             disabled={disableElement}
