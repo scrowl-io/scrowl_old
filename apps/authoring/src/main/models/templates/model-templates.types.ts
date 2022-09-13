@@ -117,3 +117,9 @@ export type TemplateManifest = {
   slide: TemplateManifestSlide;
   elements: TemplateManifestElements;
 };
+
+export type TemplateRecords = Array<{
+  name: string;
+  source: string;
+  manifest: TemplateManifest;
+}>;

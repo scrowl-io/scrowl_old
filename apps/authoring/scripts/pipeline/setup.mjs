@@ -20,6 +20,13 @@ const sourceMap = {
       },
     },
   },
+  'node_modules/scrowl-template-introduction/build': {
+    dest: './src/main/models/templates/assets/template-introduction',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+    },
+  },
 };
 
 const findPath = (source, includePaths) => {
