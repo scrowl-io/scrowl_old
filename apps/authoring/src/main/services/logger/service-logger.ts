@@ -1,4 +1,5 @@
 import log from 'electron-log';
+import { join, pathSaveFolder } from '../file-system';
 
 const addLeadZero = (val: number | string) => {
   return `0${val}`.slice(-2);
@@ -16,7 +17,9 @@ const getTimestamp = () => {
   return `${stampYear}-${stampMonth}-${stampDate}_${stampHours}_${stampMins}_${stampSecs}`;
 };
 
-log.transports.file.fileName = `main.${getTimestamp()}.log`;
+log.transports.file.resolvePath = () => {
+  return join(pathSaveFolder, 'logs', `main.${getTimestamp()}.log`);
+};
 
 export const info = (...args: unknown[]) => {
   log.info(...args);
