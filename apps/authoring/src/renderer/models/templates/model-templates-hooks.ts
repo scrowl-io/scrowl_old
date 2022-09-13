@@ -92,6 +92,10 @@ export const explore = (open = true) => {
   }, 1);
 };
 
+export const closeExplorer = () => {
+  return processor.dispatch(state.explore(false));
+};
+
 export const list = (limit = 10) => {
   return new Promise<requester.ApiResult>(resolve => {
     const hasProcessor = checkProcessor();
@@ -128,6 +132,7 @@ export default {
   useExplorer,
   add,
   explore,
+  closeExplorer,
   list,
   load,
 };

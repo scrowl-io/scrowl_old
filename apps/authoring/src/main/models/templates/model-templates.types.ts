@@ -110,6 +110,11 @@ export type TemplateManifestElements = {
 
 export type TemplateManifest = {
   version?: string;
+  meta: {
+    name: string;
+    filename: string;
+    component: string;
+  };
   slide: TemplateManifestSlide;
   elements: TemplateManifestElements;
 };

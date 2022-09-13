@@ -1,6 +1,9 @@
 import { TemplateData } from '../../../main/models/templates';
 
-export type { TemplateData } from '../../../main/models/templates';
+export type {
+  TemplateData,
+  TemplateManifest,
+} from '../../../main/models/templates';
 
 export type TemplateObserverDataFn = React.Dispatch<TemplateData>;
 
