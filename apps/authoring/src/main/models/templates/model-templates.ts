@@ -4,6 +4,7 @@ import {
   FileSystem as fs,
   InternalStorage as IS,
   Requester,
+  Logger,
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
@@ -138,12 +139,12 @@ export const list = () => {
 
             listRes.forEach(res => {
               if (res.status === 'rejected') {
-                console.error('Failed to get template record', res);
+                Logger.error('Failed to get template record', res);
                 return;
               }
 
               if (res.value.error) {
-                console.warn('Unable to get template record', res);
+                Logger.warn('Unable to get template record', res);
                 return;
               }
 
@@ -179,7 +180,7 @@ export const list = () => {
 
       Promise.allSettled(recordPromises).then(resPromises => {
         let templates: TemplateRecords = [];
-
+        Logger.info('template promises', resPromises);
         resPromises.forEach(res => {
           if (res.status === 'rejected') {
             console.error('Failed to get template record', res);
