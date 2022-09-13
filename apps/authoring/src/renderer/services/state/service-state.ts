@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { StoreConfig } from './service-state.types';
-import { Preferences, Projects } from '../../models';
+import { Preferences, Projects, Templates } from '../../models';
 
 export const init = () => {
   const states = [
@@ -11,6 +11,10 @@ export const init = () => {
     {
       name: Projects.state.config.name,
       reducer: Projects.state.reducer,
+    },
+    {
+      name: Templates.state.config.name,
+      reducer: Templates.state.reducer,
     },
   ];
   const config: StoreConfig = {

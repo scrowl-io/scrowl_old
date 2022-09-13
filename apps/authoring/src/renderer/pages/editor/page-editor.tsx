@@ -1,6 +1,7 @@
 import React from 'react';
 import * as styles from './page-editor.module.scss';
 import { Header, PaneDetails } from './elements';
+import { ModalExplorerTemplates } from '../../components';
 
 export const PageElement = () => {
   return (
@@ -17,6 +18,7 @@ export const PageElement = () => {
 
         <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
       </main>
+      <ModalExplorerTemplates />
     </>
   );
 };
