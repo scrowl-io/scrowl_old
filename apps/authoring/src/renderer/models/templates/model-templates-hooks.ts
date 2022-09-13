@@ -87,7 +87,6 @@ export const explore = (open = true) => {
   }
 
   setTimeout(() => {
-    console.log('exploring templates');
     processor.dispatch(state.explore(open));
   }, 1);
 };
@@ -114,7 +113,7 @@ export const list = (limit = 10) => {
         console.error(result);
         return;
       }
-      console.log('listing', result);
+
       resolve(result);
       processor.dispatch(state.process(false));
     });
