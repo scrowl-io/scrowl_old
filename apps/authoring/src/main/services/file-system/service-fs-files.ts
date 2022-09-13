@@ -576,7 +576,7 @@ export const readFileSave = (pathname: string) => {
   });
 };
 
-const readDir = (pathname: string) => {
+export const readDir = (pathname: string) => {
   return new Promise<FSResult>(resolve => {
     if (!pathname) {
       resolve(createResultError('Unable to read directory: path required'));
@@ -584,11 +584,12 @@ const readDir = (pathname: string) => {
     }
 
     try {
-      fs.readdir(pathname).then(() => {
+      fs.readdir(pathname, { withFileTypes: true }).then(files => {
         resolve({
           error: false,
           data: {
             pathname,
+            files,
           },
         });
       });
@@ -678,6 +679,7 @@ export default {
   readFile,
   readFileTemp,
   readFileSave,
+  readDir,
   readDirTemp,
   readDirSave,
   copy,

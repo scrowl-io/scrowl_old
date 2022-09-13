@@ -76,10 +76,7 @@ export const useMenuEvents = () => {
 };
 
 export const add = () => {
-  console.log('adding template');
-  return api.add().then(res => {
-    console.log('import template result', res);
-  });
+  return api.add();
 };
 
 export const explore = (open = true) => {
@@ -113,7 +110,7 @@ export const list = (limit = 10) => {
         console.error(result);
         return;
       }
-
+      console.log('listing', result);
       resolve(result);
       processor.dispatch(state.process(false));
     });
