@@ -2,6 +2,7 @@ import React from 'react';
 import * as styles from './page-editor.module.scss';
 import { Header, PaneDetails, RightPane } from './elements';
 import { useInit } from './page-editor-hooks';
+import { ModalExplorerTemplates } from '../../components';
 
 export const PageElement = () => {
   const isInit = useInit();
@@ -11,18 +12,21 @@ export const PageElement = () => {
       {!isInit ? (
         <div>Loading...</div>
       ) : (
-        <main className={styles.editor}>
-          <Header />
-          <PaneDetails />
+        <>
+          <main className={styles.editor}>
+            <Header />
+            <PaneDetails />
 
-          <div className={styles.workspace}>
-            <div className="workspace__body">Workspace</div>
-          </div>
+            <div className={styles.workspace}>
+              <div className="workspace__body">Workspace</div>
+            </div>
 
-          <RightPane />
+            <RightPane />
 
-          <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
-        </main>
+            <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
+          </main>
+          <ModalExplorerTemplates />
+        </>
       )}
     </>
   );

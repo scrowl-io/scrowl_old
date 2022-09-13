@@ -5,11 +5,13 @@ export const ENDPOINTS: MenuEventsFileApi = {
   projectsCreate: '/projects/create',
   projectOpen: '/projects/open',
   projectSave: '/projects/save',
-  projectPublish: '/projects/publish',
   importFile: 'project/import-file',
+  projectPublish: '/projects/publish',
   preferencesCreate: '/preferences/create',
   preferencesOpen: '/preferences/open',
   getStarted: '/get-started',
+  templateAdd: '/templates/add',
+  templateOpen: '/templates/open',
 };
 
 export const onProjectCreate = (listener: requester.Listener) => {
@@ -68,6 +70,22 @@ export const offGetStarted = () => {
   requester.offAll(ENDPOINTS.getStarted);
 };
 
+export const onTemplateAdd = (listener: requester.Listener) => {
+  requester.on(ENDPOINTS.templateAdd, listener);
+};
+
+export const offTemplateAdd = () => {
+  requester.offAll(ENDPOINTS.templateAdd);
+};
+
+export const onTemplateOpen = (listener: requester.Listener) => {
+  requester.on(ENDPOINTS.templateOpen, listener);
+};
+
+export const offTemplateOpen = () => {
+  requester.offAll(ENDPOINTS.templateOpen);
+};
+
 export default {
   onProjectCreate,
   onProjectOpen,
@@ -76,4 +94,8 @@ export default {
   onPreferencesCreate,
   onPreferencesOpen,
   onGetStarted,
+  onTemplateAdd,
+  offTemplateAdd,
+  onTemplateOpen,
+  offTemplateOpen,
 };

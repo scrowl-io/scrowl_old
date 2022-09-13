@@ -36,14 +36,14 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
       type: 'input',
       inputProps: {
         label: {
-          content: 'Name',
+          content: 'TERM',
           htmlFor: `${prefix}-name`,
         },
         control: {
           id: `${prefix}-name`,
           name: `${prefix}-name`,
           type: 'text',
-          placeholder: 'Term...',
+          placeholder: 'Enter Term',
           value: data.name,
           onChange: handleFormChangeName,
         },
@@ -53,7 +53,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
       type: 'input',
       inputProps: {
         label: {
-          content: 'Description',
+          content: 'DEFINITION',
           htmlFor: `${prefix}-description`,
         },
         control: {
@@ -61,7 +61,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
           className: 'description',
           name: `${prefix}-description`,
           type: 'textarea',
-          placeholder: 'Term Description...',
+          placeholder: 'Define the Term',
           value: data.description,
           onChange: handleFormChangeDescription,
           as: 'textarea',
@@ -76,7 +76,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
         <Button
           className="glossary-cancel-button"
           onClick={onHide}
-          variant="light"
+          variant="link"
         >
           Cancel
         </Button>

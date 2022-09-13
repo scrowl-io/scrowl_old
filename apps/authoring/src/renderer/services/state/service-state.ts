@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { StoreConfig } from './service-state.types';
-import { Preferences, Projects } from '../../models';
+import { Preferences, Projects, Templates } from '../../models';
 import { Editor } from '../../pages';
 
 export const init = () => {
@@ -16,6 +16,10 @@ export const init = () => {
     {
       name: Editor.state.config.name,
       reducer: Editor.state.reducer,
+    },
+    {
+      name: Templates.state.config.name,
+      reducer: Templates.state.reducer,
     },
   ];
   const config: StoreConfig = {

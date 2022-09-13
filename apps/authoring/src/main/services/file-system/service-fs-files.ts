@@ -64,6 +64,10 @@ export const dirName = (pathname: string) => {
   return path.dirname(pathname);
 };
 
+export const basename = (pathname: string, ext?: string) => {
+  return path.basename(pathname, ext);
+};
+
 export const dirExistsSync = (pathname: string): FileExistsResult => {
   try {
     return {
@@ -572,7 +576,7 @@ export const readFileSave = (pathname: string) => {
   });
 };
 
-const readDir = (pathname: string) => {
+export const readDir = (pathname: string) => {
   return new Promise<FSResult>(resolve => {
     if (!pathname) {
       resolve(createResultError('Unable to read directory: path required'));
@@ -580,11 +584,12 @@ const readDir = (pathname: string) => {
     }
 
     try {
-      fs.readdir(pathname).then(() => {
+      fs.readdir(pathname, { withFileTypes: true }).then(files => {
         resolve({
           error: false,
           data: {
             pathname,
+            files,
           },
         });
       });
@@ -657,6 +662,7 @@ export default {
   join,
   ext,
   dirName,
+  basename,
   dirExistsSync,
   dirTempSync,
   fileExistsSync,
@@ -673,6 +679,7 @@ export default {
   readFile,
   readFileTemp,
   readFileSave,
+  readDir,
   readDirTemp,
   readDirSave,
   copy,

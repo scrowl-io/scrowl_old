@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { MenuItemConstructorOptions, KeyboardEvent, MenuItem } from 'electron';
+import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
 import { MenuItemEventsFile } from '../service-menu.types';
 import { send } from '../../requester';
 
@@ -30,6 +30,16 @@ export const EVENTS: MenuItemEventsFile = {
   importFile: {
     id: 'import-file',
     name: 'project/import-file',
+    type: 'send',
+  },
+  templateAdd: {
+    id: 'template-add',
+    name: '/templates/add',
+    type: 'send',
+  },
+  templateOpen: {
+    id: 'template-open',
+    name: '/templates/open',
     type: 'send',
   },
 };
@@ -84,6 +94,24 @@ export const template: MenuItemConstructorOptions = {
         send(EVENTS.importFile.name);
       },
       accelerator: 'CmdOrCtrl+I',
+    },
+    {
+      label: 'Add Template',
+      id: EVENTS.templateAdd.id,
+      enabled: false,
+      click: (MenuItem, window, ev: KeyboardEvent) => {
+        send(EVENTS.templateAdd.name);
+      },
+      accelerator: 'CmdOrCtrl+t',
+    },
+    {
+      label: 'Explore Templates',
+      id: EVENTS.templateOpen.id,
+      enabled: false,
+      click: (MenuItem, window, ev: KeyboardEvent) => {
+        send(EVENTS.templateOpen.name);
+      },
+      accelerator: 'CmdOrCtrl+Shift+t',
     },
   ],
 };
