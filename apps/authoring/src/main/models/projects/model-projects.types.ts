@@ -1,4 +1,5 @@
 import { Requester, FileSystem, InternalStorage } from '../../services';
+import { TemplateManifest } from '../templates';
 
 export interface ProjectEventCreate
   extends Omit<Requester.RegisterEvent, 'name'> {
@@ -94,22 +95,7 @@ export type ProjectResourceItem = {
 
 export type ProjectSlide = {
   name: string;
-  template?: {
-    version: string;
-    slide: {
-      aspect: '4:3' | '16:9' | '16:10';
-    };
-    meta: {
-      name: string;
-      component: string;
-    };
-    elements: {
-      [key: string]: {
-        editable: boolean;
-        value: string | number | boolean;
-      };
-    };
-  };
+  template?: TemplateManifest;
 };
 
 export type ProjectLesson = {

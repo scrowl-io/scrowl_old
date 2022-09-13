@@ -1,5 +1,5 @@
 import { Model } from '../model.types';
-import { TemplateEvents, TemplateManifest } from './model-templates.types';
+import { TemplateEvents, TemplateRecords } from './model-templates.types';
 import {
   FileSystem as fs,
   InternalStorage as IS,
@@ -9,6 +9,9 @@ import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
+export const templateAssetPath = fs.getAssetPath(
+  fs.join('models', 'templates', 'assets')
+);
 
 export const add = () => {
   return new Promise<Requester.ApiResult>(resolve => {
@@ -84,10 +87,10 @@ export const list = () => {
     return file.isDirectory();
   };
 
-  const templateRecord = (file: fs.Dirent) => {
+  const templateRecord = (file: fs.Dirent, pathname: string) => {
     return new Promise<requester.ApiResult>(resolve => {
       try {
-        const source = fs.join(templateFolderPath, file.name, 'manifest.json');
+        const source = fs.join(pathname, file.name, 'manifest.json');
 
         fs.readFile(source).then(readRes => {
           if (readRes.error) {
@@ -99,6 +102,7 @@ export const list = () => {
             error: false,
             data: {
               name: file.name,
+              source,
               manifest: readRes.data.contents,
             },
           });
@@ -114,43 +118,87 @@ export const list = () => {
       }
     });
   };
+  const getTemplateRecords = (pathname: string) => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        fs.readDir(pathname).then(readRes => {
+          if (readRes.error) {
+            resolve(readRes);
+            return;
+          }
+
+          const templateList = readRes.data.files
+            .filter(isDir)
+            .map((file: fs.Dirent) => {
+              return templateRecord(file, pathname);
+            });
+
+          Promise.allSettled(templateList).then(listRes => {
+            const templates: TemplateRecords = [];
+
+            listRes.forEach(res => {
+              if (res.status === 'rejected') {
+                console.error('Failed to get template record', res);
+                return;
+              }
+
+              if (res.value.error) {
+                console.warn('Unable to get template record', res);
+                return;
+              }
+
+              templates.push(res.value.data);
+            });
+
+            resolve({
+              error: false,
+              data: {
+                templates,
+              },
+            });
+          });
+        });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to list templates',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    });
+  };
 
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      fs.readDir(templateFolderPath).then(readRes => {
-        if (readRes.error) {
-          resolve(readRes);
-          return;
-        }
+      const recordPromises = [
+        getTemplateRecords(templateFolderPath),
+        getTemplateRecords(templateAssetPath),
+      ];
 
-        const templateList = readRes.data.files
-          .filter(isDir)
-          .map(templateRecord);
+      Promise.allSettled(recordPromises).then(resPromises => {
+        let templates: TemplateRecords = [];
 
-        Promise.allSettled(templateList).then(listRes => {
-          const templates: Array<{ name: string; manifest: TemplateManifest }> =
-            [];
+        resPromises.forEach(res => {
+          if (res.status === 'rejected') {
+            console.error('Failed to get template record', res);
+            return;
+          }
 
-          listRes.forEach(res => {
-            if (res.status === 'rejected') {
-              console.error('Failed to get template record', res);
-              return;
-            }
+          if (res.value.error) {
+            console.warn('Unable to get template record', res);
+            return;
+          }
 
-            if (res.value.error) {
-              console.warn('Unable to get template record', res);
-              return;
-            }
+          templates = templates.concat(res.value.data.templates);
+        });
 
-            templates.push(res.value.data);
-          });
-
-          resolve({
-            error: false,
-            data: {
-              templates,
-            },
-          });
+        resolve({
+          error: false,
+          data: {
+            templates,
+          },
         });
       });
     } catch (e) {
