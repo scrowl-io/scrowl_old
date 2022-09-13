@@ -1,4 +1,5 @@
 import { Requester, FileSystem, InternalStorage } from '../../services';
+import { TemplateManifest } from '../templates';
 
 export interface ProjectEventCreate
   extends Omit<Requester.RegisterEvent, 'name'> {
@@ -92,44 +93,9 @@ export type ProjectResourceItem = {
   description?: string;
 };
 
-export type ManifestElementText = {
-  value: string;
-  type: 'text';
-  label: string;
-};
-
-export type ManifestElementTextarea = {
-  value: string;
-  type: 'textarea';
-  label: string;
-};
-
-export type ManifestElementNumber = {
-  value: number;
-  type: 'number';
-  label: string;
-};
-
-export type ManifestElements = {
-  [key: string]:
-    | ManifestElementText
-    | ManifestElementNumber
-    | ManifestElementTextarea;
-};
-
 export type ProjectSlide = {
   name: string;
-  template?: {
-    version: string;
-    slide: {
-      aspect: '4:3' | '16:9' | '16:10';
-    };
-    meta: {
-      name: string;
-      component: string;
-    };
-    elements: ManifestElements;
-  };
+  template?: TemplateManifest;
 };
 
 export type ProjectLesson = {
