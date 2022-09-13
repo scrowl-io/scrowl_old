@@ -1,20 +1,70 @@
 import { Model } from '../model.types';
 import { TemplateEvents } from './model-templates.types';
-import { InternalStorage as IS, Requester } from '../../services';
+import {
+  FileSystem as fs,
+  InternalStorage as IS,
+  Requester,
+} from '../../services';
 import * as table from './model-templates-schema';
+
+export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
 
 export const add = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      resolve({
-        error: false,
-        data: {
-          items: [
-            {
-              name: 'Example Template',
+      const dialogOptions = {
+        title: 'Scrowl - Import Template',
+        showHiddenFiles: false,
+        filters: [
+          {
+            name: 'Archive',
+            extensions: ['zip'],
+          },
+        ],
+      };
+      fs.dialogOpen(dialogOptions).then(openRes => {
+        if (openRes.error) {
+          resolve({
+            error: true,
+            message: openRes.message,
+            data: openRes.data,
+          });
+          return;
+        }
+
+        if (openRes.data.canceled) {
+          resolve({
+            error: false,
+            data: {
+              canceled: true,
             },
-          ],
-        },
+          });
+          return;
+        }
+
+        const source = openRes.data.filePaths[0];
+        const filename = fs.basename(source, '.zip');
+        const dest = fs.join(templateFolderPath, filename);
+
+        fs.unarchive(source, dest).then(archiveRes => {
+          if (archiveRes.error) {
+            resolve({
+              error: true,
+              message: archiveRes.message,
+              data: archiveRes.data,
+            });
+            return;
+          }
+
+          resolve({
+            error: false,
+            data: {
+              canceled: false,
+              source,
+              dest,
+            },
+          });
+        });
       });
     } catch (e) {
       resolve({

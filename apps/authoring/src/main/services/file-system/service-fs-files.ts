@@ -64,6 +64,10 @@ export const dirName = (pathname: string) => {
   return path.dirname(pathname);
 };
 
+export const basename = (pathname: string, ext?: string) => {
+  return path.basename(pathname, ext);
+};
+
 export const dirExistsSync = (pathname: string): FileExistsResult => {
   try {
     return {
@@ -657,6 +661,7 @@ export default {
   join,
   ext,
   dirName,
+  basename,
   dirExistsSync,
   dirTempSync,
   fileExistsSync,
