@@ -243,6 +243,107 @@ export const load = () => {
   });
 };
 
+export const add = (
+  ev: Requester.RequestEvent | undefined,
+  templateName: string,
+  projectId: string | number,
+  dest: 'save' | 'temp' = 'temp'
+) => {
+  const templatePath = `template-${templateName}`;
+  const getDestFolderPath = (start: string) => {
+    return fs.join(
+      start,
+      projectId.toString(),
+      'content',
+      'templates',
+      templatePath
+    );
+  };
+  return new Promise<Requester.ApiResult>(resolve => {
+    try {
+      if (!templateName) {
+        resolve({
+          error: true,
+          message: `Unable to add template to project (${projectId}): template required`,
+        });
+        return;
+      }
+
+      if (!projectId) {
+        resolve({
+          error: true,
+          message: `Unable to add template (${templateName}) to project: project required`,
+        });
+        return;
+      }
+
+      const sourceFolder = fs.join(templateAssetPath, templatePath);
+      const sourceManifest = fs.join(sourceFolder, 'manifest.json');
+
+      fs.existsFile(sourceManifest).then(existsRes => {
+        if (existsRes.error) {
+          resolve(existsRes);
+          return;
+        }
+
+        if (!existsRes.data.exists) {
+          resolve({
+            error: true,
+            message: `Unable to add template: template does not exist - ${templateName}`,
+          });
+          return;
+        }
+
+        let destFolder = '';
+
+        switch (dest) {
+          case 'save':
+            destFolder = getDestFolderPath(fs.pathSaveFolder);
+            break;
+          case 'temp':
+            destFolder = getDestFolderPath(fs.pathTempFolder);
+            break;
+        }
+
+        fs.copy(sourceFolder, destFolder)
+          .then(copyRes => {
+            if (copyRes.error) {
+              resolve(copyRes);
+              return;
+            }
+
+            resolve({
+              error: false,
+              data: {
+                templateName,
+                projectId,
+                source: sourceFolder,
+                dest: destFolder,
+              },
+            });
+          })
+          .catch(e => {
+            resolve({
+              error: true,
+              message: `Failed to add template (${templateName}) to project (${projectId})`,
+              data: {
+                trace: e,
+              },
+            });
+          });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to add template',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 export const EVENTS: TemplateEvents = {
   install: {
     name: '/templates/install', // sends menu event to frontend
@@ -299,6 +400,7 @@ export const Templates: Model = {
   install,
   list,
   load,
+  add,
 };
 
 export default Templates;
