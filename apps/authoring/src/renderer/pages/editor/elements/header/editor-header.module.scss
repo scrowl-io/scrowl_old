@@ -67,6 +67,13 @@
     }
   }
 
+  .owlui-icons-outlined[style]{
+      margin-right: .6rem;
+      font-size: 1.5em;
+      line-height: 0.66;
+      font-variation-settings: "FILL" 1 !important;
+  }
+
   .owlui-icons {
     color: var(--owl-color-default);
     margin-right: 0.25em;
