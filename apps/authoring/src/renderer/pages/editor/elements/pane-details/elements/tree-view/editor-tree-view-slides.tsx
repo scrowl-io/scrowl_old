@@ -12,6 +12,7 @@ import {
 } from './editor-tree-view.types';
 import { deepCopy } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
+import { updateActiveSlide } from '../../../../page-editor-hooks';
 
 const TreeViewSlide = (props: TreeViewSlideProps) => {
   const { tree, idx, moduleIdx, lessonIdx, project } = props;
@@ -108,10 +109,19 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     Projects.update({ modules });
   };
 
+  const handleSlideSelection = () => {
+    updateActiveSlide(tree);
+  };
+
   return (
     <div className={styles.treeViewSlide} key={idx}>
       <div className={styles.treeViewHeader}>
-        <Button id={itemId} className={styles.treeViewItem} variant="link">
+        <Button
+          id={itemId}
+          className={styles.treeViewItem}
+          variant="link"
+          onClick={handleSlideSelection}
+        >
           <span className={styles.treeViewItemIconDetail}>
             <Icon icon="check_box_outline_blank" display="outlined" filled />
           </span>

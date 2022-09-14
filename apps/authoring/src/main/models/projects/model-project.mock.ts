@@ -1,4 +1,13 @@
-import { ProjectData } from './model-projects.types';
+import { ProjectData, ProjectSlide } from './model-projects.types';
+import { TemplateManifest } from '../templates';
+import templateManifestIntro from '../templates/assets/template-introduction/manifest.json';
+
+export const mockSlide = (name: string): ProjectSlide => {
+  return {
+    name: name,
+    template: templateManifestIntro as TemplateManifest,
+  };
+};
 
 export const data: ProjectData = {
   name: 'MyCourseProject',
@@ -14,40 +23,14 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'Building a Respectful Workplace',
-          slides: [
-            {
-              name: 'Introduction',
-              template: {
-                version: '1.0.0',
-                slide: {
-                  aspect: '16:9',
-                },
-                meta: {
-                  name: 'image grid',
-                  component: 'ImageGrid',
-                },
-                elements: {
-                  componentExample: {
-                    editable: true,
-                    value: 'Hello World',
-                  },
-                },
-              },
-            },
-          ],
+          slides: [mockSlide('Introduction')],
         },
         {
           name: 'What is Harassment vs. Discrimination?',
           slides: [
-            {
-              name: 'Slide 1',
-            },
-            {
-              name: 'Slide 2',
-            },
-            {
-              name: 'Slide 3',
-            },
+            mockSlide('Slide 1'),
+            mockSlide('Slide 2'),
+            mockSlide('Slide 3'),
           ],
         },
       ],
@@ -57,11 +40,7 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'What is Sexual Harassment?',
-          slides: [
-            {
-              name: 'Slide 1',
-            },
-          ],
+          slides: [mockSlide('Slide 4')],
         },
       ],
     },
@@ -71,15 +50,9 @@ export const data: ProjectData = {
         {
           name: 'Preventing Sexual Harassment as a Supervisor',
           slides: [
-            {
-              name: 'Slide 1',
-            },
-            {
-              name: 'Slide 2',
-            },
-            {
-              name: 'Slide 3',
-            },
+            mockSlide('Slide 5'),
+            mockSlide('Slide 6'),
+            mockSlide('Slide 7'),
           ],
         },
       ],
@@ -89,14 +62,7 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'Final Thoughts',
-          slides: [
-            {
-              name: 'Slide 1',
-            },
-            {
-              name: 'Slide 2',
-            },
-          ],
+          slides: [mockSlide('Slide 8'), mockSlide('Slide 9')],
         },
       ],
     },

@@ -10,7 +10,7 @@ import { AppMainProps } from './comp-app.types';
 import { pageRoutes } from './comp-app-routes';
 import { Menu } from '../../services';
 import { Home, PageNavProps } from '../../pages';
-import { Preferences, Projects } from '../../models';
+import { Preferences, Projects, Templates } from '../../models';
 import { ModalProjectExplorer } from '../modals';
 
 const routeList: PageNavProps = [];
@@ -40,6 +40,7 @@ const Main = (props: AppMainProps) => {
 
   Projects.useOpen();
   Projects.useMenuEvents();
+  Templates.useMenuEvents();
 
   useEffect(() => {
     Menu.File.onPreferencesOpen(() => {
@@ -74,6 +75,7 @@ export const App = () => {
   const preference = Preferences.useData();
   const prefInit = Preferences.useInit();
   const projectInit = Projects.useInit();
+  const templateInit = Templates.useInit();
   const [appTheme, setAppTheme] = useState('');
   const [appInit, setAppInit] = useState(false);
   const [appReady, setAppReady] = useState(false);
@@ -89,7 +91,7 @@ export const App = () => {
 
       setAppInit(true);
 
-      if (appInit && prefInit && projectInit) {
+      if (appInit && prefInit && projectInit && templateInit) {
         setAppTheme(`theme--${preference.theme}`);
         setAppReady(true);
       }
@@ -98,7 +100,7 @@ export const App = () => {
         ready = true;
       };
     });
-  }, [appInit, appTheme, preference, prefInit, projectInit]);
+  }, [appInit, appTheme, preference, prefInit, projectInit, templateInit]);
 
   return (
     <Router>{appReady ? <Main className={appTheme} /> : <Loader />}</Router>

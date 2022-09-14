@@ -1,22 +1,33 @@
 import React from 'react';
 import * as styles from './page-editor.module.scss';
-import { Header, PaneDetails } from './elements';
+import { Header, PaneDetails, RightPane } from './elements';
+import { useInit } from './page-editor-hooks';
+import { ModalExplorerTemplates } from '../../components';
 
 export const PageElement = () => {
+  const isInit = useInit();
+
   return (
     <>
-      <main className={styles.editor}>
-        <Header />
-        <PaneDetails />
+      {!isInit ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          <main className={styles.editor}>
+            <Header />
+            <PaneDetails />
 
-        <div className={styles.workspace}>
-          <div className="workspace__body">Workspace</div>
-        </div>
+            <div className={styles.workspace}>
+              <div className="workspace__body">Workspace</div>
+            </div>
 
-        <div className="pane pane--right">Right Bar</div>
+            <RightPane />
 
-        <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
-      </main>
+            <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
+          </main>
+          <ModalExplorerTemplates />
+        </>
+      )}
     </>
   );
 };
