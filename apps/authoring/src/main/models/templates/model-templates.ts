@@ -4,6 +4,7 @@ import {
   FileSystem as fs,
   InternalStorage as IS,
   Requester,
+  Logger,
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
@@ -94,6 +95,7 @@ export const list = () => {
 
         fs.readFile(source).then(readRes => {
           if (readRes.error) {
+            Logger.error(readRes);
             resolve(readRes);
             return;
           }
@@ -123,6 +125,7 @@ export const list = () => {
       try {
         fs.readDir(pathname).then(readRes => {
           if (readRes.error) {
+            Logger.warn(readRes);
             resolve(readRes);
             return;
           }
@@ -138,12 +141,12 @@ export const list = () => {
 
             listRes.forEach(res => {
               if (res.status === 'rejected') {
-                console.error('Failed to get template record', res);
+                Logger.error('Failed to get template record', res);
                 return;
               }
 
               if (res.value.error) {
-                console.warn('Unable to get template record', res);
+                Logger.warn('Unable to get template record', res);
                 return;
               }
 
@@ -159,9 +162,12 @@ export const list = () => {
           });
         });
       } catch (e) {
+        const msg = `Failed to list templates: ${pathname}`;
+
+        Logger.error(msg, e);
         resolve({
           error: true,
-          message: 'Failed to list templates',
+          message: msg,
           data: {
             trace: e,
           },
@@ -202,6 +208,7 @@ export const list = () => {
         });
       });
     } catch (e) {
+      Logger.error('Failed to list templates', e);
       resolve({
         error: true,
         message: 'Failed to list templates',
