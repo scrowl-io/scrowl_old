@@ -5,10 +5,10 @@ import {
   InternalStorage as IS,
   Requester,
   Logger,
+  Templater,
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
-import path from 'path';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
 export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
@@ -225,19 +225,28 @@ export const list = () => {
 export const load = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      const source = path.join(templateAssetPath, 'workspace', 'canvas.html');
+      const base = fs.join(templateAssetPath, 'workspace', 'canvas.hbs');
 
-      fs.readFile(source).then(readRes => {
+      fs.readFile(base).then(readRes => {
         if (readRes.error) {
           resolve(readRes);
           return;
         }
 
-        Logger.info(`loading template: ${source}`);
+        const compileRes = Templater.compile(readRes.data.contents, {
+          manifest: JSON.stringify({ foo: 'bar' }),
+        });
+
+        if (compileRes.error) {
+          resolve(compileRes);
+          return;
+        }
+
+        Logger.info(`loading template: ${base}`);
         resolve({
           error: false,
           data: {
-            template: readRes.data.contents,
+            template: compileRes.data.contents,
           },
         });
       });
