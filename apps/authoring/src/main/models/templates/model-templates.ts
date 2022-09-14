@@ -8,8 +8,10 @@ import {
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
+import path from 'path';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
+export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
 export const templateAssetPath = fs.getAssetPath(
   fs.join('models', 'templates', 'assets')
 );
@@ -223,13 +225,21 @@ export const list = () => {
 export const load = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      resolve({
-        error: false,
-        data: {
-          template: {
-            name: 'Example Template',
+      const source = path.join(templateAssetPath, 'workspace', 'canvas.html');
+
+      fs.readFile(source).then(readRes => {
+        if (readRes.error) {
+          resolve(readRes);
+          return;
+        }
+
+        Logger.info(`loading template: ${source}`);
+        resolve({
+          error: false,
+          data: {
+            template: readRes.data.contents,
           },
-        },
+        });
       });
     } catch (e) {
       resolve({
