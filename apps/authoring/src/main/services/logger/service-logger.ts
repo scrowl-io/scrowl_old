@@ -18,6 +18,9 @@ const getTimestamp = () => {
 };
 
 log.transports.file.resolvePath = () => {
+  // logs can be found on macOS at
+  // dev: Users/[username]/Library/Application Support/Electron/logs
+  // prod: Users/[username]/Library/Application Support/scrowl-authoring/logs
   return join(pathSaveFolder, 'logs', `main.${getTimestamp()}.log`);
 };
 
