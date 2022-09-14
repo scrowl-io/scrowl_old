@@ -14,7 +14,7 @@ export const templateAssetPath = fs.getAssetPath(
   fs.join('models', 'templates', 'assets')
 );
 
-export const add = () => {
+export const install = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       const dialogOptions = {
@@ -244,14 +244,14 @@ export const load = () => {
 };
 
 export const EVENTS: TemplateEvents = {
-  add: {
-    name: '/templates/add', // sends menu event to frontend
+  install: {
+    name: '/templates/install', // sends menu event to frontend
     type: 'send',
   },
-  onAdd: {
-    name: '/templates/add', // allows user to add/import/install a new template
+  onInstall: {
+    name: '/templates/install', // allows user to add/import/install a new template
     type: 'invoke',
-    fn: add,
+    fn: install,
   },
   open: {
     name: '/templates/open', // sends menu event to open the explorer modal
@@ -296,7 +296,7 @@ export const init = () => {
 export const Templates: Model = {
   EVENTS,
   init,
-  add,
+  install,
   list,
   load,
 };

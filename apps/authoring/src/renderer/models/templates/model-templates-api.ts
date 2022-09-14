@@ -2,16 +2,16 @@ import { TemplateEventApi } from '../../../main/models/templates';
 import { requester } from '../../services';
 
 const ENDPOINTS: TemplateEventApi = {
-  add: '/templates/add',
+  install: '/templates/install',
   open: '/templates/open',
   list: '/templates/list',
   load: '/templates/load',
 };
 
-export const add = () => {
+export const install = () => {
   return new Promise<requester.ApiResult>(resolve => {
     try {
-      requester.invoke(ENDPOINTS.add).then(resolve);
+      requester.invoke(ENDPOINTS.install).then(resolve);
     } catch (e) {
       resolve({
         error: true,
@@ -58,7 +58,7 @@ export const load = () => {
 
 export default {
   ENDPOINTS,
-  add,
+  install,
   list,
   load,
 };

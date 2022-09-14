@@ -55,15 +55,15 @@ const checkProcessor = () => {
 };
 
 export const useMenuEvents = () => {
-  const handleAddEvent = () => {
-    add();
+  const handleInstallEvent = () => {
+    install();
   };
   const handleExploreEvent = () => {
     explore();
   };
 
   useEffect(() => {
-    Menu.File.onTemplateAdd(handleAddEvent);
+    Menu.File.onTemplateAdd(handleInstallEvent);
     Menu.File.onTemplateOpen(handleExploreEvent);
 
     return () => {
@@ -75,8 +75,8 @@ export const useMenuEvents = () => {
   return;
 };
 
-export const add = () => {
-  return api.add();
+export const install = () => {
+  return api.install();
 };
 
 export const explore = (open = true) => {
@@ -129,7 +129,7 @@ export default {
   useData,
   useProcessing,
   useExplorer,
-  add,
+  install,
   explore,
   closeExplorer,
   list,
