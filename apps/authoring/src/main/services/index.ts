@@ -5,3 +5,4 @@ export * as Menu from './menu';
 export * as System from './system';
 export * as Requester from './requester';
 export * as Templater from './templater';
+export * as Logger from './logger';
