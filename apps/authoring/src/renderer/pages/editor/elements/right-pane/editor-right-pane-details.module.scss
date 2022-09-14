@@ -1,0 +1,6 @@
+@use 'sass:selector';
+@import '@owlui/lib/src/theme/global/tokens';
+
+.template-options-content {
+  padding: var(--owl-sidebar-spacing);
+}

@@ -10,6 +10,8 @@ import {
   JsonResult,
 } from '../requester';
 
+export { Dirent } from 'fs-extra';
+
 export interface FileFilters {
   [key: string]: FileFilter;
 }
