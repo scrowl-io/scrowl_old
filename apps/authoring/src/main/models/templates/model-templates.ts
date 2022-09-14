@@ -95,6 +95,7 @@ export const list = () => {
 
         fs.readFile(source).then(readRes => {
           if (readRes.error) {
+            Logger.error(readRes);
             resolve(readRes);
             return;
           }
@@ -124,6 +125,7 @@ export const list = () => {
       try {
         fs.readDir(pathname).then(readRes => {
           if (readRes.error) {
+            Logger.warn(readRes);
             resolve(readRes);
             return;
           }
@@ -160,9 +162,12 @@ export const list = () => {
           });
         });
       } catch (e) {
+        const msg = `Failed to list templates: ${pathname}`;
+
+        Logger.error(msg, e);
         resolve({
           error: true,
-          message: 'Failed to list templates',
+          message: msg,
           data: {
             trace: e,
           },
@@ -180,7 +185,7 @@ export const list = () => {
 
       Promise.allSettled(recordPromises).then(resPromises => {
         let templates: TemplateRecords = [];
-        Logger.info('template promises', resPromises);
+
         resPromises.forEach(res => {
           if (res.status === 'rejected') {
             console.error('Failed to get template record', res);
@@ -203,6 +208,7 @@ export const list = () => {
         });
       });
     } catch (e) {
+      Logger.error('Failed to list templates', e);
       resolve({
         error: true,
         message: 'Failed to list templates',
