@@ -49,11 +49,7 @@ export const RenameModal = ({
   const footer = {
     content: (
       <>
-        <Button
-          onClick={props.onHide}
-          variant="light"
-          className={styles.glossaryCancelButton}
-        >
+        <Button onClick={props.onHide} variant="light">
           Cancel
         </Button>
         <Button

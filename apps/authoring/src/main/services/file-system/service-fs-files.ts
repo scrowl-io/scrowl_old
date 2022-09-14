@@ -584,15 +584,25 @@ export const readDir = (pathname: string) => {
     }
 
     try {
-      fs.readdir(pathname, { withFileTypes: true }).then(files => {
-        resolve({
-          error: false,
-          data: {
-            pathname,
-            files,
-          },
+      fs.readdir(pathname, { withFileTypes: true })
+        .then(files => {
+          resolve({
+            error: false,
+            data: {
+              pathname,
+              files,
+            },
+          });
+        })
+        .catch(e => {
+          resolve({
+            error: true,
+            message: `Unable to read from: ${pathname}`,
+            data: {
+              trace: e,
+            },
+          });
         });
-      });
     } catch (e) {
       resolve({
         error: true,
