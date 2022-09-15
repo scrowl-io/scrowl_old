@@ -223,6 +223,49 @@ export const list = () => {
 };
 
 export const load = (ev: Requester.RequestEvent, templateName: string) => {
+  const copyTemplateComponent = () => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      const filename = fs.join(templateAssetPath, `template-${templateName}`);
+      const dest = fs.join(templateWorkingPath, 'src');
+
+      fs.existsFile(filename)
+        .then(existRes => {
+          if (existRes.error) {
+            resolve(existRes);
+            return;
+          }
+
+          if (!existRes.data.exists) {
+            resolve({
+              error: true,
+              message: 'unable to load template: template does not exist',
+            });
+            return;
+          }
+
+          fs.copy(filename, dest)
+            .then(resolve)
+            .catch(e => {
+              resolve({
+                error: true,
+                message: 'failed to copy template',
+                data: {
+                  trace: e,
+                },
+              });
+            });
+        })
+        .catch(e => {
+          resolve({
+            error: true,
+            message: 'failed to copy template',
+            data: {
+              trace: e,
+            },
+          });
+        });
+    });
+  };
   const compileCanvas = (
     filename: string,
     data: { [key: string]: string | { [key: string]: string } },
@@ -299,7 +342,6 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
       );
       const canvasScriptDest = fs.join('templates', 'src', 'canvas.js');
       const data = {
-        canvasUrl: `/canvas.js`,
         templateUrl: '',
         templateComponent: '',
         manifest: JSON.stringify({
@@ -309,6 +351,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
       const canvasRendering = [
         fs.copy(reactSource, reactDest),
         fs.copy(reactDomSource, reactDomDest),
+        copyTemplateComponent(),
         compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
         compileCanvas(canvasScriptSource, data, canvasScriptDest),
       ];
