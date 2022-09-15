@@ -1,30 +1,36 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Projects } from '../../../../../models';
 import { FormBuilder, FormBuilderCommons } from '../../../../../components';
 import { deepCopy } from './utils';
 import { updateActiveSlide } from '../../../page-editor-hooks';
+import {
+  LessonTreeItem,
+  ModuleTreeItem,
+  SlideTreeItem,
+} from '../../pane-details/elements/tree-view';
 
 export type ContentFormProps = {
   activeSlide: Projects.ProjectSlide;
 };
 
 export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
-  const slide = deepCopy(activeSlide);
+  const slideData = deepCopy(activeSlide);
   const project = Projects.useData();
   const modules = deepCopy(project.modules);
 
   const getTargetSlide = () => {
     let targetSlide;
-    modules.map((module: any) => {
-      module.lessons.map((lesson: any) => {
-        lesson.slides.map((slide: any) => {
+    modules.map((module: ModuleTreeItem) => {
+      module.lessons.map((lesson: LessonTreeItem) => {
+        lesson.slides.map((slide: SlideTreeItem) => {
           if (slide.name === activeSlide.name) {
+            console.log(slide);
             targetSlide = slide;
           }
         });
       });
     });
-    if (targetSlide != undefined) {
+    if (targetSlide !== undefined) {
       return targetSlide as Projects.ProjectSlide;
     }
   };
@@ -32,29 +38,26 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
   const handleOnSubmit = () => {
     const targetSlide = getTargetSlide();
 
-    if (!targetSlide || targetSlide == null) {
+    if (!targetSlide || targetSlide === null) {
       console.error('No target slide match');
       return;
     } else if (targetSlide.template) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      Object.entries(targetSlide.template.elements).map(targetElement => {
-        if (activeSlide.template) {
-          Object.entries(activeSlide.template.elements).map(activeElement => {
-            if (targetElement[1].label === activeElement[1].label) {
-              targetElement[1].value = activeElement[1].value;
-            }
-          });
-        }
-      });
+      Object.assign(
+        targetSlide.template.elements,
+        activeSlide.template?.elements
+      );
     }
 
     Projects.update({ modules });
   };
 
   const handleOnUpdate = (data: FormBuilderCommons['formData']) => {
-    slide.template.elements = Object.assign(slide.template.elements, data);
+    slideData.template.elements = Object.assign(
+      slideData.template.elements,
+      data
+    );
 
-    updateActiveSlide(slide);
+    updateActiveSlide(slideData);
   };
 
   if (!activeSlide.template) {
