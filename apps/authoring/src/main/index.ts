@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -9,7 +10,6 @@ import {
   BrowserWindow,
   shell,
   BrowserWindowConstructorOptions,
-  protocol,
 } from 'electron';
 import electronDebug from 'electron-debug';
 import installExtension, {
@@ -127,29 +127,6 @@ const createWindow = async () => {
 };
 
 /**
- * Register a custom protocol to load files from local disk
- * Using the protocol will avoid the Chromium security error: " Not allowed to load local resource"
- * due to the webPreferences: { webSecurity: true } when creating the window.
- * More info: https://github.com/electron/electron/issues/23757#issuecomment-640146333
- * Do not disable websecurity: https://www.electronjs.org/docs/latest/tutorial/security#6-do-not-disable-websecurity
- *
- * Using the custom protocol:
- * <img src='scrowl-file:///User/Images/img.jpeg' />
- */
-const registerScrowlFileProtocol = () => {
-  const protocolName = 'scrowl-file';
-
-  protocol.registerFileProtocol(protocolName, (request, callback) => {
-    const url = request.url.replace(`${protocolName}://`, '');
-    try {
-      return callback(decodeURIComponent(url));
-    } catch (error) {
-      console.error(error);
-    }
-  });
-};
-
-/**
  * Add event listeners...
  */
 
@@ -173,9 +150,9 @@ const createApp = () => {
   app
     .whenReady()
     .then(() => {
-      registerScrowlFileProtocol();
       Menu.init(isDARWIN);
       Requester.init();
+      Requester.useTemplateMiddleware();
       createWindow();
 
       app.on('activate', () => {

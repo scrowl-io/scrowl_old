@@ -1,0 +1,16 @@
+{{#with . as | data |}}
+import React, { createElement } from 'react'
+import { createRoot } from 'react-dom/client'
+/* import { {{data.templateComponent }} } from {{data.templateUrl}} */
+
+const container = document.getElementById('app');
+const root = createRoot(container);
+
+class App extends React.Component {
+  render() {
+    return createElement('div', null, `Hello World`);
+  }
+}
+
+root.render(createElement(App));
+{{/with}}

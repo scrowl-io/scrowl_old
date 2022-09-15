@@ -49,3 +49,7 @@ export interface ApiResultSuccess extends JsonResult {
 }
 
 export type ApiResult = ApiResultError | ApiResultSuccess;
+
+export type RequestResponse = (
+  response: NodeJS.ReadableStream | Electron.ProtocolResponse
+) => void;

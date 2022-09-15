@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Templates } from '../../../../models';
 
 export const Canvas = () => {
-  const [canvasData, setCanvasData] = useState('');
+  const [canvasUrl, setCanvasUrl] = useState('');
 
   useEffect(() => {
     Templates.load('introduction').then(res => {
@@ -11,11 +11,18 @@ export const Canvas = () => {
         return;
       }
 
-      setCanvasData(res.data.contents);
+      setCanvasUrl(res.data.url);
     });
   }, []);
 
-  return <iframe srcDoc={canvasData} title="Scrowl Editor Canvas"></iframe>;
+  return (
+    <iframe
+      src={canvasUrl}
+      title="Scrowl Editor Canvas"
+      referrerPolicy="unsafe-url"
+      sandbox="allow-same-origin allow-scripts"
+    ></iframe>
+  );
 };
 
 export default {
