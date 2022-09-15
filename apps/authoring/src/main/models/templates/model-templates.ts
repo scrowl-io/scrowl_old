@@ -256,21 +256,6 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
       }
     });
   };
-  const buildCanvas = (source: string, distDir: string) => {
-    return new Promise<Requester.ApiResult>(resolve => {
-      try {
-        //
-      } catch (e) {
-        resolve({
-          error: true,
-          message: 'Failed to build canvas',
-          data: {
-            trace: e,
-          },
-        });
-      }
-    });
-  };
 
   return new Promise<Requester.ApiResult>(resolve => {
     try {
@@ -307,18 +292,12 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         'canvas.html.hbs'
       );
       const canvasHtmlDest = fs.join('templates', 'src', 'canvas.html');
-      const canvasBuildHtml = fs.join(
-        templateWorkingPath,
-        'src',
-        'canvas.html'
-      );
       const canvasScriptSource = fs.join(
         templateAssetPath,
         'workspace',
         'canvas.js.hbs'
       );
       const canvasScriptDest = fs.join('templates', 'src', 'canvas.js');
-      const canvasBuildFolder = fs.join(templateWorkingPath, 'build');
       const data = {
         canvasUrl: `/canvas.js`,
         templateUrl: '',
