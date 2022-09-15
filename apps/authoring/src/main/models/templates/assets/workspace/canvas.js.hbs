@@ -1,14 +1,16 @@
 {{#with . as | data |}}
-import React, { createElement } from 'react'
-import { createRoot } from 'react-dom/client'
+import './react.production.min.js';
+import './react-dom.production.min.js'
 /* import { {{data.templateComponent }} } from {{data.templateUrl}} */
 
+const createElement = React.createElement;
+const createRoot = ReactDOM.createRoot;
 const container = document.getElementById('app');
 const root = createRoot(container);
 
 class App extends React.Component {
   render() {
-    return createElement('div', null, `Hello World`);
+    return createElement('div', null, `Hello There`);
   }
 }
 

@@ -27,6 +27,14 @@ const sourceMap = {
       overwrite: true,
     },
   },
+  'node_modules/react/umd/react.production.min.js': {
+    dest: './src/main/models/templates/assets/workspace/react.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-dom/umd/react-dom.production.min.js': {
+    dest: './src/main/models/templates/assets/workspace/react-dom.production.min.js',
+    includePaths: ['../../'],
+  },
 };
 
 const findPath = (source, includePaths) => {

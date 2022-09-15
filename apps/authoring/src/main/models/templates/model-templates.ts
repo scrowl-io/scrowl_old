@@ -281,7 +281,26 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         });
         return;
       }
-
+      const reactSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        'react.production.min.js'
+      );
+      const reactDest = fs.join(
+        templateWorkingPath,
+        'src',
+        'react.production.min.js'
+      );
+      const reactDomSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        'react-dom.production.min.js'
+      );
+      const reactDomDest = fs.join(
+        templateWorkingPath,
+        'src',
+        'react-dom.production.min.js'
+      );
       const canvasHtmlSource = fs.join(
         templateAssetPath,
         'workspace',
@@ -309,6 +328,8 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         }),
       };
       const canvasRendering = [
+        fs.copy(reactSource, reactDest),
+        fs.copy(reactDomSource, reactDomDest),
         compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
         compileCanvas(canvasScriptSource, data, canvasScriptDest),
       ];
