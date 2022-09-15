@@ -120,8 +120,8 @@ export const list = (limit = 10) => {
   });
 };
 
-export const load = () => {
-  return api.load();
+export const load = (template: string) => {
+  return api.load(template);
 };
 
 export default {

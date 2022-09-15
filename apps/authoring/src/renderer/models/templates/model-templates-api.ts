@@ -40,10 +40,10 @@ export const list = (limit?: number) => {
   });
 };
 
-export const load = () => {
+export const load = (template: string) => {
   return new Promise<requester.ApiResult>(resolve => {
     try {
-      requester.invoke(ENDPOINTS.load).then(resolve);
+      requester.invoke(ENDPOINTS.load, template).then(resolve);
     } catch (e) {
       resolve({
         error: true,

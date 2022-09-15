@@ -9,6 +9,7 @@ import {
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
+import { Parcel } from '@parcel/core';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
 export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
@@ -222,32 +223,149 @@ export const list = () => {
   });
 };
 
-export const load = () => {
+export const load = (ev: Requester.RequestEvent, templateName: string) => {
+  const compileCanvas = (
+    filename: string,
+    data: { [key: string]: string | { [key: string]: string } },
+    dest: string
+  ) => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        fs.readFile(filename).then(readRes => {
+          if (readRes.error) {
+            resolve(readRes);
+            return;
+          }
+
+          const compileRes = Templater.compile(readRes.data.contents, {
+            manifest: JSON.stringify(data),
+          });
+
+          if (compileRes.error) {
+            resolve(compileRes);
+            return;
+          }
+
+          fs.writeFileTemp(dest, compileRes.data.contents).then(resolve);
+        });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to compile canvas',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    });
+  };
+  const buildCanvas = (source: string, distDir: string) => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        const bundler = new Parcel({
+          entries: 'canvas',
+          defaultConfig: '@parcel/config-default',
+          targets: {
+            canvas: {
+              source,
+              distDir,
+            },
+          },
+        });
+        Logger.info('paths', source, distDir);
+        bundler
+          .run()
+          .then(bundleRes => {
+            Logger.info('bundleRes', bundleRes);
+          })
+          .catch(e => {
+            resolve({
+              error: true,
+              message: 'Failed to build canvas',
+              data: {
+                trace: e,
+              },
+            });
+          });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to build canvas',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    });
+  };
+
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      const base = fs.join(templateAssetPath, 'workspace', 'canvas.hbs');
-
-      fs.readFile(base).then(readRes => {
-        if (readRes.error) {
-          resolve(readRes);
-          return;
-        }
-
-        const compileRes = Templater.compile(readRes.data.contents, {
-          manifest: JSON.stringify({ foo: 'bar' }),
-        });
-
-        if (compileRes.error) {
-          resolve(compileRes);
-          return;
-        }
-
-        Logger.info(`loading template: ${base}`);
+      if (!templateName) {
         resolve({
-          error: false,
-          data: {
-            template: compileRes.data.contents,
-          },
+          error: true,
+          message: `Unable to load template: template required`,
+        });
+        return;
+      }
+
+      const canvasHtmlSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        'canvas.html.hbs'
+      );
+      const canvasHtmlDest = fs.join('templates', 'src', 'canvas.html');
+      const canvasScriptSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        'canvas.tsx.hbs'
+      );
+      const canvasScriptDest = fs.join('templates', 'src', 'canvas.tsx');
+      const canvasBuildFolder = fs.join(templateWorkingPath, 'build');
+      const data = {
+        canvasUrl: canvasScriptDest,
+        templateUrl: '',
+        templateComponent: '',
+        manifest: {
+          foo: 'bar',
+        },
+      };
+      const canvasRendering = [
+        compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
+        compileCanvas(canvasScriptSource, data, canvasScriptDest),
+      ];
+
+      Promise.allSettled(canvasRendering).then(renderingRes => {
+        let isRendered = true;
+        console.log('renderingRes', renderingRes);
+        for (let i = 0, ii = renderingRes.length; i < ii; i++) {
+          if (renderingRes[i].status === 'rejected') {
+            isRendered = false;
+            Logger.error('Failed to render canvas');
+            break;
+          }
+        }
+
+        if (!isRendered) {
+          resolve({
+            error: true,
+            message: 'Failed to render canvas',
+          });
+          return;
+        }
+
+        buildCanvas(
+          fs.join(templateWorkingPath, canvasHtmlDest),
+          canvasBuildFolder
+        ).then(buildRes => {
+          if (buildRes.error) {
+            resolve(buildRes);
+            return;
+          }
+
+          const canvasBuildHtml = fs.join(canvasBuildFolder, 'canvas.html');
+
+          fs.readFile(canvasBuildHtml).then(resolve);
         });
       });
     } catch (e) {

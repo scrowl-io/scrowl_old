@@ -5,13 +5,13 @@ export const Canvas = () => {
   const [canvasData, setCanvasData] = useState('');
 
   useEffect(() => {
-    Templates.load().then(res => {
+    Templates.load('introduction').then(res => {
       if (res.error) {
         console.error(res);
         return;
       }
 
-      setCanvasData(res.data.template);
+      setCanvasData(res.data.contents);
     });
   }, []);
 
