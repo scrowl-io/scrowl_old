@@ -9176,9 +9176,9 @@ scheduler@^0.23.0:
     jsonschema "^1.4.1"
     xmlbuilder "^15.1.1"
 
-"scrowl-template-introduction@git+https://git@github.com/scrowl-io/template-introduction.git#v0.0.5":
-  version "0.0.5"
-  resolved "git+https://git@github.com/scrowl-io/template-introduction.git#4f3f24d6ffd1db17cf9b2f2f1b4d5f5ba564d9e4"
+"scrowl-template-introduction@git+https://git@github.com/scrowl-io/template-introduction.git#v0.0.6":
+  version "0.0.6"
+  resolved "git+https://git@github.com/scrowl-io/template-introduction.git#a0103f560340e8fb1f4868e4ac36b975522cc808"
   dependencies:
     react "~18.1.0"
     react-bootstrap "2.4.0"
