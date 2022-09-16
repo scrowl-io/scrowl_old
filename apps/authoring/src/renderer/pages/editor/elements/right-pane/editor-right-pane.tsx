@@ -2,13 +2,16 @@ import React from 'react';
 import * as styles from './editor-right-pane-details.module.scss';
 import { Tabs } from '@owlui/lib';
 import { Pane } from '../../../../components';
-import { Projects } from '../../../../models';
+import { Projects, Templates } from '../../../../models';
 import { RightPaneContentForm } from './content/right-pane-content-form';
 import { useActiveSlide } from '../../page-editor-hooks';
 
 export const RightPane = () => {
   const isLoaded = Projects.useLoaded();
   const activeSlide = useActiveSlide();
+  const handleTemplateModal = () => {
+    Templates.explore();
+  };
   const tabItems = [
     {
       id: '1',
@@ -36,6 +39,7 @@ export const RightPane = () => {
 
   return (
     <Pane>
+      <button onClick={handleTemplateModal}>Select Templates</button>
       <Tabs items={tabItems} />
     </Pane>
   );

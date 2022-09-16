@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal } from '@owlui/lib';
+import { Modal, Card, CardBody, CardTitle, CardHeader } from '@owlui/lib';
 import { Templates } from '../../../models';
 
 const ExplorerTemplateBody = () => {
@@ -34,7 +34,12 @@ const ExplorerTemplateBody = () => {
           ) => {
             return (
               <div key={idx}>
-                <div>Name: {item.manifest.meta.name}</div>
+                <Card>
+                  <CardHeader>Example Card Body</CardHeader>
+                  <CardBody>
+                    <div>Name: {item.manifest.meta.name}</div>
+                  </CardBody>
+                </Card>
               </div>
             );
           }
