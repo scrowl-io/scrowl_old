@@ -1,5 +1,59 @@
 import fs from '../utils/file-system.mjs';
 
+const addDefaultExports = (code, exporting) => {
+  const moduleDefaults = exporting.join(',\n');
+  return `${code}\nexport default {\n${moduleDefaults},\n};\n`;
+};
+
+const reactToES = code => {
+  const wrapStart = /if(.)*\n(.)*(\n)*(.*)'use strict';\n/g;
+  const wrapEnd = /\}\)\(\);\n}\n$/g;
+  const unwrapped = code.replace(wrapStart, '').replace(wrapEnd, '');
+  const importing = /(?:var)(.*)=(?: require\(')(.*)(?:'\);)/g;
+  const exporting = /(?:exports\.)(.*)(?:=)(.*);/g;
+  const replaceDeclarations = [];
+  const defaultExports = [];
+  const imported = unwrapped.replace(importing, (match, prop, val) => {
+    prop = prop.trim();
+    val = val.trim();
+
+    return `import ${prop} from '${val}'`;
+  });
+  let exported = imported.replace(exporting, (match, prop, val) => {
+    prop = prop.trim();
+    val = val.trim();
+
+    if (prop !== val) {
+      if (val.includes(prop)) {
+        defaultExports.push(`  ${prop}: ${val}`);
+        return '';
+      }
+
+      defaultExports.push(`  ${prop}`);
+      return `export const ${prop} = ${val};`;
+    }
+
+    defaultExports.push(`  ${prop}`);
+    replaceDeclarations.push(prop);
+    return '';
+  });
+
+  if (!replaceDeclarations.length) {
+    return addDefaultExports(exported, defaultExports);
+  }
+
+  replaceDeclarations.forEach(prop => {
+    const re = new RegExp(`(?:var ${prop} = )(.*);`);
+
+    exported = exported.replace(re, (match, val) => {
+      val = val.trim();
+      return `export const ${prop} = ${val};`;
+    });
+  });
+
+  return addDefaultExports(exported, defaultExports);
+};
+
 // This map uses the key to declare a path to the source file
 const sourceMap = {
   'node_modules/@scrowl/runtime/dist/scrowl.runtime.js': {
@@ -27,17 +81,23 @@ const sourceMap = {
       overwrite: true,
     },
   },
-  'node_modules/react/umd/react.production.min.js': {
-    dest: './src/main/models/templates/assets/workspace/react.production.min.js',
+  'node_modules/react/cjs/react.development.js': {
+    dest: './src/main/models/templates/assets/workspace/react.development.js',
     includePaths: ['../../'],
+    transformer: contents => {
+      return reactToES(contents);
+    },
   },
   'node_modules/react-dom/umd/react-dom.production.min.js': {
     dest: './src/main/models/templates/assets/workspace/react-dom.production.min.js',
     includePaths: ['../../'],
   },
-  'node_modules/react/cjs/react-jsx-runtime.production.min.js': {
-    dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.production.min.js',
+  'node_modules/react/cjs/react-jsx-runtime.development.js': {
+    dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.development.js',
     includePaths: ['../../'],
+    transformer: contents => {
+      return reactToES(contents);
+    },
   },
 };
 

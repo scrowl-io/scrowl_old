@@ -1,10 +1,19 @@
 {{#with . as | data |}}
-import React, { createElement } from 'react';
-import { createRoot } from 'react-dom';
-/* import { {{data.templateComponent }} } from {{data.templateUrl}} */
+import React from 'react';
+/*
+import './react-dom.production.min.js'
+import * as Template from './index.js';
+// import { {{data.templateComponent }} } from {{data.templateUrl}}
+*/
 
+const createElement = React.createElement;
+console.log('createElement', createElement);
+/*
+const createRoot = ReactDOM.createRoot;
 const container = document.getElementById('app');
 const root = createRoot(container);
+
+console.log('Template', Template);
 
 class App extends React.Component {
   render() {
@@ -13,4 +22,5 @@ class App extends React.Component {
 }
 
 root.render(createElement(App));
+*/
 {{/with}}

@@ -223,12 +223,14 @@ export const list = () => {
 };
 
 export const load = (ev: Requester.RequestEvent, templateName: string) => {
+  const templateBase = `template-${templateName}`;
+
   const copyTemplateComponent = () => {
     return new Promise<Requester.ApiResult>(resolve => {
-      const filename = fs.join(templateAssetPath, `template-${templateName}`);
+      const templateFolder = fs.join(templateAssetPath, templateBase);
       const dest = fs.join(templateWorkingPath, 'src');
 
-      fs.existsFile(filename)
+      fs.existsFile(templateFolder)
         .then(existRes => {
           if (existRes.error) {
             resolve(existRes);
@@ -243,7 +245,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
             return;
           }
 
-          fs.copy(filename, dest)
+          fs.copy(templateFolder, dest)
             .then(resolve)
             .catch(e => {
               resolve({
@@ -309,7 +311,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         });
         return;
       }
-      const filenameReact = 'react.production.min.js';
+      const filenameReact = 'react.development.js';
       const reactSource = fs.join(
         templateAssetPath,
         'workspace',
@@ -318,7 +320,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
       const reactDest = fs.join(
         templateWorkingPath,
         'src',
-        'react.production.min.js'
+        filenameReact
       );
       const filenameReactDom = 'react-dom.production.min.js';
       const reactDomSource = fs.join(
@@ -331,7 +333,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         'src',
         filenameReactDom
       );
-      const filenameReactJsx = 'react-jsx-runtime.production.min.js';
+      const filenameReactJsx = 'react-jsx-runtime.development.js';
       const reactJsxSource = fs.join(
         templateAssetPath,
         'workspace',
@@ -355,7 +357,8 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
       );
       const canvasScriptDest = fs.join('templates', 'src', 'canvas.js');
       const data = {
-        templateUrl: '',
+        templateJs: `./${templateBase}.js`,
+        templateCss: `./${templateBase}.css`,
         templateComponent: '',
         manifest: JSON.stringify({
           foo: 'bar',
