@@ -88,20 +88,20 @@ const sourceMap = {
       return reactToES(contents);
     },
   },
-  'node_modules/scheduler/cjs/scheduler.development.js': {
-    dest: './src/main/models/templates/assets/workspace/scheduler.development.js',
-    includePaths: ['../../'],
-    transformer: contents => {
-      return reactToES(contents);
-    },
-  },
-  'node_modules/react-dom/cjs/react-dom.development.js': {
-    dest: './src/main/models/templates/assets/workspace/react-dom.development.js',
-    includePaths: ['../../'],
-    transformer: contents => {
-      return reactToES(contents);
-    },
-  },
+  // 'node_modules/scheduler/cjs/scheduler.development.js': {
+  //   dest: './src/main/models/templates/assets/workspace/scheduler.development.js',
+  //   includePaths: ['../../'],
+  //   transformer: contents => {
+  //     return reactToES(contents);
+  //   },
+  // },
+  // 'node_modules/react-dom/cjs/react-dom.development.js': {
+  //   dest: './src/main/models/templates/assets/workspace/react-dom.development.js',
+  //   includePaths: ['../../'],
+  //   transformer: contents => {
+  //     return reactToES(contents);
+  //   },
+  // },
   'node_modules/react/cjs/react-jsx-runtime.development.js': {
     dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.development.js',
     includePaths: ['../../'],
