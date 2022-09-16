@@ -2,9 +2,10 @@ import { ProjectData, ProjectSlide } from './model-projects.types';
 import { TemplateManifest } from '../templates';
 import templateManifestIntro from '../templates/assets/template-introduction/manifest.json';
 
-export const mockSlide = (name: string): ProjectSlide => {
+export const mockSlide = (name: string, id: number): ProjectSlide => {
   return {
     name: name,
+    id: id,
     template: templateManifestIntro as TemplateManifest,
   };
 };
@@ -23,14 +24,14 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'Building a Respectful Workplace',
-          slides: [mockSlide('Introduction')],
+          slides: [mockSlide('Introduction', 1)],
         },
         {
           name: 'What is Harassment vs. Discrimination?',
           slides: [
-            mockSlide('Slide 1'),
-            mockSlide('Slide 2'),
-            mockSlide('Slide 3'),
+            mockSlide('Slide 1', 2),
+            mockSlide('Slide 2', 3),
+            mockSlide('Slide 3', 4),
           ],
         },
       ],
@@ -40,7 +41,7 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'What is Sexual Harassment?',
-          slides: [mockSlide('Slide 4')],
+          slides: [mockSlide('Slide 4', 5)],
         },
       ],
     },
@@ -50,9 +51,9 @@ export const data: ProjectData = {
         {
           name: 'Preventing Sexual Harassment as a Supervisor',
           slides: [
-            mockSlide('Slide 5'),
-            mockSlide('Slide 6'),
-            mockSlide('Slide 7'),
+            mockSlide('Slide 5', 6),
+            mockSlide('Slide 6', 7),
+            mockSlide('Slide 7', 8),
           ],
         },
       ],
@@ -62,7 +63,7 @@ export const data: ProjectData = {
       lessons: [
         {
           name: 'Final Thoughts',
-          slides: [mockSlide('Slide 8'), mockSlide('Slide 9')],
+          slides: [mockSlide('Slide 8', 9), mockSlide('Slide 9', 10)],
         },
       ],
     },

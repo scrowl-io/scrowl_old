@@ -4,13 +4,13 @@ import { FormBuilder, FormBuilderCommons } from '../../../../../components';
 import { deepCopy } from './utils';
 import { updateActiveSlide } from '../../../page-editor-hooks';
 import {
-  LessonTreeItem,
-  ModuleTreeItem,
-  SlideTreeItem,
-} from '../../pane-details/elements/tree-view';
+  ProjectLesson,
+  ProjectModule,
+  ProjectSlide,
+} from '../../../../../../main/models/projects';
 
 export type ContentFormProps = {
-  activeSlide: Projects.ProjectSlide;
+  activeSlide: ProjectSlide;
 };
 
 export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
@@ -19,32 +19,34 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
   const modules = deepCopy(project.modules);
 
   const getTargetSlide = () => {
-    let targetSlide;
-    modules.map((module: ModuleTreeItem) => {
-      module.lessons.map((lesson: LessonTreeItem) => {
-        lesson.slides.map((slide: SlideTreeItem) => {
-          if (slide.name === activeSlide.name) {
-            console.log(slide);
-            targetSlide = slide;
+    let targetSlide: ProjectSlide | undefined;
+    modules.map((module: ProjectModule) => {
+      if (targetSlide === undefined) {
+        module.lessons.map((lesson: ProjectLesson) => {
+          if (targetSlide === undefined) {
+            lesson.slides.map((slide: ProjectSlide) => {
+              if (slide.id === slideData.id) {
+                targetSlide = slide;
+                return;
+              }
+            });
           }
         });
-      });
+      }
     });
-    if (targetSlide !== undefined) {
-      return targetSlide as Projects.ProjectSlide;
-    }
+    return targetSlide;
   };
 
   const handleOnSubmit = () => {
     const targetSlide = getTargetSlide();
 
-    if (!targetSlide || targetSlide === null) {
+    if (!targetSlide || targetSlide === null || targetSlide === undefined) {
       console.error('No target slide match');
       return;
     } else if (targetSlide.template) {
       Object.assign(
         targetSlide.template.elements,
-        activeSlide.template?.elements
+        slideData.template?.elements
       );
     }
 
@@ -52,10 +54,12 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
   };
 
   const handleOnUpdate = (data: FormBuilderCommons['formData']) => {
-    slideData.template.elements = Object.assign(
-      slideData.template.elements,
-      data
-    );
+    if (slideData.template) {
+      slideData.template.elements = Object.assign(
+        slideData.template.elements,
+        data
+      );
+    }
 
     updateActiveSlide(slideData);
   };
