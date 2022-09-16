@@ -1,10 +1,8 @@
 {{#with . as | data |}}
-import './react.production.min.js';
-import './react-dom.production.min.js'
+import React, { createElement } from 'react';
+import { createRoot } from 'react-dom';
 /* import { {{data.templateComponent }} } from {{data.templateUrl}} */
 
-const createElement = React.createElement;
-const createRoot = ReactDOM.createRoot;
 const container = document.getElementById('app');
 const root = createRoot(container);
 

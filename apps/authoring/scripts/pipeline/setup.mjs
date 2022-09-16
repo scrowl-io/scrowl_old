@@ -35,6 +35,10 @@ const sourceMap = {
     dest: './src/main/models/templates/assets/workspace/react-dom.production.min.js',
     includePaths: ['../../'],
   },
+  'node_modules/react/cjs/react-jsx-runtime.production.min.js': {
+    dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.production.min.js',
+    includePaths: ['../../'],
+  },
 };
 
 const findPath = (source, includePaths) => {

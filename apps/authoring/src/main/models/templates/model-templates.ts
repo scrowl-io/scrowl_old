@@ -309,25 +309,38 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         });
         return;
       }
+      const filenameReact = 'react.production.min.js';
       const reactSource = fs.join(
         templateAssetPath,
         'workspace',
-        'react.production.min.js'
+        filenameReact
       );
       const reactDest = fs.join(
         templateWorkingPath,
         'src',
         'react.production.min.js'
       );
+      const filenameReactDom = 'react-dom.production.min.js';
       const reactDomSource = fs.join(
         templateAssetPath,
         'workspace',
-        'react-dom.production.min.js'
+        filenameReactDom
       );
       const reactDomDest = fs.join(
         templateWorkingPath,
         'src',
-        'react-dom.production.min.js'
+        filenameReactDom
+      );
+      const filenameReactJsx = 'react-jsx-runtime.production.min.js';
+      const reactJsxSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameReactJsx
+      );
+      const reactJsxDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameReactJsx
       );
       const canvasHtmlSource = fs.join(
         templateAssetPath,
@@ -347,10 +360,16 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         manifest: JSON.stringify({
           foo: 'bar',
         }),
+        importList: JSON.stringify({
+          react: `./${filenameReact}`,
+          'react-dom': `./${filenameReactDom}`,
+          'react/jsx-runtime': `./${filenameReactJsx}`,
+        }),
       };
       const canvasRendering = [
         fs.copy(reactSource, reactDest),
         fs.copy(reactDomSource, reactDomDest),
+        fs.copy(reactJsxSource, reactJsxDest),
         copyTemplateComponent(),
         compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
         compileCanvas(canvasScriptSource, data, canvasScriptDest),
