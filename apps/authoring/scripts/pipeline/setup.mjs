@@ -88,9 +88,12 @@ const sourceMap = {
       return reactToES(contents);
     },
   },
-  'node_modules/react-dom/umd/react-dom.production.min.js': {
-    dest: './src/main/models/templates/assets/workspace/react-dom.production.min.js',
+  'node_modules/react-dom/cjs/react-dom.development.js': {
+    dest: './src/main/models/templates/assets/workspace/react-dom.development.js',
     includePaths: ['../../'],
+    transformer: contents => {
+      return reactToES(contents);
+    },
   },
   'node_modules/react/cjs/react-jsx-runtime.development.js': {
     dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.development.js',

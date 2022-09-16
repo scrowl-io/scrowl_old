@@ -1,13 +1,14 @@
 {{#with . as | data |}}
 import React from 'react';
+import ReactDom from 'react-dom';
 /*
-import './react-dom.production.min.js'
 import * as Template from './index.js';
 // import { {{data.templateComponent }} } from {{data.templateUrl}}
 */
 
 const createElement = React.createElement;
 console.log('createElement', createElement);
+console.log('ReactDom', ReactDom);
 /*
 const createRoot = ReactDOM.createRoot;
 const container = document.getElementById('app');

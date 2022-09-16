@@ -322,7 +322,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         'src',
         filenameReact
       );
-      const filenameReactDom = 'react-dom.production.min.js';
+      const filenameReactDom = 'react-dom.development.js';
       const reactDomSource = fs.join(
         templateAssetPath,
         'workspace',
