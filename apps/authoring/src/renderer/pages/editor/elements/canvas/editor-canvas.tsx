@@ -21,6 +21,7 @@ export const Canvas = () => {
       title="Scrowl Editor Canvas"
       referrerPolicy="unsafe-url"
       sandbox="allow-same-origin allow-scripts"
+      height="100%"
     ></iframe>
   );
 };

@@ -18,7 +18,6 @@ export const PageElement = () => {
             <PaneDetails />
 
             <div className={styles.workspace}>
-              <div className="workspace__body">Workspace</div>
               <Canvas />
             </div>
 

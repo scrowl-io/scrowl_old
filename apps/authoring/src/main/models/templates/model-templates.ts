@@ -9,6 +9,7 @@ import {
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
+import templateManifestIntro from './assets/template-introduction/manifest.json';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
 export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
@@ -366,10 +367,8 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
       const data = {
         templateJs: `./${templateBase}.js`,
         templateCss: `./${templateBase}.css`,
-        templateComponent: '',
-        manifest: JSON.stringify({
-          foo: 'bar',
-        }),
+        templateComponent: 'Introduction',
+        manifest: JSON.stringify(templateManifestIntro),
         importList: JSON.stringify({
           react: `./${filenameReact}`,
           scheduler: `./${filenameReactScheduler}`,
@@ -377,6 +376,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
           'react/jsx-runtime': `./${filenameReactJsx}`,
         }),
       };
+
       const canvasRendering = [
         fs.copy(reactSource, reactDest),
         fs.copy(reactSchedulerSource, reactSchedulerDest),
