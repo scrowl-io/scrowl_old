@@ -26539,7 +26539,10 @@ function completeWork(current, workInProgress, renderLanes) {
             }
           }
 
-          if (renderState.tail !== null && now() > getRenderTargetTime()) {
+          if (
+            renderState.tail !== null &&
+            Scheduler.unstable_now() > getRenderTargetTime()
+          ) {
             // We have already passed our CPU deadline but we still have rows
             // left in the tail. We'll just give up further attempts to render
             // the main content and only render fallbacks.
@@ -26592,7 +26595,7 @@ function completeWork(current, workInProgress, renderLanes) {
             // The time it took to render last row is greater than the remaining
             // time we have to render. So rendering one more row would likely
             // exceed it.
-            now() * 2 - renderState.renderingStartTime >
+            Scheduler.unstable_now() * 2 - renderState.renderingStartTime >
               getRenderTargetTime() &&
             renderLanes !== OffscreenLane
           ) {
@@ -26641,7 +26644,7 @@ function completeWork(current, workInProgress, renderLanes) {
         var next = renderState.tail;
         renderState.rendering = next;
         renderState.tail = next.sibling;
-        renderState.renderingStartTime = now();
+        renderState.renderingStartTime = Scheduler.unstable_now();
         next.sibling = null; // Restore the context.
         // TODO: We can probably just avoid popping it instead and only
         // setting it the first time we go from not suspended to suspended.
@@ -29708,7 +29711,8 @@ var RENDER_TIMEOUT_MS = 500;
 var workInProgressTransitions = null;
 
 function resetRenderTimer() {
-  workInProgressRootRenderTargetTime = now() + RENDER_TIMEOUT_MS;
+  workInProgressRootRenderTargetTime =
+    Scheduler.unstable_now() + RENDER_TIMEOUT_MS;
 }
 
 function getRenderTargetTime() {
@@ -29743,7 +29747,7 @@ function getWorkInProgressRoot() {
 function requestEventTime() {
   if ((executionContext & (RenderContext | CommitContext)) !== NoContext) {
     // We're inside React, so it's fine to read the actual time.
-    return now();
+    return Scheduler.unstable_now();
   } // We're not inside React, so we may be in the middle of a browser event.
 
   if (currentEventTime !== NoTimestamp) {
@@ -29751,7 +29755,7 @@ function requestEventTime() {
     return currentEventTime;
   } // This is the first update since React yielded. Compute a new start time.
 
-  currentEventTime = now();
+  currentEventTime = Scheduler.unstable_now();
   return currentEventTime;
 }
 function requestUpdateLane(fiber) {
@@ -30150,7 +30154,7 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
       var fatalError = workInProgressRootFatalError;
       prepareFreshStack(root, NoLanes);
       markRootSuspended$1(root, lanes);
-      ensureRootIsScheduled(root, now());
+      ensureRootIsScheduled(root, Scheduler.unstable_now());
       throw fatalError;
     }
 
@@ -30195,7 +30199,7 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
           var _fatalError = workInProgressRootFatalError;
           prepareFreshStack(root, NoLanes);
           markRootSuspended$1(root, lanes);
-          ensureRootIsScheduled(root, now());
+          ensureRootIsScheduled(root, Scheduler.unstable_now());
           throw _fatalError;
         }
       } // We now have a consistent tree. The next step is either to commit it,
@@ -30207,7 +30211,7 @@ function performConcurrentWorkOnRoot(root, didTimeout) {
     }
   }
 
-  ensureRootIsScheduled(root, now());
+  ensureRootIsScheduled(root, Scheduler.unstable_now());
 
   if (root.callbackNode === originalCallbackNode) {
     // The task node scheduled for this root is the same one that's
@@ -30306,7 +30310,9 @@ function finishConcurrentRender(root, exitStatus, lanes) {
         // This render only included retries, no updates. Throttle committing
         // retries so that we don't show too many loading states too quickly.
         var msUntilTimeout =
-          globalMostRecentFallbackTime + FALLBACK_THROTTLE_MS - now(); // Don't bother with a very short suspense time.
+          globalMostRecentFallbackTime +
+          FALLBACK_THROTTLE_MS -
+          Scheduler.unstable_now(); // Don't bother with a very short suspense time.
 
         if (msUntilTimeout > 10) {
           var nextLanes = getNextLanes(root, NoLanes);
@@ -30370,7 +30376,7 @@ function finishConcurrentRender(root, exitStatus, lanes) {
         // Consider removing.
         var mostRecentEventTime = getMostRecentEventTime(root, lanes);
         var eventTimeMs = mostRecentEventTime;
-        var timeElapsedMs = now() - eventTimeMs;
+        var timeElapsedMs = Scheduler.unstable_now() - eventTimeMs;
 
         var _msUntilTimeout = jnd(timeElapsedMs) - timeElapsedMs; // Don't bother with a very short suspense time.
 
@@ -30504,7 +30510,7 @@ function performSyncWorkOnRoot(root) {
 
   if (!includesSomeLane(lanes, SyncLane)) {
     // There's no remaining sync work left.
-    ensureRootIsScheduled(root, now());
+    ensureRootIsScheduled(root, Scheduler.unstable_now());
     return null;
   }
 
@@ -30527,7 +30533,7 @@ function performSyncWorkOnRoot(root) {
     var fatalError = workInProgressRootFatalError;
     prepareFreshStack(root, NoLanes);
     markRootSuspended$1(root, lanes);
-    ensureRootIsScheduled(root, now());
+    ensureRootIsScheduled(root, Scheduler.unstable_now());
     throw fatalError;
   }
 
@@ -30546,14 +30552,14 @@ function performSyncWorkOnRoot(root) {
   ); // Before exiting, make sure there's a callback scheduled for the next
   // pending level.
 
-  ensureRootIsScheduled(root, now());
+  ensureRootIsScheduled(root, Scheduler.unstable_now());
   return null;
 }
 
 function flushRoot(root, lanes) {
   if (lanes !== NoLanes) {
     markRootEntangled(root, mergeLanes(lanes, SyncLane));
-    ensureRootIsScheduled(root, now());
+    ensureRootIsScheduled(root, Scheduler.unstable_now());
 
     if ((executionContext & (RenderContext | CommitContext)) === NoContext) {
       resetRenderTimer();
@@ -30808,7 +30814,7 @@ function popDispatcher(prevDispatcher) {
 }
 
 function markCommitTimeOfFallback() {
-  globalMostRecentFallbackTime = now();
+  globalMostRecentFallbackTime = Scheduler.unstable_now();
 }
 function markSkippedUpdateLanes(lane) {
   workInProgressRootSkippedLanes = mergeLanes(
@@ -31378,7 +31384,7 @@ function commitRootImpl(
   } // Always call this before exiting `commitRoot`, to ensure that any
   // additional work on this root is scheduled.
 
-  ensureRootIsScheduled(root, now());
+  ensureRootIsScheduled(root, Scheduler.unstable_now());
 
   if (recoverableErrors !== null) {
     // There were errors during this render, but recovered from them without
@@ -31694,7 +31700,8 @@ function pingSuspendedRoot(root, wakeable, pingedLanes) {
       workInProgressRootExitStatus === RootSuspendedWithDelay ||
       (workInProgressRootExitStatus === RootSuspended &&
         includesOnlyRetries(workInProgressRootRenderLanes) &&
-        now() - globalMostRecentFallbackTime < FALLBACK_THROTTLE_MS)
+        Scheduler.unstable_now() - globalMostRecentFallbackTime <
+          FALLBACK_THROTTLE_MS)
     ) {
       // Restart from the root.
       prepareFreshStack(root, NoLanes);
