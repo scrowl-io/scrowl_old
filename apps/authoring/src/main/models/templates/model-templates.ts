@@ -317,10 +317,17 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         'workspace',
         filenameReact
       );
-      const reactDest = fs.join(
+      const reactDest = fs.join(templateWorkingPath, 'src', filenameReact);
+      const filenameReactScheduler = 'scheduler.development.js';
+      const reactSchedulerSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameReactScheduler
+      );
+      const reactSchedulerDest = fs.join(
         templateWorkingPath,
         'src',
-        filenameReact
+        filenameReactScheduler
       );
       const filenameReactDom = 'react-dom.development.js';
       const reactDomSource = fs.join(
@@ -365,12 +372,14 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
         }),
         importList: JSON.stringify({
           react: `./${filenameReact}`,
+          scheduler: `./${filenameReactScheduler}`,
           'react-dom': `./${filenameReactDom}`,
           'react/jsx-runtime': `./${filenameReactJsx}`,
         }),
       };
       const canvasRendering = [
         fs.copy(reactSource, reactDest),
+        fs.copy(reactSchedulerSource, reactSchedulerDest),
         fs.copy(reactDomSource, reactDomDest),
         fs.copy(reactJsxSource, reactJsxDest),
         copyTemplateComponent(),
