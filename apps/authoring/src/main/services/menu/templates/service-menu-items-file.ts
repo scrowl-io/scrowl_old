@@ -33,8 +33,8 @@ export const EVENTS: MenuItemEventsFile = {
     type: 'send',
   },
   templateAdd: {
-    id: 'template-add',
-    name: '/templates/add',
+    id: 'template-install',
+    name: '/templates/install',
     type: 'send',
   },
   templateOpen: {
@@ -96,20 +96,20 @@ export const template: MenuItemConstructorOptions = {
       accelerator: 'CmdOrCtrl+I',
     },
     {
-      label: 'Add Template',
-      id: EVENTS.templateAdd.id,
-      enabled: false,
-      click: (MenuItem, window, ev: KeyboardEvent) => {
-        send(EVENTS.templateAdd.name);
-      },
-      accelerator: 'CmdOrCtrl+t',
-    },
-    {
       label: 'Explore Templates',
       id: EVENTS.templateOpen.id,
       enabled: false,
       click: (MenuItem, window, ev: KeyboardEvent) => {
         send(EVENTS.templateOpen.name);
+      },
+      accelerator: 'CmdOrCtrl+t',
+    },
+    {
+      label: 'Install Template',
+      id: EVENTS.templateAdd.id,
+      enabled: false,
+      click: (MenuItem, window, ev: KeyboardEvent) => {
+        send(EVENTS.templateAdd.name);
       },
       accelerator: 'CmdOrCtrl+Shift+t',
     },

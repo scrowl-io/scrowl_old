@@ -18,7 +18,7 @@ export const mockSlide = (
 };
 
 export const data: ProjectData = {
-  name: 'Untitled Project',
+  name: 'MyCourseProject',
   description: '',
   scormConfig: {
     name: 'Untitled Course',

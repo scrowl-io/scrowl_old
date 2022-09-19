@@ -12,11 +12,19 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
   return (
     <>
       <Button
-        className={`btn btn-sm btn-primary ms-2 ${styles.btnPublish}`}
+        className={`btn btn-sm btn-primary ms-3 ${styles.btnPublish}`}
         onClick={toggleShowDrawer}
         disabled={disabled}
       >
-        <Icon icon="publish" />
+        <Icon
+          icon="history_edu"
+          style={{
+            marginRight: '.5rem',
+            fontWeight: 'bold',
+            fontSize: '1.5em',
+            lineHeight: '0.66',
+          }}
+        />
         Publish
       </Button>
       <PublishDrawer

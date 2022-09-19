@@ -8,7 +8,7 @@ export const PreviewButton = ({ disabled }: { disabled: boolean }) => {
       className={`btn btn-sm btn-ghost-primary ${styles.btnPreview}`}
       disabled={disabled}
     >
-      <Icon icon="play_arrow" />
+      <Icon icon="interests" />
       Preview
     </Button>
   );
