@@ -19,22 +19,22 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
   const modules = deepCopy(project.modules);
 
   const getTargetSlide = () => {
-    let targetSlide: ProjectSlide | undefined;
-    modules.map((module: ProjectModule) => {
-      if (targetSlide === undefined) {
-        module.lessons.map((lesson: ProjectLesson) => {
-          if (targetSlide === undefined) {
-            lesson.slides.map((slide: ProjectSlide) => {
-              if (slide.id === slideData.id) {
-                targetSlide = slide;
-                return;
-              }
-            });
-          }
-        });
-      }
-    });
-    return targetSlide;
+    const moduleID: number | undefined = activeSlide.moduleID;
+    const lessonID: number | undefined = activeSlide.lessonID;
+    const slideID: number | undefined = activeSlide.id;
+
+    if (moduleID && lessonID) {
+      const targetLesson = modules[moduleID - 1].lessons.find(
+        (lesson: ProjectLesson) => {
+          return lesson.id === lessonID;
+        }
+      );
+
+      const targetSlide = targetLesson.slides.find((slide: ProjectSlide) => {
+        return slide.id === slideID;
+      });
+      return targetSlide;
+    }
   };
 
   const handleOnSubmit = () => {
@@ -43,12 +43,8 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
     if (!targetSlide || targetSlide === null || targetSlide === undefined) {
       console.error('No target slide match');
       return;
-    } else if (targetSlide.template) {
-      Object.assign(
-        targetSlide.template.elements,
-        slideData.template?.elements
-      );
     }
+    Object.assign(targetSlide.template.elements, slideData.template?.elements);
 
     Projects.update({ modules });
   };

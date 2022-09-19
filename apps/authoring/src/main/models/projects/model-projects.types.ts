@@ -95,12 +95,15 @@ export type ProjectResourceItem = {
 
 export type ProjectSlide = {
   id?: number;
+  lessonID?: number;
+  moduleID?: number;
   name: string;
   template?: TemplateManifest;
 };
 
 export type ProjectLesson = {
   id?: number;
+  moduleID?: number;
   name: string;
   slides: Array<ProjectSlide>;
 };
