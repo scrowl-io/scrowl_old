@@ -22,7 +22,12 @@ export const Textarea = ({ config, name, onUpdate }: FormElementProps) => {
   return (
     <Form.Group>
       <Form.Label>{control.label}</Form.Label>
-      <Form.Control type="text" value={value} onChange={handlerUpdateValue} />
+      <Form.Control
+        type="text"
+        as="textarea"
+        value={control.value}
+        onChange={handlerUpdateValue}
+      />
     </Form.Group>
   );
 };

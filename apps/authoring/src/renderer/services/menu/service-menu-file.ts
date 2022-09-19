@@ -10,7 +10,7 @@ export const ENDPOINTS: MenuEventsFileApi = {
   preferencesCreate: '/preferences/create',
   preferencesOpen: '/preferences/open',
   getStarted: '/get-started',
-  templateAdd: '/templates/add',
+  templateAdd: '/templates/install',
   templateOpen: '/templates/open',
 };
 

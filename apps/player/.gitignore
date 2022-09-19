@@ -43,6 +43,7 @@ release/build/*
 # build output
 dist/
 dev/
+lib/
 
 # testing reports
 tests/reports

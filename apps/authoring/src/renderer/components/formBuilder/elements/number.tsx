@@ -22,7 +22,11 @@ export const Number = ({ config, name, onUpdate }: FormElementProps) => {
   return (
     <Form.Group>
       <Form.Label>{control.label}</Form.Label>
-      <Form.Control type="number" value={value} onChange={handlerUpdateValue} />
+      <Form.Control
+        type="number"
+        value={control.value}
+        onChange={handlerUpdateValue}
+      />
     </Form.Group>
   );
 };

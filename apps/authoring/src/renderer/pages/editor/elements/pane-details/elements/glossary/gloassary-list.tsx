@@ -39,8 +39,8 @@ export const GlossaryListEntries = ({
   const actionMenuItems: Array<ActionMenuItem> = [
     {
       label: 'Edit',
-      icon: 'edit',
-      display: 'outlined',
+      icon: 'edit_note',
+      display: 'sharp',
       actionHandler: (ev: React.MouseEvent<Element, MouseEvent>) => {
         const idx = getEntryIndex(ev);
 
@@ -55,7 +55,7 @@ export const GlossaryListEntries = ({
     {
       label: 'Delete',
       icon: 'delete',
-      display: 'outlined',
+      display: 'sharp',
       actionHandler: (ev: React.MouseEvent<Element, MouseEvent>) => {
         const idx = getEntryIndex(ev);
 

@@ -81,7 +81,8 @@ const AddResourceButton = () => {
         aria-controls="addResource"
         onClick={toggleShow}
       >
-        Add a new resource to your project... <Icon icon="add_circle" />
+        Add a new resource to your project...{' '}
+        <Icon icon="attach_file" style={{ fontSize: '20px' }} />
       </Button>
       <Drawer
         drawer={resourceDrawer}

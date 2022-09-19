@@ -7,7 +7,7 @@
   align-items: center;
   position: relative;
   vertical-align: top;
-  max-width: 50%;
+  margin-left: 0.5rem;
   padding-right: 0.5rem;
 
   &::after,
@@ -64,6 +64,13 @@
     .owlui-icons {
       color: #ffffff;
     }
+  }
+
+  .owlui-icons-outlined[style] {
+    margin-right: 0.6rem;
+    font-size: 1.5em;
+    line-height: 0.66;
+    font-variation-settings: 'FILL' 1 !important;
   }
 
   .owlui-icons {
