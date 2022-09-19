@@ -9,6 +9,19 @@
     .owlui-icons-outlined {
       margin-right: 0.5em;
     }
+    .owlui-icons-sharp{
+      margin-right: 0.5em;
+    }
+
+    #item-number-1{
+      .owlui-icons-sharp{
+        color: var(--bs-danger);
+      }
+      .owlui-icons-sharp[style]{
+        font-variation-settings: "FILL" 1 !important;
+
+      }
+    }
   }
 
   .owlui-dropdown-toggle {
@@ -81,6 +94,10 @@
       &:hover,
       &:focus {
         background: var(--owl-chatbox-bg-hover);
+      }
+
+      .owlui-icons-sharp {
+        
       }
 
       span[class^='material-symbols'] {
