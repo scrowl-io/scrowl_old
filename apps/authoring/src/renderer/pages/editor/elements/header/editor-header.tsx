@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as styles from './editor-header.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
-import { PreviewButton, PublishButton, SaveTooltip } from './elements';
+import { PreviewButton, SaveTooltip } from './elements';
 
 export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
