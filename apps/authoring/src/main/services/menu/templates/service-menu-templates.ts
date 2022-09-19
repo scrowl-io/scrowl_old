@@ -3,6 +3,7 @@ import { MenuItemEventsFile, MenuItemEventsApp } from '../service-menu.types';
 import { registerAll } from '../../requester';
 import * as menuApp from './service-menu-items-app';
 import * as menuFile from './service-menu-items-file';
+import * as menuEdit from './service-menu-items-edit';
 
 export const createMenu = (
   isMacOs: boolean
@@ -18,7 +19,13 @@ export const createMenu = (
   }
 
   template.push(menuFile.template);
-  EVENTS = Object.assign(EVENTS, menuApp.EVENTS, menuFile.EVENTS);
+  template.push(menuEdit.template);
+  EVENTS = Object.assign(
+    EVENTS,
+    menuApp.EVENTS,
+    menuFile.EVENTS,
+    menuEdit.EVENTS
+  );
   registerAll(EVENTS);
 
   return {
