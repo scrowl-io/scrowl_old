@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Templates } from '../../../../models';
 import { useActiveSlide } from '../../page-editor-hooks';
+import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 
 export const Canvas = () => {
-  const [canvasUrl, setCanvasUrl] = useState('');
   const activeSlide = useActiveSlide();
+  const [canvasUrl, setCanvasUrl] = useState('');
+  const [slideOpts, setSlideOpts] = useState<SlideCommons>({
+    aspect: '16:9',
+  });
+  const [slideStyle, setSlideStyle] = useState({
+    transform: 'translate(-50%, -50%) scale(.33)',
+  });
 
   useEffect(() => {
     if (!activeSlide || !activeSlide.template || !activeSlide.template.meta) {
@@ -22,13 +29,16 @@ export const Canvas = () => {
   }, [activeSlide]);
 
   return (
-    <iframe
-      src={canvasUrl}
-      title="Scrowl Editor Canvas"
-      referrerPolicy="unsafe-url"
-      sandbox="allow-same-origin allow-scripts"
-      height="100%"
-    ></iframe>
+    <Slide options={slideOpts} style={slideStyle}>
+      <iframe
+        src={canvasUrl}
+        title="Scrowl Editor Canvas"
+        referrerPolicy="unsafe-url"
+        sandbox="allow-same-origin allow-scripts"
+        height="100%"
+        width="100%"
+      ></iframe>
+    </Slide>
   );
 };
 

@@ -21,13 +21,16 @@
     "prebuild": "yarn run clean && rimraf dist",
     "build": "parcel build --target production --no-cache --public-url ../dist",
     "postbuild": "tsc",
+    "prebuild:lib": "rimraf ./lib",
+    "build:lib": "parcel build --target lib --no-cache --target types",
     "prestart": "yarn run clean && rimraf dev",
     "start": "parcel serve --target development --open --dist-dir dev"
   },
   "main": "./dist/scrowl.player.js",
   "production": "./dist/scrowl.player.js",
   "development": "./dev/scrowl.player.html",
-  "types": "./dist/scrowl.player.d.ts",
+  "lib": "./lib/scrowl.player.js",
+  "types": "./lib/scrowl.player.d.ts",
   "targets": {
     "main": false,
     "production": {
@@ -40,6 +43,14 @@
       "context": "browser",
       "source": "./src/index.html",
       "distDir": "./dev"
+    },
+    "lib": {
+      "source": "./src/lib.ts",
+      "outputFormat": "esmodule",
+      "isLibrary": true
+    },
+    "types": {
+      "source": "./src/lib.ts"
     }
   },
   "eslintConfig": {
@@ -48,6 +59,17 @@
   "prettier": "@scrowl/eslint-config/prettier",
   "stylelint": {
     "extends": "@scrowl/eslint-config/stylelint"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "dist/",
+    "lib/",
+    "package.json"
+  ],
+  "exports": {
+    ".": "./dist/scrowl.player.js",
+    "./elements": "./lib/scrowl.player.js"
   },
   "devDependencies": {
     "@parcel/core": "2.5.0",
