@@ -1,0 +1,10 @@
+.slide {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.562);
+  border: 1px solid #cacaca;
+  box-shadow: 0px 0px 12px #dadada;
+  background-color: #ffffff;
+  overflow-y: auto;
+}
