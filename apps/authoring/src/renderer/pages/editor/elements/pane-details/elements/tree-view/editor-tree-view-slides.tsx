@@ -123,7 +123,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
           onClick={handleSlideSelection}
         >
           <span className={styles.treeViewItemIconDetail}>
-            <Icon icon="check_box_outline_blank" display="outlined" filled />
+            <Icon icon="rectangle" display="outlined" />
           </span>
           <span className={styles.treeViewItemLabel}>{tree.name}</span>
         </Button>
