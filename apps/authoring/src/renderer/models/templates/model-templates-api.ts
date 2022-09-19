@@ -1,4 +1,5 @@
 import { TemplateEventApi } from '../../../main/models/templates';
+import { TemplateManifest } from './model-templates.types';
 import { requester } from '../../services';
 
 const ENDPOINTS: TemplateEventApi = {
@@ -40,10 +41,10 @@ export const list = (limit?: number) => {
   });
 };
 
-export const load = (template: string) => {
+export const load = (templateManifest: TemplateManifest) => {
   return new Promise<requester.ApiResult>(resolve => {
     try {
-      requester.invoke(ENDPOINTS.load, template).then(resolve);
+      requester.invoke(ENDPOINTS.load, templateManifest).then(resolve);
     } catch (e) {
       resolve({
         error: true,

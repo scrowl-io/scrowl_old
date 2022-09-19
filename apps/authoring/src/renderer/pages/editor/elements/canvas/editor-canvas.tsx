@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Templates } from '../../../../models';
+import { useActiveSlide } from '../../page-editor-hooks';
 
 export const Canvas = () => {
   const [canvasUrl, setCanvasUrl] = useState('');
+  const activeSlide = useActiveSlide();
 
   useEffect(() => {
-    Templates.load('introduction').then(res => {
+    if (!activeSlide || !activeSlide.template || !activeSlide.template.meta) {
+      return;
+    }
+
+    Templates.load(activeSlide.template).then(res => {
       if (res.error) {
         console.error(res);
         return;
@@ -13,7 +19,7 @@ export const Canvas = () => {
 
       setCanvasUrl(res.data.url);
     });
-  }, []);
+  }, [activeSlide]);
 
   return (
     <iframe

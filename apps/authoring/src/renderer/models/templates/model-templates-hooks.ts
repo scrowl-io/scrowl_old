@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Menu, State, requester } from '../../services';
 import * as api from './model-templates-api';
 import * as state from './model-templates-state';
+import { TemplateManifest } from './model-templates.types';
 
 const processor: State.StateProcessor = {};
 
@@ -120,8 +121,8 @@ export const list = (limit = 10) => {
   });
 };
 
-export const load = (template: string) => {
-  return api.load(template);
+export const load = (templateManifest: TemplateManifest) => {
+  return api.load(templateManifest);
 };
 
 export default {

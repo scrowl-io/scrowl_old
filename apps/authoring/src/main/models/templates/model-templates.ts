@@ -1,5 +1,9 @@
 import { Model } from '../model.types';
-import { TemplateEvents, TemplateRecords } from './model-templates.types';
+import {
+  TemplateEvents,
+  TemplateRecords,
+  TemplateManifest,
+} from './model-templates.types';
 import {
   FileSystem as fs,
   InternalStorage as IS,
@@ -9,7 +13,6 @@ import {
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
-import templateManifestIntro from './assets/template-introduction/manifest.json';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
 export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
@@ -223,8 +226,11 @@ export const list = () => {
   });
 };
 
-export const load = (ev: Requester.RequestEvent, templateName: string) => {
-  const templateBase = `template-${templateName}`;
+export const load = (
+  ev: Requester.RequestEvent,
+  manifest: TemplateManifest
+) => {
+  const templateBase = `template-${manifest.meta.name}`;
 
   const copyTemplateComponent = () => {
     return new Promise<Requester.ApiResult>(resolve => {
@@ -305,7 +311,7 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
 
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      if (!templateName) {
+      if (!manifest) {
         resolve({
           error: true,
           message: `Unable to load template: template required`,
@@ -367,8 +373,8 @@ export const load = (ev: Requester.RequestEvent, templateName: string) => {
       const data = {
         templateJs: `./${templateBase}.js`,
         templateCss: `./${templateBase}.css`,
-        templateComponent: 'Introduction',
-        manifest: JSON.stringify(templateManifestIntro),
+        templateComponent: manifest.meta.component,
+        manifest: JSON.stringify(manifest),
         importList: JSON.stringify({
           react: `./${filenameReact}`,
           scheduler: `./${filenameReactScheduler}`,
