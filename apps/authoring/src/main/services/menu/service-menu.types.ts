@@ -32,8 +32,8 @@ export interface MenuEventImportFile
 }
 export interface MenuEventTemplateAdd
   extends Omit<Requester.RegisterEvent, 'name'> {
-  id: 'template-add';
-  name: Templates.TemplateEventApi['add'];
+  id: 'template-install';
+  name: Templates.TemplateEventApi['install'];
 }
 
 export interface MenuEventTemplateOpen

@@ -7,12 +7,14 @@ import {
 import {
   FileSystem as fs,
   InternalStorage as IS,
+  Logger,
   Publisher,
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
 import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
+import { add as addTemplate } from '../templates';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -48,13 +50,102 @@ const writeProjectTemp = (
   });
 };
 
-// TODO change the event to send (remove the resolves)
 export const create = () => {
+  const addProjectTemplates = (project: ProjectData) => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        const modules = project.modules || [];
+
+        if (!modules.length) {
+          resolve({
+            error: true,
+            message: 'Unable to add templates: project requires modules',
+          });
+          return;
+        }
+
+        if (!project.id) {
+          resolve({
+            error: true,
+            message: 'Unable to add templates: project id required',
+          });
+          return;
+        }
+
+        const projectId = project.id;
+        const templateNames = new Set<string>();
+
+        modules.forEach(module => {
+          module.lessons.forEach(lesson => {
+            lesson.slides.forEach(slide => {
+              if (!slide.template) {
+                return;
+              }
+
+              templateNames.add(slide.template.meta.name);
+            });
+          });
+        });
+
+        const addPromises = Array.from(templateNames).map((name: string) => {
+          return addTemplate(undefined, name, projectId);
+        });
+
+        Promise.allSettled(addPromises).then(addRes => {
+          const templates: Array<{
+            [key: string]: string;
+          }> = [];
+
+          addRes.forEach(res => {
+            if (res.status === 'rejected') {
+              Logger.error('Failed to add template', res);
+              return;
+            }
+
+            if (res.value.error) {
+              Logger.warn('Unable to add template', res);
+              return;
+            }
+
+            templates.push(res.value.data);
+          });
+
+          resolve({
+            error: false,
+            data: {
+              templates,
+            },
+          });
+        });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to add templates to project',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    });
+  };
   // TODO add support for handling duplicating a project when a project ID is passed
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       let project: ProjectData = {
         name: data.name,
+      };
+      const complete = (res: Requester.ApiResult) => {
+        if (res.error) {
+          resolve(res);
+          return;
+        }
+
+        resolve({
+          error: false,
+          data: {
+            project,
+          },
+        });
       };
 
       // create a new entity in the DB
@@ -77,17 +168,12 @@ export const create = () => {
           'manifest.json',
           JSON.stringify(project, null, 2)
         ).then(writeRes => {
-          if (writeRes.error) {
-            resolve(writeRes);
+          if (!project.modules || !project.modules.length) {
+            complete(writeRes);
             return;
           }
 
-          resolve({
-            error: false,
-            data: {
-              project,
-            },
-          });
+          addProjectTemplates(project).then(complete);
         });
       });
     } catch (e) {

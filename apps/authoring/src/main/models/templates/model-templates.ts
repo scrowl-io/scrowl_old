@@ -1,20 +1,26 @@
 import { Model } from '../model.types';
-import { TemplateEvents, TemplateRecords } from './model-templates.types';
+import {
+  TemplateEvents,
+  TemplateRecords,
+  TemplateManifest,
+} from './model-templates.types';
 import {
   FileSystem as fs,
   InternalStorage as IS,
   Requester,
   Logger,
+  Templater,
 } from '../../services';
 import * as table from './model-templates-schema';
 import { requester } from '../../../renderer/services';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
+export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
 export const templateAssetPath = fs.getAssetPath(
   fs.join('models', 'templates', 'assets')
 );
 
-export const add = () => {
+export const install = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       const dialogOptions = {
@@ -220,16 +226,198 @@ export const list = () => {
   });
 };
 
-export const load = () => {
+export const load = (
+  ev: Requester.RequestEvent,
+  manifest: TemplateManifest
+) => {
+  const templateBase = `template-${manifest.meta.name}`;
+
+  const copyTemplateComponent = () => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      const templateFolder = fs.join(templateAssetPath, templateBase);
+      const dest = fs.join(templateWorkingPath, 'src');
+
+      fs.existsFile(templateFolder)
+        .then(existRes => {
+          if (existRes.error) {
+            resolve(existRes);
+            return;
+          }
+
+          if (!existRes.data.exists) {
+            resolve({
+              error: true,
+              message: 'unable to load template: template does not exist',
+            });
+            return;
+          }
+
+          fs.copy(templateFolder, dest)
+            .then(resolve)
+            .catch(e => {
+              resolve({
+                error: true,
+                message: 'failed to copy template',
+                data: {
+                  trace: e,
+                },
+              });
+            });
+        })
+        .catch(e => {
+          resolve({
+            error: true,
+            message: 'failed to copy template',
+            data: {
+              trace: e,
+            },
+          });
+        });
+    });
+  };
+  const compileCanvas = (
+    filename: string,
+    data: { [key: string]: string | { [key: string]: string } },
+    dest: string
+  ) => {
+    return new Promise<Requester.ApiResult>(resolve => {
+      try {
+        fs.readFile(filename).then(readRes => {
+          if (readRes.error) {
+            resolve(readRes);
+            return;
+          }
+
+          const compileRes = Templater.compile(readRes.data.contents, data);
+
+          if (compileRes.error) {
+            resolve(compileRes);
+            return;
+          }
+
+          fs.writeFileTemp(dest, compileRes.data.contents).then(resolve);
+        });
+      } catch (e) {
+        resolve({
+          error: true,
+          message: 'Failed to compile canvas',
+          data: {
+            trace: e,
+          },
+        });
+      }
+    });
+  };
+
   return new Promise<Requester.ApiResult>(resolve => {
     try {
-      resolve({
-        error: false,
-        data: {
-          template: {
-            name: 'Example Template',
+      if (!manifest) {
+        resolve({
+          error: true,
+          message: `Unable to load template: template required`,
+        });
+        return;
+      }
+      const filenameReact = 'react.development.js';
+      const reactSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameReact
+      );
+      const reactDest = fs.join(templateWorkingPath, 'src', filenameReact);
+      const filenameReactScheduler = 'scheduler.development.js';
+      const reactSchedulerSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameReactScheduler
+      );
+      const reactSchedulerDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameReactScheduler
+      );
+      const filenameReactDom = 'react-dom.development.js';
+      const reactDomSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameReactDom
+      );
+      const reactDomDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameReactDom
+      );
+      const filenameReactJsx = 'react-jsx-runtime.development.js';
+      const reactJsxSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameReactJsx
+      );
+      const reactJsxDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameReactJsx
+      );
+      const canvasHtmlSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        'canvas.html.hbs'
+      );
+      const canvasHtmlDest = fs.join('templates', 'src', 'canvas.html');
+      const canvasScriptSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        'canvas.js.hbs'
+      );
+      const canvasScriptDest = fs.join('templates', 'src', 'canvas.js');
+      const data = {
+        templateJs: `./${templateBase}.js`,
+        templateCss: `./${templateBase}.css`,
+        templateComponent: manifest.meta.component,
+        manifest: JSON.stringify(manifest),
+        importList: JSON.stringify({
+          react: `./${filenameReact}`,
+          scheduler: `./${filenameReactScheduler}`,
+          'react-dom': `./${filenameReactDom}`,
+          'react/jsx-runtime': `./${filenameReactJsx}`,
+        }),
+      };
+
+      const canvasRendering = [
+        fs.copy(reactSource, reactDest),
+        fs.copy(reactSchedulerSource, reactSchedulerDest),
+        fs.copy(reactDomSource, reactDomDest),
+        fs.copy(reactJsxSource, reactJsxDest),
+        copyTemplateComponent(),
+        compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
+        compileCanvas(canvasScriptSource, data, canvasScriptDest),
+      ];
+
+      Promise.allSettled(canvasRendering).then(renderingRes => {
+        let isRendered = true;
+
+        for (let i = 0, ii = renderingRes.length; i < ii; i++) {
+          if (renderingRes[i].status === 'rejected') {
+            isRendered = false;
+            Logger.error('Failed to render canvas');
+            break;
+          }
+        }
+
+        if (!isRendered) {
+          resolve({
+            error: true,
+            message: 'Failed to render canvas',
+          });
+          return;
+        }
+
+        resolve({
+          error: false,
+          data: {
+            url: Requester.templateServerUrl,
           },
-        },
+        });
       });
     } catch (e) {
       resolve({
@@ -243,15 +431,116 @@ export const load = () => {
   });
 };
 
+export const add = (
+  ev: Requester.RequestEvent | undefined,
+  templateName: string,
+  projectId: string | number,
+  dest: 'save' | 'temp' = 'temp'
+) => {
+  const templatePath = `template-${templateName}`;
+  const getDestFolderPath = (start: string) => {
+    return fs.join(
+      start,
+      projectId.toString(),
+      'content',
+      'templates',
+      templatePath
+    );
+  };
+  return new Promise<Requester.ApiResult>(resolve => {
+    try {
+      if (!templateName) {
+        resolve({
+          error: true,
+          message: `Unable to add template to project (${projectId}): template required`,
+        });
+        return;
+      }
+
+      if (!projectId) {
+        resolve({
+          error: true,
+          message: `Unable to add template (${templateName}) to project: project required`,
+        });
+        return;
+      }
+
+      const sourceFolder = fs.join(templateAssetPath, templatePath);
+      const sourceManifest = fs.join(sourceFolder, 'manifest.json');
+
+      fs.existsFile(sourceManifest).then(existsRes => {
+        if (existsRes.error) {
+          resolve(existsRes);
+          return;
+        }
+
+        if (!existsRes.data.exists) {
+          resolve({
+            error: true,
+            message: `Unable to add template: template does not exist - ${templateName}`,
+          });
+          return;
+        }
+
+        let destFolder = '';
+
+        switch (dest) {
+          case 'save':
+            destFolder = getDestFolderPath(fs.pathSaveFolder);
+            break;
+          case 'temp':
+            destFolder = getDestFolderPath(fs.pathTempFolder);
+            break;
+        }
+
+        fs.copy(sourceFolder, destFolder)
+          .then(copyRes => {
+            if (copyRes.error) {
+              resolve(copyRes);
+              return;
+            }
+
+            resolve({
+              error: false,
+              data: {
+                templateName,
+                projectId,
+                source: sourceFolder,
+                dest: destFolder,
+              },
+            });
+          })
+          .catch(e => {
+            resolve({
+              error: true,
+              message: `Failed to add template (${templateName}) to project (${projectId})`,
+              data: {
+                trace: e,
+              },
+            });
+          });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to add template',
+        data: {
+          trace: e,
+        },
+      });
+    }
+  });
+};
+
 export const EVENTS: TemplateEvents = {
-  add: {
-    name: '/templates/add', // sends menu event to frontend
+  install: {
+    name: '/templates/install', // sends menu event to frontend
     type: 'send',
   },
-  onAdd: {
-    name: '/templates/add', // allows user to add/import/install a new template
+  onInstall: {
+    name: '/templates/install', // allows user to add/import/install a new template
     type: 'invoke',
-    fn: add,
+    fn: install,
   },
   open: {
     name: '/templates/open', // sends menu event to open the explorer modal
@@ -296,9 +585,10 @@ export const init = () => {
 export const Templates: Model = {
   EVENTS,
   init,
-  add,
+  install,
   list,
   load,
+  add,
 };
 
 export default Templates;

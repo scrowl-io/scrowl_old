@@ -1,6 +1,6 @@
 import React from 'react';
 import * as styles from './page-editor.module.scss';
-import { Header, PaneDetails, RightPane } from './elements';
+import { Header, PaneDetails, RightPane, Canvas } from './elements';
 import { useInit } from './page-editor-hooks';
 import { ModalExplorerTemplates } from '../../components';
 
@@ -18,7 +18,7 @@ export const PageElement = () => {
             <PaneDetails />
 
             <div className={styles.workspace}>
-              <div className="workspace__body">Workspace</div>
+              <Canvas />
             </div>
 
             <RightPane />

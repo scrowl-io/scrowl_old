@@ -119,14 +119,20 @@ export const dirTempSync = (prefix: string): DirectoryTempResult => {
 export const existsFile = (pathname: string) => {
   return new Promise<FSResult>(resolve => {
     try {
-      fs.pathExists(pathname).then(exists => {
-        resolve({
-          error: false,
-          data: {
-            exists,
-          },
+      fs.pathExists(pathname)
+        .then(exists => {
+          resolve({
+            error: false,
+            data: {
+              exists,
+            },
+          });
+        })
+        .catch(e => {
+          resolve(
+            createResultError(`Unable to check existence: ${pathname}`, e)
+          );
         });
-      });
     } catch (e) {
       resolve(createResultError(`Failed to check existence: ${pathname}`, e));
     }
