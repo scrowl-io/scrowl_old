@@ -139,10 +139,15 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
         >
           <div className="lesson-icons">
             <span className={styles.treeViewItemIconHandle}>
-              <Icon icon="arrow_drop_down" display="outlined" filled />
+              <Icon
+                icon="arrow_drop_down"
+                display="outlined"
+                filled
+                style={{ fontSize: '1.375rem' }}
+              />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="widgets" display="outlined" filled={open} />
+              <Icon icon="interests" display="outlined" filled={open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>
