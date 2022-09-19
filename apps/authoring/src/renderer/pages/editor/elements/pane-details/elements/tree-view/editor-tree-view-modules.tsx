@@ -174,7 +174,12 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
         >
           <div className="module-icons">
             <span className={styles.treeViewItemIconHandle}>
-              <Icon icon="arrow_drop_down" display="outlined" filled />
+              <Icon
+                icon="arrow_drop_down"
+                display="outlined"
+                filled
+                style={{ fontSize: '1.375rem' }}
+              />
             </span>
             <span className={styles.treeViewItemIconDetail}>
               <Icon icon="folder" display="outlined" filled={open} />
