@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as styles from './editor-header.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
-import { PreviewButton, PublishButton, SaveTooltip } from './elements';
+import { PreviewButton, SaveTooltip } from './elements';
 
 export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
@@ -28,7 +28,7 @@ export const Header = () => {
             id="filenameInput"
             className="owlui-form-control"
             value={project.name}
-            placeholder=""
+            placeholder="Untitled Project"
             onChange={handleFilenameChange}
             size={13}
             disabled={disableElement}
@@ -47,7 +47,7 @@ export const Header = () => {
       <ul className="navbar-nav align-items-center">
         <li className="scrowl-navbar__actions">
           <PreviewButton disabled={disableElement} />
-          <PublishButton disabled={disableElement} />
+          {/* <PublishButton disabled={disableElement} /> Publish button temporarily being disabled */}
         </li>
       </ul>
     </Toolbar>

@@ -58,7 +58,15 @@ export const PublishDrawer = (props: PublishDrawerProps) => {
             onClick={handlePublish}
             disabled={props.disabled}
           >
-            <Icon icon="publish" />
+            <Icon
+              icon="history_edu"
+              style={{
+                marginRight: '.5rem',
+                fontWeight: 'bold',
+                fontSize: '1.5em',
+                lineHeight: '0.66',
+              }}
+            />
             Publish
           </Button>
         </div>

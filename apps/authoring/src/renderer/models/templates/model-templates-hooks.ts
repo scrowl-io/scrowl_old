@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Menu, State, requester } from '../../services';
 import * as api from './model-templates-api';
 import * as state from './model-templates-state';
+import { TemplateManifest } from './model-templates.types';
 
 const processor: State.StateProcessor = {};
 
@@ -55,15 +56,15 @@ const checkProcessor = () => {
 };
 
 export const useMenuEvents = () => {
-  const handleAddEvent = () => {
-    add();
+  const handleInstallEvent = () => {
+    install();
   };
   const handleExploreEvent = () => {
     explore();
   };
 
   useEffect(() => {
-    Menu.File.onTemplateAdd(handleAddEvent);
+    Menu.File.onTemplateAdd(handleInstallEvent);
     Menu.File.onTemplateOpen(handleExploreEvent);
 
     return () => {
@@ -75,8 +76,8 @@ export const useMenuEvents = () => {
   return;
 };
 
-export const add = () => {
-  return api.add();
+export const install = () => {
+  return api.install();
 };
 
 export const explore = (open = true) => {
@@ -120,8 +121,8 @@ export const list = (limit = 10) => {
   });
 };
 
-export const load = () => {
-  return api.load();
+export const load = (templateManifest: TemplateManifest) => {
+  return api.load(templateManifest);
 };
 
 export default {
@@ -129,7 +130,7 @@ export default {
   useData,
   useProcessing,
   useExplorer,
-  add,
+  install,
   explore,
   closeExplorer,
   list,

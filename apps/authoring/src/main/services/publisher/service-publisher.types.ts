@@ -22,7 +22,7 @@ export interface PathingProps {
 }
 
 export type TemplateData = {
-  [key: string]: string | number;
+  [key: string]: string | number | TemplateData;
 };
 
 export interface PublisherEventPackage extends Omit<RegisterEvent, 'name'> {
