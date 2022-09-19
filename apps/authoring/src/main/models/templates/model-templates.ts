@@ -412,10 +412,12 @@ export const load = (
           return;
         }
 
+        const ver = new Date().valueOf();
+
         resolve({
           error: false,
           data: {
-            url: Requester.templateServerUrl,
+            url: `${Requester.templateServerUrl}/canvas.html?ver=${ver}`,
           },
         });
       });

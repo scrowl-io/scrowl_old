@@ -94,16 +94,22 @@ export type ProjectResourceItem = {
 };
 
 export type ProjectSlide = {
+  id?: number;
+  lessonID?: number;
+  moduleID?: number;
   name: string;
   template?: TemplateManifest;
 };
 
 export type ProjectLesson = {
+  id?: number;
+  moduleID?: number;
   name: string;
   slides: Array<ProjectSlide>;
 };
 
 export type ProjectModule = {
+  id?: number;
   name: string;
   lessons: Array<ProjectLesson>;
 };
