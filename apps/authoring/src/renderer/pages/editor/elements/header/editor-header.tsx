@@ -47,7 +47,7 @@ export const Header = () => {
       <ul className="navbar-nav align-items-center">
         <li className="scrowl-navbar__actions">
           <PreviewButton disabled={disableElement} />
-          <PublishButton disabled={disableElement} />
+          {/* <PublishButton disabled={disableElement} /> Publish button temporarily being disabled */}
         </li>
       </ul>
     </Toolbar>

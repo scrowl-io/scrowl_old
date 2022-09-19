@@ -11,8 +11,6 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
 
   return (
     <>
-      {/* Publish button in top bar is being hidden for now */}
-      {/*
       <Button
         className={`btn btn-sm btn-primary ms-3 ${styles.btnPublish}`}
         onClick={toggleShowDrawer}
@@ -34,7 +32,6 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
         show={showDrawer}
         onHide={toggleShowDrawer}
       />
-      */}
     </>
   );
 };
