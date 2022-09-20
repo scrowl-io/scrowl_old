@@ -2,10 +2,13 @@ import React from 'react';
 import { Projects } from '../../../../../models';
 import { FormBuilder, FormBuilderCommons } from '../../../../../components';
 import { deepCopy } from './utils';
-import { updateActiveSlide } from '../../../page-editor-hooks';
+import {
+  updateActiveSlide,
+  updateCurrentlyLoadedSlide,
+  useCurrentlyLoadedSlide,
+} from '../../../page-editor-hooks';
 import {
   ProjectLesson,
-  ProjectModule,
   ProjectSlide,
 } from '../../../../../../main/models/projects';
 
@@ -14,6 +17,7 @@ export type ContentFormProps = {
 };
 
 export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
+  const currentlyActiveSlide = useCurrentlyLoadedSlide();
   const slideData = deepCopy(activeSlide);
   const project = Projects.useData();
   const modules = deepCopy(project.modules);
@@ -56,7 +60,7 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
         data
       );
     }
-
+    updateCurrentlyLoadedSlide(slideData);
     updateActiveSlide(slideData);
   };
 
