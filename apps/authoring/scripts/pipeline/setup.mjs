@@ -81,6 +81,13 @@ const sourceMap = {
       overwrite: true,
     },
   },
+  'node_modules/scrowl-template-two-columns/build': {
+    dest: './src/main/models/templates/assets/template-two-columns',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+    },
+  },
   'node_modules/react/cjs/react.development.js': {
     dest: './src/main/models/templates/assets/workspace/react.development.js',
     includePaths: ['../../'],
