@@ -33,7 +33,7 @@ export const PageElement = () => {
             Settings
           </h1>
         </div>
-        <Tabs defaultActiveKey="theme">
+        <Tabs defaultActiveKey="theme" transition={false}>
           <Tab eventKey="theme" title="Theme">
             <Pages.Theme.Element />
           </Tab>
