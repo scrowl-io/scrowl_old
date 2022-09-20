@@ -9192,6 +9192,14 @@ scheduler@^0.23.0:
     react-bootstrap "2.4.0"
     react-dom "~18.1.0"
 
+"scrowl-template-two-columns@git+https://git@github.com/scrowl-io/template-two-columns.git#v0.0.1":
+  version "0.0.1"
+  resolved "git+https://git@github.com/scrowl-io/template-two-columns.git#623b5b372ae45f01b665eb55233f3b19e5235b6f"
+  dependencies:
+    react "~18.1.0"
+    react-bootstrap "2.4.0"
+    react-dom "~18.1.0"
+
 semver-compare@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/semver-compare/-/semver-compare-1.0.0.tgz#0dee216a1c941ab37e9efb1788f6afc5ff5537fc"
