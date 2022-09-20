@@ -5,7 +5,6 @@ import { deepCopy } from './utils';
 import {
   updateActiveSlide,
   updateCurrentlyLoadedSlide,
-  useCurrentlyLoadedSlide,
 } from '../../../page-editor-hooks';
 import {
   ProjectLesson,
@@ -17,7 +16,6 @@ export type ContentFormProps = {
 };
 
 export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
-  const currentlyActiveSlide = useCurrentlyLoadedSlide();
   const slideData = deepCopy(activeSlide);
   const project = Projects.useData();
   const modules = deepCopy(project.modules);
@@ -49,6 +47,7 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
       return;
     }
     Object.assign(targetSlide.template.elements, slideData.template?.elements);
+    updateActiveSlide(slideData);
 
     Projects.update({ modules });
   };

@@ -23,6 +23,14 @@ export const Canvas = () => {
     }
 
     if (currentlyLoadedSlide === activeSlide) {
+      const targetframe = document.getElementById(
+        'template-iframe'
+      ) as HTMLIFrameElement;
+
+      targetframe?.contentWindow?.postMessage(
+        { message: activeSlide.template },
+        '*'
+      );
       return;
     }
 
@@ -46,6 +54,7 @@ export const Canvas = () => {
         sandbox="allow-same-origin allow-scripts"
         height="100%"
         width="100%"
+        id="template-iframe"
       ></iframe>
     </Slide>
   );

@@ -29,10 +29,7 @@ export const useCurrentlyLoadedSlide = () => {
   );
 };
 
-export const updateCurrentlyLoadedSlide = (
-  slideData: Projects.ProjectSlide
-) => {
-  console.log(slideData);
+export const updateCurrentlyLoadedSlide = (slideData: Projects.ProjectSlide) => {
   processor.dispatch(state.updateCurrentlyLoadedSlide(slideData));
 };
 
