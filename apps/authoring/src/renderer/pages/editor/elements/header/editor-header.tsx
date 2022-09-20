@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import * as styles from './editor-header.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
-import { PreviewButton, SaveTooltip } from './elements';
+import { PublishButton, SaveTooltip } from './elements';
 
 export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
@@ -46,8 +46,8 @@ export const Header = () => {
       </div>
       <ul className="navbar-nav align-items-center">
         <li className="scrowl-navbar__actions">
-          <PreviewButton disabled={disableElement} />
-          {/* <PublishButton disabled={disableElement} /> Publish button temporarily being disabled */}
+          {/* <PreviewButton disabled={disableElement} /> Preview button temporarily being disabled */}
+          <PublishButton disabled={disableElement} />
         </li>
       </ul>
     </Toolbar>
