@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
+import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
 import { Projects } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
@@ -26,19 +27,21 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
 
+  const addSlide = useCallback(() => {
+    const newSlide: SlideTreeItem = {
+      name: 'Untitled Slide',
+    };
+
+    lesson.slides.push(newSlide);
+    Projects.update({ modules });
+  }, [lesson.slides, modules]);
+
   const lessonMenuItems: Array<ActionMenuItem> = [
     {
       label: 'Add Slide',
       icon: 'crop_square',
       display: 'outlined',
-      actionHandler: () => {
-        const newSlide: SlideTreeItem = {
-          name: 'Untitled Slide',
-        };
-
-        lesson.slides.push(newSlide);
-        Projects.update({ modules });
-      },
+      actionHandler: addSlide,
     },
     {
       label: 'Rename',
@@ -166,6 +169,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
             lessonIdx={idx}
             project={project}
           />
+          <AddButton onClick={addSlide} label="Add Slide" />
         </div>
       </Collapse>
       <RenameModal
