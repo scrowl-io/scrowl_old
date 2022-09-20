@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "slide": {
+    "aspect": "16:9"
+  },
+  "meta": {
+    "name": "two columns",
+    "filename": "two-columns",
+    "component": "TwoColumns"
+  },
+  "elements": {
+    "title": {
+      "value": "Building a Respectful Workplace",
+      "type": "text",
+      "label": "title"
+    },
+    "subtitle": {
+      "value": "Introduction",
+      "type": "text",
+      "label": "subtitle"
+    },
+    "columnOne": {
+      "value": "Body of text (left slide).",
+      "type": "text",
+      "label": "columnOne"
+    },
+    "columnTwo": {
+      "value": "Body of text (right slide).",
+      "type": "text",
+      "label": "columnTwo"
+    }
+  }
+}

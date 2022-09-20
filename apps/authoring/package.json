@@ -193,7 +193,8 @@
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",
-    "scrowl-template-introduction": "git+https://git@github.com/scrowl-io/template-introduction.git#v0.0.8",
+    "scrowl-template-introduction": "git+https://git@github.com/scrowl-io/template-introduction.git#v0.0.9",
+    "scrowl-template-two-columns": "git+https://git@github.com/scrowl-io/template-two-columns.git#v0.0.1",
     "sqlite3": "^5.0.8",
     "typescript": "^4.6.3"
   }
