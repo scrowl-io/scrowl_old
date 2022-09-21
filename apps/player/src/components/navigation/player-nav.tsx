@@ -40,7 +40,7 @@ export const Nav = ({ config }: NavProps) => {
               {def.lessons.map((lesson, lIdx: number) => {
                 return (
                   <li key={lIdx}>
-                    <a href={lesson.url}>{lesson.name}</a>
+                    <a href={`#${lesson.url}`}>{lesson.name}</a>
                   </li>
                 );
               })}

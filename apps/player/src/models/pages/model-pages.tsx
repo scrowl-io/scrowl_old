@@ -12,22 +12,22 @@ export const getPages = (project: Manifest.ProjectData): GetResult => {
 
   const data: Array<PageDefinition> = [];
 
-  project.modules.forEach(module => {
+  project.modules.forEach((module, mIdx: number) => {
     if (!module.lessons || !module.lessons.length) {
       return;
     }
 
-    module.lessons.forEach(lesson => {
+    module.lessons.forEach((lesson, lIdx: number) => {
       if (!lesson.slides || !lesson.slides.length) {
         return;
       }
 
       data.push({
-        moduleId: module.id || -1,
+        moduleId: mIdx,
         moduleName: module.name,
-        id: lesson.id || -1,
+        id: lIdx,
         name: lesson.name,
-        url: `/module-${module.id}--lesson-${lesson.id}`,
+        url: `/module-${mIdx}--lesson-${lIdx}`,
         Element: () => {
           return (
             <div>
