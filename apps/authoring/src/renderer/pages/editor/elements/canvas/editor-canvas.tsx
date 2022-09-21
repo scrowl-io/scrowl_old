@@ -8,7 +8,7 @@ import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 
 export const Canvas = () => {
   const activeSlide = useActiveSlide();
-  const currentlyLoadedSlide = useCurrentlyLoadedSlide();
+  const editSlideRef = useCurrentlyLoadedSlide();
   const [canvasUrl, setCanvasUrl] = useState('');
   const [slideOpts, setSlideOpts] = useState<SlideCommons>({
     aspect: '16:9',
@@ -22,13 +22,13 @@ export const Canvas = () => {
       return;
     }
 
-    if (currentlyLoadedSlide === activeSlide) {
+    if (editSlideRef === activeSlide) {
       const targetframe = document.getElementById(
         'template-iframe'
       ) as HTMLIFrameElement;
 
       targetframe?.contentWindow?.postMessage(
-        { message: activeSlide.template },
+        { updateManifest: activeSlide.template },
         '*'
       );
       return;
@@ -43,7 +43,7 @@ export const Canvas = () => {
 
       setCanvasUrl(res.data.url);
     });
-  }, [activeSlide, currentlyLoadedSlide]);
+  }, [activeSlide, editSlideRef]);
 
   return (
     <Slide options={slideOpts} style={slideStyle}>

@@ -6,7 +6,7 @@ export const config: StateConfig = {
   initialState: {
     isInit: false,
     activeSlide: {},
-    currentlyLoadedSlide: {},
+    editSlideRef: {},
   },
   reducers: {
     init: (state, action) => {
@@ -15,18 +15,15 @@ export const config: StateConfig = {
     updateSlide: (state, action) => {
       state.activeSlide = Object.assign(state.activeSlide, action.payload);
     },
-    updateCurrentlyLoadedSlide: (state, action) => {
-      state.currentlyLoadedSlide = Object.assign(
-        state.activeSlide,
-        action.payload
-      );
+    updateEditSlideRef: (state, action) => {
+      state.editSlideRef = Object.assign(state.activeSlide, action.payload);
     },
   },
 };
 
 export const slice = createSlice(config);
 
-export const { init, updateSlide, updateCurrentlyLoadedSlide } = slice.actions;
+export const { init, updateSlide, updateEditSlideRef } = slice.actions;
 
 export const reducer = slice.reducer;
 

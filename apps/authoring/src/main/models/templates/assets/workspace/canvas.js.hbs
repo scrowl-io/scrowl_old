@@ -12,7 +12,7 @@ const App = () => {
   const [manifest, setManifest] = React.useState(window.__MANIFEST.elements);
 
   window.addEventListener('message', (e) => {
-    setManifest(e.data.message.elements);
+    setManifest(e.data.updateManifest.elements);
   })
 
   return createElement({{data.templateComponent}}, { manifest }, null);
