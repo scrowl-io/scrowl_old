@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 import * as styles from './player-app.module.scss';
 import { Manifest, Pages } from '../../models';
-import { Error, Nav } from '../';
+import { Error, Outline } from '../';
 import { Routes } from './elements';
 
 export const App = () => {
@@ -37,7 +37,7 @@ export const App = () => {
   return (
     <Router>
       <div className={styles.app}>
-        <Nav config={pageConfig} />
+        <Outline config={pageConfig} />
         <main className={styles.appMain}>
           <Routes config={pageConfig} />
         </main>

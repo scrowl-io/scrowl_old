@@ -4,8 +4,8 @@ import {
   NavConfig,
   ModuleConfigDict,
   ModuleConfigList,
-} from './player-nav.types';
-import * as styles from './player-nav.module.scss';
+} from './player-outline.types';
+import * as styles from './player-outline.module.scss';
 import { utls } from '../../services';
 
 const toModuleFormat = (config: NavConfig): ModuleConfigList => {
@@ -27,7 +27,7 @@ const toModuleFormat = (config: NavConfig): ModuleConfigList => {
   });
 };
 
-export const Nav = ({ config }: NavProps) => {
+export const Outline = ({ config }: NavProps) => {
   const fConfig = toModuleFormat(config);
 
   return (
@@ -53,5 +53,5 @@ export const Nav = ({ config }: NavProps) => {
 };
 
 export default {
-  Nav,
+  Outline,
 };
