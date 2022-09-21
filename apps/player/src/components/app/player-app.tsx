@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 import * as styles from './player-app.module.scss';
-import { Manifest } from '../../models';
+import { Manifest, Pages } from '../../models';
 import { Error } from '../';
 import { Routes } from './elements';
 
@@ -22,11 +22,23 @@ export const App = () => {
     manifest = JSON.parse(manifest);
   }
 
+  const pageRes = Pages.getPages(manifest);
+
+  if (pageRes.error) {
+    return <Error msg={pageRes.message} />;
+  }
+
+  if (!pageRes.data || !pageRes.data.length) {
+    return <Error msg="Project has no pages" />;
+  }
+
+  const pageConfig = pageRes.data;
+
   return (
     <Router>
       <div className={styles.app}>
         <main className={styles.appMain}>
-          <Routes manifest={manifest} />
+          <Routes config={pageConfig} />
         </main>
       </div>
     </Router>
