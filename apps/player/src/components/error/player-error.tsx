@@ -1,7 +1,7 @@
 import React from 'react';
-import { ErrorProps } from './app.types';
+import { ErrorProps } from './player-error.types';
 
-export const Element = (props: ErrorProps) => {
+export const Error = (props: ErrorProps) => {
   const { msg } = props;
 
   return (
@@ -13,5 +13,5 @@ export const Element = (props: ErrorProps) => {
 };
 
 export default {
-  Element,
+  Error,
 };
