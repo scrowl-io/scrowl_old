@@ -1,12 +1,14 @@
 import React from 'react';
+import { Tabs } from '@owlui/lib';
 import {
-  NavProps,
+  OutlineProps,
   NavConfig,
   ModuleConfigDict,
   ModuleConfigList,
 } from './player-outline.types';
-import * as styles from './player-outline.module.scss';
 import { utls } from '../../services';
+import { Pane } from '../';
+import { TabNav } from './elements';
 
 const toModuleFormat = (config: NavConfig): ModuleConfigList => {
   const dict: ModuleConfigDict = {};
@@ -27,28 +29,20 @@ const toModuleFormat = (config: NavConfig): ModuleConfigList => {
   });
 };
 
-export const Outline = ({ config }: NavProps) => {
+export const Outline = ({ config }: OutlineProps) => {
   const fConfig = toModuleFormat(config);
+  const tabItems = [
+    {
+      id: '1',
+      title: 'Outline',
+      view: <TabNav config={fConfig} />,
+    },
+  ];
 
   return (
-    <div className={styles.nav}>
-      {fConfig.map((def, mIdx: number) => {
-        return (
-          <div key={mIdx}>
-            <div>{def.name}</div>
-            <ul>
-              {def.lessons.map((lesson, lIdx: number) => {
-                return (
-                  <li key={lIdx}>
-                    <a href={`#${lesson.url}`}>{lesson.name}</a>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        );
-      })}
-    </div>
+    <Pane>
+      <Tabs items={tabItems} pxScale="Sm" />
+    </Pane>
   );
 };
 

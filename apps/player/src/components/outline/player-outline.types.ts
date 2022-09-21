@@ -13,8 +13,39 @@ export type ModuleConfigListItem = {
 
 export type ModuleConfigList = Array<ModuleConfigListItem>;
 
-export interface NavCommons {
+export interface OutlineNavLessonCommons {
+  config: Pages.PageDefinition;
+  moduleIdx: number;
+  idx: number;
+}
+
+export type OutlineNavLessonProps = OutlineNavLessonCommons &
+  React.HTMLAttributes<HTMLDivElement>;
+
+export interface OutlineNavLessonsCommons {
+  config: Array<Pages.PageDefinition>;
+  moduleIdx: number;
+}
+
+export type OutlineNavLessonsProps = OutlineNavLessonsCommons &
+  React.HTMLAttributes<HTMLDivElement>;
+
+export interface OutlineNavModuleCommons {
+  config: ModuleConfigListItem;
+  idx: number;
+}
+
+export type OutlineNavModuleProps = OutlineNavModuleCommons &
+  React.HTMLAttributes<HTMLDivElement>;
+
+export interface OutlineTabNavCommons {
+  config: ModuleConfigList;
+}
+
+export type OutlineTabNavProps = OutlineTabNavCommons;
+
+export interface OutlineCommons {
   config: NavConfig;
 }
 
-export type NavProps = NavCommons;
+export type OutlineProps = OutlineCommons;
