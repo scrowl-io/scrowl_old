@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    __SCROWL_MANIFEST: ProjectData;
+  }
+}
+
 export type AspectRatios = {
   '4:3': {
     label: 'Standard 4:3';
