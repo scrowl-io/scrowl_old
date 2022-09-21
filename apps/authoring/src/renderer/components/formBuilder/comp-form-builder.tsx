@@ -40,7 +40,9 @@ export const FormBuilder = ({
           />
         );
       })}
-      <Button onClick={onSubmit}>Save</Button>
+      <Button style={{ marginTop: '1em' }} onClick={onSubmit}>
+        Update Slide
+      </Button>
     </Form>
   );
 };
