@@ -23,7 +23,7 @@ export const RightPane = () => {
       id: '2',
       title: 'Template Options',
       view: (
-        <div className={styles.templateOptionsContent}>
+        <div aria-hidden="true" className={styles.templateOptionsContent}>
           <p>This template does not have additional options.</p>
         </div>
       ),
