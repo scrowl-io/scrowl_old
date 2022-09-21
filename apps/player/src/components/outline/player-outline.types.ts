@@ -1,4 +1,4 @@
-import { Pages } from '../../models';
+import { Pages } from '../../services';
 
 export type NavConfig = Array<Pages.PageDefinition>;
 

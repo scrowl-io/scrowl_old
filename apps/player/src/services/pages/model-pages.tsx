@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageDefinition, GetResult } from './mode-pages.types';
-import { Manifest } from '../';
+import { Manifest } from '../../models';
 
 export const getPages = (project: Manifest.ProjectData): GetResult => {
   if (!project.modules) {

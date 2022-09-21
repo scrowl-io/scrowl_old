@@ -1,7 +1,8 @@
 import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 import * as styles from './player-app.module.scss';
-import { Manifest, Pages } from '../../models';
+import { Manifest } from '../../models';
+import { Pages } from '../../services';
 import { Error, Outline } from '../';
 import { Routes } from './elements';
 

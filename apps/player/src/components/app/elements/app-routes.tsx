@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes as DomRoutes, Route, Navigate } from 'react-router-dom';
-import { Pages } from '../../../models';
+import { Pages } from '../../../services';
 
 export interface AppRoutesCommons {
   config: Array<Pages.PageDefinition>;
