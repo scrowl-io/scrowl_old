@@ -5,6 +5,7 @@
   },
   "meta": {
     "name": "introduction",
+    "filename": "introduction",
     "component": "Introduction"
   },
   "elements": {

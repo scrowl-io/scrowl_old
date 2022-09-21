@@ -125,6 +125,7 @@ export const existsFile = (pathname: string) => {
             error: false,
             data: {
               exists,
+              pathname,
             },
           });
         })
