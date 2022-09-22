@@ -1,10 +1,6 @@
 @use 'sass:selector';
 @import '@owlui/lib/src/theme/global/tokens';
 
-.owlui-nav-item:nth-child(2) {
-  display: none;
-}
-
 .template-options-content {
   padding: var(--owl-sidebar-spacing);
 }

@@ -23,7 +23,7 @@ export const RightPane = () => {
       id: '2',
       title: 'Template Options',
       view: (
-        <div aria-hidden="true" className={styles.templateOptionsContent}>
+        <div className={styles.templateOptionsContent}>
           <p>This template does not have additional options.</p>
         </div>
       ),
@@ -36,7 +36,9 @@ export const RightPane = () => {
 
   return (
     <Pane>
-      <Tabs items={tabItems} />
+      <div className={styles.templateOptionsContent}>
+        <RightPaneContentForm activeSlide={activeSlide} />
+      </div>
     </Pane>
   );
 };
