@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
+import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
 import { Projects } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
@@ -27,30 +28,32 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const [showModalDelete, setModalDelete] = useState(false);
   const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
+  const addLesson = useCallback(() => {
+    if (!modules) {
+      return;
+    }
+
+    const newLesson: LessonTreeItem = {
+      name: 'Untitled Lesson',
+      slides: [
+        {
+          name: 'Untitled Slide',
+        },
+      ],
+    };
+
+    module.lessons.push(newLesson);
+    modules[idx] = module;
+    Projects.update({ modules });
+  }, [idx, module, modules]);
+
   const moduleMenuItems: Array<ActionMenuItem> = [
     {
       // name: 'add_lesson', // TEMP: use for filtering (i.e. can't move module up that's first in list)
       label: 'Add Lesson',
       icon: 'widgets',
       display: 'outlined',
-      actionHandler: () => {
-        if (!modules) {
-          return;
-        }
-
-        const newLesson: LessonTreeItem = {
-          name: 'Untitled Lesson',
-          slides: [
-            {
-              name: 'Untitled Slide',
-            },
-          ],
-        };
-
-        module.lessons.push(newLesson);
-        modules[idx] = module;
-        Projects.update({ modules });
-      },
+      actionHandler: addLesson,
     },
     {
       // name: 'rename_module',
@@ -203,6 +206,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
             moduleIdx={idx}
             project={project}
           />
+          <AddButton onClick={addLesson} label="Add Lesson" />
         </div>
       </Collapse>
       <RenameModal
