@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Templates } from '../../../../models';
-import { useActiveSlide } from '../../page-editor-hooks';
+import {
+  useCurrentlyLoadedSlide,
+  useActiveSlide,
+} from '../../page-editor-hooks';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 
 export const Canvas = () => {
   const activeSlide = useActiveSlide();
+  const editSlideRef = useCurrentlyLoadedSlide();
   const [canvasUrl, setCanvasUrl] = useState('');
   const [slideOpts, setSlideOpts] = useState<SlideCommons>({
     aspect: '16:9',
@@ -18,7 +22,20 @@ export const Canvas = () => {
       return;
     }
 
+    if (editSlideRef === activeSlide) {
+      const targetframe = document.getElementById(
+        'template-iframe'
+      ) as HTMLIFrameElement;
+
+      targetframe?.contentWindow?.postMessage(
+        { updateManifest: activeSlide.template },
+        '*'
+      );
+      return;
+    }
+
     Templates.load(activeSlide.template).then(res => {
+      console.log(res);
       if (res.error) {
         console.error(res);
         return;
@@ -26,7 +43,7 @@ export const Canvas = () => {
 
       setCanvasUrl(res.data.url);
     });
-  }, [activeSlide]);
+  }, [activeSlide, editSlideRef]);
 
   return (
     <Slide options={slideOpts} style={slideStyle}>
@@ -37,6 +54,7 @@ export const Canvas = () => {
         sandbox="allow-same-origin allow-scripts"
         height="100%"
         width="100%"
+        id="template-iframe"
       ></iframe>
     </Slide>
   );
