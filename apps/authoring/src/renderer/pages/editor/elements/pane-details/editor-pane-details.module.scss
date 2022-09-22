@@ -9,17 +9,18 @@
     .owlui-icons-outlined {
       margin-right: 0.5em;
     }
-    .owlui-icons-sharp{
+
+    .owlui-icons-sharp {
       margin-right: 0.5em;
     }
 
-    #item-number-1{
-      .owlui-icons-sharp{
+    #item-number-1 {
+      .owlui-icons-sharp {
         color: var(--bs-danger);
       }
-      .owlui-icons-sharp[style]{
-        font-variation-settings: "FILL" 1 !important;
 
+      .owlui-icons-sharp[style] {
+        font-variation-settings: 'FILL' 1 !important;
       }
     }
   }
@@ -97,7 +98,6 @@
       }
 
       .owlui-icons-sharp {
-        
       }
 
       span[class^='material-symbols'] {
@@ -295,7 +295,7 @@
 .tab-outline {
   margin-top: calc(var(--owl-sidebar-spacing) / 2);
 
-  .outline-add-module {
+  .outline-add-button {
     text-align: left;
     color: var(--bs-body-color);
     background-color: inherit;
@@ -335,8 +335,12 @@
       top: 0.3em;
     }
 
-    &:hover {
+    &:not(.slideActive):hover {
       background-color: var(--owl-sidebar-hover-bg);
+    }
+
+    &.slideActive {
+      background: var(--owl-selection-bg);
     }
   }
 
@@ -399,9 +403,9 @@
       &--detail {
         margin-right: 0.5em;
         line-height: 1rem;
-        font-size: 0.9rem;
+        font-size: 0.75rem;
         position: relative;
-        top: 0.2rem;
+        top: 0.3rem;
       }
     }
 
