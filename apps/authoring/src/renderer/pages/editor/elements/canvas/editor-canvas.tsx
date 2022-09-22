@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Templates } from '../../../../models';
+import { Projects, Templates } from '../../../../models';
 import {
   useCurrentlyLoadedSlide,
   useActiveSlide,
+  updateActiveSlide,
 } from '../../page-editor-hooks';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 import { Icon, Button } from '@owlui/lib';
 
 import * as styles from './editor-canvas.module.scss';
+import {
+  ProjectLesson,
+  ProjectSlide,
+} from '../../../../../main/models/projects';
+import { deepCopy } from '../right-pane/content/utils';
 
 export const Canvas = () => {
   const activeSlide = useActiveSlide();
@@ -19,7 +25,11 @@ export const Canvas = () => {
   const [slideStyle, setSlideStyle] = useState({
     transform: 'translate(-50%, -50%) scale(.33)',
   });
-  const [slideName, setSlideName] = useState(activeSlide.name);
+  const [slideName, setSlideName] = useState(
+    activeSlide.name ? activeSlide.name : ''
+  );
+  const project = Projects.useData();
+  const modules = deepCopy(project.modules);
 
   useEffect(() => {
     if (!activeSlide || !activeSlide.template || !activeSlide.template.meta) {
@@ -51,10 +61,33 @@ export const Canvas = () => {
     });
   }, [activeSlide, editSlideRef]);
 
+  const getTargetSlide = () => {
+    const moduleID: number | undefined = activeSlide.moduleID;
+    const lessonID: number | undefined = activeSlide.lessonID;
+    const slideID: number | undefined = activeSlide.id;
+
+    if (moduleID && lessonID) {
+      const targetLesson = modules[moduleID - 1].lessons.find(
+        (lesson: ProjectLesson) => {
+          return lesson.id === lessonID;
+        }
+      );
+
+      const targetSlide = targetLesson.slides.find((slide: ProjectSlide) => {
+        return slide.id === slideID;
+      });
+      return targetSlide;
+    }
+  };
+
   const handleSlideNameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const name = ev.currentTarget.value;
     setSlideName(name);
-    console.log(slideName);
+    const targetSlide = getTargetSlide();
+    targetSlide.name = name;
+
+    updateActiveSlide(targetSlide);
+    Projects.update({ modules });
   };
 
   const renderCanvasHeader = () => {
@@ -73,8 +106,6 @@ export const Canvas = () => {
       </div>
     );
   };
-
-  console.log(activeSlide);
 
   return (
     <div className={styles.canvasContainer}>
