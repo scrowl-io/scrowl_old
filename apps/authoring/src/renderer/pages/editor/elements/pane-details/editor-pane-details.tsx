@@ -1,7 +1,7 @@
 import React from 'react';
 import { Tabs } from '@owlui/lib';
 import { Pane } from '../../../../components';
-import { TabOutline, TabGlossary, TabResources } from './elements';
+import { TabOutline, TabGlossary } from './elements';
 import { Projects } from '../../../../models';
 
 export const PaneDetails = () => {
@@ -12,11 +12,11 @@ export const PaneDetails = () => {
       title: 'Outline',
       view: <TabOutline />,
     },
-    {
-      id: '2',
-      title: 'Resources',
-      view: <TabResources aria-hidden="true" />,
-    },
+    // {
+    //   id: '2',
+    //   title: 'Resources',
+    //   view: <TabResources />,
+    // },
     {
       id: '3',
       title: 'Glossary',
