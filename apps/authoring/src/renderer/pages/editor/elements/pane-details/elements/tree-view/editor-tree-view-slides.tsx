@@ -12,6 +12,7 @@ import {
 } from './editor-tree-view.types';
 import { deepCopy } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
+import { DeleteModal } from '../modals/editor-modal-delete';
 import { updateActiveSlide } from '../../../../page-editor-hooks';
 
 const TreeViewSlide = (props: TreeViewSlideProps) => {
@@ -23,6 +24,8 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
   const slide: SlideTreeItem = slideLesson.slides[idx];
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
+  const [showModalDelete, setModalDelete] = useState(false);
+  const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
   const slideMenuItems: Array<ActionMenuItem> = [
     {
@@ -98,14 +101,18 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       icon: 'delete',
       display: 'outlined',
       actionHandler: () => {
-        slideLesson.slides.splice(idx, 1);
-        Projects.update({ modules });
+        toggleModalDelete();
       },
     },
   ];
 
   const handleRename = (name: string) => {
     slide.name = name;
+    Projects.update({ modules });
+  };
+
+  const handleDelete = () => {
+    slideLesson.slides.splice(idx, 1);
     Projects.update({ modules });
   };
 
@@ -139,6 +146,13 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         onSubmit={handleRename}
         show={showModalRename}
         onHide={toggleModalRename}
+      />
+      <DeleteModal
+        title="Delete Slide"
+        label="Are you sure you want to delete this slide?"
+        onSubmit={handleDelete}
+        show={showModalDelete}
+        onHide={toggleModalDelete}
       />
     </div>
   );
