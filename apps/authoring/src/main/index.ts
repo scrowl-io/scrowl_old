@@ -14,6 +14,7 @@ import {
 import electronDebug from 'electron-debug';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
 } from 'electron-devtools-installer';
 import { resolveHtmlPath } from './util';
 import { init as initModels } from './models';
@@ -30,7 +31,10 @@ const isDARWIN = process.platform === 'darwin';
 let isQuitting = false;
 
 const installExtensions = () => {
-  return Promise.all([installExtension(REACT_DEVELOPER_TOOLS)]);
+  return Promise.all([
+    installExtension(REACT_DEVELOPER_TOOLS),
+    installExtension(REDUX_DEVTOOLS),
+  ]);
 };
 
 const createWindow = async () => {

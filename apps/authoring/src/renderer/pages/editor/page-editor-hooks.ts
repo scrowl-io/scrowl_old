@@ -23,10 +23,20 @@ export const useInit = () => {
   return isInit;
 };
 
+export const useCurrentlyLoadedSlide = () => {
+  return useSelector((state: State.RootState) => state.editor.editSlideRef);
+};
+
+export const updateCurrentlyLoadedSlide = (
+  slideData: Projects.ProjectSlide
+) => {
+  processor.dispatch(state.updateEditSlideRef(slideData));
+};
+
 export const useActiveSlide = () => {
   return useSelector((state: State.RootState) => state.editor.activeSlide);
 };
 
-export const updateActiveSlide = (data: Projects.ProjectSlide) => {
-  processor.dispatch(state.updateSlide(data));
+export const updateActiveSlide = (slideData: Projects.ProjectSlide) => {
+  processor.dispatch(state.updateSlide(slideData));
 };
