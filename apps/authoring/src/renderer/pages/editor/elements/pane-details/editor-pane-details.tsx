@@ -15,7 +15,7 @@ export const PaneDetails = () => {
     {
       id: '2',
       title: 'Resources',
-      view: <TabResources />,
+      view: <TabResources aria-hidden="true" />,
     },
     {
       id: '3',
