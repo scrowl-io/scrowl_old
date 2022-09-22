@@ -36,7 +36,9 @@ export const RightPane = () => {
 
   return (
     <Pane>
-      <Tabs items={tabItems} />
+      <div className={styles.templateOptionsContent}>
+        <RightPaneContentForm activeSlide={activeSlide} />
+      </div>
     </Pane>
   );
 };

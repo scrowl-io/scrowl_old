@@ -14,6 +14,7 @@ import {
 import { deepCopy } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
 import { RenameModal } from '../modals/editor-modal-rename';
+import { DeleteModal } from '../modals/editor-modal-delete';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
   const { tree, project, idx } = props;
@@ -24,6 +25,8 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const menuId = `tree-item-module-${idx}-menu`;
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
+  const [showModalDelete, setModalDelete] = useState(false);
+  const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
   const addLesson = useCallback(() => {
     if (!modules) {
@@ -137,12 +140,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       icon: 'delete',
       display: 'outlined',
       actionHandler: () => {
-        if (!modules) {
-          return;
-        }
-
-        modules.splice(idx, 1);
-        Projects.update({ modules });
+        toggleModalDelete();
       },
     },
   ];
@@ -161,6 +159,11 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const handleRename = (name: string) => {
     module.name = name;
     modules[idx] = module;
+    Projects.update({ modules });
+  };
+
+  const handleDelete = () => {
+    modules.splice(idx, 1);
     Projects.update({ modules });
   };
 
@@ -212,6 +215,13 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
         onSubmit={handleRename}
         show={showModalRename}
         onHide={toggleModalRename}
+      />
+      <DeleteModal
+        title="Delete Module"
+        label="Are you sure you want to delete this module?"
+        onSubmit={handleDelete}
+        show={showModalDelete}
+        onHide={toggleModalDelete}
       />
     </div>
   );
