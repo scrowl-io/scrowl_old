@@ -9,17 +9,18 @@
     .owlui-icons-outlined {
       margin-right: 0.5em;
     }
-    .owlui-icons-sharp{
+
+    .owlui-icons-sharp {
       margin-right: 0.5em;
     }
 
-    #item-number-1{
-      .owlui-icons-sharp{
+    #item-number-1 {
+      .owlui-icons-sharp {
         color: var(--bs-danger);
       }
-      .owlui-icons-sharp[style]{
-        font-variation-settings: "FILL" 1 !important;
 
+      .owlui-icons-sharp[style] {
+        font-variation-settings: 'FILL' 1 !important;
       }
     }
   }
@@ -97,7 +98,6 @@
       }
 
       .owlui-icons-sharp {
-        
       }
 
       span[class^='material-symbols'] {
