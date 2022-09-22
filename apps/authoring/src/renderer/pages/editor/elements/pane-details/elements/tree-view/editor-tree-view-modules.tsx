@@ -74,7 +74,12 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
           return;
         }
 
-        modules.splice(idx + 1, 0, module);
+        const newModule: ModuleTreeItem = {
+          name: module.name + ' copy',
+          lessons: deepCopy(module.lessons),
+        };
+
+        modules.splice(idx + 1, 0, newModule);
         Projects.update({ modules });
       },
     },
@@ -188,7 +193,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
               />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="folder" display="outlined" filled={open} />
+              <Icon icon="folder" display="outlined" filled={!open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>

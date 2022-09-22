@@ -18,6 +18,7 @@ import { updateActiveSlide } from '../../../../page-editor-hooks';
 const TreeViewSlide = (props: TreeViewSlideProps) => {
   const { tree, idx, moduleIdx, lessonIdx, project } = props;
   const itemId = `module-${moduleIdx}-lesson-${lessonIdx}-slide-item-${idx}`;
+  const itemWrapperId = `${itemId}-wrapper`;
   const modules = deepCopy(project.modules);
   const slideModule: ModuleTreeItem = modules[moduleIdx];
   const slideLesson: LessonTreeItem = slideModule.lessons[lessonIdx];
@@ -45,7 +46,11 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
           return;
         }
 
-        slideLesson.slides.splice(idx + 1, 0, slide);
+        const newSlide: SlideTreeItem = {
+          name: slide.name + ' copy',
+        };
+
+        slideLesson.slides.splice(idx + 1, 0, newSlide);
         Projects.update({ modules });
       },
     },
@@ -117,12 +122,23 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
   };
 
   const handleSlideSelection = () => {
+    const selectorSlideActive = document.querySelector('.slideActive');
+
+    if (selectorSlideActive) {
+      selectorSlideActive.classList.remove('slideActive');
+    }
+
     updateActiveSlide(tree);
+    const selectorWrapper = document.getElementById(itemWrapperId);
+
+    if (selectorWrapper) {
+      selectorWrapper.classList.add('slideActive');
+    }
   };
 
   return (
     <div className={styles.treeViewSlide} key={idx}>
-      <div className={styles.treeViewHeader}>
+      <div id={itemWrapperId} className={styles.treeViewHeader}>
         <Button
           id={itemId}
           className={styles.treeViewItem}
@@ -141,7 +157,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         />
       </div>
       <RenameModal
-        label="Rename Lesson"
+        label="Rename Slide"
         value={tree.name}
         onSubmit={handleRename}
         show={showModalRename}

@@ -59,7 +59,12 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'content_copy',
       display: 'outlined',
       actionHandler: () => {
-        lessonModule.lessons.splice(idx + 1, 0, lesson);
+        const newLesson: LessonTreeItem = {
+          name: lesson.name + ' copy',
+          slides: deepCopy(lesson.slides),
+        };
+
+        lessonModule.lessons.splice(idx + 1, 0, newLesson);
         Projects.update({ modules });
       },
     },
@@ -157,7 +162,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
               />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="interests" display="outlined" filled={open} />
+              <Icon icon="interests" display="outlined" filled={!open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>
