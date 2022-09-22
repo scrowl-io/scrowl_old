@@ -42,7 +42,11 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
           return;
         }
 
-        slideLesson.slides.splice(idx + 1, 0, slide);
+        const newSlide: SlideTreeItem = {
+          name: slide.name + ' copy',
+        };
+
+        slideLesson.slides.splice(idx + 1, 0, newSlide);
         Projects.update({ modules });
       },
     },
@@ -109,13 +113,20 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     Projects.update({ modules });
   };
 
+  const wrapper = itemId + '-wrapper';
+
   const handleSlideSelection = () => {
+    const selector = document.querySelector('.slideActive');
+    if (selector) {
+      selector.classList.remove('slideActive');
+    }
     updateActiveSlide(tree);
+    document.getElementById(wrapper)?.classList.add('slideActive');
   };
 
   return (
     <div className={styles.treeViewSlide} key={idx}>
-      <div className={styles.treeViewHeader}>
+      <div id={wrapper} className={styles.treeViewHeader}>
         <Button
           id={itemId}
           className={styles.treeViewItem}
@@ -134,7 +145,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         />
       </div>
       <RenameModal
-        label="Rename Lesson"
+        label="Rename Slide"
         value={tree.name}
         onSubmit={handleRename}
         show={showModalRename}
