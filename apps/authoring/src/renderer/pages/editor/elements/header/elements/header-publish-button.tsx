@@ -6,14 +6,14 @@ import { Projects } from '../../../../../models';
 
 export const PublishButton = ({ disabled }: { disabled: boolean }) => {
   const project = Projects.useData();
-  const [showDrawer, setShowDrawer] = useState(false);
+  const [showDrawer, setShowDrawer] = useState<boolean>(false);
   const toggleShowDrawer = () => setShowDrawer(!showDrawer);
 
   return (
     <>
       <Button
         className={`btn btn-sm btn-primary ms-3 ${styles.btnPublish}`}
-        onClick={toggleShowDrawer}
+        onClick={() => console.log(project)}
         disabled={disabled}
       >
         <Icon
