@@ -318,25 +318,47 @@ export const load = (
         });
         return;
       }
-      const filenameReact = 'react.development.js';
+      const filenameShimReact = 'shim-react.js';
+      const shimReactSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameShimReact
+      );
+      const shimReactDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameShimReact
+      );
+      const filenameShimReactDom = 'shim-react-dom.js';
+      const shimReactDomSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameShimReactDom
+      );
+      const shimReactDomDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameShimReactDom
+      );
+      const filenameShimReactBootstrap = 'shim-react-bootstrap.js';
+      const shimReactBootstrapSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameShimReactBootstrap
+      );
+      const shimReactBootstrapDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameShimReactBootstrap
+      );
+      const filenameReact = 'react.production.min.js';
       const reactSource = fs.join(
         templateAssetPath,
         'workspace',
         filenameReact
       );
       const reactDest = fs.join(templateWorkingPath, 'src', filenameReact);
-      const filenameReactScheduler = 'scheduler.development.js';
-      const reactSchedulerSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReactScheduler
-      );
-      const reactSchedulerDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameReactScheduler
-      );
-      const filenameReactDom = 'react-dom.development.js';
+      const filenameReactDom = 'react-dom.production.min.js';
       const reactDomSource = fs.join(
         templateAssetPath,
         'workspace',
@@ -358,6 +380,17 @@ export const load = (
         'src',
         filenameReactJsx
       );
+      const filenameReactBootstrap = 'react-bootstrap.min.js';
+      const reactBootstrapSource = fs.join(
+        templateAssetPath,
+        'workspace',
+        filenameReactBootstrap
+      );
+      const reactBootstrapDest = fs.join(
+        templateWorkingPath,
+        'src',
+        filenameReactBootstrap
+      );
       const canvasHtmlSource = fs.join(
         templateAssetPath,
         'workspace',
@@ -376,18 +409,21 @@ export const load = (
         templateComponent: manifest.meta.component,
         manifest: JSON.stringify(manifest),
         importList: JSON.stringify({
-          react: `./${filenameReact}`,
-          scheduler: `./${filenameReactScheduler}`,
-          'react-dom': `./${filenameReactDom}`,
+          react: `./${filenameShimReact}`,
+          'react-dom': `./${filenameShimReactDom}`,
           'react/jsx-runtime': `./${filenameReactJsx}`,
+          'react-bootstrap': `./${filenameShimReactBootstrap}`,
         }),
       };
 
       const canvasRendering = [
         fs.copy(reactSource, reactDest),
-        fs.copy(reactSchedulerSource, reactSchedulerDest),
+        fs.copy(shimReactSource, shimReactDest),
         fs.copy(reactDomSource, reactDomDest),
+        fs.copy(shimReactDomSource, shimReactDomDest),
         fs.copy(reactJsxSource, reactJsxDest),
+        fs.copy(reactBootstrapSource, reactBootstrapDest),
+        fs.copy(shimReactBootstrapSource, shimReactBootstrapDest),
         copyTemplateComponent(),
         compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
         compileCanvas(canvasScriptSource, data, canvasScriptDest),

@@ -51,7 +51,7 @@ const reactToES = code => {
     });
   });
 
-  return addDefaultExports(exported, defaultExports);
+  return addDefaultExports(exported, defaultExports).replace(/^\s*\n/gm, '');
 };
 
 // This map uses the key to declare a path to the source file
@@ -88,33 +88,24 @@ const sourceMap = {
       overwrite: true,
     },
   },
-  'node_modules/react/cjs/react.development.js': {
-    dest: './src/main/models/templates/assets/workspace/react.development.js',
+  'node_modules/react/umd/react.production.min.js': {
+    dest: './src/main/models/templates/assets/workspace/react.production.min.js',
     includePaths: ['../../'],
-    transformer: contents => {
-      return reactToES(contents);
-    },
   },
-  // 'node_modules/scheduler/cjs/scheduler.development.js': {
-  //   dest: './src/main/models/templates/assets/workspace/scheduler.development.js',
-  //   includePaths: ['../../'],
-  //   transformer: contents => {
-  //     return reactToES(contents);
-  //   },
-  // },
-  // 'node_modules/react-dom/cjs/react-dom.development.js': {
-  //   dest: './src/main/models/templates/assets/workspace/react-dom.development.js',
-  //   includePaths: ['../../'],
-  //   transformer: contents => {
-  //     return reactToES(contents);
-  //   },
-  // },
+  'node_modules/react-dom/umd/react-dom.production.min.js': {
+    dest: './src/main/models/templates/assets/workspace/react-dom.production.min.js',
+    includePaths: ['../../'],
+  },
   'node_modules/react/cjs/react-jsx-runtime.development.js': {
     dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.development.js',
     includePaths: ['../../'],
     transformer: contents => {
       return reactToES(contents);
     },
+  },
+  'node_modules/react-bootstrap/dist/react-bootstrap.min.js': {
+    dest: './src/main/models/templates/assets/workspace/react-bootstrap.min.js',
+    includePaths: ['../../'],
   },
 };
 
