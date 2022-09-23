@@ -107,6 +107,18 @@ const sourceMap = {
     dest: './src/main/models/templates/assets/workspace/react-bootstrap.min.js',
     includePaths: ['../../'],
   },
+  'node_modules/@owlui/lib/dist': {
+    dest: './src/main/models/templates/assets/workspace',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+      filter: source => {
+        return (
+          source.indexOf('.d.ts') === -1 && source.indexOf('owl.lib.js') === -1
+        );
+      },
+    },
+  },
 };
 
 const findPath = (source, includePaths) => {
