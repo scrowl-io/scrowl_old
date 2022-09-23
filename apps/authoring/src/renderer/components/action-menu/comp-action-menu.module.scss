@@ -1,6 +1,35 @@
 .action-menu {
-  &.owlui-dropdown .owlui-dropdown-toggle {
+  &:focus-within {
+    opacity: 1 !important;
+  }
+
+  .owlui-dropdown-toggle {
+    padding: 0;
+    margin-top: -0.25em;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1;
     color: var(--bs-body-color);
-    font-size: var(--bs-btn-font-size);
+    border-radius: var(--bs-border-radius-pill);
+    border: 0;
+    opacity: 0.8;
+
+    span[class^="owlui-icons"] {
+      margin-right: 0.25em;
+      font-size: 1.5em;
+      line-height: 0.66;
+      vertical-align: inherit;
+    }
+
+    &:hover,
+    &:focus {
+      opacity: 1;
+      background: var(--owl-transparent-hover-bg);
+    }
+
+    &:active {
+      color: var(--owl-active-color);
+      background: var(--owl-active-bg);
+    }
   }
 }
