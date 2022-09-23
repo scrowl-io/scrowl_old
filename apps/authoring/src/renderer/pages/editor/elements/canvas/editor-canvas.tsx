@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Projects, Templates } from '../../../../models';
 import {
-  useCurrentlyLoadedSlide,
+  updateEditSlideRef,
+  useEditSlideRef,
   useActiveSlide,
   updateActiveSlide,
-  updateCurrentlyLoadedSlide,
 } from '../../page-editor-hooks';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 import { Icon, Button } from '@owlui/lib';
@@ -18,7 +18,7 @@ import { deepCopy } from '../right-pane/content/utils';
 
 export const Canvas = () => {
   const activeSlide = useActiveSlide();
-  const editSlideRef = useCurrentlyLoadedSlide();
+  const editSlideRef = useEditSlideRef();
   const [canvasUrl, setCanvasUrl] = useState('');
   const [slideOpts, setSlideOpts] = useState<SlideCommons>({
     aspect: '16:9',
@@ -87,7 +87,7 @@ export const Canvas = () => {
     setSlideName(name);
     targetSlide.name = name;
 
-    updateCurrentlyLoadedSlide(targetSlide);
+    updateEditSlideRef(targetSlide);
     updateActiveSlide(targetSlide);
     Projects.update({ modules });
   };

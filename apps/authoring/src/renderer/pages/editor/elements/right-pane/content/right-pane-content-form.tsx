@@ -4,7 +4,7 @@ import { FormBuilder, FormBuilderCommons } from '../../../../../components';
 import { deepCopy } from './utils';
 import {
   updateActiveSlide,
-  updateCurrentlyLoadedSlide,
+  updateEditSlideRef,
 } from '../../../page-editor-hooks';
 import {
   ProjectLesson,
@@ -48,7 +48,7 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
     }
     Object.assign(targetSlide.template.elements, slideData.template?.elements);
     updateActiveSlide(slideData);
-
+    updateEditSlideRef(slideData);
     Projects.update({ modules });
   };
 
@@ -59,7 +59,7 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
         data
       );
     }
-    updateCurrentlyLoadedSlide(slideData);
+    updateEditSlideRef(slideData);
     updateActiveSlide(slideData);
   };
 
