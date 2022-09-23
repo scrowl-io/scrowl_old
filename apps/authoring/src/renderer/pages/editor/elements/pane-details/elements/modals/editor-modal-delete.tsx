@@ -42,7 +42,7 @@ export const DeleteModal = ({
           variant="success"
           className={styles.glossarySubmitButton}
         >
-          Update
+          Delete
         </Button>
       </>
     ),

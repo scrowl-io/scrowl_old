@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form } from '@owlui/lib';
 import { GlossaryFormProps } from './glossary-types';
+import * as styles from '../../editor-pane-details.module.scss';
 
 export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
   const prefix = 'form-glossary-term';
@@ -71,7 +72,11 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
   ];
 
   return (
-    <Form formData={form} onKeyDown={handleKeyboardSubmit}>
+    <Form
+      className={styles.form}
+      formData={form}
+      onKeyDown={handleKeyboardSubmit}
+    >
       <div className="glossary-form-button-set d-flex justify-content-end">
         <Button
           className="glossary-cancel-button"

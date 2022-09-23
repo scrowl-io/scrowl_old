@@ -207,7 +207,7 @@
     line-height: 1.4;
     color: var(--bs-body-color);
 
-    &--word {
+    .tab_glossary__term--word {
       color: inherit;
       text-transform: none;
       font-weight: 500;
@@ -451,4 +451,12 @@
 
 .owlui-offcanvas-header {
   font-weight: normal !important;
+}
+
+.form {
+  label {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--owl-typeface-label-color);
+  }
 }
