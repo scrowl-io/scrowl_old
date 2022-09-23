@@ -7,12 +7,15 @@ const createElement = React.createElement;
 const createRoot = ReactDom.createRoot;
 const container = document.getElementById('app');
 const root = createRoot(container);
-const manifest = window.__MANIFEST.elements;
 
-class App extends React.Component {
-  render() {
-    return createElement({{data.templateComponent}}, { manifest }, null);
-  }
+const App = () => {
+  const [manifest, setManifest] = React.useState(window.__MANIFEST.elements);
+
+  window.addEventListener('message', (e) => {
+    setManifest(e.data.updateManifest.elements);
+  })
+
+  return createElement({{data.templateComponent}}, { manifest }, null);
 }
 
 root.render(createElement(App));

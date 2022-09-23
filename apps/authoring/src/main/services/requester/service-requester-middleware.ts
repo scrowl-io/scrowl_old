@@ -62,38 +62,45 @@ const createTemplateServer = () => {
         'src'
       );
       const server = http.createServer((req, res) => {
-        const pathname = !req.url || req.url === '/' ? '/canvas.html' : req.url;
-        const contentType = getContentType(pathname);
-        const filename = fs.join(templateWorkingPath, pathname);
+        try {
+          const pathname = new URL(`http://${req.headers.host}${req.url}`)
+            .pathname;
 
-        fs.existsFile(filename)
-          .then(existRes => {
-            if (existRes.error) {
-              responseInternalError(existRes, res);
-              return;
-            }
+          const contentType = getContentType(pathname);
+          const filename = fs.join(templateWorkingPath, pathname);
 
-            if (!existRes.data.exists) {
-              responseNotFound(req.url || filename, res);
-              return;
-            }
+          fs.existsFile(filename)
+            .then(existRes => {
+              if (existRes.error) {
+                responseInternalError(existRes, res);
+                return;
+              }
 
-            fs.readFile(filename)
-              .then(readRes => {
-                if (readRes.error) {
-                  responseInternalError(readRes, res);
-                  return;
-                }
+              if (!existRes.data.exists) {
+                responseNotFound(req.url || filename, res);
+                return;
+              }
 
-                responseOk(readRes.data.contents, contentType, res);
-              })
-              .catch(e => {
-                responseInternalError(e, res);
-              });
-          })
-          .catch(e => {
-            responseInternalError(e, res);
-          });
+              fs.readFile(filename)
+                .then(readRes => {
+                  if (readRes.error) {
+                    responseInternalError(readRes, res);
+                    return;
+                  }
+
+                  responseOk(readRes.data.contents, contentType, res);
+                })
+                .catch(e => {
+                  responseInternalError(e, res);
+                });
+            })
+            .catch(e => {
+              responseInternalError(e, res);
+            });
+        } catch (e) {
+          console.error('Failed to parse template request', e);
+          responseInternalError(e, res);
+        }
       });
 
       console.log('template server created');

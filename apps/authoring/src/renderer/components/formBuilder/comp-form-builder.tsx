@@ -26,7 +26,7 @@ export const FormBuilder = ({
   onUpdate,
 }: FormBuilderProps) => {
   const controls = Object.keys(formData);
-  console.log('data', controls, formData);
+
   return (
     <Form className={styles.formBuilder}>
       <div>{name}</div>
@@ -40,7 +40,9 @@ export const FormBuilder = ({
           />
         );
       })}
-      <Button onClick={onSubmit}>Save</Button>
+      <Button style={{ marginTop: '1em' }} onClick={onSubmit}>
+        Update Slide
+      </Button>
     </Form>
   );
 };

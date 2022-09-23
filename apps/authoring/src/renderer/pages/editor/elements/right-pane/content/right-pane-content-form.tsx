@@ -2,29 +2,70 @@ import React from 'react';
 import { Projects } from '../../../../../models';
 import { FormBuilder, FormBuilderCommons } from '../../../../../components';
 import { deepCopy } from './utils';
-import { updateActiveSlide } from '../../../page-editor-hooks';
+import {
+  updateActiveSlide,
+  updateCurrentlyLoadedSlide,
+} from '../../../page-editor-hooks';
+import {
+  ProjectLesson,
+  ProjectSlide,
+} from '../../../../../../main/models/projects';
 
 export type ContentFormProps = {
-  activeSlide: Projects.ProjectSlide;
+  activeSlide: ProjectSlide;
 };
 
 export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
-  const slide = deepCopy(activeSlide);
+  const slideData = deepCopy(activeSlide);
+  const project = Projects.useData();
+  const modules = deepCopy(project.modules);
+
+  const getTargetSlide = () => {
+    const moduleID: number | undefined = activeSlide.moduleID;
+    const lessonID: number | undefined = activeSlide.lessonID;
+    const slideID: number | undefined = activeSlide.id;
+
+    if (moduleID && lessonID) {
+      const targetLesson = modules[moduleID - 1].lessons.find(
+        (lesson: ProjectLesson) => {
+          return lesson.id === lessonID;
+        }
+      );
+
+      const targetSlide = targetLesson.slides.find((slide: ProjectSlide) => {
+        return slide.id === slideID;
+      });
+      return targetSlide;
+    }
+  };
+
   const handleOnSubmit = () => {
-    console.log('submitting');
+    const targetSlide = getTargetSlide();
+
+    if (!targetSlide || targetSlide === null || targetSlide === undefined) {
+      console.error('No target slide match');
+      return;
+    }
+    Object.assign(targetSlide.template.elements, slideData.template?.elements);
+    updateActiveSlide(slideData);
+
+    Projects.update({ modules });
   };
 
   const handleOnUpdate = (data: FormBuilderCommons['formData']) => {
-    slide.template.elements = Object.assign(slide.template.elements, data);
-
-    updateActiveSlide(slide);
+    if (slideData.template) {
+      slideData.template.elements = Object.assign(
+        slideData.template.elements,
+        data
+      );
+    }
+    updateCurrentlyLoadedSlide(slideData);
+    updateActiveSlide(slideData);
   };
 
   if (!activeSlide.template) {
     return <></>;
   }
-
-  console.log('active slide', activeSlide);
 
   return (
     <div>

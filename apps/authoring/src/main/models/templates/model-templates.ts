@@ -412,10 +412,12 @@ export const load = (
           return;
         }
 
+        const ver = new Date().valueOf();
+
         resolve({
           error: false,
           data: {
-            url: Requester.templateServerUrl,
+            url: `${Requester.templateServerUrl}/canvas.html?ver=${ver}`,
           },
         });
       });
@@ -439,13 +441,7 @@ export const add = (
 ) => {
   const templatePath = `template-${templateName}`;
   const getDestFolderPath = (start: string) => {
-    return fs.join(
-      start,
-      projectId.toString(),
-      'content',
-      'templates',
-      templatePath
-    );
+    return fs.join(start, projectId.toString(), 'templates', templatePath);
   };
   return new Promise<Requester.ApiResult>(resolve => {
     try {
@@ -526,6 +522,84 @@ export const add = (
         message: 'Failed to add template',
         data: {
           trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const locate = (name: string) => {
+  return new Promise<Requester.ApiResult>(resolve => {
+    try {
+      let pathname = '';
+      const folder = `template-${name}`;
+      const installedPath = fs.join(templateFolderPath, folder);
+      let isInstalled = false;
+      const internalPath = fs.join(templateAssetPath, folder);
+      let isInternal = false;
+      const existReqs = [
+        fs.existsFile(installedPath),
+        fs.existsFile(internalPath),
+      ];
+
+      Promise.allSettled(existReqs).then(existRes => {
+        existRes.forEach(res => {
+          if (res.status === 'rejected') {
+            return;
+          }
+
+          if (res.value.error) {
+            return;
+          }
+
+          if (!res.value.data.exists) {
+            return;
+          }
+
+          if (res.value.data.pathname === installedPath) {
+            isInstalled = true;
+          }
+
+          if (res.value.data.pathname === internalPath) {
+            isInternal = true;
+          }
+        });
+
+        if (!isInstalled && !isInternal) {
+          resolve({
+            error: true,
+            message: `Unable to locate template: ${name}`,
+            data: {
+              name,
+              installedPath,
+              internalPath,
+            },
+          });
+          return;
+        }
+
+        if (isInstalled) {
+          pathname = installedPath;
+        }
+
+        if (isInternal) {
+          pathname = internalPath;
+        }
+
+        resolve({
+          error: false,
+          data: {
+            name,
+            pathname,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'failed to get url to template',
+        data: {
+          name,
         },
       });
     }
