@@ -12,17 +12,21 @@ import {
 } from './editor-tree-view.types';
 import { deepCopy } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
+import { DeleteModal } from '../modals/editor-modal-delete';
 import { updateActiveSlide } from '../../../../page-editor-hooks';
 
 const TreeViewSlide = (props: TreeViewSlideProps) => {
   const { tree, idx, moduleIdx, lessonIdx, project } = props;
   const itemId = `module-${moduleIdx}-lesson-${lessonIdx}-slide-item-${idx}`;
+  const itemWrapperId = `${itemId}-wrapper`;
   const modules = deepCopy(project.modules);
   const slideModule: ModuleTreeItem = modules[moduleIdx];
   const slideLesson: LessonTreeItem = slideModule.lessons[lessonIdx];
   const slide: SlideTreeItem = slideLesson.slides[idx];
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
+  const [showModalDelete, setModalDelete] = useState(false);
+  const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
   const slideMenuItems: Array<ActionMenuItem> = [
     {
@@ -42,7 +46,11 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
           return;
         }
 
-        slideLesson.slides.splice(idx + 1, 0, slide);
+        const newSlide: SlideTreeItem = {
+          name: slide.name + ' copy',
+        };
+
+        slideLesson.slides.splice(idx + 1, 0, newSlide);
         Projects.update({ modules });
       },
     },
@@ -98,8 +106,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       icon: 'delete',
       display: 'outlined',
       actionHandler: () => {
-        slideLesson.slides.splice(idx, 1);
-        Projects.update({ modules });
+        toggleModalDelete();
       },
     },
   ];
@@ -109,13 +116,29 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
     Projects.update({ modules });
   };
 
+  const handleDelete = () => {
+    slideLesson.slides.splice(idx, 1);
+    Projects.update({ modules });
+  };
+
   const handleSlideSelection = () => {
+    const selectorSlideActive = document.querySelector('.slideActive');
+
+    if (selectorSlideActive) {
+      selectorSlideActive.classList.remove('slideActive');
+    }
+
     updateActiveSlide(tree);
+    const selectorWrapper = document.getElementById(itemWrapperId);
+
+    if (selectorWrapper) {
+      selectorWrapper.classList.add('slideActive');
+    }
   };
 
   return (
     <div className={styles.treeViewSlide} key={idx}>
-      <div className={styles.treeViewHeader}>
+      <div id={itemWrapperId} className={styles.treeViewHeader}>
         <Button
           id={itemId}
           className={styles.treeViewItem}
@@ -134,11 +157,18 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         />
       </div>
       <RenameModal
-        label="Rename Lesson"
+        label="Rename Slide"
         value={tree.name}
         onSubmit={handleRename}
         show={showModalRename}
         onHide={toggleModalRename}
+      />
+      <DeleteModal
+        title="Delete Slide"
+        label="Are you sure you want to delete this slide?"
+        onSubmit={handleDelete}
+        show={showModalDelete}
+        onHide={toggleModalDelete}
       />
     </div>
   );
