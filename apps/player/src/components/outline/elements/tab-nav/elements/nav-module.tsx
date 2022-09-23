@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Collapse from 'react-bootstrap/Collapse';
+import { Collapse } from 'react-bootstrap';
 import { Icon, Button } from '@owlui/lib';
 import { OutlineNavModuleProps } from '../../../player-outline.types';
 import * as styles from '../../../player-outline.module.scss';

@@ -7,6 +7,17 @@ import { Error, Outline } from '../';
 import { Routes } from './elements';
 
 export const App = () => {
+  const runtime = window.__SCROWL_RUNTIME;
+
+  if (runtime) {
+    const startRes = runtime.start();
+
+    if (startRes.error) {
+      // root.render(<Error msg={startRes.message} />);
+      console.error(`starting error: ${startRes.message}`);
+    }
+  }
+
   const manifestRes = Manifest.get();
 
   if (manifestRes.error) {
