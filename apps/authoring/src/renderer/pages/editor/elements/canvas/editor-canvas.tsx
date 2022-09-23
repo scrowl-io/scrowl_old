@@ -4,6 +4,7 @@ import {
   useCurrentlyLoadedSlide,
   useActiveSlide,
   updateActiveSlide,
+  updateCurrentlyLoadedSlide,
 } from '../../page-editor-hooks';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 import { Icon, Button } from '@owlui/lib';
@@ -81,11 +82,12 @@ export const Canvas = () => {
   };
 
   const handleSlideNameChange = (ev: React.FormEvent<HTMLInputElement>) => {
+    const targetSlide = getTargetSlide();
     const name = ev.currentTarget.value;
     setSlideName(name);
-    const targetSlide = getTargetSlide();
     targetSlide.name = name;
 
+    updateCurrentlyLoadedSlide(targetSlide);
     updateActiveSlide(targetSlide);
     Projects.update({ modules });
   };
