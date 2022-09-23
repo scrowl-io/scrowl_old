@@ -69,7 +69,7 @@ const sourceMap = {
     includePaths: ['../../'],
     options: {
       overwrite: true,
-      filter: (source, dest) => {
+      filter: source => {
         return source.indexOf('.d.ts') === -1;
       },
     },
