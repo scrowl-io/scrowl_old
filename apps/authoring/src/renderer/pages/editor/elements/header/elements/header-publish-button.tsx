@@ -9,8 +9,6 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
   const [toasterShow, setToasterShow] = useState(false);
   const [toasterMessage, setToasterMessage] = useState('');
 
-  console.log(project);
-
   const hideToaster = () => {
     setToasterShow(false);
   };
