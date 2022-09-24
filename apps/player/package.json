@@ -22,7 +22,7 @@
     "build": "parcel build --no-cache && tsc",
     "postbuild": "node ./scripts/pipeline/post-build.mjs",
     "prestart": "yarn run clean && rimraf dev",
-    "start": "parcel serve src/index.html --open --dist-dir dev"
+    "start": "parcel serve src/index.html --open --dist-dir dev --no-cache"
   },
   "source": "./src/components/index.ts",
   "main": "./dist/scrowl.player.js",

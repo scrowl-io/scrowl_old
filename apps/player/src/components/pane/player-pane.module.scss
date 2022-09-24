@@ -1,6 +1,5 @@
-@import '../../styles/bs';
-@import '../../styles/variables';
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/global/tokens' as *;
+@use '@owlui/lib/src/theme/global/typography' as *;
 
 .pane {
   &--left {
@@ -39,7 +38,6 @@
     border-left: var(--owl-border-width) var(--owl-border-color) solid;
     background: var(--owl-sidebar-bg);
 
-
     &__header {
       flex: 0 1 auto;
       margin-top: calc($owl-sys-space-sidebar / 2);
@@ -57,7 +55,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: calc(var(--owl-sidebar-spacing) / 2) calc(var(--owl-sidebar-spacing) / 2) calc(var(--owl-sidebar-spacing) / 2) var(--owl-sidebar-spacing);
+    margin: calc(var(--owl-sidebar-spacing) / 2)
+      calc(var(--owl-sidebar-spacing) / 2) calc(var(--owl-sidebar-spacing) / 2)
+      var(--owl-sidebar-spacing);
     line-height: $owl-ref-typeface-lineheight-sm;
     font-size: $owl-ref-typeface-size-xs;
     user-select: none;
