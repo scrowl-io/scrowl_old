@@ -318,94 +318,28 @@ export const load = (
         });
         return;
       }
+      const ver = new Date().valueOf();
       const filenameShimReact = 'shim-react.js';
-      const shimReactSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameShimReact
-      );
-      const shimReactDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameShimReact
-      );
       const filenameShimReactDom = 'shim-react-dom.js';
-      const shimReactDomSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameShimReactDom
-      );
-      const shimReactDomDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameShimReactDom
-      );
       const filenameShimReactBootstrap = 'shim-react-bootstrap.js';
-      const shimReactBootstrapSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameShimReactBootstrap
-      );
-      const shimReactBootstrapDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameShimReactBootstrap
-      );
-      const filenameReact = 'react.production.min.js';
-      const reactSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReact
-      );
-      const reactDest = fs.join(templateWorkingPath, 'src', filenameReact);
-      const filenameReactDom = 'react-dom.production.min.js';
-      const reactDomSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReactDom
-      );
-      const reactDomDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameReactDom
-      );
       const filenameReactJsx = 'react-jsx-runtime.development.js';
-      const reactJsxSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReactJsx
-      );
-      const reactJsxDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameReactJsx
-      );
-      const filenameReactBootstrap = 'react-bootstrap.min.js';
-      const reactBootstrapSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReactBootstrap
-      );
-      const reactBootstrapDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameReactBootstrap
-      );
-      const canvasHtmlSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        'canvas.html.hbs'
-      );
+      const filenameOwlui = 'owl.lib.module.js';
+      const workspaceSource = fs.join(templateAssetPath, 'workspace');
+      const workspaceDest = fs.join(templateWorkingPath, 'src');
+      const workspaceOpts = {
+        overwrite: true,
+        filter: (source: string) => {
+          return source.indexOf('.hbs') === -1;
+        },
+      };
+      const canvasHtmlSource = fs.join(workspaceSource, 'canvas.html.hbs');
       const canvasHtmlDest = fs.join('templates', 'src', 'canvas.html');
-      const canvasScriptSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        'canvas.js.hbs'
-      );
-      const canvasScriptDest = fs.join('templates', 'src', 'canvas.js');
+      const canvasScriptSource = fs.join(workspaceSource, 'canvas.js.hbs');
+      const canvasScriptDest = fs.join('templates', 'src', `canvas.${ver}.js`);
       const data = {
-        templateJs: `./${templateBase}.js`,
-        templateCss: `./${templateBase}.css`,
+        canvasJs: `./canvas.${ver}.js`,
+        templateJs: `./${templateBase}.js?${ver}`,
+        templateCss: `./${templateBase}.css?${ver}`,
         templateComponent: manifest.meta.component,
         manifest: JSON.stringify(manifest),
         importList: JSON.stringify({
@@ -413,17 +347,11 @@ export const load = (
           'react-dom': `./${filenameShimReactDom}`,
           'react/jsx-runtime': `./${filenameReactJsx}`,
           'react-bootstrap': `./${filenameShimReactBootstrap}`,
+          '@owlui/lib': `./${filenameOwlui}`,
         }),
       };
-
       const canvasRendering = [
-        fs.copy(reactSource, reactDest),
-        fs.copy(shimReactSource, shimReactDest),
-        fs.copy(reactDomSource, reactDomDest),
-        fs.copy(shimReactDomSource, shimReactDomDest),
-        fs.copy(reactJsxSource, reactJsxDest),
-        fs.copy(reactBootstrapSource, reactBootstrapDest),
-        fs.copy(shimReactBootstrapSource, shimReactBootstrapDest),
+        fs.copy(workspaceSource, workspaceDest, workspaceOpts),
         copyTemplateComponent(),
         compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
         compileCanvas(canvasScriptSource, data, canvasScriptDest),
@@ -447,8 +375,6 @@ export const load = (
           });
           return;
         }
-
-        const ver = new Date().valueOf();
 
         resolve({
           error: false,

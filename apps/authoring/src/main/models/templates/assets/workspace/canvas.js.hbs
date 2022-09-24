@@ -1,10 +1,8 @@
 {{#with . as | data |}}
-import React from 'react';
-import ReactDom from 'react-dom';
+import { createElement } from 'react';
+import { createRoot } from 'react-dom';
 import { {{data.templateComponent}} } from '{{data.templateJs}}';
 
-const createElement = React.createElement;
-const createRoot = ReactDom.createRoot;
 const container = document.getElementById('app');
 const root = createRoot(container);
 
@@ -13,7 +11,7 @@ const App = () => {
 
   window.addEventListener('message', (e) => {
     setManifest(e.data.updateManifest.elements);
-  })
+  });
 
   return createElement({{data.templateComponent}}, { manifest }, null);
 }

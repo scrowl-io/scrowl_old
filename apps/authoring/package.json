@@ -174,7 +174,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.40",
+    "@owlui/lib": "^0.0.41",
     "@reduxjs/toolkit": "^1.8.5",
     "@scrowl/player": "^0.0.1",
     "adm-zip": "^0.5.9",
