@@ -15,6 +15,7 @@ import * as table from './model-projects-schema';
 import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
 import { add as addTemplate } from '../templates';
+import { OpenDialogOptions } from 'electron';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -691,7 +692,27 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
           resolve(saveRes);
         }
 
-        Publisher.pack(saveRes.data.project).then(resolve);
+        const dialogOptions: OpenDialogOptions = {
+          properties: ['openDirectory', 'createDirectory'],
+          buttonLabel: 'Publish',
+          message: 'Publish Scrowl Project',
+          defaultPath: fs.pathDownloadsFolder,
+        };
+
+        fs.dialogOpen(dialogOptions).then((result: fs.DialogOpenResult) => {
+          if (result.data.canceled || !result.data.filePaths) {
+            resolve({
+              error: true,
+              message: 'Unable to publish project: destination folder required',
+            });
+          } else {
+            const dialogResultFolder = result.data.filePaths[0];
+
+            Publisher.pack(saveRes.data.project, dialogResultFolder).then(
+              resolve
+            );
+          }
+        });
       });
     } catch (e) {
       resolve({
