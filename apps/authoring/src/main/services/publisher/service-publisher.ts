@@ -13,9 +13,7 @@ import {
   writeFile,
 } from '../file-system';
 
-const publisherAssetPath = () => {
-  return getAssetPath(join('assets'));
-};
+export const assetPath = getAssetPath(join('assets'));
 
 const getTemplateList = (project: Project.ProjectData) => {
   if (!project.modules || !project.modules.length) {
@@ -208,13 +206,13 @@ const createScormSource = (
     try {
       const manifestPath = join(from, 'manifest.json');
       const manifestDest = join(to, 'content', 'manifest.json');
-      const scormPath = join(
-        publisherAssetPath(),
-        'project',
-        'package',
-        'content'
-      );
+      const scormPath = join(assetPath, 'workspace');
       const scormDest = join(to, 'content');
+      const scormPathOpts = {
+        filter: (source: string) => {
+          return source.indexOf('.hbs') === -1;
+        },
+      };
       const templateDest = join(to, 'content', 'templates');
 
       copy(manifestPath, manifestDest).then(manifestCopyRes => {
@@ -223,7 +221,7 @@ const createScormSource = (
           return;
         }
 
-        copy(scormPath, scormDest).then(scormCopyRes => {
+        copy(scormPath, scormDest, scormPathOpts).then(scormCopyRes => {
           if (scormCopyRes.error) {
             resolve(scormCopyRes);
             return;
@@ -234,8 +232,13 @@ const createScormSource = (
               resolve(infoRes);
               return;
             }
-
+            console.log('info', infoRes.data.info);
             copyTemplates(infoRes.data.info, templateDest).then(resolve);
+            /*
+              - create a file that imports all the templates
+              - create a dict of the template elements
+              - player will use the dict when creating page elements
+            */
           });
         });
       });
@@ -264,32 +267,28 @@ const createScormEntry = (source: string, dest: string) => {
         }
 
         const manifest = readManifest.data.contents;
-        const entrySource = join(
-          publisherAssetPath(),
-          'project',
-          'templates',
-          'index.hbs'
-        );
+        const htmlSource = join(assetPath, 'workspace', 'scorm.html.hbs');
+        const jsSource = join(assetPath, 'workspace', 'scorm.js.hbs');
 
-        readFile(entrySource).then(readEntry => {
+        readFile(htmlSource).then(readEntry => {
           if (readEntry.error) {
             resolve(readEntry);
             return;
           }
 
-          const entryRes = compile(readEntry.data.contents, {
+          const htmlRes = compile(readEntry.data.contents, {
             manifest: JSON.stringify(manifest),
           });
 
-          if (entryRes.error) {
-            resolve(entryRes);
+          if (htmlRes.error) {
+            resolve(htmlRes);
             return;
           }
 
-          const entryDest = join(dest, 'content', 'index.html');
-          const entryFile = entryRes.data.contents;
+          const htmlDest = join(dest, 'content', 'index.html');
+          const htmlFile = htmlRes.data.contents;
 
-          writeFile(entryDest, entryFile).then(resolve);
+          writeFile(htmlDest, htmlFile).then(resolve);
         });
       });
     } catch (e) {

@@ -1,0 +1,18 @@
+{{#with . as | data |}}
+import { createElement } from 'react';
+import { createRoot } from 'react-dom';
+import { App } from 'scrowl-player';
+{{#each data.templateJs as | js |}}
+import { {{js.componentName}} } from '{{js.url}}';
+{{/each}}
+
+const container = document.getElementById('app');
+const root = createRoot(container);
+const templateList = {
+  {{#each data.templateJs as | js |}}
+  {{js.componentName}}: {{js.componentName}},
+  {{/each}}
+};
+
+root.render(createElement(App));
+{{/with}}

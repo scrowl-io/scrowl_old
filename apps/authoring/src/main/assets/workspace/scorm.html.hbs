@@ -6,15 +6,27 @@
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
   <title>{{{data.title}}}</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="./owl.lib.css">
   <link rel="stylesheet" href="./scrowl.player.css">
+  {{#each data.templateCss as | css |}}
+  <link rel="stylesheet" href="{{css.url}}">
+  {{/each}}
+  <script type="text/javascript" src="./react.production.min.js"></script>
+  <script type="text/javascript" src="./react-dom.production.min.js"></script>
+  <script type="text/javascript" src="./react-bootstrap.min.js"></script>
+  <script type="importmap">
+    {
+      "imports": {{{data.importList}}}
+    }
+  </script>
   <script type="text/javascript">
     window.__SCROWL_MANIFEST = {{{data.manifest}}}
   </script>
+  <script type="module" src="{{data.scormJs}}"></script>
 </head>
 <body>
   <div id="app"></div>
   <script type="text/javascript" src="./scrowl.runtime.js"></script>
-  <script type="text/javascript" src="./scrowl.player.js"></script>
 </body>
 </html>
 {{/with}}
