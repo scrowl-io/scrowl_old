@@ -677,21 +677,14 @@ export const importFile = (
 };
 
 export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
-  return new Promise<Requester.ApiResult>(resolve => {
+  return new Promise<Requester.ApiResult>((resolve, reject) => {
     if (!project || !project.id) {
-      resolve({
-        error: true,
-        message: 'Unable to publish project: project data required',
-      });
+      reject('Unable to publish project: project data required');
       return;
     }
 
-    try {
-      save(ev, project, true).then(saveRes => {
-        if (saveRes.error) {
-          resolve(saveRes);
-        }
-
+    save(ev, project, true)
+      .then(saveRes => {
         const dialogOptions: OpenDialogOptions = {
           properties: ['openDirectory', 'createDirectory'],
           buttonLabel: 'Publish',
@@ -701,10 +694,7 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
 
         fs.dialogOpen(dialogOptions).then((result: fs.DialogOpenResult) => {
           if (result.data.canceled || !result.data.filePaths) {
-            resolve({
-              error: true,
-              message: 'Unable to publish project: destination folder required',
-            });
+            reject('Unable to publish project: destination folder required');
           } else {
             const dialogResultFolder = result.data.filePaths[0];
 
@@ -713,17 +703,10 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
             );
           }
         });
+      })
+      .catch(() => {
+        reject('Unable to publish project: Error saving project.');
       });
-    } catch (e) {
-      resolve({
-        error: true,
-        message: 'Failed to publish project',
-        data: {
-          trace: e,
-          project,
-        },
-      });
-    }
   });
 };
 
