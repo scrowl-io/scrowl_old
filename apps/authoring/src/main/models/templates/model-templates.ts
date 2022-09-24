@@ -16,9 +16,7 @@ import { requester } from '../../../renderer/services';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
 export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
-export const templateAssetPath = fs.getAssetPath(
-  fs.join('models', 'templates', 'assets')
-);
+export const templateAssetPath = fs.getAssetPath(fs.join('assets'));
 
 export const install = () => {
   return new Promise<Requester.ApiResult>(resolve => {

@@ -101,8 +101,7 @@
       "package.json"
     ],
     "extraFiles": [
-      "src/main/services/publisher/project/**",
-      "src/main/models/templates/assets/**"
+      "src/main/assets/**"
     ],
     "dmg": {
       "contents": [
