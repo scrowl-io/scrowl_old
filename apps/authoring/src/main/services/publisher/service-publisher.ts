@@ -315,7 +315,8 @@ const toScormCase = (str: string) => {
 
 const createScormPackage = (
   source: string,
-  config: Project.ProjectData['scormConfig']
+  dest: string,
+  config: Project.ProjectData
 ) => {
   return new Promise<ApiResult>(resolve => {
     try {
@@ -326,10 +327,11 @@ const createScormPackage = (
         source: source,
         package: {
           name: toScormCase(config?.name || ''),
-          author: config?.authors,
-          description: config?.description,
+          // Without the publish drawing these fields will not be populated
+          // author: config?.scormConfig?.authors,
+          // description: config?.scormConfig?.description,
           zip: true,
-          outputFolder: pathDownloadsFolder,
+          outputFolder: dest,
         },
       };
 
@@ -355,7 +357,7 @@ const createScormPackage = (
   });
 };
 
-export const pack = (project: Project.ProjectData) => {
+export const pack = (project: Project.ProjectData, zipDest: string) => {
   return new Promise<ApiResult>(resolve => {
     if (!project || !project.id) {
       resolve({
@@ -381,7 +383,7 @@ export const pack = (project: Project.ProjectData) => {
             return;
           }
 
-          createScormPackage(dest, project.scormConfig).then(resolve);
+          createScormPackage(dest, zipDest, project).then(resolve);
         });
       });
     } catch (e) {

@@ -94,19 +94,20 @@ export const list = (limit?: number) => {
 };
 
 export const publish = (project: ProjectData) => {
-  return new Promise<requester.ApiResult>(resolve => {
-    try {
-      requester.invoke(ENDPOINTS.publish, project).then(resolve);
-    } catch (e) {
-      resolve({
-        error: true,
-        message: 'Failed to publish',
-        data: {
-          trace: e,
-          project,
-        },
+  return new Promise<requester.ApiResult>((resolve, reject) => {
+    requester
+      .invoke(ENDPOINTS.publish, project)
+      .then(resolve)
+      .catch(error => {
+        reject({
+          error: true,
+          message: error.message,
+          data: {
+            trace: error,
+            project,
+          },
+        });
       });
-    }
   });
 };
 

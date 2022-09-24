@@ -1,19 +1,38 @@
 import React, { useState } from 'react';
 import { Button, Icon } from '@owlui/lib';
 import * as styles from '../editor-header.module.scss';
-import { PublishDrawer } from './header-publish-drawer';
 import { Projects } from '../../../../../models';
+import { PublishToaster } from './header-publish-toaster';
 
 export const PublishButton = ({ disabled }: { disabled: boolean }) => {
   const project = Projects.useData();
-  const [showDrawer, setShowDrawer] = useState<boolean>(false);
-  const toggleShowDrawer = () => setShowDrawer(!showDrawer);
+  const [toasterShow, setToasterShow] = useState(false);
+  const [toasterMessage, setToasterMessage] = useState('');
+
+  console.log(project);
+
+  const hideToaster = () => {
+    setToasterShow(false);
+  };
+
+  const handlePublish = () => {
+    Projects.publish(project)
+      .then(() => {
+        setToasterMessage('Project was successfully published');
+        setToasterShow(true);
+      })
+      .catch(error => {
+        console.log(error.message);
+        setToasterMessage('Project failed to published');
+        setToasterShow(true);
+      });
+  };
 
   return (
     <>
       <Button
         className={`btn btn-sm btn-primary ms-3 ${styles.btnPublish}`}
-        onClick={() => console.log(project)}
+        onClick={handlePublish}
         disabled={disabled}
       >
         <Icon
@@ -27,10 +46,13 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
         />
         Publish
       </Button>
-      <PublishDrawer
-        project={project}
-        show={showDrawer}
-        onHide={toggleShowDrawer}
+      <PublishToaster
+        title="Publisher Result"
+        message={toasterMessage}
+        show={toasterShow}
+        autohide
+        delay={3000}
+        onClose={hideToaster}
       />
     </>
   );
