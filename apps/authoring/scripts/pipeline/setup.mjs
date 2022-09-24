@@ -57,15 +57,15 @@ const reactToES = code => {
 // This map uses the key to declare a path to the source file
 const sourceMap = {
   'node_modules/@scrowl/runtime/dist/scrowl.runtime.js': {
-    dest: './src/main/services/publisher/project/package/content/scrowl.runtime.js', // this is the target destination of the file to be copied to
+    dest: './src/main/assets/workspace/scrowl.runtime.js', // this is the target destination of the file to be copied to
     includePaths: ['../../'], // because this is a mono-repo files may not be located at the project level, this allows the source file to be search in other locations
   },
   'node_modules/@scrowl/runtime/dist/scrowl.runtime.js.map': {
-    dest: './src/main/services/publisher/project/package/content/scrowl.runtime.js.map', // this is the target destination of the file to be copied to
+    dest: './src/main/assets/workspace/scrowl.runtime.js.map', // this is the target destination of the file to be copied to
     includePaths: ['../../'], // because this is a mono-repo files may not be located at the project level, this allows the source file to be search in other locations
   },
   'node_modules/@scrowl/player/dist': {
-    dest: './src/main/services/publisher/project/package/content/',
+    dest: './src/main/assets/workspace',
     includePaths: ['../../'],
     options: {
       overwrite: true,
@@ -75,40 +75,40 @@ const sourceMap = {
     },
   },
   'node_modules/scrowl-template-introduction/build': {
-    dest: './src/main/models/templates/assets/template-introduction',
+    dest: './src/main/assets/template-introduction',
     includePaths: ['../../'],
     options: {
       overwrite: true,
     },
   },
   'node_modules/scrowl-template-two-columns/build': {
-    dest: './src/main/models/templates/assets/template-two-columns',
+    dest: './src/main/assets/template-two-columns',
     includePaths: ['../../'],
     options: {
       overwrite: true,
     },
   },
   'node_modules/react/umd/react.production.min.js': {
-    dest: './src/main/models/templates/assets/workspace/react.production.min.js',
+    dest: './src/main/assets/workspace/react.production.min.js',
     includePaths: ['../../'],
   },
   'node_modules/react-dom/umd/react-dom.production.min.js': {
-    dest: './src/main/models/templates/assets/workspace/react-dom.production.min.js',
+    dest: './src/main/assets/workspace/react-dom.production.min.js',
     includePaths: ['../../'],
   },
   'node_modules/react/cjs/react-jsx-runtime.development.js': {
-    dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.development.js',
+    dest: './src/main/assets/workspace/react-jsx-runtime.development.js',
     includePaths: ['../../'],
     transformer: contents => {
       return reactToES(contents);
     },
   },
   'node_modules/react-bootstrap/dist/react-bootstrap.min.js': {
-    dest: './src/main/models/templates/assets/workspace/react-bootstrap.min.js',
+    dest: './src/main/assets/workspace/react-bootstrap.min.js',
     includePaths: ['../../'],
   },
   'node_modules/@owlui/lib/dist': {
-    dest: './src/main/models/templates/assets/workspace',
+    dest: './src/main/assets/workspace',
     includePaths: ['../../'],
     options: {
       overwrite: true,
