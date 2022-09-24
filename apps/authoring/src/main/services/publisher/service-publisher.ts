@@ -14,7 +14,7 @@ import {
 } from '../file-system';
 
 const publisherAssetPath = () => {
-  return getAssetPath(join('services', 'publisher'));
+  return getAssetPath(join('assets'));
 };
 
 const getTemplateList = (project: Project.ProjectData) => {
