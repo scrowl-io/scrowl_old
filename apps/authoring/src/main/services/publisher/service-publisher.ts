@@ -295,6 +295,7 @@ const createScormEntry = (
           'react/jsx-runtime': `./react-jsx-runtime.development.js`,
           'react-bootstrap': `./shim-react-bootstrap`,
           '@owlui/lib': `./owl.lib.module.js`,
+          'scrowl-player': './scrowl.player.js',
         };
         const data = {
           appJs: `./index.js`,
