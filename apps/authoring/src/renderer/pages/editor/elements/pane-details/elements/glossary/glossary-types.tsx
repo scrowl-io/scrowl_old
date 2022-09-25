@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import { ButtonDefaultProps, DrawerDefaultProps } from '@owlui/lib';
 
 export type GlossaryItem = { name: string; description: string };
