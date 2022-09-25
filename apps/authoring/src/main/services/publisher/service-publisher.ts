@@ -1,6 +1,10 @@
 import packager from 'scorm-packager';
 import { Templates, Project } from '../../models';
-import { PublisherEvents, TemplateInfo } from './service-publisher.types';
+import {
+  PublisherEvents,
+  TemplateInfo,
+  TemplateCopyResult,
+} from './service-publisher.types';
 import { registerAll, ApiResult } from '../requester';
 import { compile } from '../templater';
 import {
@@ -139,7 +143,6 @@ const copyTemplates = (templates: Array<TemplateInfo>, to: string) => {
     try {
       const copyOpts = {
         filter: (src: string) => {
-          console.log('filtering', src);
           return src.indexOf('manifest.json') === -1;
         },
       };
@@ -232,13 +235,8 @@ const createScormSource = (
               resolve(infoRes);
               return;
             }
-            console.log('info', infoRes.data.info);
+
             copyTemplates(infoRes.data.info, templateDest).then(resolve);
-            /*
-              - create a file that imports all the templates
-              - create a dict of the template elements
-              - player will use the dict when creating page elements
-            */
           });
         });
       });
@@ -256,7 +254,11 @@ const createScormSource = (
   });
 };
 
-const createScormEntry = (source: string, dest: string) => {
+const createScormEntry = (
+  source: string,
+  dest: string,
+  templateInfo: TemplateCopyResult
+) => {
   return new Promise<ApiResult>(resolve => {
     try {
       const manifestSource = join(source, 'manifest.json');
@@ -267,28 +269,107 @@ const createScormEntry = (source: string, dest: string) => {
         }
 
         const manifest = readManifest.data.contents;
-        const htmlSource = join(assetPath, 'workspace', 'scorm.html.hbs');
-        const jsSource = join(assetPath, 'workspace', 'scorm.js.hbs');
+        const sources = [
+          {
+            pathname: join(assetPath, 'workspace', 'scorm.html.hbs'),
+            dest: join(dest, 'content', 'index.html'),
+            compile: true,
+          },
+          {
+            pathname: join(assetPath, 'workspace', 'scorm.js.hbs'),
+            dest: join(dest, 'content', 'index.js'),
+            compile: true,
+          },
+        ];
+        const templateRelativePath = `./templates`;
+        const templateMap = templateInfo.templates.map(template => {
+          return {
+            js: `${templateRelativePath}/${template.filename}/template-${template.filename}.js`,
+            css: `${templateRelativePath}/${template.filename}/template-${template.filename}.css`,
+            component: template.component,
+          };
+        });
+        const importList = {
+          react: `shim-react.js`,
+          'react-dom': `./shim-react-dom.js`,
+          'react/jsx-runtime': `./react-jsx-runtime.development.js`,
+          'react-bootstrap': `./shim-react-bootstrap`,
+          '@owlui/lib': `./owl.lib.module.js`,
+        };
+        const data = {
+          appJs: `./index.js`,
+          manifest: JSON.stringify(manifest),
+          templates: templateMap,
+          importList: JSON.stringify(importList),
+        };
+        const appFileWrites = sources.map(source => {
+          return new Promise<ApiResult>(resolve => {
+            readFile(source.pathname).then(readRes => {
+              if (readRes.error) {
+                resolve(readRes);
+                return;
+              }
 
-        readFile(htmlSource).then(readEntry => {
-          if (readEntry.error) {
-            resolve(readEntry);
-            return;
-          }
+              let contents;
 
-          const htmlRes = compile(readEntry.data.contents, {
-            manifest: JSON.stringify(manifest),
+              if (source.compile) {
+                const compileRes = compile(readRes.data.contents, data);
+
+                if (compileRes.error) {
+                  resolve(compileRes);
+                  return;
+                }
+
+                contents = compileRes.data.contents;
+              } else {
+                contents = readRes.data.contents;
+              }
+
+              writeFile(source.dest, contents).then(resolve);
+            });
+          });
+        });
+
+        Promise.allSettled(appFileWrites).then(writeRes => {
+          let isWritten = true;
+          let errorRes;
+
+          writeRes.forEach(res => {
+            if (!isWritten) {
+              return;
+            }
+
+            if (res.status === 'rejected') {
+              isWritten = false;
+              errorRes = res;
+              return;
+            }
+
+            if (res.value.error) {
+              isWritten = false;
+              errorRes = res.value;
+              return;
+            }
           });
 
-          if (htmlRes.error) {
-            resolve(htmlRes);
+          if (!isWritten) {
+            resolve({
+              error: true,
+              message: `Failed to write app files`,
+              data: {
+                trace: errorRes,
+              },
+            });
             return;
           }
 
-          const htmlDest = join(dest, 'content', 'index.html');
-          const htmlFile = htmlRes.data.contents;
-
-          writeFile(htmlDest, htmlFile).then(resolve);
+          resolve({
+            error: false,
+            data: {
+              sources,
+              data,
+            },
+          });
         });
       });
     } catch (e) {
@@ -374,7 +455,9 @@ export const pack = (project: Project.ProjectData) => {
           return;
         }
 
-        createScormEntry(source, dest).then(entryRes => {
+        const sourceData = sourceRes.data as TemplateCopyResult;
+
+        createScormEntry(source, dest, sourceData).then(entryRes => {
           if (entryRes.error) {
             resolve(entryRes);
             return;

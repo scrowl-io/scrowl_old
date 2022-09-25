@@ -2,15 +2,15 @@
 import { createElement } from 'react';
 import { createRoot } from 'react-dom';
 import { App } from 'scrowl-player';
-{{#each data.templateJs as | js |}}
-import { {{js.componentName}} } from '{{js.url}}';
+{{#each data.templates as | temp |}}
+import { {{temp.component}} } from '{{temp.js}}';
 {{/each}}
 
 const container = document.getElementById('app');
 const root = createRoot(container);
 const templateList = {
-  {{#each data.templateJs as | js |}}
-  {{js.componentName}}: {{js.componentName}},
+  {{#each data.templates as | temp |}}
+  '{{temp.component}}': {{temp.component}},
   {{/each}}
 };
 
