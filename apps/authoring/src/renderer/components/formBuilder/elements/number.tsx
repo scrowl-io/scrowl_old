@@ -9,6 +9,7 @@ import { deepCopy } from '../utils';
 export const Number = ({ config, name, onUpdate }: FormElementProps) => {
   const data: FormBuilderCommons['formData'] = {};
   const control = deepCopy(config);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, setValue] = useState(config.value);
   const handlerUpdateValue = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = ev.currentTarget.value;
