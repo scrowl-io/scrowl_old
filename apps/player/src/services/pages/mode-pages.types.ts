@@ -1,4 +1,3 @@
-import React from 'react';
 import { TemplateList } from '../../components/app/player-app.types';
 
 export interface PageCommons {
