@@ -290,10 +290,11 @@ const createScormEntry = (
           };
         });
         const importList = {
-          react: `shim-react.js`,
+          react: `./shim-react.js`,
           'react-dom': `./shim-react-dom.js`,
           'react/jsx-runtime': `./react-jsx-runtime.development.js`,
-          'react-bootstrap': `./shim-react-bootstrap`,
+          'react-router-dom': './shim-react-router-dom.js',
+          'react-bootstrap': `./shim-react-bootstrap.js`,
           '@owlui/lib': `./owl.lib.module.js`,
           'scrowl-player': './scrowl.player.js',
         };

@@ -64,7 +64,7 @@ const sourceMap = {
     dest: './src/main/assets/workspace/scrowl.runtime.js.map', // this is the target destination of the file to be copied to
     includePaths: ['../../'], // because this is a mono-repo files may not be located at the project level, this allows the source file to be search in other locations
   },
-  'node_modules/@scrowl/player/dist': {
+  'node_modules/@scrowl/player/lib': {
     dest: './src/main/assets/workspace',
     includePaths: ['../../'],
     options: {
@@ -92,8 +92,16 @@ const sourceMap = {
     dest: './src/main/assets/workspace/react.production.min.js',
     includePaths: ['../../'],
   },
+  'node_modules/react/umd/react.production.min.js.map': {
+    dest: './src/main/assets/workspace/react.production.min.js.map',
+    includePaths: ['../../'],
+  },
   'node_modules/react-dom/umd/react-dom.production.min.js': {
     dest: './src/main/assets/workspace/react-dom.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-dom/umd/react-dom.production.min.js.map': {
+    dest: './src/main/assets/workspace/react-dom.production.min.js.map',
     includePaths: ['../../'],
   },
   'node_modules/react/cjs/react-jsx-runtime.development.js': {
@@ -103,8 +111,36 @@ const sourceMap = {
       return reactToES(contents);
     },
   },
+  'node_modules/history/umd/history.production.min.js': {
+    dest: './src/main/assets/workspace/history.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/history/umd/history.production.min.js.map': {
+    dest: './src/main/assets/workspace/history.production.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router/umd/react-router.production.min.js': {
+    dest: './src/main/assets/workspace/react-router.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router/umd/react-router.production.min.js.map': {
+    dest: './src/main/assets/workspace/react-router.production.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router-dom/umd/react-router-dom.production.min.js': {
+    dest: './src/main/assets/workspace/react-router-dom.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router-dom/umd/react-router-dom.production.min.js.map': {
+    dest: './src/main/assets/workspace/react-router-dom.production.min.js.map',
+    includePaths: ['../../'],
+  },
   'node_modules/react-bootstrap/dist/react-bootstrap.min.js': {
     dest: './src/main/assets/workspace/react-bootstrap.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-bootstrap/dist/react-bootstrap.min.js.map': {
+    dest: './src/main/assets/workspace/react-bootstrap.min.js.map',
     includePaths: ['../../'],
   },
   'node_modules/@owlui/lib/dist': {

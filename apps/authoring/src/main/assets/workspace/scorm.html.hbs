@@ -13,6 +13,9 @@
   {{/each}}
   <script type="text/javascript" src="./react.production.min.js"></script>
   <script type="text/javascript" src="./react-dom.production.min.js"></script>
+  <script type="text/javascript" src="./history.production.min.js"></script>
+  <script type="text/javascript" src="./react-router.production.min.js"></script>
+  <script type="text/javascript" src="./react-router-dom.production.min.js"></script>
   <script type="text/javascript" src="./react-bootstrap.min.js"></script>
   <script type="importmap">
     {
@@ -22,7 +25,7 @@
   <script type="text/javascript">
     window.__SCROWL_MANIFEST = {{{data.manifest}}}
   </script>
-  <script type="module" src="{{data.scormJs}}"></script>
+  <script type="module" src="./index.js"></script>
 </head>
 <body>
   <div id="app"></div>

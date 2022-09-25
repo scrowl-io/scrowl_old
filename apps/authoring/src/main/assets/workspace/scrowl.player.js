@@ -1,16 +1,13 @@
-require("./scrowl.player.css");
-var $c5RZX$reactjsxruntime = require("react/jsx-runtime");
-var $c5RZX$react = require("react");
-var $c5RZX$reactrouterdom = require("react-router-dom");
-var $c5RZX$owluilib = require("@owlui/lib");
-var $c5RZX$reactbootstrap = require("react-bootstrap");
-
+import {jsx as $bvorl$jsx, jsxs as $bvorl$jsxs, Fragment as $bvorl$Fragment} from "react/jsx-runtime";
+import {useState as $bvorl$useState} from "react";
+import {HashRouter as $bvorl$HashRouter, Routes as $bvorl$Routes, Route as $bvorl$Route, Navigate as $bvorl$Navigate} from "react-router-dom";
+import {Tabs as $bvorl$Tabs, Button as $bvorl$Button, Icon as $bvorl$Icon} from "@owlui/lib";
+import {Collapse as $bvorl$Collapse} from "react-bootstrap";
 function $parcel$exportWildcard(dest, source) {
   Object.keys(source).forEach(function(key) {
     if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) {
       return;
     }
-
     Object.defineProperty(dest, key, {
       enumerable: true,
       get: function get() {
@@ -18,7 +15,6 @@ function $parcel$exportWildcard(dest, source) {
       }
     });
   });
-
   return dest;
 }
 function $parcel$defineInteropFlag(a) {
@@ -27,35 +23,24 @@ function $parcel$defineInteropFlag(a) {
 function $parcel$export(e, n, v, s) {
   Object.defineProperty(e, n, {get: v, set: s, enumerable: true, configurable: true});
 }
-var $c67a19b186f1582a$exports = {};
-var $7fbf2bc6c6c20081$exports = {};
-
-$parcel$defineInteropFlag($7fbf2bc6c6c20081$exports);
-
-$parcel$export($7fbf2bc6c6c20081$exports, "App", () => $7fbf2bc6c6c20081$export$86fbec116b87613f);
-$parcel$export($7fbf2bc6c6c20081$exports, "default", () => $7fbf2bc6c6c20081$export$2e2bcd8739ae039);
-
-
-
-var $31a7195d5fab3e13$export$729c8b7179294ba;
-var $31a7195d5fab3e13$export$21813e8ba15b8006;
-var $31a7195d5fab3e13$export$f6cadf447928a533;
-$31a7195d5fab3e13$export$729c8b7179294ba = "app";
-$31a7195d5fab3e13$export$21813e8ba15b8006 = "app-main";
-$31a7195d5fab3e13$export$f6cadf447928a533 = "app-main";
-
-
-var $3ae11dbdad4aeba4$exports = {};
-var $12585369b146a620$exports = {};
-
-
-var $d24388e2d67487a6$exports = {};
-
-$parcel$defineInteropFlag($d24388e2d67487a6$exports);
-
-$parcel$export($d24388e2d67487a6$exports, "get", () => $d24388e2d67487a6$export$3988ae62b71be9a3);
-$parcel$export($d24388e2d67487a6$exports, "default", () => $d24388e2d67487a6$export$2e2bcd8739ae039);
-const $d24388e2d67487a6$export$3988ae62b71be9a3 = ()=>{
+var $59d51f57c7b47aca$exports = {};
+var $97d50e48d778806e$exports = {};
+$parcel$defineInteropFlag($97d50e48d778806e$exports);
+$parcel$export($97d50e48d778806e$exports, "App", () => $97d50e48d778806e$export$86fbec116b87613f);
+$parcel$export($97d50e48d778806e$exports, "default", () => $97d50e48d778806e$export$2e2bcd8739ae039);
+var $3d2763135302bec6$export$729c8b7179294ba;
+var $3d2763135302bec6$export$21813e8ba15b8006;
+var $3d2763135302bec6$export$f6cadf447928a533;
+$3d2763135302bec6$export$729c8b7179294ba = "app";
+$3d2763135302bec6$export$21813e8ba15b8006 = "app-main";
+$3d2763135302bec6$export$f6cadf447928a533 = "app-main";
+var $d642e97d04049949$exports = {};
+var $a8e8791141945996$exports = {};
+var $5865319cfd80dd9d$exports = {};
+$parcel$defineInteropFlag($5865319cfd80dd9d$exports);
+$parcel$export($5865319cfd80dd9d$exports, "get", () => $5865319cfd80dd9d$export$3988ae62b71be9a3);
+$parcel$export($5865319cfd80dd9d$exports, "default", () => $5865319cfd80dd9d$export$2e2bcd8739ae039);
+const $5865319cfd80dd9d$export$3988ae62b71be9a3 = ()=>{
     if (!window.__SCROWL_MANIFEST) return {
         error: true,
         message: 'Unable to find project manifest'
@@ -65,53 +50,35 @@ const $d24388e2d67487a6$export$3988ae62b71be9a3 = ()=>{
         data: window.__SCROWL_MANIFEST
     };
 };
-var $d24388e2d67487a6$export$2e2bcd8739ae039 = {
-    get: $d24388e2d67487a6$export$3988ae62b71be9a3
+var $5865319cfd80dd9d$export$2e2bcd8739ae039 = {
+    get: $5865319cfd80dd9d$export$3988ae62b71be9a3
 };
-
-
-$parcel$exportWildcard($3ae11dbdad4aeba4$exports, $12585369b146a620$exports);
-$parcel$exportWildcard($3ae11dbdad4aeba4$exports, $d24388e2d67487a6$exports);
-
-
-
-
-var $157004a5da0b1090$exports = {};
-var $25277333c3fbbb04$exports = {};
-
-$parcel$defineInteropFlag($25277333c3fbbb04$exports);
-
-$parcel$export($25277333c3fbbb04$exports, "hasProp", () => $25277333c3fbbb04$export$dd642ef726dcde21);
-$parcel$export($25277333c3fbbb04$exports, "deepCopy", () => $25277333c3fbbb04$export$6c40052bed430212);
-$parcel$export($25277333c3fbbb04$exports, "default", () => $25277333c3fbbb04$export$2e2bcd8739ae039);
-const $25277333c3fbbb04$export$dd642ef726dcde21 = (obj, prop)=>{
+$parcel$exportWildcard($d642e97d04049949$exports, $a8e8791141945996$exports);
+$parcel$exportWildcard($d642e97d04049949$exports, $5865319cfd80dd9d$exports);
+var $cec4a3db39924dc6$exports = {};
+var $c48e9052882e731f$exports = {};
+$parcel$defineInteropFlag($c48e9052882e731f$exports);
+$parcel$export($c48e9052882e731f$exports, "hasProp", () => $c48e9052882e731f$export$dd642ef726dcde21);
+$parcel$export($c48e9052882e731f$exports, "deepCopy", () => $c48e9052882e731f$export$6c40052bed430212);
+$parcel$export($c48e9052882e731f$exports, "default", () => $c48e9052882e731f$export$2e2bcd8739ae039);
+const $c48e9052882e731f$export$dd642ef726dcde21 = (obj, prop)=>{
     return Object.prototype.hasOwnProperty.call(obj, prop);
 };
-const $25277333c3fbbb04$export$6c40052bed430212 = (obj)=>{
+const $c48e9052882e731f$export$6c40052bed430212 = (obj)=>{
     return JSON.parse(JSON.stringify(obj));
 };
-var $25277333c3fbbb04$export$2e2bcd8739ae039 = {
-    hasProp: $25277333c3fbbb04$export$dd642ef726dcde21,
-    deepCopy: $25277333c3fbbb04$export$6c40052bed430212
+var $c48e9052882e731f$export$2e2bcd8739ae039 = {
+    hasProp: $c48e9052882e731f$export$dd642ef726dcde21,
+    deepCopy: $c48e9052882e731f$export$6c40052bed430212
 };
-
-
-$parcel$exportWildcard($157004a5da0b1090$exports, $25277333c3fbbb04$exports);
-
-
-var $ac57c60e5e8d706c$exports = {};
-var $6b0827ead5f0e19b$exports = {};
-
-
-var $38d44dc55b7fadbf$exports = {};
-
-$parcel$defineInteropFlag($38d44dc55b7fadbf$exports);
-
-$parcel$export($38d44dc55b7fadbf$exports, "getPages", () => $38d44dc55b7fadbf$export$f4348e32a399a3d5);
-$parcel$export($38d44dc55b7fadbf$exports, "default", () => $38d44dc55b7fadbf$export$2e2bcd8739ae039);
-
-
-const $38d44dc55b7fadbf$export$f4348e32a399a3d5 = (project)=>{
+$parcel$exportWildcard($cec4a3db39924dc6$exports, $c48e9052882e731f$exports);
+var $a0d8f6ad4094a27b$exports = {};
+var $22ad27703ade1c8b$exports = {};
+var $cff7a0b2de5f1fe0$exports = {};
+$parcel$defineInteropFlag($cff7a0b2de5f1fe0$exports);
+$parcel$export($cff7a0b2de5f1fe0$exports, "getPages", () => $cff7a0b2de5f1fe0$export$f4348e32a399a3d5);
+$parcel$export($cff7a0b2de5f1fe0$exports, "default", () => $cff7a0b2de5f1fe0$export$2e2bcd8739ae039);
+const $cff7a0b2de5f1fe0$export$f4348e32a399a3d5 = (project)=>{
     if (!project.modules) return {
         error: true,
         message: 'manifest has no modules'
@@ -127,10 +94,25 @@ const $38d44dc55b7fadbf$export$f4348e32a399a3d5 = (project)=>{
                 id: lIdx,
                 name: lesson.name,
                 url: `/module-${mIdx}--lesson-${lIdx}`,
-                Element: ()=>{
-                    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("div", {
-                        children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("h1", {
-                            children: lesson.name
+                Element: ({ templateList: templateList  })=>{
+                    return /*#__PURE__*/ $bvorl$jsx("div", {
+                        children: /*#__PURE__*/ $bvorl$jsxs($bvorl$Fragment, {
+                            children: [
+                                /*#__PURE__*/ $bvorl$jsx("h1", {
+                                    children: lesson.name
+                                }),
+                                lesson.slides.map((slide)=>{
+                                    let Template;
+                                    if (!slide.template) return;
+                                    const manifest = slide.template?.elements;
+                                    if (!manifest) return;
+                                    if (templateList && templateList[slide.template.meta.component]) Template = templateList[slide.template.meta.component];
+                                    if (!Template) return;
+                                    return /*#__PURE__*/ $bvorl$jsx(Template, {
+                                        manifest: manifest
+                                    });
+                                })
+                            ]
                         })
                     });
                 }
@@ -142,147 +124,113 @@ const $38d44dc55b7fadbf$export$f4348e32a399a3d5 = (project)=>{
         data: data
     };
 };
-var $38d44dc55b7fadbf$export$2e2bcd8739ae039 = {
-    getPages: $38d44dc55b7fadbf$export$f4348e32a399a3d5
+var $cff7a0b2de5f1fe0$export$2e2bcd8739ae039 = {
+    getPages: $cff7a0b2de5f1fe0$export$f4348e32a399a3d5
 };
-
-
-$parcel$exportWildcard($ac57c60e5e8d706c$exports, $6b0827ead5f0e19b$exports);
-$parcel$exportWildcard($ac57c60e5e8d706c$exports, $38d44dc55b7fadbf$exports);
-
-
-
-
-
-
-
-
-const $b453328758bf1810$export$3565eb3d00ca5a74 = ({ config: config  })=>{
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsxs($c5RZX$reactrouterdom.Routes, {
+$parcel$exportWildcard($a0d8f6ad4094a27b$exports, $22ad27703ade1c8b$exports);
+$parcel$exportWildcard($a0d8f6ad4094a27b$exports, $cff7a0b2de5f1fe0$exports);
+const $a911700ead652be9$export$3565eb3d00ca5a74 = ({ config: config , templateList: templateList  })=>{
+    return /*#__PURE__*/ $bvorl$jsxs($bvorl$Routes, {
         children: [
             config.map((page, idx)=>{
-                return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$reactrouterdom.Route, {
+                return /*#__PURE__*/ $bvorl$jsx($bvorl$Route, {
                     path: `${page.url}`,
-                    element: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx(page.Element, {})
+                    element: /*#__PURE__*/ $bvorl$jsx(page.Element, {
+                        templateList: templateList
+                    })
                 }, idx);
             }),
-            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$reactrouterdom.Route, {
+            /*#__PURE__*/ $bvorl$jsx($bvorl$Route, {
                 path: "*",
-                element: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$reactrouterdom.Navigate, {
+                element: /*#__PURE__*/ $bvorl$jsx($bvorl$Navigate, {
                     to: config[0].url
                 })
             })
         ]
     });
 };
-var $b453328758bf1810$export$2e2bcd8739ae039 = {
-    Routes: $b453328758bf1810$export$3565eb3d00ca5a74
+var $a911700ead652be9$export$2e2bcd8739ae039 = {
+    Routes: $a911700ead652be9$export$3565eb3d00ca5a74
 };
-
-
-
-
-const $7fbf2bc6c6c20081$export$86fbec116b87613f = ()=>{
+const $97d50e48d778806e$export$86fbec116b87613f = ({ templateList: templateList  })=>{
     const runtime = window.__SCROWL_RUNTIME;
     if (runtime) {
         const startRes = runtime.start();
         if (startRes.error) // root.render(<Error msg={startRes.message} />);
         console.error(`starting error: ${startRes.message}`);
     }
-    const manifestRes = $3ae11dbdad4aeba4$exports.get();
-    if (manifestRes.error) return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($e6b798ebc8cce9cc$export$edf27be85e5f6da0, {
+    const manifestRes = $d642e97d04049949$exports.get();
+    if (manifestRes.error) return /*#__PURE__*/ $bvorl$jsx($467d66ed0bb94ad0$export$edf27be85e5f6da0, {
         msg: manifestRes.message
     });
-    if (!manifestRes.data) return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($e6b798ebc8cce9cc$export$edf27be85e5f6da0, {
+    if (!manifestRes.data) return /*#__PURE__*/ $bvorl$jsx($467d66ed0bb94ad0$export$edf27be85e5f6da0, {
         msg: "Manifest does not have data"
     });
     let manifest = manifestRes.data;
     if (typeof manifest === 'string') manifest = JSON.parse(manifest);
-    const pageRes = $ac57c60e5e8d706c$exports.getPages(manifest);
-    if (pageRes.error) return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($e6b798ebc8cce9cc$export$edf27be85e5f6da0, {
+    const pageRes = $a0d8f6ad4094a27b$exports.getPages(manifest);
+    if (pageRes.error) return /*#__PURE__*/ $bvorl$jsx($467d66ed0bb94ad0$export$edf27be85e5f6da0, {
         msg: pageRes.message
     });
-    if (!pageRes.data || !pageRes.data.length) return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($e6b798ebc8cce9cc$export$edf27be85e5f6da0, {
+    if (!pageRes.data || !pageRes.data.length) return /*#__PURE__*/ $bvorl$jsx($467d66ed0bb94ad0$export$edf27be85e5f6da0, {
         msg: "Project has no pages"
     });
     const pageConfig = pageRes.data;
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$reactrouterdom.HashRouter, {
-        children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsxs("div", {
-            className: $31a7195d5fab3e13$export$729c8b7179294ba,
+    return /*#__PURE__*/ $bvorl$jsx($bvorl$HashRouter, {
+        children: /*#__PURE__*/ $bvorl$jsxs("div", {
+            className: $3d2763135302bec6$export$729c8b7179294ba,
             children: [
-                /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($2b59d89ef66bc0a3$export$5beeae30d1389e5, {
+                /*#__PURE__*/ $bvorl$jsx($1911174de1b1157d$export$5beeae30d1389e5, {
                     config: pageConfig
                 }),
-                /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("main", {
-                    className: $31a7195d5fab3e13$export$f6cadf447928a533,
-                    children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($b453328758bf1810$export$3565eb3d00ca5a74, {
-                        config: pageConfig
+                /*#__PURE__*/ $bvorl$jsx("main", {
+                    className: $3d2763135302bec6$export$f6cadf447928a533,
+                    children: /*#__PURE__*/ $bvorl$jsx($a911700ead652be9$export$3565eb3d00ca5a74, {
+                        config: pageConfig,
+                        templateList: templateList
                     })
                 })
             ]
         })
     });
 };
-var $7fbf2bc6c6c20081$export$2e2bcd8739ae039 = {
-    App: $7fbf2bc6c6c20081$export$86fbec116b87613f
+var $97d50e48d778806e$export$2e2bcd8739ae039 = {
+    App: $97d50e48d778806e$export$86fbec116b87613f
 };
-
-
-$parcel$exportWildcard($c67a19b186f1582a$exports, $7fbf2bc6c6c20081$exports);
-
-
-var $a9ee52bad7ecc66a$exports = {};
-var $7d5b0edef906e8ad$exports = {};
-
-
-var $e6b798ebc8cce9cc$exports = {};
-
-$parcel$defineInteropFlag($e6b798ebc8cce9cc$exports);
-
-$parcel$export($e6b798ebc8cce9cc$exports, "Error", () => $e6b798ebc8cce9cc$export$edf27be85e5f6da0);
-$parcel$export($e6b798ebc8cce9cc$exports, "default", () => $e6b798ebc8cce9cc$export$2e2bcd8739ae039);
-
-
-const $e6b798ebc8cce9cc$export$edf27be85e5f6da0 = (props)=>{
+$parcel$exportWildcard($59d51f57c7b47aca$exports, $97d50e48d778806e$exports);
+var $7fce73e32daa5714$exports = {};
+var $e8fe94342501cd8c$exports = {};
+var $467d66ed0bb94ad0$exports = {};
+$parcel$defineInteropFlag($467d66ed0bb94ad0$exports);
+$parcel$export($467d66ed0bb94ad0$exports, "Error", () => $467d66ed0bb94ad0$export$edf27be85e5f6da0);
+$parcel$export($467d66ed0bb94ad0$exports, "default", () => $467d66ed0bb94ad0$export$2e2bcd8739ae039);
+const $467d66ed0bb94ad0$export$edf27be85e5f6da0 = (props)=>{
     const { msg: msg  } = props;
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsxs("div", {
+    return /*#__PURE__*/ $bvorl$jsxs("div", {
         children: [
-            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("h1", {
+            /*#__PURE__*/ $bvorl$jsx("h1", {
                 children: "Error"
             }),
-            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("p", {
+            /*#__PURE__*/ $bvorl$jsx("p", {
                 children: msg
             })
         ]
     });
 };
-var $e6b798ebc8cce9cc$export$2e2bcd8739ae039 = {
-    Error: $e6b798ebc8cce9cc$export$edf27be85e5f6da0
+var $467d66ed0bb94ad0$export$2e2bcd8739ae039 = {
+    Error: $467d66ed0bb94ad0$export$edf27be85e5f6da0
 };
-
-
-$parcel$exportWildcard($a9ee52bad7ecc66a$exports, $7d5b0edef906e8ad$exports);
-$parcel$exportWildcard($a9ee52bad7ecc66a$exports, $e6b798ebc8cce9cc$exports);
-
-
-var $499ac68a7f786f27$exports = {};
-var $14761769d08fb2b0$exports = {};
-
-
-var $906f9f84353bcce2$exports = {};
-
-$parcel$defineInteropFlag($906f9f84353bcce2$exports);
-
-$parcel$export($906f9f84353bcce2$exports, "Slide", () => $906f9f84353bcce2$export$d8dc01b5c85a37b9);
-$parcel$export($906f9f84353bcce2$exports, "default", () => $906f9f84353bcce2$export$2e2bcd8739ae039);
-
-
-var $4a639da7743220cc$export$c1742949d0193489;
-$4a639da7743220cc$export$c1742949d0193489 = "slide";
-
-
-
-const $906f9f84353bcce2$var$aspectRatios = {
+$parcel$exportWildcard($7fce73e32daa5714$exports, $e8fe94342501cd8c$exports);
+$parcel$exportWildcard($7fce73e32daa5714$exports, $467d66ed0bb94ad0$exports);
+var $2ca7e2894c164a4b$exports = {};
+var $e7d61bcf0a3dfa45$exports = {};
+var $7da050e5dc1a885d$exports = {};
+$parcel$defineInteropFlag($7da050e5dc1a885d$exports);
+$parcel$export($7da050e5dc1a885d$exports, "Slide", () => $7da050e5dc1a885d$export$d8dc01b5c85a37b9);
+$parcel$export($7da050e5dc1a885d$exports, "default", () => $7da050e5dc1a885d$export$2e2bcd8739ae039);
+var $70882c1f95c290bb$export$c1742949d0193489;
+$70882c1f95c290bb$export$c1742949d0193489 = "slide";
+const $7da050e5dc1a885d$var$aspectRatios = {
     '4:3': {
         label: 'Standard 4:3',
         width: 1920,
@@ -299,123 +247,100 @@ const $906f9f84353bcce2$var$aspectRatios = {
         height: 1200
     }
 };
-const $906f9f84353bcce2$export$d8dc01b5c85a37b9 = ({ children: children , className: className , options: options , style: style  })=>{
-    const cssClasses = className ? `${$4a639da7743220cc$export$c1742949d0193489} ${className}` : `${$4a639da7743220cc$export$c1742949d0193489}`;
-    const ratio = options.aspect && $157004a5da0b1090$exports.hasProp($906f9f84353bcce2$var$aspectRatios, options.aspect) ? options.aspect : '16:9';
-    const aspect = $906f9f84353bcce2$var$aspectRatios[ratio];
-    const slideStyle = Object.assign(style ? $157004a5da0b1090$exports.deepCopy(style) : {}, {
+const $7da050e5dc1a885d$export$d8dc01b5c85a37b9 = ({ children: children , className: className , options: options , style: style  })=>{
+    const cssClasses = className ? `${$70882c1f95c290bb$export$c1742949d0193489} ${className}` : `${$70882c1f95c290bb$export$c1742949d0193489}`;
+    const ratio = options.aspect && $cec4a3db39924dc6$exports.hasProp($7da050e5dc1a885d$var$aspectRatios, options.aspect) ? options.aspect : '16:9';
+    const aspect = $7da050e5dc1a885d$var$aspectRatios[ratio];
+    const slideStyle = Object.assign(style ? $cec4a3db39924dc6$exports.deepCopy(style) : {}, {
         width: `${aspect.width}px`,
         height: `${aspect.height}px`
     });
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("div", {
+    return /*#__PURE__*/ $bvorl$jsx("div", {
         className: cssClasses,
         style: slideStyle,
         children: children
     });
 };
-var $906f9f84353bcce2$export$2e2bcd8739ae039 = {
-    Slide: $906f9f84353bcce2$export$d8dc01b5c85a37b9
+var $7da050e5dc1a885d$export$2e2bcd8739ae039 = {
+    Slide: $7da050e5dc1a885d$export$d8dc01b5c85a37b9
 };
-
-
-$parcel$exportWildcard($499ac68a7f786f27$exports, $14761769d08fb2b0$exports);
-$parcel$exportWildcard($499ac68a7f786f27$exports, $906f9f84353bcce2$exports);
-
-
-var $1d513fd46b8b7e22$exports = {};
-var $b0533871ba2d88bd$exports = {};
-
-
-var $2b59d89ef66bc0a3$exports = {};
-
-$parcel$defineInteropFlag($2b59d89ef66bc0a3$exports);
-
-$parcel$export($2b59d89ef66bc0a3$exports, "Outline", () => $2b59d89ef66bc0a3$export$5beeae30d1389e5);
-$parcel$export($2b59d89ef66bc0a3$exports, "default", () => $2b59d89ef66bc0a3$export$2e2bcd8739ae039);
-
-
-
-
-
-
-
-var $a3f9805fb22ca6dd$export$80e4b313e5e6b30d;
-var $a3f9805fb22ca6dd$export$f91427ed400cf646;
-var $a3f9805fb22ca6dd$export$fc36764bd7bec3e8;
-var $a3f9805fb22ca6dd$export$da9553d3db930185;
-var $a3f9805fb22ca6dd$export$ff0c8eecf5de586a;
-var $a3f9805fb22ca6dd$export$ee30335ba9608a;
-var $a3f9805fb22ca6dd$export$373590c234222a27;
-var $a3f9805fb22ca6dd$export$a68361e11c0e26bb;
-var $a3f9805fb22ca6dd$export$11d56bc7f356c3ab;
-var $a3f9805fb22ca6dd$export$d8ec543b124f99bb;
-var $a3f9805fb22ca6dd$export$be374168c717555a;
-var $a3f9805fb22ca6dd$export$5ffa98f5e39b7953;
-var $a3f9805fb22ca6dd$export$40d884b4bc2443e0;
-var $a3f9805fb22ca6dd$export$3a64aac218809531;
-var $a3f9805fb22ca6dd$export$e12a7e60645f3512;
-var $a3f9805fb22ca6dd$export$9397b961b963c0ef;
-var $a3f9805fb22ca6dd$export$e70cf296a07db7a6;
-var $a3f9805fb22ca6dd$export$45ca8ffe23059ad9;
-var $a3f9805fb22ca6dd$export$864ed75129e052b4;
-var $a3f9805fb22ca6dd$export$ba0e3d50b55e781f;
-var $a3f9805fb22ca6dd$export$fa3754856145d548;
-var $a3f9805fb22ca6dd$export$7fe1c01b339ef5cd;
-var $a3f9805fb22ca6dd$export$e61aa1e86c2900d6;
-$a3f9805fb22ca6dd$export$80e4b313e5e6b30d = "nav";
-$a3f9805fb22ca6dd$export$f91427ed400cf646 = "tree-view__header";
-$a3f9805fb22ca6dd$export$fc36764bd7bec3e8 = "tree-view__header";
-$a3f9805fb22ca6dd$export$da9553d3db930185 = "owlui-dropdown-toggle";
-$a3f9805fb22ca6dd$export$ff0c8eecf5de586a = "owlui-dropdown-toggle";
-$a3f9805fb22ca6dd$export$ee30335ba9608a = "tree-view__item";
-$a3f9805fb22ca6dd$export$373590c234222a27 = "tree-view__item";
-$a3f9805fb22ca6dd$export$a68361e11c0e26bb = "module-icons";
-$a3f9805fb22ca6dd$export$11d56bc7f356c3ab = "module-icons";
-$a3f9805fb22ca6dd$export$d8ec543b124f99bb = "lesson-icons";
-$a3f9805fb22ca6dd$export$be374168c717555a = "lesson-icons";
-$a3f9805fb22ca6dd$export$5ffa98f5e39b7953 = "tree-view__item__icon--handle";
-$a3f9805fb22ca6dd$export$40d884b4bc2443e0 = "tree-view__item__icon--handle";
-$a3f9805fb22ca6dd$export$3a64aac218809531 = "tree-view__item__icon";
-$a3f9805fb22ca6dd$export$e12a7e60645f3512 = "tree-view__item__icon";
-$a3f9805fb22ca6dd$export$9397b961b963c0ef = "tree-view__item__icon--detail";
-$a3f9805fb22ca6dd$export$e70cf296a07db7a6 = "tree-view__item__icon--detail";
-$a3f9805fb22ca6dd$export$45ca8ffe23059ad9 = "tree-view__item__label";
-$a3f9805fb22ca6dd$export$864ed75129e052b4 = "tree-view__item__label";
-$a3f9805fb22ca6dd$export$ba0e3d50b55e781f = "tree-view--module";
-$a3f9805fb22ca6dd$export$fa3754856145d548 = "tree-view--module";
-$a3f9805fb22ca6dd$export$7fe1c01b339ef5cd = "tree-view--lesson";
-$a3f9805fb22ca6dd$export$e61aa1e86c2900d6 = "tree-view--lesson";
-
-
-
-
-
-
-
-
-const $e74be0595a06d795$export$8ac254ae510b04b0 = ({ config: config , idx: idx  })=>{
-    const [open, setOpen] = $c5RZX$react.useState(true);
+$parcel$exportWildcard($2ca7e2894c164a4b$exports, $e7d61bcf0a3dfa45$exports);
+$parcel$exportWildcard($2ca7e2894c164a4b$exports, $7da050e5dc1a885d$exports);
+var $d037cec02cd49167$exports = {};
+var $c49ceda919745082$exports = {};
+var $1911174de1b1157d$exports = {};
+$parcel$defineInteropFlag($1911174de1b1157d$exports);
+$parcel$export($1911174de1b1157d$exports, "Outline", () => $1911174de1b1157d$export$5beeae30d1389e5);
+$parcel$export($1911174de1b1157d$exports, "default", () => $1911174de1b1157d$export$2e2bcd8739ae039);
+var $1550644884f0c301$export$80e4b313e5e6b30d;
+var $1550644884f0c301$export$f91427ed400cf646;
+var $1550644884f0c301$export$fc36764bd7bec3e8;
+var $1550644884f0c301$export$da9553d3db930185;
+var $1550644884f0c301$export$ff0c8eecf5de586a;
+var $1550644884f0c301$export$ee30335ba9608a;
+var $1550644884f0c301$export$373590c234222a27;
+var $1550644884f0c301$export$a68361e11c0e26bb;
+var $1550644884f0c301$export$11d56bc7f356c3ab;
+var $1550644884f0c301$export$d8ec543b124f99bb;
+var $1550644884f0c301$export$be374168c717555a;
+var $1550644884f0c301$export$5ffa98f5e39b7953;
+var $1550644884f0c301$export$40d884b4bc2443e0;
+var $1550644884f0c301$export$3a64aac218809531;
+var $1550644884f0c301$export$e12a7e60645f3512;
+var $1550644884f0c301$export$9397b961b963c0ef;
+var $1550644884f0c301$export$e70cf296a07db7a6;
+var $1550644884f0c301$export$45ca8ffe23059ad9;
+var $1550644884f0c301$export$864ed75129e052b4;
+var $1550644884f0c301$export$ba0e3d50b55e781f;
+var $1550644884f0c301$export$fa3754856145d548;
+var $1550644884f0c301$export$7fe1c01b339ef5cd;
+var $1550644884f0c301$export$e61aa1e86c2900d6;
+$1550644884f0c301$export$80e4b313e5e6b30d = "nav";
+$1550644884f0c301$export$f91427ed400cf646 = "tree-view__header";
+$1550644884f0c301$export$fc36764bd7bec3e8 = "tree-view__header";
+$1550644884f0c301$export$da9553d3db930185 = "owlui-dropdown-toggle";
+$1550644884f0c301$export$ff0c8eecf5de586a = "owlui-dropdown-toggle";
+$1550644884f0c301$export$ee30335ba9608a = "tree-view__item";
+$1550644884f0c301$export$373590c234222a27 = "tree-view__item";
+$1550644884f0c301$export$a68361e11c0e26bb = "module-icons";
+$1550644884f0c301$export$11d56bc7f356c3ab = "module-icons";
+$1550644884f0c301$export$d8ec543b124f99bb = "lesson-icons";
+$1550644884f0c301$export$be374168c717555a = "lesson-icons";
+$1550644884f0c301$export$5ffa98f5e39b7953 = "tree-view__item__icon--handle";
+$1550644884f0c301$export$40d884b4bc2443e0 = "tree-view__item__icon--handle";
+$1550644884f0c301$export$3a64aac218809531 = "tree-view__item__icon";
+$1550644884f0c301$export$e12a7e60645f3512 = "tree-view__item__icon";
+$1550644884f0c301$export$9397b961b963c0ef = "tree-view__item__icon--detail";
+$1550644884f0c301$export$e70cf296a07db7a6 = "tree-view__item__icon--detail";
+$1550644884f0c301$export$45ca8ffe23059ad9 = "tree-view__item__label";
+$1550644884f0c301$export$864ed75129e052b4 = "tree-view__item__label";
+$1550644884f0c301$export$ba0e3d50b55e781f = "tree-view--module";
+$1550644884f0c301$export$fa3754856145d548 = "tree-view--module";
+$1550644884f0c301$export$7fe1c01b339ef5cd = "tree-view--lesson";
+$1550644884f0c301$export$e61aa1e86c2900d6 = "tree-view--lesson";
+const $a514e2e9f4953fa4$export$8ac254ae510b04b0 = ({ config: config , idx: idx  })=>{
+    const [open, setOpen] = $bvorl$useState(true);
     const itemId = `tree-item-module-${idx}-item`;
     const menuId = `tree-item-module-${idx}-menu`;
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsxs("div", {
-        className: $a3f9805fb22ca6dd$export$fa3754856145d548,
+    return /*#__PURE__*/ $bvorl$jsxs("div", {
+        className: $1550644884f0c301$export$fa3754856145d548,
         children: [
-            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("div", {
-                className: $a3f9805fb22ca6dd$export$fc36764bd7bec3e8,
-                children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$owluilib.Button, {
+            /*#__PURE__*/ $bvorl$jsx("div", {
+                className: $1550644884f0c301$export$fc36764bd7bec3e8,
+                children: /*#__PURE__*/ $bvorl$jsx($bvorl$Button, {
                     id: itemId,
                     "aria-expanded": open,
                     "aria-controls": menuId,
-                    className: $a3f9805fb22ca6dd$export$373590c234222a27,
+                    className: $1550644884f0c301$export$373590c234222a27,
                     onClick: ()=>setOpen(!open)
                     ,
                     variant: "link",
-                    children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsxs("div", {
+                    children: /*#__PURE__*/ $bvorl$jsxs("div", {
                         className: "module-icons",
                         children: [
-                            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("span", {
-                                className: $a3f9805fb22ca6dd$export$40d884b4bc2443e0,
-                                children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$owluilib.Icon, {
+                            /*#__PURE__*/ $bvorl$jsx("span", {
+                                className: $1550644884f0c301$export$40d884b4bc2443e0,
+                                children: /*#__PURE__*/ $bvorl$jsx($bvorl$Icon, {
                                     icon: "arrow_drop_down",
                                     display: "outlined",
                                     filled: true,
@@ -424,28 +349,28 @@ const $e74be0595a06d795$export$8ac254ae510b04b0 = ({ config: config , idx: idx  
                                     }
                                 })
                             }),
-                            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("span", {
-                                className: $a3f9805fb22ca6dd$export$e70cf296a07db7a6,
-                                children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$owluilib.Icon, {
+                            /*#__PURE__*/ $bvorl$jsx("span", {
+                                className: $1550644884f0c301$export$e70cf296a07db7a6,
+                                children: /*#__PURE__*/ $bvorl$jsx($bvorl$Icon, {
                                     icon: "folder",
                                     display: "outlined",
                                     filled: open
                                 })
                             }),
-                            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("span", {
-                                className: $a3f9805fb22ca6dd$export$864ed75129e052b4,
+                            /*#__PURE__*/ $bvorl$jsx("span", {
+                                className: $1550644884f0c301$export$864ed75129e052b4,
                                 children: config.name
                             })
                         ]
                     })
                 })
             }),
-            /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$reactbootstrap.Collapse, {
+            /*#__PURE__*/ $bvorl$jsx($bvorl$Collapse, {
                 in: open,
-                children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("div", {
+                children: /*#__PURE__*/ $bvorl$jsx("div", {
                     className: "nav flex-column",
                     id: menuId,
-                    children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($d412debe65f8235b$export$ce4f5213804e8d1e, {
+                    children: /*#__PURE__*/ $bvorl$jsx($8bc095cab0b4398e$export$ce4f5213804e8d1e, {
                         config: config.lessons,
                         moduleIdx: idx
                     })
@@ -454,31 +379,25 @@ const $e74be0595a06d795$export$8ac254ae510b04b0 = ({ config: config , idx: idx  
         ]
     }, idx);
 };
-var $e74be0595a06d795$export$2e2bcd8739ae039 = {
-    NavModule: $e74be0595a06d795$export$8ac254ae510b04b0
+var $a514e2e9f4953fa4$export$2e2bcd8739ae039 = {
+    NavModule: $a514e2e9f4953fa4$export$8ac254ae510b04b0
 };
-
-
-
-
-
-
-const $d412debe65f8235b$export$2607965bc6070427 = ({ config: config , idx: idx  })=>{
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("div", {
-        className: $a3f9805fb22ca6dd$export$e61aa1e86c2900d6,
-        children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsxs("div", {
-            className: $a3f9805fb22ca6dd$export$fc36764bd7bec3e8,
+const $8bc095cab0b4398e$export$2607965bc6070427 = ({ config: config , idx: idx  })=>{
+    return /*#__PURE__*/ $bvorl$jsx("div", {
+        className: $1550644884f0c301$export$e61aa1e86c2900d6,
+        children: /*#__PURE__*/ $bvorl$jsxs("div", {
+            className: $1550644884f0c301$export$fc36764bd7bec3e8,
             children: [
-                /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("span", {
-                    className: $a3f9805fb22ca6dd$export$e70cf296a07db7a6,
-                    children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$owluilib.Icon, {
+                /*#__PURE__*/ $bvorl$jsx("span", {
+                    className: $1550644884f0c301$export$e70cf296a07db7a6,
+                    children: /*#__PURE__*/ $bvorl$jsx($bvorl$Icon, {
                         icon: "interests",
                         display: "outlined"
                     })
                 }),
-                /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("span", {
-                    className: $a3f9805fb22ca6dd$export$864ed75129e052b4,
-                    children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("a", {
+                /*#__PURE__*/ $bvorl$jsx("span", {
+                    className: $1550644884f0c301$export$864ed75129e052b4,
+                    children: /*#__PURE__*/ $bvorl$jsx("a", {
                         href: `#${config.url}`,
                         children: config.name
                     })
@@ -487,10 +406,10 @@ const $d412debe65f8235b$export$2607965bc6070427 = ({ config: config , idx: idx  
         })
     }, idx);
 };
-const $d412debe65f8235b$export$ce4f5213804e8d1e = ({ config: config , moduleIdx: moduleIdx  })=>{
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$reactjsxruntime.Fragment, {
+const $8bc095cab0b4398e$export$ce4f5213804e8d1e = ({ config: config , moduleIdx: moduleIdx  })=>{
+    return /*#__PURE__*/ $bvorl$jsx($bvorl$Fragment, {
         children: config.map((lesson, idx)=>{
-            return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($d412debe65f8235b$export$2607965bc6070427, {
+            return /*#__PURE__*/ $bvorl$jsx($8bc095cab0b4398e$export$2607965bc6070427, {
                 moduleIdx: moduleIdx,
                 idx: idx,
                 config: lesson
@@ -498,37 +417,27 @@ const $d412debe65f8235b$export$ce4f5213804e8d1e = ({ config: config , moduleIdx:
         })
     });
 };
-var $d412debe65f8235b$export$2e2bcd8739ae039 = {
-    NavLessons: $d412debe65f8235b$export$ce4f5213804e8d1e
+var $8bc095cab0b4398e$export$2e2bcd8739ae039 = {
+    NavLessons: $8bc095cab0b4398e$export$ce4f5213804e8d1e
 };
-
-
-
-
-const $9d63cbcdfe995d27$export$9fb93abafa4ff69b = ({ config: config  })=>{
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("div", {
-        className: $a3f9805fb22ca6dd$export$80e4b313e5e6b30d,
+const $bccef95645a1a7fb$export$9fb93abafa4ff69b = ({ config: config  })=>{
+    return /*#__PURE__*/ $bvorl$jsx("div", {
+        className: $1550644884f0c301$export$80e4b313e5e6b30d,
         children: config.map((def, mIdx)=>{
-            return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($e74be0595a06d795$export$8ac254ae510b04b0, {
+            return /*#__PURE__*/ $bvorl$jsx($a514e2e9f4953fa4$export$8ac254ae510b04b0, {
                 idx: mIdx,
                 config: def
             }, mIdx);
         })
     });
 };
-var $9d63cbcdfe995d27$export$2e2bcd8739ae039 = {
-    TabNav: $9d63cbcdfe995d27$export$9fb93abafa4ff69b
+var $bccef95645a1a7fb$export$2e2bcd8739ae039 = {
+    TabNav: $bccef95645a1a7fb$export$9fb93abafa4ff69b
 };
-
-
-
-
-
-
-const $2b59d89ef66bc0a3$var$toModuleFormat = (config)=>{
+const $1911174de1b1157d$var$toModuleFormat = (config)=>{
     const dict = {};
     config.forEach((def)=>{
-        if (!$157004a5da0b1090$exports.hasProp(dict, def.moduleName)) dict[def.moduleName] = [];
+        if (!$cec4a3db39924dc6$exports.hasProp(dict, def.moduleName)) dict[def.moduleName] = [];
         dict[def.moduleName].push(def);
     });
     return Object.keys(dict).map((name)=>{
@@ -538,108 +447,86 @@ const $2b59d89ef66bc0a3$var$toModuleFormat = (config)=>{
         };
     });
 };
-const $2b59d89ef66bc0a3$export$5beeae30d1389e5 = ({ config: config  })=>{
-    const fConfig = $2b59d89ef66bc0a3$var$toModuleFormat(config);
+const $1911174de1b1157d$export$5beeae30d1389e5 = ({ config: config  })=>{
+    const fConfig = $1911174de1b1157d$var$toModuleFormat(config);
     const tabItems = [
         {
             id: '1',
             title: 'Outline',
-            view: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($9d63cbcdfe995d27$export$9fb93abafa4ff69b, {
+            view: /*#__PURE__*/ $bvorl$jsx($bccef95645a1a7fb$export$9fb93abafa4ff69b, {
                 config: fConfig
             })
         }, 
     ];
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($80d36a326df24276$export$fd2e1a4921eb839b, {
-        children: /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx($c5RZX$owluilib.Tabs, {
+    return /*#__PURE__*/ $bvorl$jsx($3d4a40b33ce1b2c0$export$fd2e1a4921eb839b, {
+        children: /*#__PURE__*/ $bvorl$jsx($bvorl$Tabs, {
             items: tabItems,
             pxScale: "Sm"
         })
     });
 };
-var $2b59d89ef66bc0a3$export$2e2bcd8739ae039 = {
-    Outline: $2b59d89ef66bc0a3$export$5beeae30d1389e5
+var $1911174de1b1157d$export$2e2bcd8739ae039 = {
+    Outline: $1911174de1b1157d$export$5beeae30d1389e5
 };
-
-
-$parcel$exportWildcard($1d513fd46b8b7e22$exports, $b0533871ba2d88bd$exports);
-$parcel$exportWildcard($1d513fd46b8b7e22$exports, $2b59d89ef66bc0a3$exports);
-
-
-var $ce3244dd721153b7$exports = {};
-var $d9c1bc43b1ed66bf$exports = {};
-
-
-var $80d36a326df24276$exports = {};
-
-$parcel$defineInteropFlag($80d36a326df24276$exports);
-
-$parcel$export($80d36a326df24276$exports, "Pane", () => $80d36a326df24276$export$fd2e1a4921eb839b);
-$parcel$export($80d36a326df24276$exports, "default", () => $80d36a326df24276$export$2e2bcd8739ae039);
-
-
-var $7686f2da335c8a33$export$f243eef9be5f65fb;
-var $7686f2da335c8a33$export$718f7791aa978d39;
-var $7686f2da335c8a33$export$b2c3c93d3bc013e6;
-var $7686f2da335c8a33$export$6e5bb584860ae26e;
-var $7686f2da335c8a33$export$45c3922f2c33b499;
-var $7686f2da335c8a33$export$b64547cc1e24b050;
-var $7686f2da335c8a33$export$f4fbc5dab7e9c2fe;
-var $7686f2da335c8a33$export$e4f3210edf200c06;
-var $7686f2da335c8a33$export$6b0dde39a13c1375;
-var $7686f2da335c8a33$export$7861f4f95f7f8ffd;
-var $7686f2da335c8a33$export$15e0660759c7d368;
-var $7686f2da335c8a33$export$12167b8286af4779;
-var $7686f2da335c8a33$export$1a18d209072e2b36;
-var $7686f2da335c8a33$export$aef7cc01204227fd;
-var $7686f2da335c8a33$export$6dff30574f79a202;
-var $7686f2da335c8a33$export$7f506c70190d2dd3;
-var $7686f2da335c8a33$export$610665bf6d31ae2;
-var $7686f2da335c8a33$export$49448bd48caf99b3;
-var $7686f2da335c8a33$export$7582047f07f09982;
-$7686f2da335c8a33$export$f243eef9be5f65fb = "pane--left";
-$7686f2da335c8a33$export$718f7791aa978d39 = "pane--left";
-$7686f2da335c8a33$export$b2c3c93d3bc013e6 = "pane--left__header";
-$7686f2da335c8a33$export$6e5bb584860ae26e = "pane--left__header";
-$7686f2da335c8a33$export$45c3922f2c33b499 = "pane--left__content";
-$7686f2da335c8a33$export$b64547cc1e24b050 = "pane--left__content";
-$7686f2da335c8a33$export$f4fbc5dab7e9c2fe = "pane--right";
-$7686f2da335c8a33$export$e4f3210edf200c06 = "pane--right";
-$7686f2da335c8a33$export$6b0dde39a13c1375 = "pane--right__header";
-$7686f2da335c8a33$export$7861f4f95f7f8ffd = "pane--right__header";
-$7686f2da335c8a33$export$15e0660759c7d368 = "pane--right__content";
-$7686f2da335c8a33$export$12167b8286af4779 = "pane--right__content";
-$7686f2da335c8a33$export$1a18d209072e2b36 = "pane__heading";
-$7686f2da335c8a33$export$aef7cc01204227fd = "pane__heading";
-$7686f2da335c8a33$export$6dff30574f79a202 = "pane";
-$7686f2da335c8a33$export$7f506c70190d2dd3 = "owlui-nav-tabs";
-$7686f2da335c8a33$export$610665bf6d31ae2 = "owlui-nav-tabs";
-$7686f2da335c8a33$export$49448bd48caf99b3 = "owlui-tab-pane";
-$7686f2da335c8a33$export$7582047f07f09982 = "owlui-tab-pane";
-
-
-const $80d36a326df24276$export$fd2e1a4921eb839b = ({ children: children , className: className , side: side  })=>{
-    let paneStyles = `${$7686f2da335c8a33$export$6dff30574f79a202}`;
+$parcel$exportWildcard($d037cec02cd49167$exports, $c49ceda919745082$exports);
+$parcel$exportWildcard($d037cec02cd49167$exports, $1911174de1b1157d$exports);
+var $dbb9e39c35dca45e$exports = {};
+var $0395c30720e61dc9$exports = {};
+var $3d4a40b33ce1b2c0$exports = {};
+$parcel$defineInteropFlag($3d4a40b33ce1b2c0$exports);
+$parcel$export($3d4a40b33ce1b2c0$exports, "Pane", () => $3d4a40b33ce1b2c0$export$fd2e1a4921eb839b);
+$parcel$export($3d4a40b33ce1b2c0$exports, "default", () => $3d4a40b33ce1b2c0$export$2e2bcd8739ae039);
+var $0785a38256fd80f2$export$f243eef9be5f65fb;
+var $0785a38256fd80f2$export$718f7791aa978d39;
+var $0785a38256fd80f2$export$b2c3c93d3bc013e6;
+var $0785a38256fd80f2$export$6e5bb584860ae26e;
+var $0785a38256fd80f2$export$45c3922f2c33b499;
+var $0785a38256fd80f2$export$b64547cc1e24b050;
+var $0785a38256fd80f2$export$f4fbc5dab7e9c2fe;
+var $0785a38256fd80f2$export$e4f3210edf200c06;
+var $0785a38256fd80f2$export$6b0dde39a13c1375;
+var $0785a38256fd80f2$export$7861f4f95f7f8ffd;
+var $0785a38256fd80f2$export$15e0660759c7d368;
+var $0785a38256fd80f2$export$12167b8286af4779;
+var $0785a38256fd80f2$export$1a18d209072e2b36;
+var $0785a38256fd80f2$export$aef7cc01204227fd;
+var $0785a38256fd80f2$export$6dff30574f79a202;
+var $0785a38256fd80f2$export$7f506c70190d2dd3;
+var $0785a38256fd80f2$export$610665bf6d31ae2;
+var $0785a38256fd80f2$export$49448bd48caf99b3;
+var $0785a38256fd80f2$export$7582047f07f09982;
+$0785a38256fd80f2$export$f243eef9be5f65fb = "pane--left";
+$0785a38256fd80f2$export$718f7791aa978d39 = "pane--left";
+$0785a38256fd80f2$export$b2c3c93d3bc013e6 = "pane--left__header";
+$0785a38256fd80f2$export$6e5bb584860ae26e = "pane--left__header";
+$0785a38256fd80f2$export$45c3922f2c33b499 = "pane--left__content";
+$0785a38256fd80f2$export$b64547cc1e24b050 = "pane--left__content";
+$0785a38256fd80f2$export$f4fbc5dab7e9c2fe = "pane--right";
+$0785a38256fd80f2$export$e4f3210edf200c06 = "pane--right";
+$0785a38256fd80f2$export$6b0dde39a13c1375 = "pane--right__header";
+$0785a38256fd80f2$export$7861f4f95f7f8ffd = "pane--right__header";
+$0785a38256fd80f2$export$15e0660759c7d368 = "pane--right__content";
+$0785a38256fd80f2$export$12167b8286af4779 = "pane--right__content";
+$0785a38256fd80f2$export$1a18d209072e2b36 = "pane__heading";
+$0785a38256fd80f2$export$aef7cc01204227fd = "pane__heading";
+$0785a38256fd80f2$export$6dff30574f79a202 = "pane";
+$0785a38256fd80f2$export$7f506c70190d2dd3 = "owlui-nav-tabs";
+$0785a38256fd80f2$export$610665bf6d31ae2 = "owlui-nav-tabs";
+$0785a38256fd80f2$export$49448bd48caf99b3 = "owlui-tab-pane";
+$0785a38256fd80f2$export$7582047f07f09982 = "owlui-tab-pane";
+const $3d4a40b33ce1b2c0$export$fd2e1a4921eb839b = ({ children: children , className: className , side: side  })=>{
+    let paneStyles = `${$0785a38256fd80f2$export$6dff30574f79a202}`;
     if (className) paneStyles += className;
-    paneStyles += ` ${$7686f2da335c8a33$export$718f7791aa978d39}`;
-    return /*#__PURE__*/ $c5RZX$reactjsxruntime.jsx("div", {
+    paneStyles += ` ${$0785a38256fd80f2$export$718f7791aa978d39}`;
+    return /*#__PURE__*/ $bvorl$jsx("div", {
         className: paneStyles,
         children: children
     });
 };
-var $80d36a326df24276$export$2e2bcd8739ae039 = {
-    Pane: $80d36a326df24276$export$fd2e1a4921eb839b
+var $3d4a40b33ce1b2c0$export$2e2bcd8739ae039 = {
+    Pane: $3d4a40b33ce1b2c0$export$fd2e1a4921eb839b
 };
-
-
-$parcel$exportWildcard($ce3244dd721153b7$exports, $d9c1bc43b1ed66bf$exports);
-$parcel$exportWildcard($ce3244dd721153b7$exports, $80d36a326df24276$exports);
-
-
-$parcel$exportWildcard(module.exports, $c67a19b186f1582a$exports);
-$parcel$exportWildcard(module.exports, $a9ee52bad7ecc66a$exports);
-$parcel$exportWildcard(module.exports, $499ac68a7f786f27$exports);
-$parcel$exportWildcard(module.exports, $1d513fd46b8b7e22$exports);
-$parcel$exportWildcard(module.exports, $ce3244dd721153b7$exports);
-
-
+$parcel$exportWildcard($dbb9e39c35dca45e$exports, $0395c30720e61dc9$exports);
+$parcel$exportWildcard($dbb9e39c35dca45e$exports, $3d4a40b33ce1b2c0$exports);
+export {$97d50e48d778806e$export$86fbec116b87613f as App, $467d66ed0bb94ad0$export$edf27be85e5f6da0 as Error, $7da050e5dc1a885d$export$d8dc01b5c85a37b9 as Slide, $1911174de1b1157d$export$5beeae30d1389e5 as Outline, $3d4a40b33ce1b2c0$export$fd2e1a4921eb839b as Pane};
 //# sourceMappingURL=scrowl.player.js.map
