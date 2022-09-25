@@ -1,0 +1,21 @@
+@use 'sass:selector';
+@import '@owlui/lib/src/theme/global/tokens';
+
+
+.owlui-modal-body {
+  display: flex;
+  justify-content: space-evenly;
+
+  &--item {
+      border: none;
+      background: none;
+      box-shadow: var(--owl-box-shadow);
+      padding: 0;
+    
+    &:hover{
+      transform: translate(-2px, -2px);
+      box-shadow: var(--owl-box-shadow-active);
+      transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+    }
+  }
+}
