@@ -1,10 +1,19 @@
+import React from 'react';
+import { TemplateList } from '../../components/app/player-app.types';
+
+export interface PageCommons {
+  templateList?: TemplateList;
+}
+
+export type PageProps = PageCommons;
+
 export interface PageDefinition {
   moduleId: number;
   moduleName: string;
   id: number;
   name: string;
   url: string;
-  Element: () => JSX.Element;
+  Element: (props: PageProps) => JSX.Element;
 }
 
 export interface GetResultSuccess {
@@ -18,3 +27,35 @@ export interface GetResultError {
 }
 
 export type GetResult = GetResultSuccess | GetResultError;
+
+export type TemplateManifestElementText = {
+  value: string;
+  type: 'text';
+  label: string;
+};
+
+export type TemplateManifestElementTextarea = {
+  value: string;
+  type: 'textarea';
+  label: string;
+};
+
+export type TemplateManifestElementNumber = {
+  value: number;
+  type: 'number';
+  label: string;
+};
+
+export type TemplateManifestElements = {
+  [key: string]:
+    | TemplateManifestElementText
+    | TemplateManifestElementNumber
+    | TemplateManifestElementTextarea;
+};
+export interface TemplateCommons {
+  manifest: TemplateManifestElements;
+}
+
+export type TemplateProps = TemplateCommons;
+
+export type TemplateElement = (props: TemplateProps) => JSX.Element;

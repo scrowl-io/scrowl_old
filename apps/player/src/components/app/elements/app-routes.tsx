@@ -1,19 +1,17 @@
 import React from 'react';
 import { Routes as DomRoutes, Route, Navigate } from 'react-router-dom';
-import { Pages } from '../../../services';
+import { AppRoutesProps } from '../player-app.types';
 
-export interface AppRoutesCommons {
-  config: Array<Pages.PageDefinition>;
-}
-
-export type AppRoutesProps = AppRoutesCommons;
-
-export const Routes = ({ config }: AppRoutesProps) => {
+export const Routes = ({ config, templateList }: AppRoutesProps) => {
   return (
     <DomRoutes>
       {config.map((page, idx: number) => {
         return (
-          <Route key={idx} path={`${page.url}`} element={<page.Element />} />
+          <Route
+            key={idx}
+            path={`${page.url}`}
+            element={<page.Element templateList={templateList} />}
+          />
         );
       })}
       <Route path="*" element={<Navigate to={config[0].url} />} />

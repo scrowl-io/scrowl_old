@@ -1,12 +1,13 @@
 import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 import * as styles from './player-app.module.scss';
+import { AppProps } from './player-app.types';
 import { Manifest } from '../../models';
 import { Pages } from '../../services';
 import { Error, Outline } from '../';
 import { Routes } from './elements';
 
-export const App = () => {
+export const App = ({ templateList }: AppProps) => {
   const runtime = window.__SCROWL_RUNTIME;
 
   if (runtime) {
@@ -51,7 +52,7 @@ export const App = () => {
       <div className={styles.app}>
         <Outline config={pageConfig} />
         <main className={styles.appMain}>
-          <Routes config={pageConfig} />
+          <Routes config={pageConfig} templateList={templateList} />
         </main>
       </div>
     </Router>

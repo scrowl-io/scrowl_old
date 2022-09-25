@@ -1,5 +1,10 @@
 import React from 'react';
-import { PageDefinition, GetResult } from './mode-pages.types';
+import {
+  PageDefinition,
+  GetResult,
+  PageProps,
+  TemplateElement,
+} from './mode-pages.types';
 import { Manifest } from '../../models';
 
 export const getPages = (project: Manifest.ProjectData): GetResult => {
@@ -28,10 +33,40 @@ export const getPages = (project: Manifest.ProjectData): GetResult => {
         id: lIdx,
         name: lesson.name,
         url: `/module-${mIdx}--lesson-${lIdx}`,
-        Element: () => {
+        Element: ({ templateList }: PageProps) => {
           return (
             <div>
-              <h1>{lesson.name}</h1>
+              <>
+                <h1>{lesson.name}</h1>
+                {lesson.slides.map(slide => {
+                  let Template;
+
+                  if (!slide.template) {
+                    return;
+                  }
+
+                  const manifest = slide.template?.elements;
+
+                  if (!manifest) {
+                    return;
+                  }
+
+                  if (
+                    templateList &&
+                    templateList[slide.template.meta.component]
+                  ) {
+                    Template = templateList[
+                      slide.template.meta.component
+                    ] as TemplateElement;
+                  }
+
+                  if (!Template) {
+                    return;
+                  }
+
+                  return <Template manifest={manifest} />;
+                })}
+              </>
             </div>
           );
         },
