@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Listgroup, Icon, DrawerProps, Button, Drawer } from '@owlui/lib';
+// eslint-disable-next-line import/named
+import { ListGroup, Icon, Button, Drawer, DrawerProps } from '@owlui/lib';
 import * as styles from '../editor-pane-details.module.scss';
 import { Projects } from '../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../components';
@@ -101,7 +102,7 @@ export const TabResources = () => {
 
   return (
     <div className={tabStyles}>
-      <Listgroup items={list} />
+      <ListGroup items={list} />
       <AddResourceButton />
     </div>
   );

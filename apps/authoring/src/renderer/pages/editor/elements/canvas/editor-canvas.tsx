@@ -10,9 +10,11 @@ export const Canvas = () => {
   const activeSlide = useActiveSlide();
   const editSlideRef = useCurrentlyLoadedSlide();
   const [canvasUrl, setCanvasUrl] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [slideOpts, setSlideOpts] = useState<SlideCommons>({
     aspect: '16:9',
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [slideStyle, setSlideStyle] = useState({
     transform: 'translate(-50%, -50%) scale(.33)',
   });

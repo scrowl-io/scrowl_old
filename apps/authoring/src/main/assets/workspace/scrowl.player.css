@@ -1,0 +1,210 @@
+.app {
+  height: 100vh;
+  max-height: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+.app-main {
+  max-height: 100vh;
+  width: 100%;
+  z-index: 1;
+  overflow-y: auto;
+}
+
+.slide {
+  background-color: #fff;
+  border: 1px solid #cacaca;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  overflow-y: auto;
+  transform: translate(-50%, -50%)scale(.562);
+  box-shadow: 0 0 12px #dadada;
+}
+
+.nav {
+  z-index: 10;
+  margin-top: calc(var(--owl-sidebar-spacing) / 2);
+}
+
+.tree-view__header {
+  padding-right: calc(var(--owl-sidebar-spacing) / 2);
+  color: var(--owl-sidebar-color);
+  flex-wrap: nowrap;
+  padding-bottom: .25em;
+  display: flex;
+}
+
+.tree-view__header:hover .owlui-dropdown-toggle, .tree-view__header:focus .owlui-dropdown-toggle {
+  opacity: 1;
+}
+
+.tree-view__header .owlui-dropdown-toggle {
+  top: .3em;
+}
+
+.tree-view__header:hover {
+  background-color: var(--owl-sidebar-hover-bg);
+}
+
+.tree-view__item {
+  color: inherit;
+  line-height: 1.4;
+  font-size: var(--owl-font-size-sm);
+  text-align: left;
+  flex-grow: 1;
+  margin: 0;
+  padding: 3px 8px 7.92px 21px;
+  text-decoration: none;
+  display: flex;
+}
+
+.tree-view__item .module-icons, .tree-view__item .lesson-icons {
+  display: flex;
+}
+
+.tree-view__item:focus {
+  color: currentColor;
+  text-decoration: none;
+}
+
+.tree-view__item:focus-visible {
+  border: 1px solid var(--bs-link-color);
+}
+
+.tree-view__item[aria-expanded="true"] .tree-view__item__icon--handle {
+  transform: rotate(360deg);
+}
+
+.tree-view__item[aria-expanded="true"] .module-icons > span > span {
+  color: var(--owl-color-module);
+}
+
+.tree-view__item[aria-expanded="true"] .lesson-icons > span > span {
+  color: var(--owl-color-lesson);
+}
+
+.tree-view__item__icon {
+  color: var(--owl-color-default);
+}
+
+.tree-view__item__icon--handle {
+  width: auto;
+  height: auto;
+  color: var(--bs-gray-600);
+  align-self: baseline;
+  margin: 4px 0 0;
+  font-size: 24px;
+  transition: transform .1s linear;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(270deg);
+}
+
+.tree-view__item__icon--detail {
+  margin-right: .5em;
+  font-size: .9rem;
+  line-height: 1rem;
+  position: relative;
+  top: .2rem;
+}
+
+.tree-view__item:hover {
+  color: currentColor;
+  text-decoration: underline;
+}
+
+.tree-view__item__label {
+  color: inherit;
+  line-height: 1rem;
+  font-size: var(--owl-font-size-sm);
+  position: relative;
+  top: .25rem;
+}
+
+.tree-view--module, .tree-view--lesson {
+  line-height: var(--osg-line-height-sm);
+  position: relative;
+}
+
+.tree-view--module .nav, .tree-view--lesson .nav {
+  flex-wrap: nowrap;
+  margin: 0 0 .25rem .75rem;
+}
+
+.tree-view--module .nav {
+  box-shadow: -2px 0 0 0 var(--owl-color-module);
+}
+
+.tree-view--lesson .nav {
+  box-shadow: -2px 0 0 0 var(--owl-color-lesson);
+}
+
+.pane--left {
+  min-width: 16rem;
+  width: 19rem;
+  color: var(--owl-sidebar-color);
+  border-right: var(--owl-border-width) var(--owl-border-color) solid;
+  background: var(--owl-sidebar-bg);
+  flex-flow: column;
+  flex-shrink: 0;
+  display: flex;
+  position: relative;
+}
+
+.pane--left__header {
+  flex: 0 auto;
+  margin-top: .5rem;
+}
+
+.pane--left__content {
+  flex: auto;
+  padding-bottom: 1rem;
+  overflow-y: auto;
+}
+
+.pane--right {
+  min-width: 16rem;
+  width: 19rem;
+  color: var(--owl-sidebar-color);
+  border-left: var(--owl-border-width) var(--owl-border-color) solid;
+  background: var(--owl-sidebar-bg);
+  flex-flow: column;
+  flex-shrink: 0;
+  display: flex;
+  position: relative;
+}
+
+.pane--right__header {
+  flex: 0 auto;
+  margin-top: .5rem;
+}
+
+.pane--right__content {
+  flex: auto;
+  padding-bottom: 1rem;
+  overflow-y: auto;
+}
+
+.pane__heading {
+  font-weight: var(--owl-typeface-label-weight);
+  letter-spacing: var(--owl-typeface-label-letterspacing);
+  text-transform: var(--owl-typeface-label-texttransform);
+  color: var(--owl-typeface-label-color);
+  margin: calc(var(--owl-sidebar-spacing) / 2) calc(var(--owl-sidebar-spacing) / 2) calc(var(--owl-sidebar-spacing) / 2) var(--owl-sidebar-spacing);
+  -webkit-user-select: none;
+  user-select: none;
+  justify-content: space-between;
+  align-items: center;
+  font-size: .75rem;
+  line-height: 1.25;
+  display: flex;
+}
+
+.pane .owlui-nav-tabs, .pane .owlui-tab-pane {
+  font-size: .75rem;
+}
+
+/*# sourceMappingURL=scrowl.player.css.map */

@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import React from 'react';
 import { DropdownDefaultCommons, IconsDefaultProps } from '@owlui/lib';
 

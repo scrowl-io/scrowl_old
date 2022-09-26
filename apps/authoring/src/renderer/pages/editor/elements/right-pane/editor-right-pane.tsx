@@ -1,6 +1,5 @@
 import React from 'react';
 import * as styles from './editor-right-pane-details.module.scss';
-import { Tabs } from '@owlui/lib';
 import { Pane } from '../../../../components';
 import { Projects, Templates } from '../../../../models';
 import { RightPaneContentForm } from './content/right-pane-content-form';
@@ -12,6 +11,7 @@ export const RightPane = () => {
   const handleTemplateModal = () => {
     Templates.explore();
   };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const tabItems = [
     {
       id: '1',

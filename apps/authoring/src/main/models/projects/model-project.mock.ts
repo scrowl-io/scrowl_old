@@ -1,6 +1,6 @@
 import { ProjectData, ProjectSlide } from './model-projects.types';
 import { TemplateManifest } from '../templates';
-import templateManifestIntro from '../templates/assets/template-introduction/manifest.json';
+import templateManifestIntro from '../../assets/template-introduction/manifest.json';
 
 export const mockSlide = (
   name: string,
