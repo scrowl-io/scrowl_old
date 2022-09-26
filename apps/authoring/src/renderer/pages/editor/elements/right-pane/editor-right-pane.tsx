@@ -20,7 +20,7 @@ export const RightPane = () => {
       title: 'Content',
       view: (
         <div className={styles.templateOptionsContent}>
-          <RightPaneContentForm activeSlide={activeSlide} />
+          <RightPaneContentForm />
         </div>
       ),
     },
@@ -60,7 +60,7 @@ export const RightPane = () => {
         </div>
       </div>
       <div className={styles.templateOptionsContent}>
-        <RightPaneContentForm activeSlide={activeSlide} />
+        <RightPaneContentForm />
       </div>
     </Pane>
   );

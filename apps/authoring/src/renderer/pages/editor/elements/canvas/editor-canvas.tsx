@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { Projects, Templates } from '../../../../models';
+import * as styles from './editor-canvas.module.scss';
+import { Templates, Projects } from '../../../../models';
 import {
-  updateEditSlideRef,
-  useEditSlideRef,
   useActiveSlide,
   updateActiveSlide,
+  useActiveSlidePosition,
+  useEditSlideRef,
 } from '../../page-editor-hooks';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
-import { Icon, Button } from '@owlui/lib';
-
-import * as styles from './editor-canvas.module.scss';
-import {
-  ProjectLesson,
-  ProjectSlide,
-} from '../../../../../main/models/projects';
-import { deepCopy } from '../right-pane/content/utils';
+import { Header } from './elements';
+import { deepCopy } from '../pane-details/elements';
 
 export const Canvas = () => {
-  const activeSlide = useActiveSlide();
-  const editSlideRef = useEditSlideRef();
+  const [isMounted, setMounted] = useState(false);
+  const project = Projects.useData();
+  const modules = deepCopy(project.modules);
+  const activeSlide: Projects.ProjectSlide = useActiveSlide();
+  const position = useActiveSlidePosition();
+  const [refPosition, setRefPosition] = useState(position);
+  const slideRef: Projects.ProjectSlide = useEditSlideRef();
   const [canvasUrl, setCanvasUrl] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [slideOpts, setSlideOpts] = useState<SlideCommons>({
@@ -28,33 +28,44 @@ export const Canvas = () => {
   const [slideStyle, setSlideStyle] = useState({
     transform: 'translate(-50%, -50%) scale(.33)',
   });
-  const [slideName, setSlideName] = useState(
-    activeSlide.name ? activeSlide.name : ''
-  );
-  const project = Projects.useData();
-  const modules = deepCopy(project.modules);
 
   useEffect(() => {
-    if (!activeSlide || !activeSlide.template || !activeSlide.template.meta) {
+    if (
+      !activeSlide ||
+      !activeSlide.template ||
+      !activeSlide.template.meta ||
+      !slideRef ||
+      !slideRef.template ||
+      !slideRef.template.meta
+    ) {
       return;
     }
 
-    setSlideName(activeSlide.name);
+    const getSlideInfo = (slide: Projects.ProjectSlide) => {
+      const copy = deepCopy(slide);
 
-    if (editSlideRef === activeSlide) {
-      const targetframe = document.getElementById(
-        'template-iframe'
-      ) as HTMLIFrameElement;
+      delete copy.template;
+      return copy;
+    };
 
-      targetframe?.contentWindow?.postMessage(
-        { updateManifest: activeSlide.template },
-        '*'
-      );
+    const templateChanged =
+      slideRef.template.meta.filename !== activeSlide.template.meta.filename;
+    const templateUpdated =
+      slideRef.template.elements !== activeSlide.template.elements;
+    const slideChanged = position !== refPosition;
+    const slideUpdated = getSlideInfo(slideRef) !== getSlideInfo(activeSlide);
+
+    console.log('');
+    console.log('templateChanged', templateChanged);
+    console.log('templateUpdated', templateUpdated);
+    console.log('slideChanged', slideChanged);
+    console.log('slideUpdated', slideUpdated);
+
+    if (!slideChanged && !templateChanged) {
       return;
     }
 
-    Templates.load(activeSlide.template).then(res => {
-      console.log(res);
+    Templates.load(slideRef.template).then(res => {
       if (res.error) {
         console.error(res);
         return;
@@ -62,58 +73,71 @@ export const Canvas = () => {
 
       setCanvasUrl(res.data.url);
     });
-  }, [activeSlide, editSlideRef]);
 
-  const getTargetSlide = () => {
-    const moduleID: number | undefined = activeSlide.moduleID;
-    const lessonID: number | undefined = activeSlide.lessonID;
-    const slideID: number | undefined = activeSlide.id;
+    return () => {
+      setMounted(true);
+      setRefPosition(position);
+    };
+  }, [
+    activeSlide,
+    slideRef,
+    isMounted,
+    setMounted,
+    position,
+    refPosition,
+    setRefPosition,
+  ]);
 
-    if (moduleID && lessonID) {
-      const targetLesson = modules[moduleID - 1].lessons.find(
-        (lesson: ProjectLesson) => {
-          return lesson.id === lessonID;
-        }
-      );
-
-      const targetSlide = targetLesson.slides.find((slide: ProjectSlide) => {
-        return slide.id === slideID;
-      });
-      return targetSlide;
+  const getSlideData = () => {
+    if (
+      position.moduleIdx === -1 ||
+      position.lessonIdx === -1 ||
+      position.slideIdx === -1
+    ) {
+      console.error('Active slide position not set', position);
+      return;
     }
+
+    const module = modules[position.moduleIdx];
+
+    if (!module || !module.lessons.length) {
+      console.error('Unable to find active slide module', position, modules);
+      return;
+    }
+
+    const lesson = module.lessons[position.lessonIdx];
+
+    if (!lesson || !lesson.slides.length) {
+      console.error('Unable to find active slide lesson', position, modules);
+      return;
+    }
+
+    const slide = lesson.slides[position.slideIdx];
+
+    if (!slide) {
+      console.error('Unable to find active slide', position, modules);
+      return;
+    }
+
+    return slide;
   };
 
-  const handleSlideNameChange = (ev: React.FormEvent<HTMLInputElement>) => {
-    const targetSlide = getTargetSlide();
-    const name = ev.currentTarget.value;
-    setSlideName(name);
-    targetSlide.name = name;
-
-    updateEditSlideRef(targetSlide);
-    updateActiveSlide(targetSlide);
-    Projects.update({ modules });
-  };
-
-  const renderCanvasHeader = () => {
-    return (
-      <div className={styles.slideNameContainer}>
-        <span className={styles.slideNameIcon}>
-          <Icon icon="rectangle" display="outlined" />
-        </span>
-        <input
-          name="slideName"
-          id="slideNameInput"
-          className="owlui-form-control"
-          value={slideName}
-          onChange={handleSlideNameChange}
-        />
-      </div>
-    );
+  const updateSlideTitle = (title?: string) => {
+    const payload = { name: title };
+    let slide = getSlideData();
+    if (!slide) {
+      return;
+    }
+    slide = Object.assign(slide, payload);
+    updateActiveSlide(slide, position);
+    // console.log('modules', modules);
+    // console.log('updating slide title', __isMounted.current);
+    // Projects.update({ modules });
   };
 
   return (
     <div className={styles.canvasContainer}>
-      {Object.keys(activeSlide).length > 0 ? renderCanvasHeader() : <></>}
+      <Header onUpdate={updateSlideTitle} />
       <Slide options={slideOpts} style={slideStyle}>
         <iframe
           src={canvasUrl}

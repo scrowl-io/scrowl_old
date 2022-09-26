@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { SlidePosition } from './page-editor.types';
 import { State } from '../../services';
 import * as state from './page-editor-state';
 import { Projects, Templates } from '../../models';
@@ -35,16 +36,31 @@ export const useActiveSlide = () => {
   return useSelector((state: State.RootState) => state.editor.activeSlide);
 };
 
+export const useActiveSlidePosition = () => {
+  return useSelector(
+    (state: State.RootState) => state.editor.activeSlidePosition
+  );
+};
+
 export const updateActiveSlide = (
-  slideData: Partial<Projects.ProjectSlide>
+  slideData: Partial<Projects.ProjectSlide>,
+  position: SlidePosition
 ) => {
+  processor.dispatch(state.updateEditSlideRef(slideData));
   processor.dispatch(state.updateSlide(slideData));
+  processor.dispatch(state.updateSlidePosition(position));
 };
 
 export const updateActiveSlideTemplate = (
   template: Templates.TemplateManifest
 ) => {
   processor.dispatch(state.updateActiveSlideTemplate(template));
+};
+
+export const updateEditSlideRefTemplate = (
+  template: Templates.TemplateManifest
+) => {
+  processor.dispatch(state.updateEditSlideRefTemplate(template));
 };
 
 export const useHasActiveSlide = () => {
@@ -56,7 +72,9 @@ export default {
   useEditSlideRef,
   updateEditSlideRef,
   useActiveSlide,
+  useActiveSlidePosition,
   updateActiveSlide,
   updateActiveSlideTemplate,
+  updateEditSlideRefTemplate,
   useHasActiveSlide,
 };

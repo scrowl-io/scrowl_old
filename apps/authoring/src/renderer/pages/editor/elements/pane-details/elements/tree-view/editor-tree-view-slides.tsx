@@ -128,7 +128,11 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       selectorSlideActive.classList.remove('slideActive');
     }
 
-    updateActiveSlide(tree);
+    updateActiveSlide(tree, {
+      moduleIdx,
+      lessonIdx,
+      slideIdx: idx,
+    });
     const selectorWrapper = document.getElementById(itemWrapperId);
 
     if (selectorWrapper) {
