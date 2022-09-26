@@ -1,7 +1,7 @@
 {
   "name": "@scrowl/authoring",
   "productName": "scrowl-authoring",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A tool used to create online training materials",
   "license": "MIT",
   "keywords": [],
@@ -101,8 +101,7 @@
       "package.json"
     ],
     "extraFiles": [
-      "src/main/services/publisher/project/**",
-      "src/main/models/templates/assets/**"
+      "src/main/assets/**"
     ],
     "dmg": {
       "contents": [
@@ -174,7 +173,7 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.39",
+    "@owlui/lib": "^0.0.41",
     "@reduxjs/toolkit": "^1.8.5",
     "@scrowl/player": "^0.0.1",
     "adm-zip": "^0.5.9",

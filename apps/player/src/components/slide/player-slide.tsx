@@ -1,10 +1,7 @@
 import React from 'react';
 import * as styles from './player-slide.module.scss';
 import { SlideProps, AspectRatios } from './player-slide.types';
-
-export const hasProp = (obj: object, prop: string) => {
-  return Object.prototype.hasOwnProperty.call(obj, prop);
-};
+import { utls } from '../../services';
 
 const aspectRatios: AspectRatios = {
   '4:3': {
@@ -24,20 +21,16 @@ const aspectRatios: AspectRatios = {
   },
 };
 
-const deepCopy = (obj: unknown) => {
-  return JSON.parse(JSON.stringify(obj));
-};
-
 export const Slide = ({ children, className, options, style }: SlideProps) => {
   const cssClasses = className
     ? `${styles.slide} ${className}`
     : `${styles.slide}`;
   const ratio =
-    options.aspect && hasProp(aspectRatios, options.aspect)
+    options.aspect && utls.hasProp(aspectRatios, options.aspect)
       ? options.aspect
       : '16:9';
   const aspect = aspectRatios[ratio];
-  const slideStyle = Object.assign(style ? deepCopy(style) : {}, {
+  const slideStyle = Object.assign(style ? utls.deepCopy(style) : {}, {
     width: `${aspect.width}px`,
     height: `${aspect.height}px`,
   });
