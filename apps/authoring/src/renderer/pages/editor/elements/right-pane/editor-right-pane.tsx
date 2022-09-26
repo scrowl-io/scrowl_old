@@ -40,7 +40,6 @@ export const RightPane = () => {
   return (
     <Pane>
       <button onClick={handleTemplateModal}>Select Templates</button>
-      <Tabs items={tabItems} />
       <div className={styles.templateOptionsContent}>
         <RightPaneContentForm activeSlide={activeSlide} />
       </div>
