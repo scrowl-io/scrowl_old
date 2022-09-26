@@ -46,7 +46,7 @@ export const RightPaneContentForm = ({ activeSlide }: ContentFormProps) => {
       console.error('No target slide match');
       return;
     }
-    Object.assign(targetSlide.template.elements, slideData.template?.elements);
+    Object.assign(targetSlide.template, slideData.template);
     updateActiveSlide(slideData);
     updateEditSlideRef(slideData);
     Projects.update({ modules });
