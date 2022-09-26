@@ -13,16 +13,6 @@
     .owlui-icons-sharp {
       margin-right: 0.5em;
     }
-
-    #item-number-1 {
-      .owlui-icons-sharp {
-        color: var(--bs-danger);
-      }
-
-      .owlui-icons-sharp[style] {
-        font-variation-settings: 'FILL' 1 !important;
-      }
-    }
   }
 
   .owlui-dropdown-toggle {
@@ -169,6 +159,10 @@
   font-size: 0.875rem;
   max-height: calc(100% - 66px);
   overflow-y: auto;
+
+  #glossary-menu-delete {
+    color: var(--bs-danger);
+  }
 
   &__list {
     border: 0;
@@ -345,8 +339,6 @@
   #lesson-menu-delete-lesson,
   #module-menu-delete-module {
     color: var(--bs-danger);
-
-    // color: #dc3545;
   }
 
   &__header {
