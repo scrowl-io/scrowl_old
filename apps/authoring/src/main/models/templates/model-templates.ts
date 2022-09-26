@@ -201,7 +201,15 @@ export const list = () => {
             return;
           }
 
-          templates = templates.concat(res.value.data.templates);
+          templates = templates.concat(
+            res.value.data.templates.map(
+              (record: {
+                name: string;
+                source: string;
+                manifest: TemplateManifest;
+              }) => record.manifest
+            )
+          );
         });
 
         resolve({

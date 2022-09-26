@@ -1,21 +1,110 @@
 @use 'sass:selector';
 @import '@owlui/lib/src/theme/global/tokens';
 
+.template-explorer {
+  background-color: transparent;
 
-.owlui-modal-body {
-  display: flex;
-  justify-content: space-evenly;
+  & .owlui-modal-header {
+    border-bottom-color: var(--bs-gray-500);
+  }
 
-  &--item {
+  & .owlui-modal-title.h4 {
+    margin-bottom: 0;
+    font-size: 1.25rem;
+    line-height: var(--bs-modal-title-line-height);
+  }
+
+  & .owlui-modal-body {
+    padding: 0;
+  }
+
+  &__body {
+    background: var(--owl-template-browser-bg);
+    position: relative;
+    flex: 1 1 auto;
+    padding: var(--bs-modal-padding);
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 1.5rem;
+  }
+
+  &__slide {
+    position: relative;
+    padding: 0;
+    text-align: left;
+    border: var(--owl-border-color) 1px solid;
+    border-radius: 0.25em;
+    color: var(--owl-dropdown-color);
+    background: var(--owl-template-browser-item-bg);
+    box-shadow: var(--owl-box-shadow);
+
+    &:hover,
+    &:focus,
+    &.active {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--owl-box-shadow-active);
+      transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+    }
+
+    &--active {
+      z-index: 10;
+      position: absolute;
+      top: 0.125rem;
+      right: 0.125rem;
+      color: var(--bs-success);
+    }
+
+    &.active {
+      font-weight: 600;
+      color: var(--owl-template-browser-active-color);
+      border-width: 2px;
+      border-color: var(--owl-template-browser-active-border-color);
+      background: var(--owl-template-browser-active-bg);
+    }
+
+    &__action {
       border: none;
       background: none;
       box-shadow: var(--owl-box-shadow);
       padding: 0;
-    
-    &:hover{
-      transform: translate(-2px, -2px);
-      box-shadow: var(--owl-box-shadow-active);
-      transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+      width: 100%;
+    }
+
+    &__type {
+      position: absolute;
+      top: 0;
+      left: 0;
+      text-align: center;
+      border-top-left-radius: 0.25em;
+      border-bottom-right-radius: 0.25em;
+      background: var(--owl-dropdown-bg);
+      color: var(--bs-gray-500);
+      font-size: 0.75rem;
+      padding: 0.25rem;
+    }
+
+    &__img {
+      color: #d1d5d8;
+      font-size: 5rem;
+    }
+
+    &__card {
+      &__body {
+        background: var(--owl-template-browser-bg);
+      }
+
+      &__footer {
+        & label {
+          pointer-events: none;
+          font-size: 0.75rem;
+          line-height: 1.2;
+          display: block;
+          text-align: left;
+        }
+      }
     }
   }
 }

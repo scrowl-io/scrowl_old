@@ -1,17 +1,58 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, Icon } from '@owlui/lib';
+import { Card, CardBody, CardFooter, Icon } from '@owlui/lib';
 import { Templates } from '../../../../../../models';
 import * as styles from '../editor-modal-template-explorer.module.scss';
-import { updateActiveSlide } from '../../../../page-editor-hooks';
+import {
+  useActiveSlide,
+  useHasActiveSlide,
+} from '../../../../page-editor-hooks';
+
+export interface TemplateListItem extends Templates.TemplateManifest {
+  isSelected?: boolean;
+}
 
 export const Body = () => {
+  const hasActiveSlide = useHasActiveSlide();
+  const activeSlide = useActiveSlide();
   const [isInit, setInit] = useState(false);
-  const [templateList, setTemplateList] = useState([]);
+  const [list, setList] = useState<Array<TemplateListItem>>([]);
+
+  const handleSlideSelection = (template: TemplateListItem) => {
+    const listCopy = list.map((item: TemplateListItem) => {
+      item.isSelected = false;
+
+      if (item.meta.name === template.meta.name) {
+        item.isSelected = true;
+      }
+
+      return item;
+    });
+
+    setList(listCopy);
+    console.log('selected template', template);
+  };
 
   useEffect(() => {
     if (isInit) {
       return;
     }
+
+    const updateList = (templates: Array<TemplateListItem>) => {
+      const markSelectedTemplate = () => {
+        for (let i = 0, ii = templates.length; i < ii; i++) {
+          if (templates[i].meta.name === activeSlide.template.meta.name) {
+            templates[i].isSelected = true;
+            break;
+          }
+        }
+      };
+
+      if (hasActiveSlide) {
+        markSelectedTemplate();
+      }
+
+      setList(templates);
+    };
 
     Templates.list().then(results => {
       if (results.error) {
@@ -19,44 +60,61 @@ export const Body = () => {
         return;
       }
 
-      setTemplateList(results.data.templates);
+      updateList(results.data.templates);
       setInit(true);
     });
   }, [isInit]);
 
   return (
-    <div className={styles.scrowlTemplateBrowser}>
+    <div className={styles.templateExplorerBody}>
       {!isInit ? (
         <div>Loading...</div>
       ) : (
-        templateList.map(
-          (
-            item: { name: string; manifest: Templates.TemplateManifest },
-            idx: number
-          ) => {
-            console.log('manifest item', item);
+        <div className={styles.templateExplorerList}>
+          {list.map((item: TemplateListItem, idx: number) => {
             return (
-              <button
-                onClick={() => updateActiveSlide(item)}
-                className={styles.scrowlTemplateBrowserItem}
+              <div
+                className={`${styles.templateExplorerSlide}${
+                  item.isSelected ? ' active' : ''
+                }`}
                 key={idx}
               >
-                <Card style={{ width: '100%' }}>
-                  <Icon display="sharp" icon="dashboard" />
-                  <div>
-                    <img
-                      src="https://eebos.github.io/scrowl_mockup/img/template_0.svg"
-                      alt="template-placeholder"
-                    />
-                  </div>
-                  <CardBody>
-                    <div>{item.manifest.meta.name}</div>
-                  </CardBody>
-                </Card>
-              </button>
+                <button
+                  id={`explorer-template-${idx}`}
+                  className={styles.templateExplorerSlideAction}
+                  onClick={() => {
+                    handleSlideSelection(item);
+                  }}
+                >
+                  {activeSlide.template.meta.name === item.meta.name ? (
+                    <span className={styles.templateExplorerSlideActive}>
+                      <Icon icon="check_circle" />
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                  <Card className={styles.templateExplorerSlideCard}>
+                    <CardBody className={styles.templateExplorerSlideCardBody}>
+                      <div className={styles.templateExplorerSlideType}>
+                        <Icon display="sharp" icon="dashboard" filled={true} />
+                      </div>
+                      <div className={styles.templateExplorerSlideImg}>
+                        <Icon display="sharp" icon="dashboard" filled={true} />
+                      </div>
+                    </CardBody>
+                    <CardFooter
+                      className={styles.templateExplorerSlideCardFooter}
+                    >
+                      <label htmlFor={`explorer-template-${idx}`}>
+                        {item.meta.name}
+                      </label>
+                    </CardFooter>
+                  </Card>
+                </button>
+              </div>
             );
-          }
-        )
+          })}
+        </div>
       )}
     </div>
   );

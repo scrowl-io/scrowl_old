@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal } from '@owlui/lib';
 import { Templates } from '../../../../../models';
 import { Body } from './elements';
+import * as styles from './editor-modal-template-explorer.module.scss';
 
 export const TemplateExplorerModal = () => {
   const show = Templates.useExplorer();
@@ -18,6 +19,7 @@ export const TemplateExplorerModal = () => {
 
   return (
     <Modal
+      className={styles.templateExplorer}
       show={show}
       onHide={Templates.closeExplorer}
       header={header}
