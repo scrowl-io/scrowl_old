@@ -236,8 +236,7 @@ export const load = (
   ev: Requester.RequestEvent,
   manifest: TemplateManifest
 ) => {
-  const templateBase = `template-${manifest.meta.name}`;
-
+  const templateBase = `template-${manifest.meta.filename}`;
   const copyTemplateComponent = () => {
     return new Promise<Requester.ApiResult>(resolve => {
       const templateFolder = fs.join(templateAssetPath, templateBase);

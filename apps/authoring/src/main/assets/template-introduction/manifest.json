@@ -5,7 +5,8 @@
   },
   "meta": {
     "name": "introduction",
-    "component": "Introduction"
+    "component": "Introduction",
+    "filename": "introduction"
   },
   "elements": {
     "title": {

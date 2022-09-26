@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { State } from '../../services';
 import * as state from './page-editor-state';
-import { Projects } from '../../models';
+import { Projects, Templates } from '../../models';
 
 const processor: State.StateProcessor = {};
 
@@ -37,8 +37,16 @@ export const useActiveSlide = () => {
   return useSelector((state: State.RootState) => state.editor.activeSlide);
 };
 
-export const updateActiveSlide = (slideData: Projects.ProjectSlide) => {
+export const updateActiveSlide = (
+  slideData: Partial<Projects.ProjectSlide>
+) => {
   processor.dispatch(state.updateSlide(slideData));
+};
+
+export const updateActiveSlideTemplate = (
+  template: Templates.TemplateManifest
+) => {
+  processor.dispatch(state.updateActiveSlideTemplate(template));
 };
 
 export const useHasActiveSlide = () => {
@@ -51,5 +59,6 @@ export default {
   updateCurrentlyLoadedSlide,
   useActiveSlide,
   updateActiveSlide,
+  updateActiveSlideTemplate,
   useHasActiveSlide,
 };

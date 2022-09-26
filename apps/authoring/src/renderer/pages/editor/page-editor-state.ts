@@ -22,6 +22,9 @@ export const config: StateConfig = {
 
       state.activeSlide = Object.assign(state.activeSlide, action.payload);
     },
+    updateActiveSlideTemplate: (state, action) => {
+      state.activeSlide.template = action.payload;
+    },
     updateEditSlideRef: (state, action) => {
       state.editSlideRef = Object.assign(state.activeSlide, action.payload);
     },
@@ -30,7 +33,12 @@ export const config: StateConfig = {
 
 export const slice = createSlice(config);
 
-export const { init, updateSlide, updateEditSlideRef } = slice.actions;
+export const {
+  init,
+  updateSlide,
+  updateEditSlideRef,
+  updateActiveSlideTemplate,
+} = slice.actions;
 
 export const reducer = slice.reducer;
 
