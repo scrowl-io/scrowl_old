@@ -13,7 +13,9 @@ export const mockSlide = (
     lessonID: lessonID,
     moduleID: moduleID,
     name: name,
-    template: templateManifestIntro as TemplateManifest,
+    template: JSON.parse(
+      JSON.stringify(templateManifestIntro)
+    ) as TemplateManifest,
   };
 };
 

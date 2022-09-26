@@ -201,7 +201,15 @@ export const list = () => {
             return;
           }
 
-          templates = templates.concat(res.value.data.templates);
+          templates = templates.concat(
+            res.value.data.templates.map(
+              (record: {
+                name: string;
+                source: string;
+                manifest: TemplateManifest;
+              }) => record.manifest
+            )
+          );
         });
 
         resolve({
@@ -228,8 +236,7 @@ export const load = (
   ev: Requester.RequestEvent,
   manifest: TemplateManifest
 ) => {
-  const templateBase = `template-${manifest.meta.name}`;
-
+  const templateBase = `template-${manifest.meta.filename}`;
   const copyTemplateComponent = () => {
     return new Promise<Requester.ApiResult>(resolve => {
       const templateFolder = fs.join(templateAssetPath, templateBase);
