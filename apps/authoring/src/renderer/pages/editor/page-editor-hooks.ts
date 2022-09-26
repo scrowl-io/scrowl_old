@@ -53,8 +53,8 @@ export const useHasActiveSlide = () => {
 
 export default {
   useInit,
-  useCurrentlyLoadedSlide,
-  updateCurrentlyLoadedSlide,
+  useEditSlideRef,
+  updateEditSlideRef,
   useActiveSlide,
   updateActiveSlide,
   updateActiveSlideTemplate,
