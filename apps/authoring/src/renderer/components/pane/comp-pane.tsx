@@ -10,6 +10,9 @@ export const Pane = ({ children, className, side }: PaneProps) => {
   }
 
   switch (side) {
+    case 'right':
+      paneStyles += ` ${styles.paneRight}`;
+      break;
     default:
       paneStyles += ` ${styles.paneLeft}`;
       break;

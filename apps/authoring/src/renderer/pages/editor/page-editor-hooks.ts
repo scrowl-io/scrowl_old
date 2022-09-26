@@ -40,3 +40,16 @@ export const useActiveSlide = () => {
 export const updateActiveSlide = (slideData: Projects.ProjectSlide) => {
   processor.dispatch(state.updateSlide(slideData));
 };
+
+export const useHasActiveSlide = () => {
+  return useSelector((state: State.RootState) => state.editor.hasActiveSlide);
+};
+
+export default {
+  useInit,
+  useCurrentlyLoadedSlide,
+  updateCurrentlyLoadedSlide,
+  useActiveSlide,
+  updateActiveSlide,
+  useHasActiveSlide,
+};
