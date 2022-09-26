@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardFooter, Icon } from '@owlui/lib';
+import {
+  TemplateExplorerBodyProps,
+  TemplateListItem,
+} from '../editor-modal-template-explorer.types';
 import { Templates } from '../../../../../../models';
 import * as styles from '../editor-modal-template-explorer.module.scss';
 import {
@@ -7,11 +11,7 @@ import {
   useHasActiveSlide,
 } from '../../../../page-editor-hooks';
 
-export interface TemplateListItem extends Templates.TemplateManifest {
-  isSelected?: boolean;
-}
-
-export const Body = () => {
+export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
   const hasActiveSlide = useHasActiveSlide();
   const activeSlide = useActiveSlide();
   const [isInit, setInit] = useState(false);
@@ -29,7 +29,7 @@ export const Body = () => {
     });
 
     setList(listCopy);
-    console.log('selected template', template);
+    onSelectTemplate(template);
   };
 
   useEffect(() => {
@@ -42,6 +42,7 @@ export const Body = () => {
         for (let i = 0, ii = templates.length; i < ii; i++) {
           if (templates[i].meta.name === activeSlide.template.meta.name) {
             templates[i].isSelected = true;
+            onSelectTemplate(templates[i]);
             break;
           }
         }
@@ -63,7 +64,7 @@ export const Body = () => {
       updateList(results.data.templates);
       setInit(true);
     });
-  }, [isInit]);
+  }, [isInit, hasActiveSlide, activeSlide, onSelectTemplate]);
 
   return (
     <div className={styles.templateExplorerBody}>

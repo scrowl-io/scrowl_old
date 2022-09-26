@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal } from '@owlui/lib';
-import { Templates } from '../../../../../models';
-import { Body } from './elements';
+import { TemplateListItem } from './editor-modal-template-explorer.types';
 import * as styles from './editor-modal-template-explorer.module.scss';
+import { Templates } from '../../../../../models';
+import { Body, Footer } from './elements';
 
 export const TemplateExplorerModal = () => {
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateListItem>();
   const show = Templates.useExplorer();
   const header = {
     bsProps: {
@@ -14,7 +16,15 @@ export const TemplateExplorerModal = () => {
     content: <>Template Browser</>,
   };
   const body = {
-    content: <Body />,
+    content: <Body onSelectTemplate={setSelectedTemplate} />,
+  };
+  const footer = {
+    content: (
+      <Footer
+        selectedTemplate={selectedTemplate}
+        onClose={Templates.closeExplorer}
+      />
+    ),
   };
 
   return (
@@ -24,6 +34,7 @@ export const TemplateExplorerModal = () => {
       onHide={Templates.closeExplorer}
       header={header}
       body={body}
+      footer={footer}
     />
   );
 };
