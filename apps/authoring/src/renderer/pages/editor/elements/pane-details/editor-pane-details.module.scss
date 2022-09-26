@@ -318,6 +318,37 @@
 .tree-view {
   $ref: &;
 
+  #module-menu-add-module {
+    color: var(--owl-color-module);
+  }
+
+  #lesson-menu-add-lesson,
+  #module-menu-add-lesson {
+    color: var(--owl-color-lesson);
+  }
+
+  #lesson-menu-duplicate,
+  #lesson-menu-rename,
+  #module-menu-duplicate,
+  #module-menu-rename,
+  #slide-menu-duplicate,
+  #slide-menu-rename {
+    color: var(--owl-color-default);
+  }
+
+  #slide-menu-add-slide,
+  #lesson-menu-add-slide {
+    color: var(--owl-color-slide);
+  }
+
+  #slide-menu-delete-slide,
+  #lesson-menu-delete-lesson,
+  #module-menu-delete-module {
+    color: var(--bs-danger);
+
+    // color: #dc3545;
+  }
+
   &__header {
     $ref-header: &;
     display: flex;

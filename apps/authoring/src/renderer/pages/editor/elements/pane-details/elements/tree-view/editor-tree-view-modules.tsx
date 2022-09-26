@@ -50,25 +50,31 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const moduleMenuItems: Array<ActionMenuItem> = [
     {
       // name: 'add_lesson', // TEMP: use for filtering (i.e. can't move module up that's first in list)
+      id: 'module-menu-add-lesson',
       label: 'Add Lesson',
-      icon: 'widgets',
+      icon: 'interests',
       display: 'outlined',
+      filled: true,
       actionHandler: addLesson,
     },
     {
       // name: 'rename_module',
+      id: 'module-menu-rename',
       label: 'Rename',
       icon: 'edit',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         toggleModalRename();
       },
     },
     {
       // name: 'duplicate_module',
+      id: 'module-menu-duplicate',
       label: 'Duplicate',
       icon: 'content_copy',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         if (!modules) {
           return;
@@ -85,8 +91,10 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
     },
     {
       // name: 'add_module_after',
+      id: 'module-menu-add-module',
       label: 'Add Module After',
       icon: 'folder',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
         const newModule: ModuleTreeItem = {
@@ -141,8 +149,10 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
     },
     {
       // name: 'delete_module',
+      id: 'module-menu-delete-module',
       label: 'Delete Module',
       icon: 'delete',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
         toggleModalDelete();

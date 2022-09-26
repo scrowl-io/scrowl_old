@@ -30,17 +30,21 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
 
   const slideMenuItems: Array<ActionMenuItem> = [
     {
+      id: 'slide-menu-rename',
       label: 'Rename',
       icon: 'edit',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         toggleModalRename();
       },
     },
     {
+      id: 'slide-menu-duplicate',
       label: 'Duplicate',
       icon: 'content_copy',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         if (!modules) {
           return;
@@ -55,8 +59,9 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       },
     },
     {
+      id: 'slide-menu-add-slide',
       label: 'Add Slide',
-      icon: 'folder',
+      icon: 'rectangle',
       display: 'outlined',
       actionHandler: () => {
         const newSlide: SlideTreeItem = {
@@ -102,9 +107,11 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       },
     },
     {
+      id: 'slide-menu-delete-slide',
       label: 'Delete Slide',
       icon: 'delete',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         toggleModalDelete();
       },
