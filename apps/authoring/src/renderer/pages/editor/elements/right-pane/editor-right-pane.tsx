@@ -1,13 +1,18 @@
 import React from 'react';
 import * as styles from './editor-right-pane-details.module.scss';
+import { Button, Icon } from '@owlui/lib';
 import { Pane } from '../../../../components';
-import { Projects } from '../../../../models';
+import { Projects, Templates } from '../../../../models';
 import { RightPaneContentForm } from './content/right-pane-content-form';
-import { useActiveSlide } from '../../page-editor-hooks';
+import { useActiveSlide, useHasActiveSlide } from '../../page-editor-hooks';
 
 export const RightPane = () => {
   const isLoaded = Projects.useLoaded();
-  const activeSlide = useActiveSlide();
+  const slideData = useActiveSlide();
+  const hasActiveSlide = useHasActiveSlide();
+  const handleExploreTemplates = () => {
+    Templates.explore();
+  };
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const tabItems = [
     {
@@ -15,7 +20,7 @@ export const RightPane = () => {
       title: 'Content',
       view: (
         <div className={styles.templateOptionsContent}>
-          <RightPaneContentForm activeSlide={activeSlide} />
+          <RightPaneContentForm />
         </div>
       ),
     },
@@ -30,14 +35,30 @@ export const RightPane = () => {
     },
   ];
 
-  if (!isLoaded) {
-    return <Pane></Pane>;
+  if (!isLoaded || !hasActiveSlide) {
+    return <></>;
   }
 
   return (
-    <Pane>
+    <Pane className={styles.slideEditor} side="right">
+      <div className={styles.slideEditorHeader}>
+        <span className={styles.slideEditorHeaderIcon}>
+          <Icon icon="dashboard" display="sharp" filled={true} />
+        </span>
+        <div>
+          <div className={styles.slideEditorHeaderTitle}>{slideData.name}</div>
+          <Button
+            className={styles.slideEditorHeaderAction}
+            variant="link"
+            onClick={handleExploreTemplates}
+            pxScale="sm"
+          >
+            Change Template
+          </Button>
+        </div>
+      </div>
       <div className={styles.templateOptionsContent}>
-        <RightPaneContentForm activeSlide={activeSlide} />
+        <RightPaneContentForm />
       </div>
     </Pane>
   );

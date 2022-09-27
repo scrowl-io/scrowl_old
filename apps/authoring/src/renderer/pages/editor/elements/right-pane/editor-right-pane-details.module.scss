@@ -4,3 +4,31 @@
 .template-options-content {
   padding: var(--owl-sidebar-spacing);
 }
+
+.slide-editor {
+  &__header {
+    margin: 0.5rem 1rem;
+    display: flex;
+    font-size: 0.875rem;
+    user-select: none;
+
+    &__icon {
+      margin-right: 0.5rem;
+      color: var(--owl-color-template);
+    }
+
+    &__title {
+      line-height: 1.125;
+    }
+
+    &__action {
+      text-align: left;
+      text-decoration: underline;
+      background-color: inherit;
+      font-size: 0.75rem;
+      font-weight: var(--bs-body-font-weight);
+      padding: 0;
+      margin: -0.25em 0 0;
+    }
+  }
+}

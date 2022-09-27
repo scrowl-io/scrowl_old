@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { Templates } from '../../../../models';
+import * as styles from './editor-canvas.module.scss';
+import { Templates, Projects } from '../../../../models';
+import { requester } from '../../../../services';
 import {
-  useCurrentlyLoadedSlide,
   useActiveSlide,
+  updateActiveSlide,
+  useActiveSlidePosition,
 } from '../../page-editor-hooks';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
+import { Header } from './elements';
 
 export const Canvas = () => {
-  const activeSlide = useActiveSlide();
-  const editSlideRef = useCurrentlyLoadedSlide();
+  const position = useActiveSlidePosition();
+  const [refPosition, setRefPosition] = useState(position);
+  const slideData: Projects.ProjectSlide = useActiveSlide();
+  const [prevPrevSlideTemplate, setPrevSlideTemplate] = useState(
+    slideData.template?.meta.filename || ''
+  );
   const [canvasUrl, setCanvasUrl] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [slideOpts, setSlideOpts] = useState<SlideCommons>({
@@ -20,45 +28,61 @@ export const Canvas = () => {
   });
 
   useEffect(() => {
-    if (!activeSlide || !activeSlide.template || !activeSlide.template.meta) {
+    if (!slideData || !slideData.template || !slideData.template.meta) {
       return;
     }
 
-    if (editSlideRef === activeSlide) {
-      const targetframe = document.getElementById(
-        'template-iframe'
-      ) as HTMLIFrameElement;
-
-      targetframe?.contentWindow?.postMessage(
-        { updateManifest: activeSlide.template },
-        '*'
-      );
-      return;
-    }
-
-    Templates.load(activeSlide.template).then(res => {
-      console.log(res);
+    const updateCanvasUrl = (res: requester.ApiResult) => {
       if (res.error) {
         console.error(res);
         return;
       }
 
       setCanvasUrl(res.data.url);
-    });
-  }, [activeSlide, editSlideRef]);
+    };
+
+    const templateChanged =
+      slideData.template.meta.filename !== prevPrevSlideTemplate;
+    const slideChanged = position !== refPosition;
+
+    if (slideChanged || templateChanged) {
+      setPrevSlideTemplate(slideData.template.meta.filename);
+      Templates.load(slideData.template).then(updateCanvasUrl);
+    }
+
+    return () => {
+      setRefPosition(position);
+    };
+  }, [
+    slideData,
+    position,
+    refPosition,
+    setRefPosition,
+    prevPrevSlideTemplate,
+    setPrevSlideTemplate,
+  ]);
+
+  const updateSlideTitle = (title?: string) => {
+    const payload = { name: title };
+
+    updateActiveSlide(payload, position);
+  };
 
   return (
-    <Slide options={slideOpts} style={slideStyle}>
-      <iframe
-        src={canvasUrl}
-        title="Scrowl Editor Canvas"
-        referrerPolicy="unsafe-url"
-        sandbox="allow-same-origin allow-scripts"
-        height="100%"
-        width="100%"
-        id="template-iframe"
-      ></iframe>
-    </Slide>
+    <div className={styles.canvasContainer}>
+      <Header onUpdate={updateSlideTitle} />
+      <Slide options={slideOpts} style={slideStyle}>
+        <iframe
+          src={canvasUrl}
+          title="Scrowl Editor Canvas"
+          referrerPolicy="unsafe-url"
+          sandbox="allow-same-origin allow-scripts"
+          height="100%"
+          width="100%"
+          id="template-iframe"
+        ></iframe>
+      </Slide>
+    </div>
   );
 };
 
