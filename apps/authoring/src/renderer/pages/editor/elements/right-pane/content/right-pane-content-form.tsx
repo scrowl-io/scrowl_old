@@ -15,7 +15,7 @@ export const RightPaneContentForm = () => {
   const modules = deepCopy(project.modules);
   const position: SlidePosition = useActiveSlidePosition();
 
-  const handleOnSubmit = () => {
+  const updateProject = (payload: Partial<Projects.ProjectSlide>) => {
     if (
       position.moduleIdx === -1 ||
       position.lessonIdx === -1 ||
@@ -46,8 +46,7 @@ export const RightPaneContentForm = () => {
       return;
     }
 
-    slide = Object.assign(slide, slideData);
-    updateActiveSlide(slide);
+    slide = Object.assign(slide, payload);
     Projects.update({ modules });
   };
 
@@ -56,6 +55,7 @@ export const RightPaneContentForm = () => {
 
     slide.template.elements = Object.assign(slide.template.elements, data);
     updateActiveSlide(slide);
+    updateProject(slide);
 
     const targetFrame = document.getElementById(
       'template-iframe'
@@ -85,7 +85,6 @@ export const RightPaneContentForm = () => {
         name={slideData.name}
         formData={slideData.template.elements}
         onUpdate={handleOnUpdate}
-        onSubmit={handleOnSubmit}
       />
     </div>
   );
