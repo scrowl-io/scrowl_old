@@ -27,7 +27,10 @@ export const config: StateConfig = {
       state.activeSlide = Object.assign(state.activeSlide, action.payload);
     },
     updateSlidePosition: (state, action) => {
-      state.activeSlidePosition = action.payload;
+      state.activeSlidePosition = Object.assign(
+        state.activeSlidePosition,
+        action.payload
+      );
     },
     updateActiveSlideTemplate: (state, action) => {
       state.activeSlide.template = action.payload;
