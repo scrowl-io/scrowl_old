@@ -26,5 +26,5 @@
   "less.validate": false,
   "scss.validate": false,
   "stylelint.validate": ["css", "less", "postcss", "scss"],
-  "cSpell.words": ["owlui", "Scrowl"]
+  "cSpell.words": ["owlui", "Scorm", "Scrowl"]
 }
