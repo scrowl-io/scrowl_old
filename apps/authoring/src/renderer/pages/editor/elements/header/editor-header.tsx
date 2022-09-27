@@ -3,6 +3,7 @@ import * as styles from './editor-header.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
 import { PublishButton, SaveTooltip } from './elements';
+import { Navbar, Nav } from 'react-bootstrap';
 
 export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
@@ -20,36 +21,35 @@ export const Header = () => {
 
   return (
     <Toolbar>
-      <div className="navbar navbar-expand scrowl__navbar">
-        <Logo href="/" sizing="sm" />
-        <div className={styles.filename} data-value={project.name}>
-          <input
-            name="filename"
-            id="filenameInput"
-            className="owlui-form-control"
-            value={project.name}
-            placeholder="Untitled Project"
-            onChange={handleFilenameChange}
-            size={13}
-            disabled={disableElement}
-          />
-        </div>
-        <div className={`collapse`}>
-          <ul className={`align-items-center me-auto`}>
-            {showSavetooltip && (
-              <li className="nav-item">
-                <SaveTooltip />
-              </li>
-            )}
-          </ul>
-        </div>
+      <Logo href="/" sizing="sm" />
+      <div className={styles.filename} data-value={project.name}>
+        <input
+          name="filename"
+          id="filenameInput"
+          className="owlui-form-control"
+          value={project.name}
+          placeholder="Untitled Project"
+          onChange={handleFilenameChange}
+          size={13}
+          disabled={disableElement}
+        />
       </div>
-      <ul className="navbar-nav align-items-center">
-        <li className="scrowl-navbar__actions">
+      <Navbar.Collapse>
+        <ul className={`align-items-center me-auto`}>
+          {showSavetooltip && (
+            <li className="nav-item">
+              <SaveTooltip />
+            </li>
+          )}
+        </ul>
+      </Navbar.Collapse>
+      <Nav className="align-items-center me-auto"></Nav>
+      <Nav className="align-items-center">
+        <Nav.Item className="scrowl-navbar__actions">
           {/* <PreviewButton disabled={disableElement} /> Preview button temporarily being disabled */}
           <PublishButton disabled={disableElement} />
-        </li>
-      </ul>
+        </Nav.Item>
+      </Nav>
     </Toolbar>
   );
 };

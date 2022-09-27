@@ -48,10 +48,6 @@
   }
 }
 
-.scrowl-navbar__actions {
-  display: flex;
-}
-
 .btn-preview {
   display: flex;
   align-items: center;
@@ -81,43 +77,9 @@
   }
 }
 
-.btn-publish {
-  /* stylelint-disable */
-  --scrowl-box-shadow: 0 0 0 0.25rem rgba(173, 181, 189, 0.5%);
-  /* stylelint-enable */
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  padding: 0.375em 1em;
-  background-color: #0071ba; // --bs-btn-color var mapping doesn't match Scott's designs
-
-  &:hover,
-  &:active,
-  &:focus {
-    color: var(--bs-btn-hover-color);
-    background-color: #006295; // --bs-btn-hover-bg var mapping doesn't match Scott's designs
-    border-color: #495057 !important; // --bs-btn-hover-border-color var mapping doesn't match Scott's designs;
-  }
-
-  &:focus {
-    box-shadow: var(--scrowl-box-shadow);
-  }
-
-  &.btn-success {
-    background-color: #178622;
-
-    &:hover,
-    &:active,
-    &:focus {
-      background-color: #126b1b;
-    }
-  }
-
-  .owlui-icons {
-    color: var(--bs-btn-hover-color);
-    margin-right: 0.25em;
-    font-size: 1.5em;
-    line-height: 0.66;
+.owlui-btn.btn-publish {
+  span[class^='owlui-icons']:first-child {
+    margin-right: 0.5rem;
   }
 }
 

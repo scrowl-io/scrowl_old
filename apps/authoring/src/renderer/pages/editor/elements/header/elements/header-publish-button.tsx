@@ -48,15 +48,7 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
         onClick={handlePublish}
         disabled={disabled}
       >
-        <Icon
-          icon="history_edu"
-          style={{
-            marginRight: '.5rem',
-            fontWeight: 'bold',
-            fontSize: '1.5em',
-            lineHeight: '0.66',
-          }}
-        />
+        <Icon icon="history_edu" filled display="sharp" opsz={20} />
         Publish
       </Button>
       <PublishToaster

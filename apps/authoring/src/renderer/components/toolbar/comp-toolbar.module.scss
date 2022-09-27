@@ -6,10 +6,6 @@
   --bs-navbar-disabled-color: var(--owl-navbar-disabled-color);
   --bs-navbar-active-color:var(--owl-navbar-active-color);
 
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   flex-wrap: nowrap;
   justify-content: flex-start;
   height: $owl-sys-size-navbar-height;
