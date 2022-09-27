@@ -299,7 +299,10 @@ export const publish = (data: ProjectData) => {
     api
       .publish(data)
       .then(result => {
-        processor.dispatch(state.update(result.data.project));
+        if (!result.error && !result.data.canceled) {
+          processor.dispatch(state.update(result.data.project));
+        }
+
         processor.dispatch(state.process(false));
         resolve(result);
       })

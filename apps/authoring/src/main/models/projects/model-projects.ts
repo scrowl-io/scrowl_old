@@ -15,7 +15,7 @@ import * as table from './model-projects-schema';
 import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
 import { add as addTemplate } from '../templates';
-import { OpenDialogOptions } from 'electron';
+import { SaveDialogOptions } from 'electron';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -685,24 +685,48 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
 
     save(ev, project, true)
       .then(saveRes => {
-        const dialogOptions: OpenDialogOptions = {
-          properties: ['openDirectory', 'createDirectory'],
-          buttonLabel: 'Publish',
-          message: 'Publish Scrowl Project',
-          defaultPath: fs.pathDownloadsFolder,
-        };
+        try {
+          const filename = `${Publisher.toScormCase(project.name || '')}`;
+          const dialogOptions: SaveDialogOptions = {
+            properties: ['showOverwriteConfirmation', 'createDirectory'],
+            buttonLabel: 'Publish',
+            message: 'Publish Scrowl Project',
+            defaultPath: fs.join(fs.pathDownloadsFolder, filename),
+          };
 
-        fs.dialogOpen(dialogOptions).then((result: fs.DialogOpenResult) => {
-          if (result.data.canceled || !result.data.filePaths) {
-            reject('Unable to publish project: destination folder required');
-          } else {
-            const dialogResultFolder = result.data.filePaths[0];
+          fs.dialogSave(dialogOptions).then(dialogRes => {
+            if (dialogRes.error) {
+              resolve(dialogRes);
+              return;
+            }
 
-            Publisher.pack(saveRes.data.project, dialogResultFolder).then(
-              resolve
-            );
-          }
-        });
+            if (dialogRes.data.canceled) {
+              resolve(dialogRes);
+              return;
+            }
+
+            if (!dialogRes.data.filePath) {
+              resolve({
+                error: true,
+                message: 'File path required',
+                data: dialogRes.data,
+              });
+              return;
+            }
+
+            const filepath = `${dialogRes.data.filePath}.zip`;
+
+            Publisher.pack(saveRes.data.project, filepath).then(resolve);
+          });
+        } catch (e) {
+          resolve({
+            error: true,
+            message: 'Failed to publish',
+            data: {
+              trace: e,
+            },
+          });
+        }
       })
       .catch(() => {
         reject('Unable to publish project: Error saving project.');

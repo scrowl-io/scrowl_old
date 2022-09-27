@@ -7,15 +7,18 @@ import {
 } from './service-publisher.types';
 import { registerAll, ApiResult } from '../requester';
 import { compile } from '../templater';
+import * as fs from 'fs-extra';
 import {
   pathTempFolder,
-  pathDownloadsFolder,
   getAssetPath,
   join,
   copy,
   readFile,
   writeFile,
+  dirName,
+  basename,
 } from '../file-system';
+import { getDateStamp } from '../internal-storage';
 
 export const assetPath = getAssetPath(join('assets'));
 
@@ -388,11 +391,11 @@ const createScormEntry = (
   });
 };
 
-const toScormCase = (str: string) => {
+export const toScormCase = (str: string) => {
   return str
-    .replace(/([a-z])([A-Z])/g, '$1-$2')
-    .replace(/[\s_]+/g, '-')
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/[^\p{L}0-9]+/gu, '')
+    .replace(/\s/g, '');
 };
 
 const createScormPackage = (
@@ -402,6 +405,8 @@ const createScormPackage = (
 ) => {
   return new Promise<ApiResult>(resolve => {
     try {
+      const destFolder = dirName(dest);
+      const today = getDateStamp();
       const opts = {
         version: '1.2',
         language: 'en-US',
@@ -409,21 +414,55 @@ const createScormPackage = (
         source: source,
         package: {
           name: toScormCase(config?.name || ''),
-          // Without the publish drawing these fields will not be populated
+          // Without the publishing drawer form these fields will not be populated
           // author: config?.scormConfig?.authors,
           // description: config?.scormConfig?.description,
           zip: true,
-          outputFolder: dest,
+          version: '0.0.1',
+          outputFolder: destFolder,
         },
       };
+      const packagerFilename = join(
+        destFolder,
+        `${opts.package.name}_v${opts.package.version}_${today}.zip`
+      );
 
-      packager(opts, (message: string) => {
-        resolve({
-          error: false,
-          data: {
-            message,
-          },
-        });
+      packager(opts, async (message: string) => {
+        try {
+          fs.rename(packagerFilename, dest, e => {
+            if (e) {
+              resolve({
+                error: true,
+                message: 'Failed to package project',
+                data: {
+                  trace: e,
+                  dest,
+                  source,
+                  config,
+                },
+              });
+              return;
+            }
+
+            resolve({
+              error: false,
+              data: {
+                message,
+              },
+            });
+          });
+        } catch (e) {
+          resolve({
+            error: true,
+            message: 'Failed to package project',
+            data: {
+              trace: e,
+              dest,
+              source,
+              config,
+            },
+          });
+        }
       });
     } catch (e) {
       resolve({
@@ -499,4 +538,5 @@ export default {
   EVENTS,
   init,
   pack,
+  toScormCase,
 };

@@ -13,16 +13,29 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
     setToasterShow(false);
   };
 
+  const toast = (msg: string) => {
+    setToasterMessage(msg);
+    setToasterShow(true);
+  };
+
   const handlePublish = () => {
     Projects.publish(project)
-      .then(() => {
-        setToasterMessage('Project was successfully published');
-        setToasterShow(true);
+      .then(res => {
+        if (res.error) {
+          console.error(res);
+          toast(res.message);
+          return;
+        }
+
+        if (res.data.canceled) {
+          return;
+        }
+
+        toast('Project was successfully published');
       })
-      .catch(error => {
-        console.log(error.message);
-        setToasterMessage('Project failed to published');
-        setToasterShow(true);
+      .catch(e => {
+        console.log(e);
+        toast('Project failed to published: an unexpected error occurred');
       });
   };
 
