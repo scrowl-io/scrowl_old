@@ -7,8 +7,8 @@
     "declaration": true,
     "emitDeclarationOnly": true,
     "declarationMap": true,
-    "outDir": "./dist",
-    "outFile": "./dist/scrowl.player.d.ts"
+    "outDir": "./lib",
+    "outFile": "./lib/scrowl.player.d.ts"
   },
   "include": ["./src/**/*.ts", "./src/**/*.tsx", "./types/*.d.ts"],
   "exclude": ["./scripts/**/*.js", ""]

@@ -1,7 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { SlidePosition } from './page-editor.types';
 import { State } from '../../services';
 import * as state from './page-editor-state';
-import { Projects } from '../../models';
+import { Projects, Templates } from '../../models';
 
 const processor: State.StateProcessor = {};
 
@@ -23,20 +24,44 @@ export const useInit = () => {
   return isInit;
 };
 
-export const useCurrentlyLoadedSlide = () => {
-  return useSelector((state: State.RootState) => state.editor.editSlideRef);
-};
-
-export const updateCurrentlyLoadedSlide = (
-  slideData: Projects.ProjectSlide
-) => {
-  processor.dispatch(state.updateEditSlideRef(slideData));
-};
-
 export const useActiveSlide = () => {
   return useSelector((state: State.RootState) => state.editor.activeSlide);
 };
 
-export const updateActiveSlide = (slideData: Projects.ProjectSlide) => {
+export const useActiveSlidePosition = () => {
+  return useSelector(
+    (state: State.RootState) => state.editor.activeSlidePosition
+  );
+};
+
+export const updateActiveSlide = (
+  slideData: Partial<Projects.ProjectSlide>,
+  position?: SlidePosition
+) => {
   processor.dispatch(state.updateSlide(slideData));
+
+  if (!position) {
+    return;
+  }
+
+  processor.dispatch(state.updateSlidePosition(position));
+};
+
+export const updateActiveSlideTemplate = (
+  template: Templates.TemplateManifest
+) => {
+  processor.dispatch(state.updateActiveSlideTemplate(template));
+};
+
+export const useHasActiveSlide = () => {
+  return useSelector((state: State.RootState) => state.editor.hasActiveSlide);
+};
+
+export default {
+  useInit,
+  useActiveSlide,
+  useActiveSlidePosition,
+  updateActiveSlide,
+  updateActiveSlideTemplate,
+  useHasActiveSlide,
 };

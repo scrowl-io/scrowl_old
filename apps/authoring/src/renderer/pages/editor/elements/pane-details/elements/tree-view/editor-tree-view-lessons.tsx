@@ -41,23 +41,28 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
 
   const lessonMenuItems: Array<ActionMenuItem> = [
     {
+      id: 'lesson-menu-add-slide',
       label: 'Add Slide',
-      icon: 'crop_square',
+      icon: 'rectangle',
       display: 'outlined',
       actionHandler: addSlide,
     },
     {
+      id: 'lesson-menu-rename',
       label: 'Rename',
       icon: 'edit',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         toggleModalRename();
       },
     },
     {
+      id: 'lesson-menu-duplicate',
       label: 'Duplicate',
       icon: 'content_copy',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         const newLesson: LessonTreeItem = {
           name: lesson.name + ' copy',
@@ -69,8 +74,10 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       },
     },
     {
+      id: 'lesson-menu-add-lesson',
       label: 'Add Lesson',
-      icon: 'widgets',
+      icon: 'interests',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
         const newLesson: LessonTreeItem = {
@@ -122,8 +129,10 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       },
     },
     {
+      id: 'lesson-menu-delete-lesson',
       label: 'Delete Lesson',
       icon: 'delete',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
         toggleModalDelete();

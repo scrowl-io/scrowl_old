@@ -1,0 +1,128 @@
+@use '@owlui/lib/src/theme/global/tokens' as *;
+
+.nav {
+  z-index: 10;
+  margin-top: calc(var(--owl-sidebar-spacing) / 2);
+}
+
+.tree-view {
+  &__header {
+    display: flex;
+    padding-right: calc(var(--owl-sidebar-spacing) / 2);
+    flex-wrap: nowrap;
+    color: var(--owl-sidebar-color);
+    padding-bottom: 0.25em;
+
+    &:hover .owlui-dropdown-toggle,
+    &:focus .owlui-dropdown-toggle {
+      opacity: 1;
+    }
+
+    & .owlui-dropdown-toggle {
+      top: 0.3em;
+    }
+
+    &:hover {
+      background-color: var(--owl-sidebar-hover-bg);
+    }
+  }
+
+  &__item {
+    display: flex;
+    flex-grow: 1;
+    padding: 3px 8px 7.92px 21px;
+    margin: 0;
+    line-height: 1.4;
+    color: inherit;
+    font-size: var(--owl-font-size-sm);
+    text-decoration: none;
+    text-align: left;
+
+    .module-icons,
+    .lesson-icons {
+      display: flex;
+    }
+
+    &:focus {
+      text-decoration: none;
+      color: currentColor;
+    }
+
+    &:focus-visible {
+      border: 1px solid var(--bs-link-color);
+    }
+
+    &[aria-expanded='true'] {
+      .tree-view__item__icon--handle {
+        transform: rotate(360deg);
+      }
+
+      .module-icons > span > span {
+        color: var(--owl-color-module);
+      }
+
+      .lesson-icons > span > span {
+        color: var(--owl-color-lesson);
+      }
+    }
+
+    &__icon {
+      color: var(--owl-color-default);
+
+      &--handle {
+        margin: 4px 0 0;
+        width: auto;
+        height: auto;
+        transform: rotate(270deg);
+        font-size: 24px;
+        align-self: baseline;
+        position: absolute;
+        left: 0;
+        top: 0;
+        transition: transform 0.1s linear;
+        color: var(--bs-gray-600);
+      }
+
+      &--detail {
+        margin-right: 0.5em;
+        line-height: 1rem;
+        font-size: 0.9rem;
+        position: relative;
+        top: 0.2rem;
+      }
+    }
+
+    &:hover {
+      text-decoration: underline;
+      color: currentColor;
+    }
+
+    &__label {
+      position: relative;
+      top: 0.25rem;
+      line-height: 1rem;
+      color: inherit;
+      font-size: var(--owl-font-size-sm);
+    }
+  }
+
+  &--module,
+  &--lesson {
+    position: relative;
+    line-height: var(--osg-line-height-sm);
+  }
+
+  &--module .nav,
+  &--lesson .nav {
+    margin: 0 0 0.25rem 0.75rem;
+    flex-wrap: nowrap;
+  }
+
+  &--module .nav {
+    box-shadow: -2px 0 0 0 var(--owl-color-module);
+  }
+
+  &--lesson .nav {
+    box-shadow: -2px 0 0 0 var(--owl-color-lesson);
+  }
+}
