@@ -16,9 +16,7 @@ import { requester } from '../../../renderer/services';
 
 export const templateFolderPath = fs.join(fs.pathSaveFolder, 'templates');
 export const templateWorkingPath = fs.join(fs.pathTempFolder, 'templates');
-export const templateAssetPath = fs.getAssetPath(
-  fs.join('models', 'templates', 'assets')
-);
+export const templateAssetPath = fs.getAssetPath(fs.join('assets'));
 
 export const install = () => {
   return new Promise<Requester.ApiResult>(resolve => {
@@ -203,7 +201,15 @@ export const list = () => {
             return;
           }
 
-          templates = templates.concat(res.value.data.templates);
+          templates = templates.concat(
+            res.value.data.templates.map(
+              (record: {
+                name: string;
+                source: string;
+                manifest: TemplateManifest;
+              }) => record.manifest
+            )
+          );
         });
 
         resolve({
@@ -230,8 +236,7 @@ export const load = (
   ev: Requester.RequestEvent,
   manifest: TemplateManifest
 ) => {
-  const templateBase = `template-${manifest.meta.name}`;
-
+  const templateBase = `template-${manifest.meta.filename}`;
   const copyTemplateComponent = () => {
     return new Promise<Requester.ApiResult>(resolve => {
       const templateFolder = fs.join(templateAssetPath, templateBase);
@@ -318,76 +323,40 @@ export const load = (
         });
         return;
       }
-      const filenameReact = 'react.development.js';
-      const reactSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReact
-      );
-      const reactDest = fs.join(templateWorkingPath, 'src', filenameReact);
-      const filenameReactScheduler = 'scheduler.development.js';
-      const reactSchedulerSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReactScheduler
-      );
-      const reactSchedulerDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameReactScheduler
-      );
-      const filenameReactDom = 'react-dom.development.js';
-      const reactDomSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReactDom
-      );
-      const reactDomDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameReactDom
-      );
+      const ver = new Date().valueOf();
+      const filenameShimReact = 'shim-react.js';
+      const filenameShimReactDom = 'shim-react-dom.js';
+      const filenameShimReactBootstrap = 'shim-react-bootstrap.js';
       const filenameReactJsx = 'react-jsx-runtime.development.js';
-      const reactJsxSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        filenameReactJsx
-      );
-      const reactJsxDest = fs.join(
-        templateWorkingPath,
-        'src',
-        filenameReactJsx
-      );
-      const canvasHtmlSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        'canvas.html.hbs'
-      );
+      const filenameOwlui = 'owl.lib.module.js';
+      const workspaceSource = fs.join(templateAssetPath, 'workspace');
+      const workspaceDest = fs.join(templateWorkingPath, 'src');
+      const workspaceOpts = {
+        overwrite: true,
+        filter: (source: string) => {
+          return source.indexOf('.hbs') === -1;
+        },
+      };
+      const canvasHtmlSource = fs.join(workspaceSource, 'canvas.html.hbs');
       const canvasHtmlDest = fs.join('templates', 'src', 'canvas.html');
-      const canvasScriptSource = fs.join(
-        templateAssetPath,
-        'workspace',
-        'canvas.js.hbs'
-      );
-      const canvasScriptDest = fs.join('templates', 'src', 'canvas.js');
+      const canvasScriptSource = fs.join(workspaceSource, 'canvas.js.hbs');
+      const canvasScriptDest = fs.join('templates', 'src', `canvas.${ver}.js`);
       const data = {
-        templateJs: `./${templateBase}.js`,
-        templateCss: `./${templateBase}.css`,
+        canvasJs: `./canvas.${ver}.js`,
+        templateJs: `./${templateBase}.js?${ver}`,
+        templateCss: `./${templateBase}.css?${ver}`,
         templateComponent: manifest.meta.component,
         manifest: JSON.stringify(manifest),
         importList: JSON.stringify({
-          react: `./${filenameReact}`,
-          scheduler: `./${filenameReactScheduler}`,
-          'react-dom': `./${filenameReactDom}`,
+          react: `./${filenameShimReact}`,
+          'react-dom': `./${filenameShimReactDom}`,
           'react/jsx-runtime': `./${filenameReactJsx}`,
+          'react-bootstrap': `./${filenameShimReactBootstrap}`,
+          '@owlui/lib': `./${filenameOwlui}`,
         }),
       };
-
       const canvasRendering = [
-        fs.copy(reactSource, reactDest),
-        fs.copy(reactSchedulerSource, reactSchedulerDest),
-        fs.copy(reactDomSource, reactDomDest),
-        fs.copy(reactJsxSource, reactJsxDest),
+        fs.copy(workspaceSource, workspaceDest, workspaceOpts),
         copyTemplateComponent(),
         compileCanvas(canvasHtmlSource, data, canvasHtmlDest),
         compileCanvas(canvasScriptSource, data, canvasScriptDest),
@@ -411,8 +380,6 @@ export const load = (
           });
           return;
         }
-
-        const ver = new Date().valueOf();
 
         resolve({
           error: false,
@@ -441,13 +408,7 @@ export const add = (
 ) => {
   const templatePath = `template-${templateName}`;
   const getDestFolderPath = (start: string) => {
-    return fs.join(
-      start,
-      projectId.toString(),
-      'content',
-      'templates',
-      templatePath
-    );
+    return fs.join(start, projectId.toString(), 'templates', templatePath);
   };
   return new Promise<Requester.ApiResult>(resolve => {
     try {
@@ -528,6 +489,84 @@ export const add = (
         message: 'Failed to add template',
         data: {
           trace: e,
+        },
+      });
+    }
+  });
+};
+
+export const locate = (name: string) => {
+  return new Promise<Requester.ApiResult>(resolve => {
+    try {
+      let pathname = '';
+      const folder = `template-${name}`;
+      const installedPath = fs.join(templateFolderPath, folder);
+      let isInstalled = false;
+      const internalPath = fs.join(templateAssetPath, folder);
+      let isInternal = false;
+      const existReqs = [
+        fs.existsFile(installedPath),
+        fs.existsFile(internalPath),
+      ];
+
+      Promise.allSettled(existReqs).then(existRes => {
+        existRes.forEach(res => {
+          if (res.status === 'rejected') {
+            return;
+          }
+
+          if (res.value.error) {
+            return;
+          }
+
+          if (!res.value.data.exists) {
+            return;
+          }
+
+          if (res.value.data.pathname === installedPath) {
+            isInstalled = true;
+          }
+
+          if (res.value.data.pathname === internalPath) {
+            isInternal = true;
+          }
+        });
+
+        if (!isInstalled && !isInternal) {
+          resolve({
+            error: true,
+            message: `Unable to locate template: ${name}`,
+            data: {
+              name,
+              installedPath,
+              internalPath,
+            },
+          });
+          return;
+        }
+
+        if (isInstalled) {
+          pathname = installedPath;
+        }
+
+        if (isInternal) {
+          pathname = internalPath;
+        }
+
+        resolve({
+          error: false,
+          data: {
+            name,
+            pathname,
+          },
+        });
+      });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'failed to get url to template',
+        data: {
+          name,
         },
       });
     }

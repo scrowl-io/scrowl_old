@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
+import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
 import { Projects } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
@@ -13,6 +14,7 @@ import {
 import { deepCopy } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
 import { RenameModal } from '../modals/editor-modal-rename';
+import { DeleteModal } from '../modals/editor-modal-delete';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
   const { tree, project, idx } = props;
@@ -23,59 +25,76 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const menuId = `tree-item-module-${idx}-menu`;
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
+  const [showModalDelete, setModalDelete] = useState(false);
+  const toggleModalDelete = () => setModalDelete(!showModalDelete);
+
+  const addLesson = useCallback(() => {
+    if (!modules) {
+      return;
+    }
+
+    const newLesson: LessonTreeItem = {
+      name: 'Untitled Lesson',
+      slides: [
+        {
+          name: 'Untitled Slide',
+        },
+      ],
+    };
+
+    module.lessons.push(newLesson);
+    modules[idx] = module;
+    Projects.update({ modules });
+  }, [idx, module, modules]);
 
   const moduleMenuItems: Array<ActionMenuItem> = [
     {
       // name: 'add_lesson', // TEMP: use for filtering (i.e. can't move module up that's first in list)
+      id: 'module-menu-add-lesson',
       label: 'Add Lesson',
-      icon: 'widgets',
+      icon: 'interests',
       display: 'outlined',
-      actionHandler: () => {
-        if (!modules) {
-          return;
-        }
-
-        const newLesson: LessonTreeItem = {
-          name: 'Untitled Lesson',
-          slides: [
-            {
-              name: 'Untitled Slide',
-            },
-          ],
-        };
-
-        module.lessons.push(newLesson);
-        modules[idx] = module;
-        Projects.update({ modules });
-      },
+      filled: true,
+      actionHandler: addLesson,
     },
     {
       // name: 'rename_module',
+      id: 'module-menu-rename',
       label: 'Rename',
       icon: 'edit',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         toggleModalRename();
       },
     },
     {
       // name: 'duplicate_module',
+      id: 'module-menu-duplicate',
       label: 'Duplicate',
       icon: 'content_copy',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         if (!modules) {
           return;
         }
 
-        modules.splice(idx + 1, 0, module);
+        const newModule: ModuleTreeItem = {
+          name: module.name + ' copy',
+          lessons: deepCopy(module.lessons),
+        };
+
+        modules.splice(idx + 1, 0, newModule);
         Projects.update({ modules });
       },
     },
     {
       // name: 'add_module_after',
+      id: 'module-menu-add-module',
       label: 'Add Module After',
       icon: 'folder',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
         const newModule: ModuleTreeItem = {
@@ -130,16 +149,13 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
     },
     {
       // name: 'delete_module',
+      id: 'module-menu-delete-module',
       label: 'Delete Module',
       icon: 'delete',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
-        if (!modules) {
-          return;
-        }
-
-        modules.splice(idx, 1);
-        Projects.update({ modules });
+        toggleModalDelete();
       },
     },
   ];
@@ -158,6 +174,11 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const handleRename = (name: string) => {
     module.name = name;
     modules[idx] = module;
+    Projects.update({ modules });
+  };
+
+  const handleDelete = () => {
+    modules.splice(idx, 1);
     Projects.update({ modules });
   };
 
@@ -182,7 +203,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
               />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="folder" display="outlined" filled={open} />
+              <Icon icon="folder" display="outlined" filled={!open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>
@@ -200,6 +221,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
             moduleIdx={idx}
             project={project}
           />
+          <AddButton onClick={addLesson} label="Add Lesson" />
         </div>
       </Collapse>
       <RenameModal
@@ -208,6 +230,13 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
         onSubmit={handleRename}
         show={showModalRename}
         onHide={toggleModalRename}
+      />
+      <DeleteModal
+        title="Delete Module"
+        label="Are you sure you want to delete this module?"
+        onSubmit={handleDelete}
+        show={showModalDelete}
+        onHide={toggleModalDelete}
       />
     </div>
   );

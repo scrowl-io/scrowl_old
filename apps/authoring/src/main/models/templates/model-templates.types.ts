@@ -108,15 +108,18 @@ export type TemplateManifestElements = {
     | TemplateManifestElementTextarea;
 };
 
-export type TemplateManifest = {
+export interface TemplateManifestMeta {
+  name: string;
+  filename: string;
+  component: string;
+}
+
+export interface TemplateManifest {
   version?: string;
-  meta: {
-    name: string;
-    component: string;
-  };
+  meta: TemplateManifestMeta;
   slide: TemplateManifestSlide;
   elements: TemplateManifestElements;
-};
+}
 
 export type TemplateRecords = Array<{
   name: string;

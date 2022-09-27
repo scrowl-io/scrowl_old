@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
+import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
 import { Projects } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
@@ -14,6 +15,7 @@ import {
 import { TreeViewSlides } from './editor-tree-view-slides';
 import { deepCopy } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
+import { DeleteModal } from '../modals/editor-modal-delete';
 
 const TreeViewLesson = (props: TreeViewLessonProps) => {
   const { tree, idx, moduleIdx, project } = props;
@@ -25,41 +27,57 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
   const lesson: LessonTreeItem = lessonModule.lessons[idx];
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
+  const [showModalDelete, setModalDelete] = useState(false);
+  const toggleModalDelete = () => setModalDelete(!showModalDelete);
+
+  const addSlide = useCallback(() => {
+    const newSlide: SlideTreeItem = {
+      name: 'Untitled Slide',
+    };
+
+    lesson.slides.push(newSlide);
+    Projects.update({ modules });
+  }, [lesson.slides, modules]);
 
   const lessonMenuItems: Array<ActionMenuItem> = [
     {
+      id: 'lesson-menu-add-slide',
       label: 'Add Slide',
-      icon: 'crop_square',
+      icon: 'rectangle',
       display: 'outlined',
-      actionHandler: () => {
-        const newSlide: SlideTreeItem = {
-          name: 'Untitled Slide',
-        };
-
-        lesson.slides.push(newSlide);
-        Projects.update({ modules });
-      },
+      actionHandler: addSlide,
     },
     {
+      id: 'lesson-menu-rename',
       label: 'Rename',
       icon: 'edit',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         toggleModalRename();
       },
     },
     {
+      id: 'lesson-menu-duplicate',
       label: 'Duplicate',
       icon: 'content_copy',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
-        lessonModule.lessons.splice(idx + 1, 0, lesson);
+        const newLesson: LessonTreeItem = {
+          name: lesson.name + ' copy',
+          slides: deepCopy(lesson.slides),
+        };
+
+        lessonModule.lessons.splice(idx + 1, 0, newLesson);
         Projects.update({ modules });
       },
     },
     {
+      id: 'lesson-menu-add-lesson',
       label: 'Add Lesson',
-      icon: 'widgets',
+      icon: 'interests',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
         const newLesson: LessonTreeItem = {
@@ -111,18 +129,24 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       },
     },
     {
+      id: 'lesson-menu-delete-lesson',
       label: 'Delete Lesson',
       icon: 'delete',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
-        lessonModule.lessons.splice(idx, 1);
-        Projects.update({ modules });
+        toggleModalDelete();
       },
     },
   ];
 
   const handleRename = (name: string) => {
     lesson.name = name;
+    Projects.update({ modules });
+  };
+
+  const handleDelete = () => {
+    lessonModule.lessons.splice(idx, 1);
     Projects.update({ modules });
   };
 
@@ -147,7 +171,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
               />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="interests" display="outlined" filled={open} />
+              <Icon icon="interests" display="outlined" filled={!open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>
@@ -166,6 +190,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
             lessonIdx={idx}
             project={project}
           />
+          <AddButton onClick={addSlide} label="Add Slide" />
         </div>
       </Collapse>
       <RenameModal
@@ -174,6 +199,13 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
         onSubmit={handleRename}
         show={showModalRename}
         onHide={toggleModalRename}
+      />
+      <DeleteModal
+        title="Delete Lesson"
+        label="Are you sure you want to delete this lesson?"
+        onSubmit={handleDelete}
+        show={showModalDelete}
+        onHide={toggleModalDelete}
       />
     </div>
   );

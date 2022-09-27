@@ -26,8 +26,8 @@ export interface FormBuilderCommons {
   formData: {
     [key: string]: FormBuilderData;
   };
-  onSubmit: () => void;
   onUpdate: (data: FormBuilderCommons['formData']) => void;
+  SubmitAction?: () => JSX.Element;
 }
 
 export type FormBuilderProps = FormBuilderCommons &

@@ -9,24 +9,13 @@
     .owlui-icons-outlined {
       margin-right: 0.5em;
     }
-    .owlui-icons-sharp{
+
+    .owlui-icons-sharp {
       margin-right: 0.5em;
-    }
-
-    #item-number-1{
-      .owlui-icons-sharp{
-        color: var(--bs-danger);
-      }
-      .owlui-icons-sharp[style]{
-        font-variation-settings: "FILL" 1 !important;
-
-      }
     }
   }
 
   .owlui-dropdown-toggle {
-    font-weight: 500;
-    line-height: 1rem;
     letter-spacing: var(--owl-btn-letterspacing);
     color: var(--owl-nav-tab-color);
     border-radius: 50%;
@@ -34,12 +23,9 @@
     transition-property: background;
     background: none;
     display: block;
-    padding: 0.25rem;
     margin: 0;
     opacity: 0;
     position: relative;
-
-    // top: 0.6rem;
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
       border-color 0.15s ease-in-out;
 
@@ -56,12 +42,6 @@
       font-weight: 600;
       border-bottom: 2px currentColor solid;
       background: transparent;
-    }
-
-    &::after {
-      display: none;
-      margin-left: 0;
-      border: none;
     }
   }
 
@@ -97,7 +77,6 @@
       }
 
       .owlui-icons-sharp {
-        
       }
 
       span[class^='material-symbols'] {
@@ -170,6 +149,10 @@
   max-height: calc(100% - 66px);
   overflow-y: auto;
 
+  #glossary-menu-delete {
+    color: var(--bs-danger);
+  }
+
   &__list {
     border: 0;
     padding-top: 0;
@@ -207,7 +190,7 @@
     line-height: 1.4;
     color: var(--bs-body-color);
 
-    &--word {
+    .tab_glossary__term--word {
       color: inherit;
       text-transform: none;
       font-weight: 500;
@@ -295,7 +278,7 @@
 .tab-outline {
   margin-top: calc(var(--owl-sidebar-spacing) / 2);
 
-  .outline-add-module {
+  .outline-add-button {
     text-align: left;
     color: var(--bs-body-color);
     background-color: inherit;
@@ -318,6 +301,35 @@
 .tree-view {
   $ref: &;
 
+  #module-menu-add-module {
+    color: var(--owl-color-module);
+  }
+
+  #lesson-menu-add-lesson,
+  #module-menu-add-lesson {
+    color: var(--owl-color-lesson);
+  }
+
+  #lesson-menu-duplicate,
+  #lesson-menu-rename,
+  #module-menu-duplicate,
+  #module-menu-rename,
+  #slide-menu-duplicate,
+  #slide-menu-rename {
+    color: var(--owl-color-default);
+  }
+
+  #slide-menu-add-slide,
+  #lesson-menu-add-slide {
+    color: var(--owl-color-slide);
+  }
+
+  #slide-menu-delete-slide,
+  #lesson-menu-delete-lesson,
+  #module-menu-delete-module {
+    color: var(--bs-danger);
+  }
+
   &__header {
     $ref-header: &;
     display: flex;
@@ -332,11 +344,15 @@
     }
 
     & .owlui-dropdown-toggle {
-      top: 0.3em;
+      margin-top: 0.33em;
     }
 
-    &:hover {
+    &:not(.slideActive):hover {
       background-color: var(--owl-sidebar-hover-bg);
+    }
+
+    &.slideActive {
+      background: var(--owl-selection-bg);
     }
   }
 
@@ -399,9 +415,9 @@
       &--detail {
         margin-right: 0.5em;
         line-height: 1rem;
-        font-size: 0.9rem;
+        font-size: 0.75rem;
         position: relative;
-        top: 0.2rem;
+        top: 0.3rem;
       }
     }
 
@@ -447,4 +463,29 @@
 
 .owlui-offcanvas-header {
   font-weight: normal !important;
+}
+
+.form {
+  label {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--owl-typeface-label-color);
+  }
+}
+
+.scrowl-template-browser {
+  display: flex;
+  justify-content: space-evenly;
+  &--item {
+    border: none;
+    background: none;
+    box-shadow: var(--owl-box-shadow);
+    padding: 0;
+
+    &:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--owl-box-shadow-active);
+      transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+    }
+  }
 }

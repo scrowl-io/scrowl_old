@@ -1,4 +1,5 @@
 import { RegisterEvent, ApiResult } from '../requester';
+import { TemplateManifestMeta } from '../../models/templates/model-templates.types';
 
 interface PathingFiles {
   template: {
@@ -22,7 +23,16 @@ export interface PathingProps {
 }
 
 export type TemplateData = {
-  [key: string]: string | number | TemplateData;
+  [key: string]: string | number | TemplateData | Array<TemplateData>;
+};
+
+export interface TemplateInfo extends TemplateManifestMeta {
+  pathname: string;
+}
+
+export type TemplateCopyResult = {
+  templates: Array<TemplateInfo>;
+  to: string;
 };
 
 export interface PublisherEventPackage extends Omit<RegisterEvent, 'name'> {

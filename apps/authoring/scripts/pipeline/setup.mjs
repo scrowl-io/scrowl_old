@@ -51,62 +51,108 @@ const reactToES = code => {
     });
   });
 
-  return addDefaultExports(exported, defaultExports);
+  return addDefaultExports(exported, defaultExports).replace(/^\s*\n/gm, '');
 };
 
 // This map uses the key to declare a path to the source file
 const sourceMap = {
   'node_modules/@scrowl/runtime/dist/scrowl.runtime.js': {
-    dest: './src/main/services/publisher/project/package/content/scrowl.runtime.js', // this is the target destination of the file to be copied to
+    dest: './src/main/assets/workspace/scrowl.runtime.js', // this is the target destination of the file to be copied to
     includePaths: ['../../'], // because this is a mono-repo files may not be located at the project level, this allows the source file to be search in other locations
   },
   'node_modules/@scrowl/runtime/dist/scrowl.runtime.js.map': {
-    dest: './src/main/services/publisher/project/package/content/scrowl.runtime.js.map', // this is the target destination of the file to be copied to
+    dest: './src/main/assets/workspace/scrowl.runtime.js.map', // this is the target destination of the file to be copied to
     includePaths: ['../../'], // because this is a mono-repo files may not be located at the project level, this allows the source file to be search in other locations
   },
-  'node_modules/@scrowl/player/dist': {
-    dest: './src/main/services/publisher/project/package/content/',
+  'node_modules/@scrowl/player/lib': {
+    dest: './src/main/assets/workspace',
     includePaths: ['../../'],
     options: {
       overwrite: true,
-      filter: (source, dest) => {
+      filter: source => {
         return source.indexOf('.d.ts') === -1;
       },
     },
   },
   'node_modules/scrowl-template-introduction/build': {
-    dest: './src/main/models/templates/assets/template-introduction',
+    dest: './src/main/assets/template-introduction',
     includePaths: ['../../'],
     options: {
       overwrite: true,
     },
   },
-  'node_modules/react/cjs/react.development.js': {
-    dest: './src/main/models/templates/assets/workspace/react.development.js',
+  'node_modules/scrowl-template-two-columns/build': {
+    dest: './src/main/assets/template-two-columns',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+    },
+  },
+  'node_modules/react/umd/react.production.min.js': {
+    dest: './src/main/assets/workspace/react.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react/umd/react.production.min.js.map': {
+    dest: './src/main/assets/workspace/react.production.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-dom/umd/react-dom.production.min.js': {
+    dest: './src/main/assets/workspace/react-dom.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-dom/umd/react-dom.production.min.js.map': {
+    dest: './src/main/assets/workspace/react-dom.production.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/react/cjs/react-jsx-runtime.development.js': {
+    dest: './src/main/assets/workspace/react-jsx-runtime.development.js',
     includePaths: ['../../'],
     transformer: contents => {
       return reactToES(contents);
     },
   },
-  // 'node_modules/scheduler/cjs/scheduler.development.js': {
-  //   dest: './src/main/models/templates/assets/workspace/scheduler.development.js',
-  //   includePaths: ['../../'],
-  //   transformer: contents => {
-  //     return reactToES(contents);
-  //   },
-  // },
-  // 'node_modules/react-dom/cjs/react-dom.development.js': {
-  //   dest: './src/main/models/templates/assets/workspace/react-dom.development.js',
-  //   includePaths: ['../../'],
-  //   transformer: contents => {
-  //     return reactToES(contents);
-  //   },
-  // },
-  'node_modules/react/cjs/react-jsx-runtime.development.js': {
-    dest: './src/main/models/templates/assets/workspace/react-jsx-runtime.development.js',
+  'node_modules/history/umd/history.production.min.js': {
+    dest: './src/main/assets/workspace/history.production.min.js',
     includePaths: ['../../'],
-    transformer: contents => {
-      return reactToES(contents);
+  },
+  'node_modules/history/umd/history.production.min.js.map': {
+    dest: './src/main/assets/workspace/history.production.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router/umd/react-router.production.min.js': {
+    dest: './src/main/assets/workspace/react-router.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router/umd/react-router.production.min.js.map': {
+    dest: './src/main/assets/workspace/react-router.production.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router-dom/umd/react-router-dom.production.min.js': {
+    dest: './src/main/assets/workspace/react-router-dom.production.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-router-dom/umd/react-router-dom.production.min.js.map': {
+    dest: './src/main/assets/workspace/react-router-dom.production.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-bootstrap/dist/react-bootstrap.min.js': {
+    dest: './src/main/assets/workspace/react-bootstrap.min.js',
+    includePaths: ['../../'],
+  },
+  'node_modules/react-bootstrap/dist/react-bootstrap.min.js.map': {
+    dest: './src/main/assets/workspace/react-bootstrap.min.js.map',
+    includePaths: ['../../'],
+  },
+  'node_modules/@owlui/lib/dist': {
+    dest: './src/main/assets/workspace',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+      filter: source => {
+        return (
+          source.indexOf('.d.ts') === -1 && source.indexOf('owl.lib.js') === -1
+        );
+      },
     },
   },
 };

@@ -3,7 +3,7 @@ import * as styles from '../editor-pane-details.module.scss';
 import { Projects } from '../../../../../models';
 import { TreeViewModules } from './tree-view';
 import { ModuleTreeItem } from './tree-view/editor-tree-view.types';
-import { Button, Icon } from '@owlui/lib';
+import { AddButton } from './buttons/add-button';
 import { deepCopy } from './tree-view/utils';
 
 export const TabOutline = () => {
@@ -29,14 +29,7 @@ export const TabOutline = () => {
     <div className={tabStyles}>
       <>
         <TreeViewModules tree={project.modules} project={project} />
-        <Button
-          className="outline-add-module"
-          onClick={handleAddModule}
-          variant="link"
-        >
-          <Icon icon="add" style={{ fontSize: '15px' }} />
-          <span>Add Module</span>
-        </Button>
+        <AddButton label="Add Module" onClick={handleAddModule} />
       </>
     </div>
   );
