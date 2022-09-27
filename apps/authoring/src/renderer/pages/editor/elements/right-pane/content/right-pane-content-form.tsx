@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@owlui/lib';
 import { SlidePosition } from '../../../page-editor.types';
 import { Projects } from '../../../../../models';
 import { FormBuilder, FormBuilderCommons } from '../../../../../components';
@@ -15,7 +16,7 @@ export const RightPaneContentForm = () => {
   const modules = deepCopy(project.modules);
   const position: SlidePosition = useActiveSlidePosition();
 
-  const updateProject = (payload: Partial<Projects.ProjectSlide>) => {
+  const handleOnSubmit = () => {
     if (
       position.moduleIdx === -1 ||
       position.lessonIdx === -1 ||
@@ -46,8 +47,15 @@ export const RightPaneContentForm = () => {
       return;
     }
 
-    slide = Object.assign(slide, payload);
+    slide = Object.assign(slide, slideData);
     Projects.update({ modules });
+  };
+  const SubmitAction = () => {
+    return (
+      <Button variant="success" onClick={handleOnSubmit}>
+        Update
+      </Button>
+    );
   };
 
   const handleOnUpdate = (data: FormBuilderCommons['formData']) => {
@@ -55,7 +63,6 @@ export const RightPaneContentForm = () => {
 
     slide.template.elements = Object.assign(slide.template.elements, data);
     updateActiveSlide(slide);
-    updateProject(slide);
 
     const targetFrame = document.getElementById(
       'template-iframe'
@@ -85,6 +92,7 @@ export const RightPaneContentForm = () => {
         name={slideData.name}
         formData={slideData.template.elements}
         onUpdate={handleOnUpdate}
+        SubmitAction={SubmitAction}
       />
     </div>
   );

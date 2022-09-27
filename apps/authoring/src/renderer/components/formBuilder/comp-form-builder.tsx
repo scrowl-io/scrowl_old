@@ -25,6 +25,11 @@ export const FormBuilder = ({
   onUpdate,
 }: FormBuilderProps) => {
   const controls = Object.keys(formData);
+  const actionStyling = {
+    marginTop: '1em',
+    display: 'flex',
+    justifyContent: 'end',
+  };
 
   return (
     <Form className={styles.formBuilder}>
@@ -40,7 +45,7 @@ export const FormBuilder = ({
         );
       })}
       {SubmitAction ? (
-        <div style={{ marginTop: '1em' }}>
+        <div style={actionStyling}>
           <SubmitAction />
         </div>
       ) : (
