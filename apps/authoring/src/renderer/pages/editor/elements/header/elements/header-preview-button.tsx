@@ -5,7 +5,8 @@ import * as styles from '../editor-header.module.scss';
 export const PreviewButton = ({ disabled }: { disabled: boolean }) => {
   return (
     <Button
-      className={`btn btn-sm btn-ghost-primary ${styles.btnPreview}`}
+      className={`btn-ghost-primary ${styles.btnPreview}`}
+      size="sm"
       disabled={disabled}
     >
       <Icon icon="interests" />

@@ -12,7 +12,9 @@ export const PublishButton = ({ disabled }: { disabled: boolean }) => {
   return (
     <>
       <Button
-        className={`btn btn-sm btn-primary ms-3 ${styles.btnPublish}`}
+        className={`ms-3 ${styles.btnPublish}`}
+        variant="primary"
+        size="sm"
         onClick={toggleShowDrawer}
         disabled={disabled}
       >
