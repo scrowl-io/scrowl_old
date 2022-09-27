@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
-import { Projects } from '../../../../../../models';
+import { Projects, Templates } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
 import {
   ModuleTreeItem,
@@ -16,6 +16,7 @@ import { TreeViewSlides } from './editor-tree-view-slides';
 import { deepCopy } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
 import { DeleteModal } from '../modals/editor-modal-delete';
+import { updateActiveSlide } from '../../../../page-editor-hooks';
 
 const TreeViewLesson = (props: TreeViewLessonProps) => {
   const { tree, idx, moduleIdx, project } = props;
@@ -30,14 +31,21 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
   const [showModalDelete, setModalDelete] = useState(false);
   const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
-  const addSlide = useCallback(() => {
+  const addSlide = () => {
     const newSlide: SlideTreeItem = {
       name: 'Untitled Slide',
     };
+    const slideIdx = lesson.slides.length;
 
     lesson.slides.push(newSlide);
     Projects.update({ modules });
-  }, [lesson.slides, modules]);
+    updateActiveSlide(lesson.slides[slideIdx], {
+      moduleIdx,
+      lessonIdx: idx,
+      slideIdx,
+    });
+    Templates.explore();
+  };
 
   const lessonMenuItems: Array<ActionMenuItem> = [
     {
