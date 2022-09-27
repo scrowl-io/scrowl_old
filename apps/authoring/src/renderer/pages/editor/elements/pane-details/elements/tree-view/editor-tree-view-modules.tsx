@@ -3,7 +3,7 @@ import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
-import { Projects } from '../../../../../../models';
+import { Projects, Templates } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
 import {
   ModuleTreeItem,
@@ -15,7 +15,10 @@ import { deepCopy, moveTreeItem } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
 import { RenameModal } from '../modals/editor-modal-rename';
 import { DeleteModal } from '../modals/editor-modal-delete';
-import { updateActiveSlidePosition } from '../../../../page-editor-hooks';
+import {
+  updateActiveSlide,
+  updateActiveSlidePosition,
+} from '../../../../page-editor-hooks';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
   const { tree, project, idx } = props;
@@ -29,11 +32,12 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const [showModalDelete, setModalDelete] = useState(false);
   const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
-  const addLesson = useCallback(() => {
+  const addLesson = () => {
     if (!modules) {
       return;
     }
 
+    const newIdx = module.lessons.length;
     const newLesson: LessonTreeItem = {
       name: 'Untitled Lesson',
       slides: [
@@ -43,10 +47,15 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       ],
     };
 
-    module.lessons.push(newLesson);
-    modules[idx] = module;
+    modules[idx].lessons.push(newLesson);
     Projects.update({ modules });
-  }, [idx, module, modules]);
+    updateActiveSlide(modules[idx].lessons[newIdx].slides[0], {
+      moduleIdx: idx,
+      lessonIdx: newIdx,
+      slideIdx: 0,
+    });
+    Templates.explore();
+  };
 
   const moduleMenuItems: Array<ActionMenuItem> = [
     {
@@ -98,6 +107,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       filled: true,
       display: 'outlined',
       actionHandler: () => {
+        const newIdx = idx + 1;
         const newModule: ModuleTreeItem = {
           name: 'Untitled Module',
           lessons: [
@@ -108,8 +118,14 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
           ],
         };
 
-        modules.push(newModule);
+        modules.splice(newIdx, 0, newModule);
         Projects.update({ modules });
+        updateActiveSlide(modules[newIdx].lessons[0].slides[0], {
+          moduleIdx: newIdx,
+          lessonIdx: 0,
+          slideIdx: 0,
+        });
+        Templates.explore();
       },
     },
     {
