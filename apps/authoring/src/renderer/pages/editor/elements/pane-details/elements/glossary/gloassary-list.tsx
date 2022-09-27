@@ -53,9 +53,11 @@ export const GlossaryListEntries = ({
       },
     },
     {
+      id: 'glossary-menu-delete',
       label: 'Delete',
       icon: 'delete',
       display: 'sharp',
+      filled: true,
       actionHandler: (ev: React.MouseEvent<Element, MouseEvent>) => {
         const idx = getEntryIndex(ev);
 
