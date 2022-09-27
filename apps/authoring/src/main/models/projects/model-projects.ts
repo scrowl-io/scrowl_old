@@ -15,6 +15,7 @@ import * as table from './model-projects-schema';
 import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
 import { add as addTemplate } from '../templates';
+import { SaveDialogOptions } from 'electron';
 
 const writeProjectTemp = (
   project: ProjectData,
@@ -676,33 +677,60 @@ export const importFile = (
 };
 
 export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
-  return new Promise<Requester.ApiResult>(resolve => {
+  return new Promise<Requester.ApiResult>((resolve, reject) => {
     if (!project || !project.id) {
-      resolve({
-        error: true,
-        message: 'Unable to publish project: project data required',
-      });
+      reject('Unable to publish project: project data required');
       return;
     }
 
-    try {
-      save(ev, project, true).then(saveRes => {
-        if (saveRes.error) {
-          resolve(saveRes);
-        }
+    save(ev, project, true)
+      .then(saveRes => {
+        try {
+          const filename = `${Publisher.toScormCase(project.name || '')}`;
+          const dialogOptions: SaveDialogOptions = {
+            properties: ['showOverwriteConfirmation', 'createDirectory'],
+            buttonLabel: 'Publish',
+            message: 'Publish Scrowl Project',
+            defaultPath: fs.join(fs.pathDownloadsFolder, filename),
+          };
 
-        Publisher.pack(saveRes.data.project).then(resolve);
+          fs.dialogSave(dialogOptions).then(dialogRes => {
+            if (dialogRes.error) {
+              resolve(dialogRes);
+              return;
+            }
+
+            if (dialogRes.data.canceled) {
+              resolve(dialogRes);
+              return;
+            }
+
+            if (!dialogRes.data.filePath) {
+              resolve({
+                error: true,
+                message: 'File path required',
+                data: dialogRes.data,
+              });
+              return;
+            }
+
+            const filepath = `${dialogRes.data.filePath}.zip`;
+
+            Publisher.pack(saveRes.data.project, filepath).then(resolve);
+          });
+        } catch (e) {
+          resolve({
+            error: true,
+            message: 'Failed to publish',
+            data: {
+              trace: e,
+            },
+          });
+        }
+      })
+      .catch(() => {
+        reject('Unable to publish project: Error saving project.');
       });
-    } catch (e) {
-      resolve({
-        error: true,
-        message: 'Failed to publish project',
-        data: {
-          trace: e,
-          project,
-        },
-      });
-    }
   });
 };
 
