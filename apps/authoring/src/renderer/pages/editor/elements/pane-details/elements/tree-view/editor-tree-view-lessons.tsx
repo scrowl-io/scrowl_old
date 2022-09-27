@@ -91,6 +91,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       filled: true,
       display: 'outlined',
       actionHandler: () => {
+        const newIdx = idx + 1;
         const newLesson: LessonTreeItem = {
           name: 'Untitled Lesson',
           slides: [
@@ -100,8 +101,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
           ],
         };
 
-        lessonModule.lessons.push(newLesson);
+        lessonModule.lessons.splice(newIdx, 0, newLesson);
         Projects.update({ modules });
+        updateActiveSlide(lessonModule.lessons[newIdx].slides[0], {
+          moduleIdx,
+          lessonIdx: newIdx,
+          slideIdx: 0,
+        });
+        Templates.explore();
       },
     },
     {
