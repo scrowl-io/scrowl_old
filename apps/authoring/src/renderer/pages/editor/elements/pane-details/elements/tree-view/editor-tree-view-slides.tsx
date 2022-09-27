@@ -16,6 +16,7 @@ import { DeleteModal } from '../modals/editor-modal-delete';
 import {
   updateActiveSlide,
   updateActiveSlidePosition,
+  useActiveSlidePosition,
 } from '../../../../page-editor-hooks';
 
 const TreeViewSlide = (props: TreeViewSlideProps) => {
@@ -26,6 +27,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
   const slideModule: ModuleTreeItem = modules[moduleIdx];
   const slideLesson: LessonTreeItem = slideModule.lessons[lessonIdx];
   const slide: SlideTreeItem = slideLesson.slides[idx];
+  const activeSlidePosition = useActiveSlidePosition();
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
   const [showModalDelete, setModalDelete] = useState(false);
@@ -143,27 +145,24 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
   };
 
   const handleSlideSelection = () => {
-    const selectorSlideActive = document.querySelector('.slideActive');
-
-    if (selectorSlideActive) {
-      selectorSlideActive.classList.remove('slideActive');
-    }
-
     updateActiveSlide(tree, {
       moduleIdx,
       lessonIdx,
       slideIdx: idx,
     });
-    const selectorWrapper = document.getElementById(itemWrapperId);
-
-    if (selectorWrapper) {
-      selectorWrapper.classList.add('slideActive');
-    }
   };
+
+  const isActiveSlide =
+    activeSlidePosition.moduleIdx === moduleIdx &&
+    activeSlidePosition.lessonIdx === lessonIdx &&
+    activeSlidePosition.slideIdx === idx;
+  const classes = `${styles.treeViewHeader} ${
+    isActiveSlide ? 'slideActive' : ''
+  }`;
 
   return (
     <div className={styles.treeViewSlide} key={idx}>
-      <div id={itemWrapperId} className={styles.treeViewHeader}>
+      <div id={itemWrapperId} className={classes}>
         <Button
           id={itemId}
           className={styles.treeViewItem}
