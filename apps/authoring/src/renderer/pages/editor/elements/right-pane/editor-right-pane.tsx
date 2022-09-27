@@ -8,7 +8,7 @@ import { useActiveSlide, useHasActiveSlide } from '../../page-editor-hooks';
 
 export const RightPane = () => {
   const isLoaded = Projects.useLoaded();
-  const activeSlide = useActiveSlide();
+  const slideData = useActiveSlide();
   const hasActiveSlide = useHasActiveSlide();
   const handleExploreTemplates = () => {
     Templates.explore();
@@ -20,7 +20,7 @@ export const RightPane = () => {
       title: 'Content',
       view: (
         <div className={styles.templateOptionsContent}>
-          <RightPaneContentForm activeSlide={activeSlide} />
+          <RightPaneContentForm />
         </div>
       ),
     },
@@ -46,9 +46,7 @@ export const RightPane = () => {
           <Icon icon="dashboard" display="sharp" filled={true} />
         </span>
         <div>
-          <div className={styles.slideEditorHeaderTitle}>
-            {activeSlide.name}
-          </div>
+          <div className={styles.slideEditorHeaderTitle}>{slideData.name}</div>
           <Button
             className={styles.slideEditorHeaderAction}
             variant="link"
@@ -60,7 +58,7 @@ export const RightPane = () => {
         </div>
       </div>
       <div className={styles.templateOptionsContent}>
-        <RightPaneContentForm activeSlide={activeSlide} />
+        <RightPaneContentForm />
       </div>
     </Pane>
   );

@@ -1,0 +1,27 @@
+@import '../../../../styles/bs';
+@import '../../../../styles/variables';
+
+.slide-name-container {
+  align-content: center;
+  position: absolute;
+  margin-top: 2em;
+  margin-left: 6em;
+  display: flex;
+
+  input {
+    background: transparent;
+    border: none;
+    font-weight: 900;
+    font-size: 2.5em;
+    box-shadow: none;
+    padding-left: 0.25em;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: fit-content;
+  }
+
+  .slide-name-icon {
+    font-size: 4em;
+    color: var(--owl-color-slide);
+  }
+}

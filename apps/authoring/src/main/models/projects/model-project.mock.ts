@@ -2,16 +2,8 @@ import { ProjectData, ProjectSlide } from './model-projects.types';
 import { TemplateManifest } from '../templates';
 import templateManifestIntro from '../../assets/template-introduction/manifest.json';
 
-export const mockSlide = (
-  name: string,
-  id: number,
-  lessonID: number,
-  moduleID: number
-): ProjectSlide => {
+export const mockSlide = (name: string): ProjectSlide => {
   return {
-    id: id,
-    lessonID: lessonID,
-    moduleID: moduleID,
     name: name,
     template: JSON.parse(
       JSON.stringify(templateManifestIntro)
@@ -36,16 +28,16 @@ export const data: ProjectData = {
           id: 1,
           moduleID: 1,
           name: 'Building a Respectful Workplace',
-          slides: [mockSlide('Introduction', 1, 1, 1)],
+          slides: [mockSlide('Introduction')],
         },
         {
           id: 2,
           moduleID: 1,
           name: 'What is Harassment vs. Discrimination?',
           slides: [
-            mockSlide('Slide 1', 2, 2, 1),
-            mockSlide('Slide 2', 3, 2, 1),
-            mockSlide('Slide 3', 4, 2, 1),
+            mockSlide('Slide 1'),
+            mockSlide('Slide 2'),
+            mockSlide('Slide 3'),
           ],
         },
       ],
@@ -58,7 +50,7 @@ export const data: ProjectData = {
           id: 3,
           moduleID: 2,
           name: 'What is Sexual Harassment?',
-          slides: [mockSlide('Slide 4', 5, 3, 2)],
+          slides: [mockSlide('Slide 4')],
         },
       ],
     },
@@ -71,9 +63,9 @@ export const data: ProjectData = {
           moduleID: 3,
           name: 'Preventing Sexual Harassment as a Supervisor',
           slides: [
-            mockSlide('Slide 5', 6, 4, 3),
-            mockSlide('Slide 6', 7, 4, 3),
-            mockSlide('Slide 7', 8, 4, 3),
+            mockSlide('Slide 5'),
+            mockSlide('Slide 6'),
+            mockSlide('Slide 7'),
           ],
         },
       ],
@@ -86,10 +78,7 @@ export const data: ProjectData = {
           id: 5,
           moduleID: 4,
           name: 'Final Thoughts',
-          slides: [
-            mockSlide('Slide 8', 9, 5, 4),
-            mockSlide('Slide 9', 10, 5, 4),
-          ],
+          slides: [mockSlide('Slide 8'), mockSlide('Slide 9')],
         },
       ],
     },

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@owlui/lib';
 import { TemplateExplorerFooterProps } from '../editor-modal-template-explorer.types';
-import { updateActiveSlideTemplate } from '../../../../page-editor-hooks';
+import { updateActiveSlide } from '../../../../page-editor-hooks';
 
 export const Footer = ({
   onClose,
@@ -11,7 +11,7 @@ export const Footer = ({
     const templateCopy = JSON.parse(JSON.stringify(selectedTemplate));
 
     delete templateCopy.isSelected;
-    updateActiveSlideTemplate(templateCopy);
+    updateActiveSlide({ template: templateCopy });
     onClose();
   };
 
