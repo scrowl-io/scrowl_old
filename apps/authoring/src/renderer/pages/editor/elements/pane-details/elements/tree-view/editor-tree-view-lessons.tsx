@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
-import { Projects } from '../../../../../../models';
+import { Projects, Templates } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
 import {
   ModuleTreeItem,
@@ -13,13 +13,22 @@ import {
   TreeViewLessonProps,
 } from './editor-tree-view.types';
 import { TreeViewSlides } from './editor-tree-view-slides';
-import { deepCopy } from './utils';
+import { deepCopy, moveTreeItem } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
 import { DeleteModal } from '../modals/editor-modal-delete';
+import {
+  updateActiveSlide,
+  updateActiveSlidePosition,
+  useActiveSlidePosition,
+} from '../../../../page-editor-hooks';
 
 const TreeViewLesson = (props: TreeViewLessonProps) => {
   const { tree, idx, moduleIdx, project } = props;
-  const [open, setOpen] = useState(false);
+  const activeSlidePosition = useActiveSlidePosition();
+  const isActiveLesson =
+    activeSlidePosition.moduleIdx === moduleIdx &&
+    activeSlidePosition.lessonIdx === idx;
+  const [open, setOpen] = useState(isActiveLesson);
   const itemId = `module-${moduleIdx}-lesson-item-${idx}`;
   const menuId = `module-${moduleIdx}-lesson-menu-${idx}`;
   const modules = deepCopy(project.modules);
@@ -30,14 +39,21 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
   const [showModalDelete, setModalDelete] = useState(false);
   const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
-  const addSlide = useCallback(() => {
+  const addSlide = () => {
     const newSlide: SlideTreeItem = {
       name: 'Untitled Slide',
     };
+    const slideIdx = lesson.slides.length;
 
     lesson.slides.push(newSlide);
     Projects.update({ modules });
-  }, [lesson.slides, modules]);
+    updateActiveSlide(lesson.slides[slideIdx], {
+      moduleIdx,
+      lessonIdx: idx,
+      slideIdx,
+    });
+    Templates.explore();
+  };
 
   const lessonMenuItems: Array<ActionMenuItem> = [
     {
@@ -80,6 +96,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       filled: true,
       display: 'outlined',
       actionHandler: () => {
+        const newIdx = idx + 1;
         const newLesson: LessonTreeItem = {
           name: 'Untitled Lesson',
           slides: [
@@ -89,8 +106,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
           ],
         };
 
-        lessonModule.lessons.push(newLesson);
+        lessonModule.lessons.splice(newIdx, 0, newLesson);
         Projects.update({ modules });
+        updateActiveSlide(lessonModule.lessons[newIdx].slides[0], {
+          moduleIdx,
+          lessonIdx: newIdx,
+          slideIdx: 0,
+        });
+        Templates.explore();
       },
     },
     {
@@ -98,14 +121,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'arrow_upward',
       display: 'outlined',
       actionHandler: () => {
-        if (lessonModule.lessons.length <= 1 || idx <= 0) {
-          console.log('Invalid operation');
+        const newIdx = idx - 1;
+        const lesson = moveTreeItem(idx, newIdx, lessonModule.lessons);
+
+        if (!lesson) {
           return;
         }
-        [lessonModule.lessons[idx - 1], lessonModule.lessons[idx]] = [
-          lessonModule.lessons[idx],
-          lessonModule.lessons[idx - 1],
-        ];
+
+        updateActiveSlidePosition({ lessonIdx: newIdx });
         Projects.update({ modules });
       },
     },
@@ -114,17 +137,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'arrow_downward',
       display: 'outlined',
       actionHandler: () => {
-        if (
-          lessonModule.lessons.length <= 1 ||
-          lessonModule.lessons.length - 1 <= idx
-        ) {
-          console.log('Invalid operation');
+        const newIdx = idx + 1;
+        const lesson = moveTreeItem(idx, newIdx, lessonModule.lessons);
+
+        if (!lesson) {
           return;
         }
-        [lessonModule.lessons[idx], lessonModule.lessons[idx + 1]] = [
-          lessonModule.lessons[idx + 1],
-          lessonModule.lessons[idx],
-        ];
+
+        updateActiveSlidePosition({ lessonIdx: newIdx });
         Projects.update({ modules });
       },
     },

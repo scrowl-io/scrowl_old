@@ -16,7 +16,6 @@ import {
   readFile,
   writeFile,
   dirName,
-  basename,
 } from '../file-system';
 import { getDateStamp } from '../internal-storage';
 

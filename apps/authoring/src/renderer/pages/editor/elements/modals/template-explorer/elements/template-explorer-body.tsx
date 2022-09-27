@@ -14,6 +14,13 @@ import {
 export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
   const hasActiveSlide = useHasActiveSlide();
   const slideData = useActiveSlide();
+  const isNewSlide =
+    slideData.template &&
+    slideData.template.meta &&
+    slideData.template.meta.name
+      ? false
+      : true;
+  const currentTemplate = !isNewSlide ? slideData.template.meta.name : '';
   const [isInit, setInit] = useState(false);
   const [list, setList] = useState<Array<TemplateListItem>>([]);
 
@@ -21,7 +28,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
     const listCopy = list.map((item: TemplateListItem) => {
       item.isSelected = false;
 
-      if (item.meta.name === template.meta.name) {
+      if (!template.meta || item.meta.name === template.meta.name) {
         item.isSelected = true;
       }
 
@@ -40,7 +47,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
     const updateList = (templates: Array<TemplateListItem>) => {
       const markSelectedTemplate = () => {
         for (let i = 0, ii = templates.length; i < ii; i++) {
-          if (templates[i].meta.name === slideData.template.meta.name) {
+          if (templates[i].meta.name === currentTemplate) {
             templates[i].isSelected = true;
             onSelectTemplate(templates[i]);
             break;
@@ -48,7 +55,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
         }
       };
 
-      if (hasActiveSlide) {
+      if (hasActiveSlide && !isNewSlide) {
         markSelectedTemplate();
       }
 
@@ -56,6 +63,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
     };
 
     Templates.list().then(results => {
+      console.log('template list', results);
       if (results.error) {
         console.error(results);
         return;
@@ -64,7 +72,14 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
       updateList(results.data.templates);
       setInit(true);
     });
-  }, [isInit, hasActiveSlide, slideData, onSelectTemplate]);
+  }, [
+    isInit,
+    hasActiveSlide,
+    slideData,
+    onSelectTemplate,
+    isNewSlide,
+    currentTemplate,
+  ]);
 
   return (
     <div className={styles.templateExplorerBody}>
@@ -87,7 +102,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
                     handleSlideSelection(item);
                   }}
                 >
-                  {slideData.template.meta.name === item.meta.name ? (
+                  {currentTemplate === item.meta.name ? (
                     <span className={styles.templateExplorerSlideActive}>
                       <Icon icon="check_circle" />
                     </span>
