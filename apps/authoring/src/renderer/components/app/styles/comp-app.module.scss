@@ -1,6 +1,6 @@
+@use '@owlui/lib/src/theme/utils' as *;
 @use '@owlui/lib/src/theme/global/bootstrap' as *;
-@use '@owlui/lib/src/theme/global/tokens' as *;
-@import './forms';
+@use './forms';
 
 :global .drag {
   -webkit-app-region: drag;

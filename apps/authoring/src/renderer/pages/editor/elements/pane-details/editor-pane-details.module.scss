@@ -1,5 +1,4 @@
-@use 'sass:selector';
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .owlui-tab-content {
   overflow-y: auto;
@@ -165,7 +164,7 @@
       padding: 0.25rem 1rem;
       color: var(--owl-sidebar-header-color);
       font-weight: 700;
-      line-height: var(--osg-line-height-sm);
+      line-height: var(--bs-line-height-sm);
       letter-spacing: 0.025em;
       text-transform: uppercase;
       background: #e9ecef;
@@ -439,7 +438,7 @@
   &--lesson,
   &--slide {
     position: relative;
-    line-height: var(--osg-line-height-sm);
+    line-height: var(--bs-line-height-sm);
   }
 
   &--module .nav,

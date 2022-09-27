@@ -1,4 +1,4 @@
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .editor {
   display: flex;
