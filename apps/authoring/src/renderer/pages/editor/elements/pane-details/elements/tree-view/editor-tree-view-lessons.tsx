@@ -19,11 +19,16 @@ import { DeleteModal } from '../modals/editor-modal-delete';
 import {
   updateActiveSlide,
   updateActiveSlidePosition,
+  useActiveSlidePosition,
 } from '../../../../page-editor-hooks';
 
 const TreeViewLesson = (props: TreeViewLessonProps) => {
   const { tree, idx, moduleIdx, project } = props;
-  const [open, setOpen] = useState(false);
+  const activeSlidePosition = useActiveSlidePosition();
+  const isActiveLesson =
+    activeSlidePosition.moduleIdx === moduleIdx &&
+    activeSlidePosition.lessonIdx === idx;
+  const [open, setOpen] = useState(isActiveLesson);
   const itemId = `module-${moduleIdx}-lesson-item-${idx}`;
   const menuId = `module-${moduleIdx}-lesson-menu-${idx}`;
   const modules = deepCopy(project.modules);
