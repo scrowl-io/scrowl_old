@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
-import { Projects } from '../../../../../../models';
+import { Projects, Templates } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
 import {
   ModuleTreeItem,
@@ -10,10 +10,14 @@ import {
   TreeViewSlidesProps,
   TreeViewSlideProps,
 } from './editor-tree-view.types';
-import { deepCopy } from './utils';
+import { deepCopy, moveTreeItem } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
 import { DeleteModal } from '../modals/editor-modal-delete';
-import { updateActiveSlide } from '../../../../page-editor-hooks';
+import {
+  updateActiveSlide,
+  updateActiveSlidePosition,
+  useActiveSlidePosition,
+} from '../../../../page-editor-hooks';
 
 const TreeViewSlide = (props: TreeViewSlideProps) => {
   const { tree, idx, moduleIdx, lessonIdx, project } = props;
@@ -23,6 +27,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
   const slideModule: ModuleTreeItem = modules[moduleIdx];
   const slideLesson: LessonTreeItem = slideModule.lessons[lessonIdx];
   const slide: SlideTreeItem = slideLesson.slides[idx];
+  const activeSlidePosition = useActiveSlidePosition();
   const [showModalRename, setModalRename] = useState(false);
   const toggleModalRename = () => setModalRename(!showModalRename);
   const [showModalDelete, setModalDelete] = useState(false);
@@ -53,9 +58,15 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         const newSlide: SlideTreeItem = {
           name: slide.name + ' copy',
         };
+        const newIdx = idx + 1;
 
-        slideLesson.slides.splice(idx + 1, 0, newSlide);
+        slideLesson.slides.splice(newIdx, 0, newSlide);
         Projects.update({ modules });
+        updateActiveSlide(slideLesson.slides[newIdx], {
+          moduleIdx,
+          lessonIdx,
+          slideIdx: newIdx,
+        });
       },
     },
     {
@@ -67,8 +78,16 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         const newSlide: SlideTreeItem = {
           name: 'Untitled Slide',
         };
-        slideLesson.slides.splice(idx + 1, 0, newSlide);
+        const newIdx = idx + 1;
+
+        slideLesson.slides.splice(newIdx, 0, newSlide);
         Projects.update({ modules });
+        updateActiveSlide(slideLesson.slides[newIdx], {
+          moduleIdx,
+          lessonIdx,
+          slideIdx: newIdx,
+        });
+        Templates.explore();
       },
     },
     {
@@ -76,14 +95,14 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       icon: 'arrow_upward',
       display: 'outlined',
       actionHandler: () => {
-        if (slideLesson.slides.length <= 1 || idx <= 0) {
-          console.log('Invalid operation');
+        const newIdx = idx - 1;
+        const slide = moveTreeItem(idx, newIdx, slideLesson.slides);
+
+        if (!slide) {
           return;
         }
-        [slideLesson.slides[idx - 1], slideLesson.slides[idx]] = [
-          slideLesson.slides[idx],
-          slideLesson.slides[idx - 1],
-        ];
+
+        updateActiveSlidePosition({ slideIdx: newIdx });
         Projects.update({ modules });
       },
     },
@@ -92,17 +111,14 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       icon: 'arrow_downward',
       display: 'outlined',
       actionHandler: () => {
-        if (
-          slideLesson.slides.length <= 1 ||
-          slideLesson.slides.length - 1 <= idx
-        ) {
-          console.log('Invalid operation');
+        const newIdx = idx + 1;
+        const slide = moveTreeItem(idx, newIdx, slideLesson.slides);
+
+        if (!slide) {
           return;
         }
-        [slideLesson.slides[idx], slideLesson.slides[idx + 1]] = [
-          slideLesson.slides[idx + 1],
-          slideLesson.slides[idx],
-        ];
+
+        updateActiveSlidePosition({ slideIdx: newIdx });
         Projects.update({ modules });
       },
     },
@@ -129,27 +145,24 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
   };
 
   const handleSlideSelection = () => {
-    const selectorSlideActive = document.querySelector('.slideActive');
-
-    if (selectorSlideActive) {
-      selectorSlideActive.classList.remove('slideActive');
-    }
-
     updateActiveSlide(tree, {
       moduleIdx,
       lessonIdx,
       slideIdx: idx,
     });
-    const selectorWrapper = document.getElementById(itemWrapperId);
-
-    if (selectorWrapper) {
-      selectorWrapper.classList.add('slideActive');
-    }
   };
+
+  const isActiveSlide =
+    activeSlidePosition.moduleIdx === moduleIdx &&
+    activeSlidePosition.lessonIdx === lessonIdx &&
+    activeSlidePosition.slideIdx === idx;
+  const classes = `${styles.treeViewHeader} ${
+    isActiveSlide ? 'slideActive' : ''
+  }`;
 
   return (
     <div className={styles.treeViewSlide} key={idx}>
-      <div id={itemWrapperId} className={styles.treeViewHeader}>
+      <div id={itemWrapperId} className={classes}>
         <Button
           id={itemId}
           className={styles.treeViewItem}
