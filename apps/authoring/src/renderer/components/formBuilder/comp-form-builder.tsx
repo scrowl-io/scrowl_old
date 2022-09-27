@@ -1,5 +1,4 @@
 import React from 'react';
-import { Button } from '@owlui/lib';
 import { Form } from 'react-bootstrap';
 import * as styles from './comp-formBuilder.module.scss';
 import { FormBuilderProps, FormElementProps } from './comp-form-builder.types';
@@ -22,7 +21,7 @@ export const FormElement = ({ config, name, onUpdate }: FormElementProps) => {
 export const FormBuilder = ({
   name,
   formData,
-  onSubmit,
+  SubmitAction,
   onUpdate,
 }: FormBuilderProps) => {
   const controls = Object.keys(formData);
@@ -40,9 +39,13 @@ export const FormBuilder = ({
           />
         );
       })}
-      <Button style={{ marginTop: '1em' }} onClick={onSubmit}>
-        Update Slide
-      </Button>
+      {SubmitAction ? (
+        <div style={{ marginTop: '1em' }}>
+          <SubmitAction />
+        </div>
+      ) : (
+        <></>
+      )}
     </Form>
   );
 };
