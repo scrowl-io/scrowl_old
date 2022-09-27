@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import React from 'react';
 import { Modal, ModalDefaultProps, Button } from '@owlui/lib';
 import * as styles from '../../editor-pane-details.module.scss';
@@ -42,7 +43,7 @@ export const DeleteModal = ({
           variant="success"
           className={styles.glossarySubmitButton}
         >
-          Update
+          Delete
         </Button>
       </>
     ),

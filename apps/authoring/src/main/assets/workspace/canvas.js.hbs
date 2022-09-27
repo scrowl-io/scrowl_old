@@ -1,0 +1,20 @@
+{{#with . as | data |}}
+import { createElement } from 'react';
+import { createRoot } from 'react-dom';
+import { {{data.templateComponent}} } from '{{data.templateJs}}';
+
+const container = document.getElementById('app');
+const root = createRoot(container);
+
+const App = () => {
+  const [manifest, setManifest] = React.useState(window.__MANIFEST.elements);
+
+  window.addEventListener('message', (e) => {
+    setManifest(e.data.updateManifest.elements);
+  });
+
+  return createElement({{data.templateComponent}}, { manifest }, null);
+}
+
+root.render(createElement(App));
+{{/with}}

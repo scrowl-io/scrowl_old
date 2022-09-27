@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
@@ -11,12 +12,7 @@ import {
 } from '@owlui/lib';
 
 const ActionMenuBtn = (
-  <Icon
-    display="outlined"
-    filled
-    icon="more_vert"
-    style={{ fontSize: '15px', fontWeight: 1000 }}
-  />
+  <Icon display="rounded" icon="more_vert" opsz={20} filled />
 );
 
 const makeActionMenu = (

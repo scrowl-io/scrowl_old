@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface PaneCommons {
-  side: 'left';
+  side: 'left' | 'right';
 }
 
 export type PaneProps = Partial<PaneCommons> &
