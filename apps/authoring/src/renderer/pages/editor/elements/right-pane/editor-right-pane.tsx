@@ -47,7 +47,7 @@ export const RightPane = () => {
         </span>
         <div>
           <div className={styles.slideEditorHeaderTitle}>
-            {activeSlide.template.meta.name}
+            {slideData.template.meta.name}
           </div>
           <Button
             className={styles.slideEditorHeaderAction}
