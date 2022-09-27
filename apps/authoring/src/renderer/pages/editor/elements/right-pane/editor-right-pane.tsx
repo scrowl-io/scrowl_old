@@ -40,7 +40,7 @@ export const RightPane = () => {
   }
 
   return (
-    <Pane className={styles.slideEditor} side="right">
+    <Pane className="slide-editor" side="right">
       <div className={styles.slideEditorHeader}>
         <span className={styles.slideEditorHeaderIcon}>
           <Icon icon="dashboard" display="sharp" filled={true} />
