@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
-import { Projects } from '../../../../../../models';
+import { Projects, Templates } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
 import {
   ModuleTreeItem,
@@ -53,9 +53,15 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         const newSlide: SlideTreeItem = {
           name: slide.name + ' copy',
         };
+        const newIdx = idx + 1;
 
-        slideLesson.slides.splice(idx + 1, 0, newSlide);
+        slideLesson.slides.splice(newIdx, 0, newSlide);
         Projects.update({ modules });
+        updateActiveSlide(slideLesson.slides[newIdx], {
+          moduleIdx,
+          lessonIdx,
+          slideIdx: newIdx,
+        });
       },
     },
     {
@@ -67,8 +73,16 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         const newSlide: SlideTreeItem = {
           name: 'Untitled Slide',
         };
-        slideLesson.slides.splice(idx + 1, 0, newSlide);
+        const newIdx = idx + 1;
+
+        slideLesson.slides.splice(newIdx, 0, newSlide);
         Projects.update({ modules });
+        updateActiveSlide(slideLesson.slides[newIdx], {
+          moduleIdx,
+          lessonIdx,
+          slideIdx: newIdx,
+        });
+        Templates.explore();
       },
     },
     {
