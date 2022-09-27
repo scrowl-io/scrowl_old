@@ -11,10 +11,11 @@ import {
   TreeViewModuleProps,
   LessonTreeItem,
 } from './editor-tree-view.types';
-import { deepCopy } from './utils';
+import { deepCopy, moveTreeItem } from './utils';
 import { TreeViewLessons } from './editor-tree-view-lessons';
 import { RenameModal } from '../modals/editor-modal-rename';
 import { DeleteModal } from '../modals/editor-modal-delete';
+import { updateActiveSlidePosition } from '../../../../page-editor-hooks';
 
 const TreeViewModule = (props: TreeViewModuleProps) => {
   const { tree, project, idx } = props;
@@ -117,15 +118,14 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       icon: 'arrow_upward',
       display: 'outlined',
       actionHandler: () => {
-        if (!modules) {
+        const newIdx = idx - 1;
+        const module = moveTreeItem(idx, newIdx, modules);
+
+        if (!module) {
           return;
         }
 
-        if (modules.length <= 1 || idx <= 0) {
-          console.log('Invalid operation');
-          return;
-        }
-        [modules[idx - 1], modules[idx]] = [modules[idx], modules[idx - 1]];
+        updateActiveSlidePosition({ moduleIdx: newIdx });
         Projects.update({ modules });
       },
     },
@@ -135,15 +135,14 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       icon: 'arrow_downward',
       display: 'outlined',
       actionHandler: () => {
-        if (!modules) {
+        const newIdx = idx + 1;
+        const module = moveTreeItem(idx, newIdx, modules);
+
+        if (!module) {
           return;
         }
 
-        if (modules.length <= 1 || modules.length - 1 <= idx) {
-          console.log('Invalid operation');
-          return;
-        }
-        [modules[idx], modules[idx + 1]] = [modules[idx + 1], modules[idx]];
+        updateActiveSlidePosition({ moduleIdx: newIdx });
         Projects.update({ modules });
       },
     },

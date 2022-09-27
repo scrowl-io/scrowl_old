@@ -13,10 +13,13 @@ import {
   TreeViewLessonProps,
 } from './editor-tree-view.types';
 import { TreeViewSlides } from './editor-tree-view-slides';
-import { deepCopy } from './utils';
+import { deepCopy, moveTreeItem } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
 import { DeleteModal } from '../modals/editor-modal-delete';
-import { updateActiveSlide } from '../../../../page-editor-hooks';
+import {
+  updateActiveSlide,
+  updateActiveSlidePosition,
+} from '../../../../page-editor-hooks';
 
 const TreeViewLesson = (props: TreeViewLessonProps) => {
   const { tree, idx, moduleIdx, project } = props;
@@ -106,14 +109,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'arrow_upward',
       display: 'outlined',
       actionHandler: () => {
-        if (lessonModule.lessons.length <= 1 || idx <= 0) {
-          console.log('Invalid operation');
+        const newIdx = idx - 1;
+        const lesson = moveTreeItem(idx, newIdx, lessonModule.lessons);
+
+        if (!lesson) {
           return;
         }
-        [lessonModule.lessons[idx - 1], lessonModule.lessons[idx]] = [
-          lessonModule.lessons[idx],
-          lessonModule.lessons[idx - 1],
-        ];
+
+        updateActiveSlidePosition({ lessonIdx: newIdx });
         Projects.update({ modules });
       },
     },
@@ -122,17 +125,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'arrow_downward',
       display: 'outlined',
       actionHandler: () => {
-        if (
-          lessonModule.lessons.length <= 1 ||
-          lessonModule.lessons.length - 1 <= idx
-        ) {
-          console.log('Invalid operation');
+        const newIdx = idx + 1;
+        const lesson = moveTreeItem(idx, newIdx, lessonModule.lessons);
+
+        if (!lesson) {
           return;
         }
-        [lessonModule.lessons[idx], lessonModule.lessons[idx + 1]] = [
-          lessonModule.lessons[idx + 1],
-          lessonModule.lessons[idx],
-        ];
+
+        updateActiveSlidePosition({ lessonIdx: newIdx });
         Projects.update({ modules });
       },
     },
