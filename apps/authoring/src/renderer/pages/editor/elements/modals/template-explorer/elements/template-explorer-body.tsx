@@ -94,7 +94,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
                   ) : (
                     <></>
                   )}
-                  <Card className={styles.templateExplorerSlideCard}>
+                  <Card className="template-explorer__slide__card">
                     <CardBody className={styles.templateExplorerSlideCardBody}>
                       <div className={styles.templateExplorerSlideType}>
                         <Icon display="sharp" icon="dashboard" filled={true} />

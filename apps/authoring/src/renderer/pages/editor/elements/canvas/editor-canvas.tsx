@@ -69,7 +69,7 @@ export const Canvas = () => {
   };
 
   return (
-    <div className={styles.canvasContainer}>
+    <div>
       <Header onUpdate={updateSlideTitle} />
       <Slide options={slideOpts} style={slideStyle}>
         <iframe
