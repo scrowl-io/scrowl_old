@@ -7,7 +7,6 @@ export const config: StateConfig = {
     isInit: false,
     activeSlide: {},
     hasActiveSlide: false,
-    editSlideRef: {},
     activeSlidePosition: {
       moduleIdx: -1,
       lessonIdx: -1,
@@ -34,12 +33,6 @@ export const config: StateConfig = {
       state.activeSlide.template = action.payload;
       state.editSlideRef.template = action.payload;
     },
-    updateEditSlideRef: (state, action) => {
-      state.editSlideRef = Object.assign(state.editSlideRef, action.payload);
-    },
-    updateEditSlideRefTemplate: (state, action) => {
-      state.editSlideRef.template = action.payload;
-    },
   },
 };
 
@@ -49,9 +42,7 @@ export const {
   init,
   updateSlide,
   updateSlidePosition,
-  updateEditSlideRef,
   updateActiveSlideTemplate,
-  updateEditSlideRefTemplate,
 } = slice.actions;
 
 export const reducer = slice.reducer;

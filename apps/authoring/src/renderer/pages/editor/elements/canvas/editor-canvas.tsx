@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import * as styles from './editor-canvas.module.scss';
 import { Templates, Projects } from '../../../../models';
+import { requester } from '../../../../services';
 import {
   useActiveSlide,
   updateActiveSlide,
   useActiveSlidePosition,
-  useEditSlideRef,
 } from '../../page-editor-hooks';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 import { Header } from './elements';
-import { deepCopy } from '../pane-details/elements';
 
 export const Canvas = () => {
-  const [isMounted, setMounted] = useState(false);
-  const project = Projects.useData();
-  const modules = deepCopy(project.modules);
-  const activeSlide: Projects.ProjectSlide = useActiveSlide();
   const position = useActiveSlidePosition();
   const [refPosition, setRefPosition] = useState(position);
-  const slideRef: Projects.ProjectSlide = useEditSlideRef();
+  const slideData: Projects.ProjectSlide = useActiveSlide();
+  const [prevPrevSlideTemplate, setPrevSlideTemplate] = useState(
+    slideData.template?.meta.filename || ''
+  );
   const [canvasUrl, setCanvasUrl] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [slideOpts, setSlideOpts] = useState<SlideCommons>({
@@ -30,109 +28,44 @@ export const Canvas = () => {
   });
 
   useEffect(() => {
-    if (
-      !activeSlide ||
-      !activeSlide.template ||
-      !activeSlide.template.meta ||
-      !slideRef ||
-      !slideRef.template ||
-      !slideRef.template.meta
-    ) {
+    if (!slideData || !slideData.template || !slideData.template.meta) {
       return;
     }
 
-    const getSlideInfo = (slide: Projects.ProjectSlide) => {
-      const copy = deepCopy(slide);
-
-      delete copy.template;
-      return copy;
-    };
-
-    const templateChanged =
-      slideRef.template.meta.filename !== activeSlide.template.meta.filename;
-    const templateUpdated =
-      slideRef.template.elements !== activeSlide.template.elements;
-    const slideChanged = position !== refPosition;
-    const slideUpdated = getSlideInfo(slideRef) !== getSlideInfo(activeSlide);
-
-    console.log('');
-    console.log('templateChanged', templateChanged);
-    console.log('templateUpdated', templateUpdated);
-    console.log('slideChanged', slideChanged);
-    console.log('slideUpdated', slideUpdated);
-
-    if (!slideChanged && !templateChanged) {
-      return;
-    }
-
-    Templates.load(slideRef.template).then(res => {
+    const updateCanvasUrl = (res: requester.ApiResult) => {
       if (res.error) {
         console.error(res);
         return;
       }
 
       setCanvasUrl(res.data.url);
-    });
+    };
+
+    const templateChanged =
+      slideData.template.meta.filename !== prevPrevSlideTemplate;
+    const slideChanged = position !== refPosition;
+
+    if (slideChanged || templateChanged) {
+      setPrevSlideTemplate(slideData.template.meta.filename);
+      Templates.load(slideData.template).then(updateCanvasUrl);
+    }
 
     return () => {
-      setMounted(true);
       setRefPosition(position);
     };
   }, [
-    activeSlide,
-    slideRef,
-    isMounted,
-    setMounted,
+    slideData,
     position,
     refPosition,
     setRefPosition,
+    prevPrevSlideTemplate,
+    setPrevSlideTemplate,
   ]);
-
-  const getSlideData = () => {
-    if (
-      position.moduleIdx === -1 ||
-      position.lessonIdx === -1 ||
-      position.slideIdx === -1
-    ) {
-      console.error('Active slide position not set', position);
-      return;
-    }
-
-    const module = modules[position.moduleIdx];
-
-    if (!module || !module.lessons.length) {
-      console.error('Unable to find active slide module', position, modules);
-      return;
-    }
-
-    const lesson = module.lessons[position.lessonIdx];
-
-    if (!lesson || !lesson.slides.length) {
-      console.error('Unable to find active slide lesson', position, modules);
-      return;
-    }
-
-    const slide = lesson.slides[position.slideIdx];
-
-    if (!slide) {
-      console.error('Unable to find active slide', position, modules);
-      return;
-    }
-
-    return slide;
-  };
 
   const updateSlideTitle = (title?: string) => {
     const payload = { name: title };
-    let slide = getSlideData();
-    if (!slide) {
-      return;
-    }
-    slide = Object.assign(slide, payload);
-    updateActiveSlide(slide, position);
-    // console.log('modules', modules);
-    // console.log('updating slide title', __isMounted.current);
-    // Projects.update({ modules });
+
+    updateActiveSlide(payload, position);
   };
 
   return (

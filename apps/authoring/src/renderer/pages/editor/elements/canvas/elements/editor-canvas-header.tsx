@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import * as styles from '../editor-canvas.module.scss';
-import { useEditSlideRef } from '../../../page-editor-hooks';
+import { useActiveSlide } from '../../../page-editor-hooks';
 import { EditorCanvasHeaderProps } from '../../../page-editor.types';
 import { Icon } from '@owlui/lib';
 
 export const Header = ({ onUpdate }: EditorCanvasHeaderProps) => {
-  const slideRef = useEditSlideRef();
-  const [slideName, setSlideName] = useState(slideRef.name || '');
+  const slideData = useActiveSlide();
+  const [slideName, setSlideName] = useState(slideData.name || '');
 
   useEffect(() => {
-    setSlideName(slideRef.name || '');
-  }, [slideRef]);
+    setSlideName(slideData.name || '');
+  }, [slideData]);
 
   const handleSlideNameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const val = ev.currentTarget.value;

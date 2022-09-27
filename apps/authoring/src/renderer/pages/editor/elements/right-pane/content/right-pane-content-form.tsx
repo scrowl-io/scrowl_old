@@ -4,20 +4,14 @@ import { Projects } from '../../../../../models';
 import { FormBuilder, FormBuilderCommons } from '../../../../../components';
 import { deepCopy } from './utils';
 import {
+  useActiveSlide,
   updateActiveSlide,
-  useEditSlideRef,
-  updateEditSlideRef,
   useActiveSlidePosition,
 } from '../../../page-editor-hooks';
-import { ProjectSlide } from '../../../../../../main/models/projects';
-
-export type ContentFormProps = {
-  activeSlide: ProjectSlide;
-};
 
 export const RightPaneContentForm = () => {
   const project = Projects.useData();
-  const slideRef = useEditSlideRef();
+  const slideData = useActiveSlide();
   const modules = deepCopy(project.modules);
   const position: SlidePosition = useActiveSlidePosition();
 
@@ -52,16 +46,16 @@ export const RightPaneContentForm = () => {
       return;
     }
 
-    slide = Object.assign(slide, slideRef);
-    updateActiveSlide(slide, position);
+    slide = Object.assign(slide, slideData);
+    updateActiveSlide(slide);
     Projects.update({ modules });
   };
 
   const handleOnUpdate = (data: FormBuilderCommons['formData']) => {
-    const slide = deepCopy(slideRef);
+    const slide = deepCopy(slideData);
 
     slide.template.elements = Object.assign(slide.template.elements, data);
-    updateEditSlideRef(slide);
+    updateActiveSlide(slide);
 
     const targetFrame = document.getElementById(
       'template-iframe'
@@ -78,9 +72,9 @@ export const RightPaneContentForm = () => {
   };
 
   if (
-    !slideRef.template ||
-    !slideRef.template.elements ||
-    !Object.keys(slideRef.template.elements).length
+    !slideData.template ||
+    !slideData.template.elements ||
+    !Object.keys(slideData.template.elements).length
   ) {
     return <></>;
   }
@@ -88,8 +82,8 @@ export const RightPaneContentForm = () => {
   return (
     <div>
       <FormBuilder
-        name={slideRef.name}
-        formData={slideRef.template.elements}
+        name={slideData.name}
+        formData={slideData.template.elements}
         onUpdate={handleOnUpdate}
         onSubmit={handleOnSubmit}
       />

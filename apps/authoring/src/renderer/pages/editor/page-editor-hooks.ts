@@ -24,14 +24,6 @@ export const useInit = () => {
   return isInit;
 };
 
-export const useEditSlideRef = () => {
-  return useSelector((state: State.RootState) => state.editor.editSlideRef);
-};
-
-export const updateEditSlideRef = (slideData: Projects.ProjectSlide) => {
-  processor.dispatch(state.updateEditSlideRef(slideData));
-};
-
 export const useActiveSlide = () => {
   return useSelector((state: State.RootState) => state.editor.activeSlide);
 };
@@ -44,10 +36,14 @@ export const useActiveSlidePosition = () => {
 
 export const updateActiveSlide = (
   slideData: Partial<Projects.ProjectSlide>,
-  position: SlidePosition
+  position?: SlidePosition
 ) => {
-  processor.dispatch(state.updateEditSlideRef(slideData));
   processor.dispatch(state.updateSlide(slideData));
+
+  if (!position) {
+    return;
+  }
+
   processor.dispatch(state.updateSlidePosition(position));
 };
 
@@ -57,24 +53,15 @@ export const updateActiveSlideTemplate = (
   processor.dispatch(state.updateActiveSlideTemplate(template));
 };
 
-export const updateEditSlideRefTemplate = (
-  template: Templates.TemplateManifest
-) => {
-  processor.dispatch(state.updateEditSlideRefTemplate(template));
-};
-
 export const useHasActiveSlide = () => {
   return useSelector((state: State.RootState) => state.editor.hasActiveSlide);
 };
 
 export default {
   useInit,
-  useEditSlideRef,
-  updateEditSlideRef,
   useActiveSlide,
   useActiveSlidePosition,
   updateActiveSlide,
   updateActiveSlideTemplate,
-  updateEditSlideRefTemplate,
   useHasActiveSlide,
 };
