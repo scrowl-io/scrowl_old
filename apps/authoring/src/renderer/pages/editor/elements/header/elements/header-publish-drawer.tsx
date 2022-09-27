@@ -55,7 +55,9 @@ export const PublishDrawer = (props: PublishDrawerProps) => {
         <PublishDrawerContent project={project} />
         <div className="d-flex justify-content-end my-3">
           <Button
-            className={`btn btn-sm btn-success ms-2 ${styles.btnPublish}`}
+            className={`ms-2 ${styles.btnPublish}`}
+            size="sm"
+            variant="success"
             onClick={handlePublish}
             disabled={props.disabled}
           >

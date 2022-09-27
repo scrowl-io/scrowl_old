@@ -1,10 +1,10 @@
 import { dialog, OpenDialogOptions, SaveDialogOptions } from 'electron';
 import {
   DialogOpenResult,
-  DialogSaveResult,
   FileFilters,
   AllowedFiles,
 } from './service-fs.types';
+import { ApiResult } from '../requester';
 
 export const MEDIA_TYPES: FileFilters = {
   image: { name: 'Image', extensions: ['jpg', 'jpeg', 'png'] },
@@ -44,29 +44,49 @@ export const dialogOpen = (options: OpenDialogOptions) => {
 };
 
 export const dialogSave = (options: SaveDialogOptions) => {
-  return new Promise<DialogSaveResult>((resolve, reject) => {
-    dialog
-      .showSaveDialog(options)
-      .then(({ canceled, filePath }) => {
-        resolve({
-          error: false,
-          data: {
-            canceled,
-            filePath,
-          },
-        });
-      })
-      .catch(err => {
-        const message =
-          err && typeof err === 'string'
-            ? err
-            : `Unable to save dialog - unknown reason`;
+  return new Promise<ApiResult>(resolve => {
+    try {
+      dialog
+        .showSaveDialog(options)
+        .then(saveRes => {
+          if (saveRes.canceled) {
+            resolve({
+              error: false,
+              data: {
+                canceled: true,
+              },
+            });
+            return;
+          }
 
-        reject({
-          error: true,
-          message,
+          resolve({
+            error: false,
+            data: {
+              canceled: false,
+              filePath: saveRes.filePath,
+            },
+          });
+        })
+        .catch(e => {
+          resolve({
+            error: true,
+            message: 'Failed to save',
+            data: {
+              trace: e,
+              options,
+            },
+          });
         });
+    } catch (e) {
+      resolve({
+        error: true,
+        message: 'Failed to save',
+        data: {
+          trace: e,
+          options,
+        },
       });
+    }
   });
 };
 

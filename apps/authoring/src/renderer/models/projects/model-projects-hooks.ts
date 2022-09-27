@@ -287,34 +287,34 @@ export const update = (data: ProjectData, autoSave = false) => {
 };
 
 export const publish = (data: ProjectData) => {
-  return new Promise<requester.ApiResult>(resolve => {
-    try {
-      const hasProcessor = checkProcessor();
+  return new Promise<requester.ApiResult>((resolve, reject) => {
+    const hasProcessor = checkProcessor();
 
-      if (!hasProcessor) {
-        return;
-      }
+    if (!hasProcessor) {
+      return;
+    }
 
-      processor.dispatch(state.process(true));
-      api.publish(data).then(result => {
-        if (result.error) {
-          console.error(result);
-          return;
+    processor.dispatch(state.process(true));
+
+    api
+      .publish(data)
+      .then(result => {
+        if (!result.error && !result.data.canceled) {
+          processor.dispatch(state.update(result.data.project));
         }
 
-        processor.dispatch(state.update(result.data.project));
         processor.dispatch(state.process(false));
         resolve(result);
+      })
+      .catch(error => {
+        reject({
+          error: true,
+          message: error.message,
+          data: {
+            trace: error,
+          },
+        });
       });
-    } catch (e) {
-      resolve({
-        error: true,
-        message: 'Failed to publish',
-        data: {
-          trace: e,
-        },
-      });
-    }
   });
 };
 

@@ -47,6 +47,10 @@ export const updateActiveSlide = (
   processor.dispatch(state.updateSlidePosition(position));
 };
 
+export const updateActiveSlidePosition = (position: Partial<SlidePosition>) => {
+  processor.dispatch(state.updateSlidePosition(position));
+};
+
 export const updateActiveSlideTemplate = (
   template: Templates.TemplateManifest
 ) => {
@@ -60,8 +64,9 @@ export const useHasActiveSlide = () => {
 export default {
   useInit,
   useActiveSlide,
-  useActiveSlidePosition,
   updateActiveSlide,
+  useActiveSlidePosition,
+  updateActiveSlidePosition,
   updateActiveSlideTemplate,
   useHasActiveSlide,
 };

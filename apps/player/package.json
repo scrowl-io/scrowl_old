@@ -70,7 +70,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.41",
+    "@owlui/lib": "^0.0.42",
     "bootstrap": "5.2.0-beta1",
     "react": "^18.1.0",
     "react-bootstrap": "^2.4.0",
