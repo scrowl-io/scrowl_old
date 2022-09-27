@@ -1,5 +1,4 @@
-@import '../../../../styles/bs';
-@import '../../../../styles/variables';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .slide-name-container {
   align-content: center;

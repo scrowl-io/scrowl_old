@@ -1,5 +1,4 @@
-@import '../../styles/bs';
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .scrowl__navbar {
   --bs-navbar-color: var(--owl-navbar-color);

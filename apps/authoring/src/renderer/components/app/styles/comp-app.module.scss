@@ -1,4 +1,5 @@
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/global/bootstrap' as *;
+@use '@owlui/lib/src/theme/global/tokens' as *;
 @import './forms';
 
 :global .drag {

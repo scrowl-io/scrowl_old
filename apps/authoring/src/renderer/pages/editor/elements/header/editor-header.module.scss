@@ -1,5 +1,5 @@
-@import '../../../../styles/bs';
-@import '../../../../styles/variables';
+@use '@owlui/lib/src/theme/utils' as *;
+@use '@owlui/lib/src/theme/global/bootstrap' as *;
 
 .filename {
   --owl-input-color: var(--bs-body-color);
