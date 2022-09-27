@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import * as styles from './editor-canvas.module.scss';
 import { Templates, Projects } from '../../../../models';
 import { requester } from '../../../../services';
 import {
