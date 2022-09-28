@@ -42,8 +42,8 @@ export const RightPane = () => {
 
   if (!isLoaded || !hasActiveSlide) {
     return (
-      <Pane className={styles['slide-editor']} side="right">
-        <div className={styles['slide-editor__header']}>
+      <Pane className="slide-editor" side="right">
+        <div className={styles.slideEditorHeader}>
           <Alert variant="light" className="w-100">
             <small>Select a slide to edit settings</small>
           </Alert>
