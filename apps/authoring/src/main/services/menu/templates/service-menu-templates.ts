@@ -20,12 +20,7 @@ export const createMenu = (
 
   template.push(menuFile.template);
   template.push(menuEdit.template);
-  EVENTS = Object.assign(
-    EVENTS,
-    menuApp.EVENTS,
-    menuFile.EVENTS,
-    menuEdit.EVENTS
-  );
+  EVENTS = Object.assign(EVENTS, menuApp.EVENTS, menuFile.EVENTS);
   registerAll(EVENTS);
 
   return {
