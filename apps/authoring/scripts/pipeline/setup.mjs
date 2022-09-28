@@ -88,6 +88,13 @@ const sourceMap = {
       overwrite: true,
     },
   },
+  'node_modules/scrowl-template-bullet-points/build': {
+    dest: './src/main/assets/template-bullet-points',
+    includePaths: ['../../'],
+    options: {
+      overwrite: true,
+    },
+  },
   'node_modules/react/umd/react.production.min.js': {
     dest: './src/main/assets/workspace/react.production.min.js',
     includePaths: ['../../'],
