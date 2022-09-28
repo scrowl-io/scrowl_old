@@ -14,7 +14,7 @@ import {
 import * as table from './model-projects-schema';
 // import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
-import { add as addTemplate } from '../templates';
+// import { add as addTemplate } from '../templates';
 import { SaveDialogOptions } from 'electron';
 
 const writeProjectTemp = (
