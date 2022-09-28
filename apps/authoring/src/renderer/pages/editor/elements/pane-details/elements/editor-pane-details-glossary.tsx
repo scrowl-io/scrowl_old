@@ -57,8 +57,8 @@ export const TabGlossary = () => {
     setGlossaryDrawerOpen(true);
   };
 
-  const handleGlossaryDrawerClose = () => {
-    setActiveTerm({ name: '', description: '' });
+  const handleGlossaryDrawerClose = (data: GlossaryItem) => {
+    setActiveTerm({ name: data.name, description: data.description });
     setGlossaryDrawerOpen(false);
   };
 
@@ -67,8 +67,9 @@ export const TabGlossary = () => {
     Projects.update({ glossary });
   };
 
-  const handleCancel = (data: GlossaryItem) => {
-    setActiveTerm({ name: data.name, description: data.description });
+  const handleGlossaryCancel = () => {
+    setActiveTerm({ name: '', description: '' });
+
     setGlossaryDrawerOpen(false);
   };
 
@@ -82,10 +83,8 @@ export const TabGlossary = () => {
     }
 
     Projects.update({ glossary });
-    handleGlossaryDrawerClose();
+    handleGlossaryCancel();
   };
-
-  console.log(activeTerm);
 
   return (
     <div className={styles.tabGlossary}>
@@ -100,7 +99,7 @@ export const TabGlossary = () => {
         onHide={handleGlossaryDrawerClose}
         term={activeTerm}
         onSubmit={handleGlossaryUpdate}
-        onCancel={handleCancel}
+        onCancel={handleGlossaryCancel}
       />
     </div>
   );

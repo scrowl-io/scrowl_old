@@ -5,9 +5,9 @@ import * as styles from '../../editor-pane-details.module.scss';
 
 export const GlossaryForm = ({
   term,
-  onHide,
   onSubmit,
   onCancel,
+  setDrawerTermData,
 }: GlossaryFormProps) => {
   const prefix = 'form-glossary-term';
   const [data, setData] = useState({
@@ -18,6 +18,9 @@ export const GlossaryForm = ({
     const name = ev.currentTarget.value;
 
     setData({ name, description: data.description });
+    if (setDrawerTermData) {
+      setDrawerTermData({ name, description: data.description });
+    }
   };
   const handleFormChangeDescription = (
     ev: React.FormEvent<HTMLInputElement>
@@ -25,13 +28,17 @@ export const GlossaryForm = ({
     const description = ev.currentTarget.value;
 
     setData({ name: data.name, description: description });
+    if (setDrawerTermData) {
+      setDrawerTermData({ name: data.name, description });
+    }
   };
   const handleFormSubmit = () => {
     onSubmit(data);
   };
   const handleFormCancel = () => {
-    onCancel(data);
+    onCancel();
   };
+
   const handleKeyboardSubmit = (e: React.KeyboardEvent) => {
     const cancelButton = document.querySelector('.glossary-cancel-button');
     const cancelIsFocused = document.activeElement === cancelButton;

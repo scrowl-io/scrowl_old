@@ -26,9 +26,9 @@ export type GlossaryListEntriesProps = {
 export type GlossaryAddBtnProps = ButtonDefaultProps;
 export type GlossaryFormProps = {
   term: GlossaryItem;
-  onHide: () => void;
   onSubmit: (term: GlossaryItem) => void;
-  onCancel: (term: GlossaryItem) => void;
+  onCancel: () => void;
+  setDrawerTermData?: (term: GlossaryItem) => void;
 };
 export type GlossaryDrawerCommons = {
   onSubmit: (term: GlossaryItem) => void;
