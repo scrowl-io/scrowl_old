@@ -12,7 +12,7 @@ import {
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
-import { data } from './model-project.mock';
+// import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
 import { add as addTemplate } from '../templates';
 import { SaveDialogOptions } from 'electron';
@@ -141,7 +141,7 @@ export const create = () => {
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       let project: ProjectData = {
-        name: data.name,
+        name: 'Untitled Project',
       };
       const complete = (res: Requester.ApiResult) => {
         if (res.error) {
@@ -169,10 +169,14 @@ export const create = () => {
 
         project = {
           ...createRes.data.item,
-          scormConfig: data.scormConfig,
-          modules: data.modules || [],
-          glossary: data.glossary || [],
-          resources: data.resources || [],
+          scormConfig: {
+            name: project.name,
+            description: '',
+            authors: '',
+          },
+          modules: [],
+          glossary: [],
+          resources: [],
         };
         writeProjectTemp(
           project,
@@ -184,7 +188,7 @@ export const create = () => {
             return;
           }
 
-          addProjectTemplates(project).then(complete);
+          // addProjectTemplates(project).then(complete);
         });
       });
     } catch (e) {
