@@ -71,7 +71,7 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.42",
+    "@owlui/lib": "^0.0.43",
     "react": "^18.1.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.1.0",

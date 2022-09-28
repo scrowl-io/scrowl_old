@@ -60,6 +60,7 @@ export const ActionMenu = (props: ActionMenuProps) => {
       align="end"
       className={styles.actionMenu}
       {...dropdownProps}
+      showSelected={false}
     ></Dropdown>
   );
 };
