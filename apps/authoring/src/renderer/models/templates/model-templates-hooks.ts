@@ -56,22 +56,22 @@ const checkProcessor = () => {
 };
 
 export const useMenuEvents = () => {
-  const handleInstallEvent = () => {
-    install();
-  };
-  const handleExploreEvent = () => {
-    explore();
-  };
+  // const handleInstallEvent = () => {
+  //   install();
+  // };
+  // const handleExploreEvent = () => {
+  //   explore();
+  // };
 
-  useEffect(() => {
-    Menu.File.onTemplateAdd(handleInstallEvent);
-    Menu.File.onTemplateOpen(handleExploreEvent);
+  // useEffect(() => {
+  //   Menu.File.onTemplateAdd(handleInstallEvent);
+  //   Menu.File.onTemplateOpen(handleExploreEvent);
 
-    return () => {
-      Menu.File.offTemplateAdd();
-      Menu.File.offTemplateOpen();
-    };
-  }, []);
+  //   return () => {
+  //     Menu.File.offTemplateAdd();
+  //     Menu.File.offTemplateOpen();
+  //   };
+  // }, []);
 
   return;
 };
