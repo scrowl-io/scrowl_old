@@ -40,4 +40,4 @@ jobs:
           prerelease: true
           title: Development Build
           files: |
-            '**/release/*.dmg'
+            **/release/*.dmg

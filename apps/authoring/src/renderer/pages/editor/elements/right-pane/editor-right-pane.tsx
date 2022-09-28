@@ -1,6 +1,7 @@
 import React from 'react';
 import * as styles from './editor-right-pane-details.module.scss';
 import { Button, Icon } from '@owlui/lib';
+import { Alert } from 'react-bootstrap';
 import { Pane } from '../../../../components';
 import { Projects, Templates } from '../../../../models';
 import { RightPaneContentForm } from './content/right-pane-content-form';
@@ -40,7 +41,15 @@ export const RightPane = () => {
   ];
 
   if (!isLoaded || !hasActiveSlide) {
-    return <></>;
+    return (
+      <Pane className="slide-editor" side="right">
+        <div className={styles.slideEditorHeader}>
+          <Alert variant="light" className="w-100">
+            <small>Select a slide to edit settings</small>
+          </Alert>
+        </div>
+      </Pane>
+    );
   }
 
   return (
@@ -57,7 +66,7 @@ export const RightPane = () => {
             className={styles.slideEditorHeaderAction}
             variant="link"
             onClick={handleExploreTemplates}
-            pxScale="sm"
+            size="sm"
           >
             Change Template
           </Button>

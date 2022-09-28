@@ -3,19 +3,19 @@ import { PaneProps } from './comp-pane.types';
 import * as styles from './comp-pane.module.scss';
 
 export const Pane = ({ children, className, side }: PaneProps) => {
-  let paneStyles = `${styles.pane}`;
-
-  if (className) {
-    paneStyles += className;
-  }
+  let paneStyles = `${styles.pane} `;
 
   switch (side) {
     case 'right':
-      paneStyles += ` ${styles.paneRight}`;
+      paneStyles += `${styles['pane--right']} `;
       break;
     default:
-      paneStyles += ` ${styles.paneLeft}`;
+      paneStyles += `${styles['pane--left']} `;
       break;
+  }
+
+  if (className) {
+    paneStyles += className;
   }
 
   return <div className={paneStyles}>{children}</div>;

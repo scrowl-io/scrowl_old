@@ -1,5 +1,4 @@
-@import '@owlui/lib/src/theme/global/bootstrap';
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .settings {
   display: flex;
