@@ -72,20 +72,22 @@ export const Canvas = () => {
     <div className={styles.workspace}>
       <Header onUpdate={updateSlideTitle} />
       <div className={styles.workspace__body}>
-        <Slide
-          options={slideOpts}
-          // className="ratio ratio-16x9"
-        >
-          <iframe
-            src={canvasUrl}
-            title="Scrowl Editor Canvas"
-            referrerPolicy="unsafe-url"
-            sandbox="allow-same-origin allow-scripts"
-            height="100%"
-            width="100%"
-            id="template-iframe"
-          ></iframe>
-        </Slide>
+        {canvasUrl && (
+          <Slide
+            options={slideOpts}
+            className="aspect-ratio aspect-ratio--16x9"
+          >
+            <iframe
+              src={canvasUrl}
+              title="Scrowl Editor Canvas"
+              referrerPolicy="unsafe-url"
+              sandbox="allow-same-origin allow-scripts"
+              height="100%"
+              width="100%"
+              id="template-iframe"
+            ></iframe>
+          </Slide>
+        )}
       </div>
       <div className={styles.workspace__footer}></div>
     </div>

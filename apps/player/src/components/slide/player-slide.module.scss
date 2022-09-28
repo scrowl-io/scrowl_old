@@ -1,23 +1,41 @@
 @use '@owlui/lib/src/theme/utils' as *;
 
 .slide {
-  --bs-heading-color: var(--bs-gray-900);
-  --bs-body-color: var(--bs-gray-900);
-  --bs-body-bg: var(--bs-white);
-
   margin: 0 $owl-sys-space-workspace $owl-sys-space-workspace;
   color: var(--bs-body-color);
   border: var(--owl-border-width) solid var(--owl-border-color);
   background: var(--bs-body-bg);
   box-shadow: var(--owl-box-shadow);
+  max-height: 110vmin;
+  max-width: 110vmin;
 
-  &:not(.ratio) {
-    height: calc(100% - $owl-sys-space-workspace );
-    width: 100%;
+  &:not(.aspect-ratio) {
+    transform: scale(1);
+    max-height: calc(100% - $owl-sys-space-workspace );
+    max-width: 100%;
   }
 
-  &.ratio-16x9 {
-    max-height: 110vmin;
-    max-width: 110vmin;
+  &.aspect-ratio--4x3 {
+    aspect-ratio: 4 / 3;
+
+    iframe {
+      aspect-ratio: 4 / 3;
+    }
+  }
+
+  &.aspect-ratio--16x9 {
+    aspect-ratio: 16 / 9;
+
+    iframe {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  &.aspect-ratio--16x10 {
+    aspect-ratio: 16 / 10;
+
+    iframe {
+      aspect-ratio: 16 / 10;
+    }
   }
 }
