@@ -738,7 +738,7 @@ export const importFile = (
 };
 
 export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
-  return new Promise<Requester.ApiResult>((resolve, reject) => {
+  return new Promise<Requester.ApiResult>(resolve => {
     if (!project || !project.id) {
       const missingIdError: Requester.ApiResultError = {
         error: true,
