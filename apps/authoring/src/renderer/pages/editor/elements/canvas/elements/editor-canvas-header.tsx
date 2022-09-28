@@ -21,7 +21,7 @@ export const Header = ({ onUpdate }: EditorCanvasHeaderProps) => {
 
   return (
     <div className={styles.workspace__header}>
-      {slideName && (
+      {slideData.template && ( // This should probably be based on a better field to tell if a slide is selected
         <>
           <h1 className="visually-hidden">{slideName}</h1>
           <Icon
