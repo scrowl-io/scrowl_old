@@ -16,7 +16,7 @@ export const ListText = (props: FormElementProps) => {
   const inputValue = config.value.join(', ');
   const [value, setValue] = useState(inputValue);
   const formatValue = (val: string) => {
-    return val.split(',').map(item => item.trim());
+    return val.split(', ');
   };
   const handlerUpdateValue = (ev: React.ChangeEvent<HTMLInputElement>) => {
     let formattedVal: Array<string> = [];
