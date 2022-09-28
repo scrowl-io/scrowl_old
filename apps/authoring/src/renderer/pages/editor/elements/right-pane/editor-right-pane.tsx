@@ -46,7 +46,9 @@ export const RightPane = () => {
           <Icon icon="dashboard" display="sharp" filled={true} />
         </span>
         <div>
-          <div className={styles.slideEditorHeaderTitle}>{slideData.name}</div>
+          <div className={styles.slideEditorHeaderTitle}>
+            {slideData.template.meta.name}
+          </div>
           <Button
             className={styles.slideEditorHeaderAction}
             variant="link"
