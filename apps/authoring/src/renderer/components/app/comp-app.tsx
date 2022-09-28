@@ -59,7 +59,9 @@ const Main = (props: AppMainProps) => {
 
   return (
     <div {...props}>
-      <div className={styles.content}>{/* <AppRoutes /> */}</div>
+      <div className={styles.content}>
+        <AppRoutes />
+      </div>
       <ModalProjectExplorer />
     </div>
   );
