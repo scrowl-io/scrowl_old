@@ -155,7 +155,7 @@ export const ModalProjectExplorer = () => {
     content: <></>,
   };
   const body = {
-    content: <ProjectExplorerBody show={showModalExplorer} />,
+    content: <></>,
   };
 
   return (

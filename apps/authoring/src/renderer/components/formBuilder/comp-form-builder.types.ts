@@ -16,10 +16,17 @@ export interface FormBuilderDataTextarea {
   label: string;
 }
 
+export type FormBuilderDataListText = {
+  value: Array<string>;
+  type: 'listText';
+  label: string;
+};
+
 export type FormBuilderData =
   | FormBuilderDataText
   | FormBuilderDataNumber
-  | FormBuilderDataTextarea;
+  | FormBuilderDataTextarea
+  | FormBuilderDataListText;
 
 export interface FormBuilderCommons {
   name?: string;
