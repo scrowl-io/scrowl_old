@@ -1,6 +1,11 @@
 import { ProjectData } from '../../../main/models/projects';
 
-export type { ProjectData, ProjectSlide } from '../../../main/models/projects';
+export type {
+  ProjectData,
+  ProjectModule,
+  ProjectLesson,
+  ProjectSlide,
+} from '../../../main/models/projects';
 
 export type ProjectInitialState = {
   data: ProjectData;
