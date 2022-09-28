@@ -1,7 +1,7 @@
 {
   "name": "@scrowl/authoring",
   "productName": "scrowl-authoring",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "A tool used to create online training materials",
   "license": "MIT",
   "keywords": [],
@@ -21,7 +21,9 @@
     "clean": "rimraf dist && rimraf ../.parcel-cache && rimraf release/build && rimraf release/app",
     "setup": "node ./scripts/pipeline/setup.mjs",
     "prebuild": "yarn run clean",
-    "build": "parcel build --no-cache --no-content-hash --no-source-maps --public-url ../dist --no-optimize",
+    "build:frontend": "parcel build --no-cache --no-source-maps --public-url ../dist --target frontend ",
+    "build:backend": "parcel build --no-cache --no-source-maps --public-url ../dist --target backend --target preload",
+    "build": "yarn run build:backend && yarn run build:frontend",
     "start:frontend": "parcel serve --target frontend --no-cache --port 5003 --no-cache",
     "start:backend": "parcel watch --target backend --target preload --target utilDev --port 5002 --no-cache",
     "reload:backend": "wait-on http://localhost:5003 && nodemon --watch dist/main.js --exec electron ./dist/main.js",
@@ -82,7 +84,10 @@
     },
     "frontend": {
       "context": "browser",
-      "source": "./src/renderer/index.html"
+      "source": "./src/renderer/index.html",
+      "engines": {
+        "browsers": "Chrome 100"
+      }
     }
   },
   "eslintConfig": {
@@ -90,7 +95,10 @@
   },
   "prettier": "@scrowl/eslint-config/prettier",
   "stylelint": {
-    "extends": "@scrowl/eslint-config/stylelint"
+    "extends": "@scrowl/eslint-config/stylelint",
+    "rules": {
+      "scss/at-extend-no-missing-placeholder": null
+    }
   },
   "build": {
     "appId": "org.scrowl-io.scrowl",
@@ -147,6 +155,7 @@
     "@types/react-redux": "^7.1.24",
     "asar": "^3.1.0",
     "babel-jest": "^28.0.1",
+    "bootstrap": "5.2.0-beta1",
     "chalk": "^5.0.1",
     "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
@@ -173,11 +182,10 @@
     "wait-on": "^6.0.1"
   },
   "dependencies": {
-    "@owlui/lib": "^0.0.41",
+    "@owlui/lib": "^0.0.43",
     "@reduxjs/toolkit": "^1.8.5",
     "@scrowl/player": "^0.0.1",
     "adm-zip": "^0.5.9",
-    "bootstrap": "5.2.0-beta1",
     "electron-debug": "^3.2.0",
     "electron-devtools-installer": "^3.2.0",
     "electron-log": "^4.4.8",
@@ -192,8 +200,8 @@
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
     "scorm-packager": "git+https://git@github.com/scrowl-io/scorm-packager.git",
-    "scrowl-template-introduction": "git+https://git@github.com/scrowl-io/template-introduction.git#v0.0.11",
-    "scrowl-template-two-columns": "git+https://git@github.com/scrowl-io/template-two-columns.git#v0.0.1",
+    "scrowl-template-introduction": "git+https://git@github.com/scrowl-io/template-introduction.git#v0.0.12",
+    "scrowl-template-two-columns": "git+https://git@github.com/scrowl-io/template-two-columns.git#v0.0.2",
     "sqlite3": "^5.0.8",
     "typescript": "^4.6.3"
   }

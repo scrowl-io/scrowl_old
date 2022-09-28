@@ -12,12 +12,7 @@ import {
 } from '@owlui/lib';
 
 const ActionMenuBtn = (
-  <Icon
-    display="outlined"
-    filled
-    icon="more_vert"
-    style={{ fontSize: '15px', fontWeight: 1000 }}
-  />
+  <Icon display="rounded" icon="more_vert" opsz={20} filled />
 );
 
 const makeActionMenu = (
@@ -65,6 +60,7 @@ export const ActionMenu = (props: ActionMenuProps) => {
       align="end"
       className={styles.actionMenu}
       {...dropdownProps}
+      showSelected={false}
     ></Dropdown>
   );
 };

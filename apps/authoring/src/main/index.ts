@@ -94,7 +94,7 @@ const createWindow = async () => {
     }
 
     if (isDevelopment) {
-      mainWindow.webContents.openDevTools({ mode: 'detach' });
+      mainWindow.webContents.openDevTools({ mode: 'detach', activate: false });
     }
   });
 

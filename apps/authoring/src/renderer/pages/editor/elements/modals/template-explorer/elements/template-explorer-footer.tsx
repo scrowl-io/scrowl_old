@@ -1,17 +1,22 @@
 import React from 'react';
 import { Button } from '@owlui/lib';
 import { TemplateExplorerFooterProps } from '../editor-modal-template-explorer.types';
-import { updateActiveSlideTemplate } from '../../../../page-editor-hooks';
+import { updateActiveSlide } from '../../../../page-editor-hooks';
 
 export const Footer = ({
   onClose,
   selectedTemplate,
 }: TemplateExplorerFooterProps) => {
   const handleConfirmChange = () => {
+    console.log('[template explorer] template selection - start');
     const templateCopy = JSON.parse(JSON.stringify(selectedTemplate));
 
     delete templateCopy.isSelected;
-    updateActiveSlideTemplate(templateCopy);
+    console.log(
+      '[template explorer] template selection - updating active slide'
+    );
+    updateActiveSlide({ template: templateCopy });
+    console.log('[template explorer] template selection - end');
     onClose();
   };
 

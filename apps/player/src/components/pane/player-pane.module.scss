@@ -1,5 +1,4 @@
-@use '@owlui/lib/src/theme/global/tokens' as *;
-@use '@owlui/lib/src/theme/global/typography' as *;
+@use '@owlui/lib/src/theme/utils' as *;
 
 .pane {
   &--left {

@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import * as styles from '../../editor-pane-details.module.scss';
 import { Icon, Button } from '@owlui/lib';
 import { AddButton } from '../buttons/add-button';
 import Collapse from 'react-bootstrap/Collapse';
-import { Projects } from '../../../../../../models';
+import { Projects, Templates } from '../../../../../../models';
 import { ActionMenu, ActionMenuItem } from '../../../../../../components';
 import {
   ModuleTreeItem,
@@ -13,13 +13,22 @@ import {
   TreeViewLessonProps,
 } from './editor-tree-view.types';
 import { TreeViewSlides } from './editor-tree-view-slides';
-import { deepCopy } from './utils';
+import { deepCopy, moveTreeItem } from './utils';
 import { RenameModal } from '../modals/editor-modal-rename';
 import { DeleteModal } from '../modals/editor-modal-delete';
+import {
+  updateActiveSlide,
+  updateActiveSlidePosition,
+  useActiveSlidePosition,
+} from '../../../../page-editor-hooks';
 
 const TreeViewLesson = (props: TreeViewLessonProps) => {
   const { tree, idx, moduleIdx, project } = props;
-  const [open, setOpen] = useState(false);
+  const activeSlidePosition = useActiveSlidePosition();
+  const isActiveLesson =
+    activeSlidePosition.moduleIdx === moduleIdx &&
+    activeSlidePosition.lessonIdx === idx;
+  const [open, setOpen] = useState(isActiveLesson);
   const itemId = `module-${moduleIdx}-lesson-item-${idx}`;
   const menuId = `module-${moduleIdx}-lesson-menu-${idx}`;
   const modules = deepCopy(project.modules);
@@ -30,34 +39,51 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
   const [showModalDelete, setModalDelete] = useState(false);
   const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
-  const addSlide = useCallback(() => {
+  const addSlide = () => {
+    console.log('[lesson action] adding slide - start');
     const newSlide: SlideTreeItem = {
       name: 'Untitled Slide',
     };
+    const slideIdx = lesson.slides.length;
 
     lesson.slides.push(newSlide);
+    console.log('[lesson action] adding slide - project update');
     Projects.update({ modules });
-  }, [lesson.slides, modules]);
+    console.log('[lesson action] adding slide - setting active slide');
+    updateActiveSlide(lesson.slides[slideIdx], {
+      moduleIdx,
+      lessonIdx: idx,
+      slideIdx,
+    });
+    console.log('[lesson action] adding slide - exploring templates');
+    Templates.explore();
+    console.log('[lesson action] adding slide - end');
+  };
 
   const lessonMenuItems: Array<ActionMenuItem> = [
     {
+      id: 'lesson-menu-add-slide',
       label: 'Add Slide',
-      icon: 'crop_square',
+      icon: 'rectangle',
       display: 'outlined',
       actionHandler: addSlide,
     },
     {
+      id: 'lesson-menu-rename',
       label: 'Rename',
       icon: 'edit',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         toggleModalRename();
       },
     },
     {
+      id: 'lesson-menu-duplicate',
       label: 'Duplicate',
       icon: 'content_copy',
       display: 'outlined',
+      filled: true,
       actionHandler: () => {
         const newLesson: LessonTreeItem = {
           name: lesson.name + ' copy',
@@ -69,10 +95,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       },
     },
     {
+      id: 'lesson-menu-add-lesson',
       label: 'Add Lesson',
-      icon: 'widgets',
+      icon: 'interests',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
+        console.log('[lesson action menu] adding lesson - start');
+        const newIdx = idx + 1;
         const newLesson: LessonTreeItem = {
           name: 'Untitled Lesson',
           slides: [
@@ -82,8 +112,20 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
           ],
         };
 
-        lessonModule.lessons.push(newLesson);
+        lessonModule.lessons.splice(newIdx, 0, newLesson);
+        console.log('[lesson action menu] adding lesson - porject update');
         Projects.update({ modules });
+        console.log(
+          '[lesson action menu] adding lesson - setting active slide'
+        );
+        updateActiveSlide(lessonModule.lessons[newIdx].slides[0], {
+          moduleIdx,
+          lessonIdx: newIdx,
+          slideIdx: 0,
+        });
+        console.log('[lesson action menu] adding lesson - exploring templates');
+        Templates.explore();
+        console.log('[lesson action menu] adding lesson - end');
       },
     },
     {
@@ -91,14 +133,14 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'arrow_upward',
       display: 'outlined',
       actionHandler: () => {
-        if (lessonModule.lessons.length <= 1 || idx <= 0) {
-          console.log('Invalid operation');
+        const newIdx = idx - 1;
+        const lesson = moveTreeItem(idx, newIdx, lessonModule.lessons);
+
+        if (!lesson) {
           return;
         }
-        [lessonModule.lessons[idx - 1], lessonModule.lessons[idx]] = [
-          lessonModule.lessons[idx],
-          lessonModule.lessons[idx - 1],
-        ];
+
+        updateActiveSlidePosition({ lessonIdx: newIdx });
         Projects.update({ modules });
       },
     },
@@ -107,23 +149,22 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       icon: 'arrow_downward',
       display: 'outlined',
       actionHandler: () => {
-        if (
-          lessonModule.lessons.length <= 1 ||
-          lessonModule.lessons.length - 1 <= idx
-        ) {
-          console.log('Invalid operation');
+        const newIdx = idx + 1;
+        const lesson = moveTreeItem(idx, newIdx, lessonModule.lessons);
+
+        if (!lesson) {
           return;
         }
-        [lessonModule.lessons[idx], lessonModule.lessons[idx + 1]] = [
-          lessonModule.lessons[idx + 1],
-          lessonModule.lessons[idx],
-        ];
+
+        updateActiveSlidePosition({ lessonIdx: newIdx });
         Projects.update({ modules });
       },
     },
     {
+      id: 'lesson-menu-delete-lesson',
       label: 'Delete Lesson',
       icon: 'delete',
+      filled: true,
       display: 'outlined',
       actionHandler: () => {
         toggleModalDelete();

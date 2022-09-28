@@ -13,14 +13,31 @@
 }
 
 .slide {
-  background-color: #fff;
-  border: 1px solid #cacaca;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  overflow-y: auto;
-  transform: translate(-50%, -50%)scale(.562);
-  box-shadow: 0 0 12px #dadada;
+  color: var(--bs-body-color);
+  border: var(--owl-border-width) solid var(--owl-border-color);
+  background: var(--bs-body-bg);
+  box-shadow: var(--owl-box-shadow);
+  max-height: 110vmin;
+  max-width: 110vmin;
+  margin: 0 1.5rem 1.5rem;
+}
+
+.slide:not(.aspect-ratio) {
+  max-height: calc(100% - 1.5rem);
+  max-width: 100%;
+  transform: scale(1);
+}
+
+.slide.aspect-ratio--4x3, .slide.aspect-ratio--4x3 iframe {
+  aspect-ratio: 4 / 3;
+}
+
+.slide.aspect-ratio--16x9, .slide.aspect-ratio--16x9 iframe {
+  aspect-ratio: 16 / 9;
+}
+
+.slide.aspect-ratio--16x10, .slide.aspect-ratio--16x10 iframe {
+  aspect-ratio: 16 / 10;
 }
 
 .nav {
@@ -125,7 +142,7 @@
 }
 
 .tree-view--module, .tree-view--lesson {
-  line-height: var(--osg-line-height-sm);
+  line-height: 1.25;
   position: relative;
 }
 

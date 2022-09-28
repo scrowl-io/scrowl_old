@@ -8,6 +8,7 @@ import {
   TemplateExplorerModal,
 } from './elements';
 import { useInit } from './page-editor-hooks';
+import { Navbar } from 'react-bootstrap';
 
 export const PageElement = () => {
   const isInit = useInit();
@@ -21,14 +22,9 @@ export const PageElement = () => {
           <main className={styles.editor}>
             <Header />
             <PaneDetails />
-
-            <div className={styles.workspace}>
-              <Canvas />
-            </div>
-
+            <Canvas />
             <RightPane />
-
-            <nav className="scrowl__footer owlui-navbar fixed-bottom"></nav>
+            <Navbar className="scrowl__footer" fixed="bottom"></Navbar>
           </main>
           <TemplateExplorerModal />
         </>

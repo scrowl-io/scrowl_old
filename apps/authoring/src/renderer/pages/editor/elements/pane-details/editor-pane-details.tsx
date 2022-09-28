@@ -30,7 +30,7 @@ export const PaneDetails = () => {
 
   return (
     <Pane>
-      <Tabs items={tabItems} pxScale="Sm" />
+      <Tabs items={tabItems} pxScale="Sm" transition={false} />
     </Pane>
   );
 };

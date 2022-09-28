@@ -11821,8 +11821,8 @@ function $1a67f29333881c92$var$_extends() {
 const $1a67f29333881c92$export$931cbfb6bfb85fc = (props)=>{
     const baseClass = 'dropdown';
     const prefix = props.prefix || '';
-    const { items: items  } = props;
-    const [selectedItemIdx, setSelectedItemIdx] = $YF4A1$useState(0);
+    const { items: items , showSelected: showSelected  } = props;
+    const [selectedItemIdx, setSelectedItemIdx] = $YF4A1$useState(null);
     const locals = $a35f61d785cb6b9b$export$a335b2e95a59928(props, {
         module: $9f6b7b4c6ff1fda3$exports,
         classes: {
@@ -11848,7 +11848,8 @@ const $1a67f29333881c92$export$931cbfb6bfb85fc = (props)=>{
         'theme',
         'pxScale',
         'items',
-        'button'
+        'button',
+        'showSelected'
     ]);
     const getItemIdx = (ev)=>{
         if (!ev.currentTarget.dataset.index) {
@@ -11875,6 +11876,27 @@ const $1a67f29333881c92$export$931cbfb6bfb85fc = (props)=>{
             setSelectedItemIdx(idx);
         }
     };
+    const renderStatefulItem = (item, key, idx)=>{
+        return /*#__PURE__*/ $YF4A1$react.createElement($YF4A1$Dropdown.Item, {
+            id: `item-number-${item.id}`,
+            value: item.value,
+            onKeyDown: handleTab,
+            className: `${selectedItemIdx === idx ? 'active' : ''}`,
+            "data-index": idx,
+            key: key,
+            onClick: handleItemClick,
+            as: item.as
+        }, item.label);
+    };
+    const renderStatelessItem = (item, key, idx)=>{
+        return /*#__PURE__*/ $YF4A1$react.createElement($YF4A1$Dropdown.Item, {
+            id: `item-number-${item.id}`,
+            value: item.value,
+            "data-index": idx,
+            key: key,
+            as: item.as
+        }, item.label);
+    };
     return /*#__PURE__*/ $YF4A1$react.createElement($YF4A1$react.Fragment, null, /*#__PURE__*/ $YF4A1$react.createElement($YF4A1$ThemeProvider, {
         prefixes: {
             dropdown: 'owlui-dropdown',
@@ -11889,16 +11911,8 @@ const $1a67f29333881c92$export$931cbfb6bfb85fc = (props)=>{
         variant: props.variant
     }, props.button ? props.button : /*#__PURE__*/ $YF4A1$react.createElement($YF4A1$react.Fragment, null)), /*#__PURE__*/ $YF4A1$react.createElement($YF4A1$Dropdown.Menu, null, items.map((item, idx)=>{
         const key = item.id || idx;
-        return /*#__PURE__*/ $YF4A1$react.createElement($YF4A1$Dropdown.Item, {
-            id: `item-number-${item.id}`,
-            value: item.value,
-            onKeyDown: handleTab,
-            className: `${selectedItemIdx === idx ? 'active' : ''}`,
-            "data-index": idx,
-            key: key,
-            onClick: handleItemClick,
-            as: item.as
-        }, item.label);
+        if (showSelected) return renderStatefulItem(item, key, idx);
+        else return renderStatelessItem(item, key, idx);
     })))));
 };
 var $1a67f29333881c92$export$2e2bcd8739ae039 = {

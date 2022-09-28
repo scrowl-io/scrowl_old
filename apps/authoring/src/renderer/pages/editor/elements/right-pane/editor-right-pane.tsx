@@ -1,6 +1,7 @@
 import React from 'react';
 import * as styles from './editor-right-pane-details.module.scss';
 import { Button, Icon } from '@owlui/lib';
+import { Alert } from 'react-bootstrap';
 import { Pane } from '../../../../components';
 import { Projects, Templates } from '../../../../models';
 import { RightPaneContentForm } from './content/right-pane-content-form';
@@ -8,8 +9,12 @@ import { useActiveSlide, useHasActiveSlide } from '../../page-editor-hooks';
 
 export const RightPane = () => {
   const isLoaded = Projects.useLoaded();
-  const activeSlide = useActiveSlide();
+  const slideData = useActiveSlide();
   const hasActiveSlide = useHasActiveSlide();
+  const hasTemplate =
+    slideData.template &&
+    slideData.template.meta &&
+    slideData.template.meta.name;
   const handleExploreTemplates = () => {
     Templates.explore();
   };
@@ -20,7 +25,7 @@ export const RightPane = () => {
       title: 'Content',
       view: (
         <div className={styles.templateOptionsContent}>
-          <RightPaneContentForm activeSlide={activeSlide} />
+          <RightPaneContentForm />
         </div>
       ),
     },
@@ -36,31 +41,39 @@ export const RightPane = () => {
   ];
 
   if (!isLoaded || !hasActiveSlide) {
-    return <></>;
+    return (
+      <Pane className="slide-editor" side="right">
+        <div className={styles.slideEditorHeader}>
+          <Alert variant="light" className="w-100">
+            <small>Select a slide to edit settings</small>
+          </Alert>
+        </div>
+      </Pane>
+    );
   }
 
   return (
-    <Pane className={styles.slideEditor} side="right">
+    <Pane className="slide-editor" side="right">
       <div className={styles.slideEditorHeader}>
         <span className={styles.slideEditorHeaderIcon}>
           <Icon icon="dashboard" display="sharp" filled={true} />
         </span>
         <div>
           <div className={styles.slideEditorHeaderTitle}>
-            {activeSlide.name}
+            {hasTemplate ? slideData.template.meta.name : ''}
           </div>
           <Button
             className={styles.slideEditorHeaderAction}
             variant="link"
             onClick={handleExploreTemplates}
-            pxScale="sm"
+            size="sm"
           >
             Change Template
           </Button>
         </div>
       </div>
       <div className={styles.templateOptionsContent}>
-        <RightPaneContentForm activeSlide={activeSlide} />
+        <RightPaneContentForm />
       </div>
     </Pane>
   );
