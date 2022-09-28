@@ -54,89 +54,89 @@ const writeProjectTemp = (
 };
 
 export const create = () => {
-  const addProjectTemplates = (project: ProjectData) => {
-    return new Promise<Requester.ApiResult>(resolve => {
-      try {
-        const modules = project.modules || [];
+  // const addProjectTemplates = (project: ProjectData) => {
+  //   return new Promise<Requester.ApiResult>(resolve => {
+  //     try {
+  //       const modules = project.modules || [];
 
-        if (!modules.length) {
-          const missingModulesError: Requester.ApiResultError = {
-            error: true,
-            message: 'Unable to add templates: project requires modules',
-          };
-          Logger.error(missingModulesError);
-          resolve(missingModulesError);
-          return;
-        }
+  //       if (!modules.length) {
+  //         const missingModulesError: Requester.ApiResultError = {
+  //           error: true,
+  //           message: 'Unable to add templates: project requires modules',
+  //         };
+  //         Logger.error(missingModulesError);
+  //         resolve(missingModulesError);
+  //         return;
+  //       }
 
-        if (!project.id) {
-          const missingIdError: Requester.ApiResultError = {
-            error: true,
-            message: 'Unable to add templates: project id required',
-          };
-          Logger.error(missingIdError);
-          resolve(missingIdError);
-          return;
-        }
+  //       if (!project.id) {
+  //         const missingIdError: Requester.ApiResultError = {
+  //           error: true,
+  //           message: 'Unable to add templates: project id required',
+  //         };
+  //         Logger.error(missingIdError);
+  //         resolve(missingIdError);
+  //         return;
+  //       }
 
-        const projectId = project.id;
-        const templateNames = new Set<string>();
+  //       const projectId = project.id;
+  //       const templateNames = new Set<string>();
 
-        modules.forEach(module => {
-          module.lessons.forEach(lesson => {
-            lesson.slides.forEach(slide => {
-              if (!slide.template) {
-                return;
-              }
+  //       modules.forEach(module => {
+  //         module.lessons.forEach(lesson => {
+  //           lesson.slides.forEach(slide => {
+  //             if (!slide.template) {
+  //               return;
+  //             }
 
-              templateNames.add(slide.template.meta.name);
-            });
-          });
-        });
+  //             templateNames.add(slide.template.meta.name);
+  //           });
+  //         });
+  //       });
 
-        const addPromises = Array.from(templateNames).map((name: string) => {
-          return addTemplate(undefined, name, projectId);
-        });
+  //       const addPromises = Array.from(templateNames).map((name: string) => {
+  //         return addTemplate(undefined, name, projectId);
+  //       });
 
-        Promise.allSettled(addPromises).then(addRes => {
-          const templates: Array<{
-            [key: string]: string;
-          }> = [];
+  //       Promise.allSettled(addPromises).then(addRes => {
+  //         const templates: Array<{
+  //           [key: string]: string;
+  //         }> = [];
 
-          addRes.forEach(res => {
-            if (res.status === 'rejected') {
-              Logger.error('Failed to add template', res);
-              return;
-            }
+  //         addRes.forEach(res => {
+  //           if (res.status === 'rejected') {
+  //             Logger.error('Failed to add template', res);
+  //             return;
+  //           }
 
-            if (res.value.error) {
-              Logger.warn('Unable to add template', res);
-              return;
-            }
+  //           if (res.value.error) {
+  //             Logger.warn('Unable to add template', res);
+  //             return;
+  //           }
 
-            templates.push(res.value.data);
-          });
+  //           templates.push(res.value.data);
+  //         });
 
-          resolve({
-            error: false,
-            data: {
-              templates,
-            },
-          });
-        });
-      } catch (e) {
-        const createError = {
-          error: true,
-          message: 'Failed to add templates to project',
-          data: {
-            trace: e,
-          },
-        };
-        Logger.error(createError);
-        resolve(createError);
-      }
-    });
-  };
+  //         resolve({
+  //           error: false,
+  //           data: {
+  //             templates,
+  //           },
+  //         });
+  //       });
+  //     } catch (e) {
+  //       const createError = {
+  //         error: true,
+  //         message: 'Failed to add templates to project',
+  //         data: {
+  //           trace: e,
+  //         },
+  //       };
+  //       Logger.error(createError);
+  //       resolve(createError);
+  //     }
+  //   });
+  // };
   // TODO add support for handling duplicating a project when a project ID is passed
   return new Promise<Requester.ApiResult>(resolve => {
     try {
