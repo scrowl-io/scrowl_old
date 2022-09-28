@@ -37,7 +37,6 @@ export const getPages = (project: Manifest.ProjectData): GetResult => {
           return (
             <div>
               <>
-                <h1>{lesson.name}</h1>
                 {lesson.slides.map(slide => {
                   let Template;
 
