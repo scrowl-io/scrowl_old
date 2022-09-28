@@ -36,9 +36,9 @@ export const PageElement = () => {
           <Start hasProjects={hasProjects} />
         </div>
 
-        <div className={styles.home__section}>
+        {/* <div className={styles.home__section}>
           <Tutorials />
-        </div>
+        </div> */}
 
         <div className={styles.home__section}>
           <RecentProjects hasProjects={hasProjects} projectList={projectList} />
