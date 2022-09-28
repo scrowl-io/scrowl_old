@@ -3,18 +3,28 @@ import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
 
 const separator: MenuItemConstructorOptions = { type: 'separator' };
 
-export const template: any = {
+export const template: MenuItemConstructorOptions = {
   label: 'Edit',
   submenu: [
     {
       label: 'Copy',
-      selector: 'copy:',
+      role: 'copy',
       accelerator: 'CmdOrCtrl+C',
     },
     {
       label: 'Paste',
-      selector: 'paste:',
+      role: 'paste',
       accelerator: 'CmdOrCtrl+V',
+    },
+    {
+      label: 'Undo',
+      role: 'undo',
+      accelerator: 'CmdOrCtrl+Z',
+    },
+    {
+      label: 'Redo',
+      role: 'redo',
+      accelerator: 'CmdOrCtrl+Y',
     },
   ],
 };
