@@ -95,7 +95,10 @@
   },
   "prettier": "@scrowl/eslint-config/prettier",
   "stylelint": {
-    "extends": "@scrowl/eslint-config/stylelint"
+    "extends": "@scrowl/eslint-config/stylelint",
+    "rules": {
+      "scss/at-extend-no-missing-placeholder": null
+    }
   },
   "build": {
     "appId": "org.scrowl-io.scrowl",
