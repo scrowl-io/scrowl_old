@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  GlossaryListProps,
-  GlossaryItem,
-  GlossaryData,
-  GlossaryDict,
-} from '../../../player-outline.types';
+import { GlossaryListProps } from '../../../player-outline.types';
 import * as styles from '../../../player-outline.module.scss';
 
 export const GlossaryListEntries = ({ glossary }: GlossaryListProps) => {
@@ -30,7 +25,6 @@ export const GlossaryListEntries = ({ glossary }: GlossaryListProps) => {
           </div>
         );
       })}
-      ;
     </>
   );
 };
@@ -38,7 +32,6 @@ export const GlossaryListEntries = ({ glossary }: GlossaryListProps) => {
 export const GlossaryList = ({ glossary }: GlossaryListProps) => {
   const headings = Object.keys(glossary).sort();
 
-  console.log('headings', headings);
   if (!headings) {
     return <></>;
   }
