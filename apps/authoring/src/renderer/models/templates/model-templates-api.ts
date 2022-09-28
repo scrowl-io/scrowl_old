@@ -26,10 +26,25 @@ export const install = () => {
 };
 
 export const list = (limit?: number) => {
+  console.log('[template api] listing - start');
   return new Promise<requester.ApiResult>(resolve => {
     try {
-      requester.invoke(ENDPOINTS.list, limit).then(resolve);
+      console.log('[template api] listing - calling');
+      requester
+        .invoke(ENDPOINTS.list, limit)
+        .then(resolve)
+        .catch(e => {
+          console.log('[template api] listing - error', e);
+          resolve({
+            error: true,
+            message: 'Failed to list templates',
+            data: {
+              trace: e,
+            },
+          });
+        });
     } catch (e) {
+      console.log('[template api] listing - error', e);
       resolve({
         error: true,
         message: 'Failed to list templates',

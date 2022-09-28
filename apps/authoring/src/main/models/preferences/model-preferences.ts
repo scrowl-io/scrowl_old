@@ -1,6 +1,11 @@
 import { Model } from '../model.types';
 import { PreferenceData, PreferenceEvents } from './model-preferences.types';
-import { InternalStorage as IS, Requester, System } from '../../services';
+import {
+  InternalStorage as IS,
+  Requester,
+  System,
+  Logger,
+} from '../../services';
 import * as table from './model-preferences-schema';
 
 export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
@@ -8,6 +13,7 @@ export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
     try {
       System.getPreferences().then(sysRes => {
         if (sysRes.error) {
+          Logger.error(sysRes);
           resolve(sysRes);
           return;
         }
@@ -19,6 +25,7 @@ export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
 
         IS.create(table.name, preference).then(createRes => {
           if (createRes.error) {
+            Logger.error(createRes);
             resolve(createRes);
             return;
           }
@@ -46,7 +53,7 @@ export const create = (ev: Requester.RequestEvent, returnOnly = false) => {
           trace: e,
         },
       };
-
+      Logger.error(result);
       resolve(result);
 
       if (!returnOnly) {
@@ -61,6 +68,7 @@ export const get = (ev: Requester.RequestEvent) => {
     try {
       IS.read(table.name).then(result => {
         if (result.error) {
+          Logger.error(result);
           resolve(result);
           return;
         }
@@ -78,13 +86,15 @@ export const get = (ev: Requester.RequestEvent) => {
         });
       });
     } catch (e) {
-      resolve({
+      const prefError = {
         error: true,
         message: 'Failed to get preference',
         data: {
           trace: e,
         },
-      });
+      };
+      Logger.error(prefError);
+      resolve(prefError);
     }
   });
 };
@@ -106,16 +116,19 @@ export const save = (
       IS.update(table.name, preferences, { id: preferences.id }).then(
         updateRes => {
           if (updateRes.error) {
+            Logger.error(updateRes);
             resolve(updateRes);
             return;
           }
 
           if (!updateRes.data.item) {
-            resolve({
+            const updateError = {
               error: true,
               message: 'Malformed save: project was not returned',
               data: updateRes,
-            });
+            };
+            Logger.error(updateError);
+            resolve(updateError);
             return;
           }
 
@@ -129,14 +142,16 @@ export const save = (
         }
       );
     } catch (e) {
-      resolve({
+      const prefError = {
         error: true,
         message: 'Failed to set preference',
         data: {
           trace: e,
           preferences,
         },
-      });
+      };
+      Logger.error(prefError);
+      resolve(prefError);
     }
   });
 };
