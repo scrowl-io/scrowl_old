@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Menu, State, requester } from '../../services';
+import { State, requester } from '../../services';
 import * as api from './model-templates-api';
 import * as state from './model-templates-state';
 import { TemplateManifest } from './model-templates.types';
@@ -56,22 +55,22 @@ const checkProcessor = () => {
 };
 
 export const useMenuEvents = () => {
-  const handleInstallEvent = () => {
-    install();
-  };
-  const handleExploreEvent = () => {
-    explore();
-  };
+  // const handleInstallEvent = () => {
+  //   install();
+  // };
+  // const handleExploreEvent = () => {
+  //   explore();
+  // };
 
-  useEffect(() => {
-    Menu.File.onTemplateAdd(handleInstallEvent);
-    Menu.File.onTemplateOpen(handleExploreEvent);
+  // useEffect(() => {
+  //   Menu.File.onTemplateAdd(handleInstallEvent);
+  //   Menu.File.onTemplateOpen(handleExploreEvent);
 
-    return () => {
-      Menu.File.offTemplateAdd();
-      Menu.File.offTemplateOpen();
-    };
-  }, []);
+  //   return () => {
+  //     Menu.File.offTemplateAdd();
+  //     Menu.File.offTemplateOpen();
+  //   };
+  // }, []);
 
   return;
 };
@@ -99,7 +98,7 @@ export const closeExplorer = () => {
   return processor.dispatch(state.explore(false));
 };
 
-export const list = (limit = 10) => {
+export const list = (limit = 100) => {
   console.log('[template hooks] listing - start');
   return new Promise<requester.ApiResult>(resolve => {
     const hasProcessor = checkProcessor();

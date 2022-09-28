@@ -182,6 +182,10 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
     Projects.update({ modules });
   };
 
+  if (isActiveLesson && !open) {
+    setOpen(isActiveLesson);
+  }
+
   return (
     <div className={styles.treeViewLesson} key={idx}>
       <div className={styles.treeViewHeader}>

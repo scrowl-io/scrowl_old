@@ -96,23 +96,18 @@ const $cff7a0b2de5f1fe0$export$f4348e32a399a3d5 = (project)=>{
                 url: `/module-${mIdx}--lesson-${lIdx}`,
                 Element: ({ templateList: templateList  })=>{
                     return /*#__PURE__*/ $bvorl$jsx("div", {
-                        children: /*#__PURE__*/ $bvorl$jsxs($bvorl$Fragment, {
-                            children: [
-                                /*#__PURE__*/ $bvorl$jsx("h1", {
-                                    children: lesson.name
-                                }),
-                                lesson.slides.map((slide)=>{
-                                    let Template;
-                                    if (!slide.template) return;
-                                    const manifest = slide.template?.elements;
-                                    if (!manifest) return;
-                                    if (templateList && templateList[slide.template.meta.component]) Template = templateList[slide.template.meta.component];
-                                    if (!Template) return;
-                                    return /*#__PURE__*/ $bvorl$jsx(Template, {
-                                        manifest: manifest
-                                    });
-                                })
-                            ]
+                        children: /*#__PURE__*/ $bvorl$jsx($bvorl$Fragment, {
+                            children: lesson.slides.map((slide)=>{
+                                let Template;
+                                if (!slide.template) return;
+                                const manifest = slide.template?.elements;
+                                if (!manifest) return;
+                                if (templateList && templateList[slide.template.meta.component]) Template = templateList[slide.template.meta.component];
+                                if (!Template) return;
+                                return /*#__PURE__*/ $bvorl$jsx(Template, {
+                                    manifest: manifest
+                                });
+                            })
                         })
                     });
                 }

@@ -27,21 +27,21 @@ export const EVENTS: MenuItemEventsFile = {
     name: '/projects/publish',
     type: 'send',
   },
-  importFile: {
-    id: 'import-file',
-    name: 'project/import-file',
-    type: 'send',
-  },
-  templateAdd: {
-    id: 'template-install',
-    name: '/templates/install',
-    type: 'send',
-  },
-  templateOpen: {
-    id: 'template-open',
-    name: '/templates/open',
-    type: 'send',
-  },
+  // importFile: {
+  //   id: 'import-file',
+  //   name: 'project/import-file',
+  //   type: 'send',
+  // },
+  // templateAdd: {
+  //   id: 'template-install',
+  //   name: '/templates/install',
+  //   type: 'send',
+  // },
+  // templateOpen: {
+  //   id: 'template-open',
+  //   name: '/templates/open',
+  //   type: 'send',
+  // },
 };
 
 export const template: MenuItemConstructorOptions = {
@@ -85,34 +85,34 @@ export const template: MenuItemConstructorOptions = {
       },
       accelerator: 'CmdorCtrl+P',
     },
-    separator,
-    {
-      label: 'Import File',
-      id: EVENTS.importFile.id,
-      enabled: false,
-      click: (menuItem, window, ev: KeyboardEvent) => {
-        send(EVENTS.importFile.name);
-      },
-      accelerator: 'CmdOrCtrl+I',
-    },
-    {
-      label: 'Explore Templates',
-      id: EVENTS.templateOpen.id,
-      enabled: false,
-      click: (MenuItem, window, ev: KeyboardEvent) => {
-        send(EVENTS.templateOpen.name);
-      },
-      accelerator: 'CmdOrCtrl+t',
-    },
-    {
-      label: 'Install Template',
-      id: EVENTS.templateAdd.id,
-      enabled: false,
-      click: (MenuItem, window, ev: KeyboardEvent) => {
-        send(EVENTS.templateAdd.name);
-      },
-      accelerator: 'CmdOrCtrl+Shift+t',
-    },
+    // separator,
+    // {
+    //   label: 'Import File',
+    //   id: EVENTS.importFile.id,
+    //   enabled: false,
+    //   click: (menuItem, window, ev: KeyboardEvent) => {
+    //     send(EVENTS.importFile.name);
+    //   },
+    //   accelerator: 'CmdOrCtrl+I',
+    // },
+    // {
+    //   label: 'Explore Templates',
+    //   id: EVENTS.templateOpen.id,
+    //   enabled: false,
+    //   click: (MenuItem, window, ev: KeyboardEvent) => {
+    //     send(EVENTS.templateOpen.name);
+    //   },
+    //   accelerator: 'CmdOrCtrl+t',
+    // },
+    // {
+    //   label: 'Install Template',
+    //   id: EVENTS.templateAdd.id,
+    //   enabled: false,
+    //   click: (MenuItem, window, ev: KeyboardEvent) => {
+    //     send(EVENTS.templateAdd.name);
+    //   },
+    //   accelerator: 'CmdOrCtrl+Shift+t',
+    // },
   ],
 };
 

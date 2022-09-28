@@ -111,9 +111,9 @@ export type MenuItemEventsFile = {
   projectOpen: MenuEventOpenProject;
   projectSave: MenuEventSaveProject;
   projectPublish: MenuEventPublishProject;
-  importFile: MenuEventImportFile;
-  templateAdd: MenuEventTemplateAdd;
-  templateOpen: MenuEventTemplateOpen;
+  importFile?: MenuEventImportFile;
+  templateAdd?: MenuEventTemplateAdd;
+  templateOpen?: MenuEventTemplateOpen;
 };
 
 export type MenuEventsFileApi = {
@@ -121,12 +121,12 @@ export type MenuEventsFileApi = {
   projectOpen: MenuEventOpenProject['name'];
   projectSave: MenuEventSaveProject['name'];
   projectPublish: MenuEventPublishProject['name'];
-  importFile: MenuEventImportFile['name'];
+  importFile?: MenuEventImportFile['name'];
   preferencesCreate: MenuEventPreferencesCreate['name'];
   preferencesOpen: MenuEventPreferencesOpen['name'];
   getStarted: MenuEventGetStarted['name'];
-  templateAdd: MenuEventTemplateAdd['name'];
-  templateOpen: MenuEventTemplateOpen['name'];
+  templateAdd?: MenuEventTemplateAdd['name'];
+  templateOpen?: MenuEventTemplateOpen['name'];
 };
 
 export type MenuItemEventsApp = {

@@ -46,9 +46,9 @@ export const offProjectPublish = () => {
   requester.offAll(ENDPOINTS.projectPublish);
 };
 
-export const onImportFile = (listener: requester.Listener) => {
-  requester.on(ENDPOINTS.importFile, listener);
-};
+// export const onImportFile = (listener: requester.Listener) => {
+//   requester.on(ENDPOINTS.importFile, listener);
+// };
 
 export const onPreferencesCreate = (listener: requester.Listener) => {
   requester.on(ENDPOINTS.preferencesCreate, listener);
@@ -70,32 +70,32 @@ export const offGetStarted = () => {
   requester.offAll(ENDPOINTS.getStarted);
 };
 
-export const onTemplateAdd = (listener: requester.Listener) => {
-  requester.on(ENDPOINTS.templateAdd, listener);
-};
+// export const onTemplateAdd = (listener: requester.Listener) => {
+//   requester.on(ENDPOINTS.templateAdd, listener);
+// };
 
-export const offTemplateAdd = () => {
-  requester.offAll(ENDPOINTS.templateAdd);
-};
+// export const offTemplateAdd = () => {
+//   requester.offAll(ENDPOINTS.templateAdd);
+// };
 
-export const onTemplateOpen = (listener: requester.Listener) => {
-  requester.on(ENDPOINTS.templateOpen, listener);
-};
+// export const onTemplateOpen = (listener: requester.Listener) => {
+//   requester.on(ENDPOINTS.templateOpen, listener);
+// };
 
-export const offTemplateOpen = () => {
-  requester.offAll(ENDPOINTS.templateOpen);
-};
+// export const offTemplateOpen = () => {
+//   requester.offAll(ENDPOINTS.templateOpen);
+// };
 
 export default {
   onProjectCreate,
   onProjectOpen,
   onProjectSave,
-  onImportFile,
+  // onImportFile,
   onPreferencesCreate,
   onPreferencesOpen,
   onGetStarted,
-  onTemplateAdd,
-  offTemplateAdd,
-  onTemplateOpen,
-  offTemplateOpen,
+  // onTemplateAdd,
+  // offTemplateAdd,
+  // onTemplateOpen,
+  // offTemplateOpen,
 };

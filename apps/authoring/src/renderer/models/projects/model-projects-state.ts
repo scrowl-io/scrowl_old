@@ -35,12 +35,17 @@ export const config: StateConfig = {
     menuReady: (state, action) => {
       state.isMenuReady = action.payload;
     },
+    reset: state => {
+      state.data = {
+        name: '',
+      };
+    },
   },
 };
 
 export const slice = createSlice(config);
 
-export const { update, process, init, explore, loaded, menuReady } =
+export const { update, process, init, explore, loaded, menuReady, reset } =
   slice.actions;
 
 export const reducer = slice.reducer;

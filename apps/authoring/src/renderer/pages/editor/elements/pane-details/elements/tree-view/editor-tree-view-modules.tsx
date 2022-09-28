@@ -212,6 +212,10 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
     Projects.update({ modules });
   };
 
+  if (isActiveModule && !open) {
+    setOpen(isActiveModule);
+  }
+
   return (
     <div className={styles.treeViewModule} key={idx}>
       <div className={styles.treeViewHeader}>
