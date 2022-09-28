@@ -368,6 +368,16 @@ export const listRecent = (limit = 10) => {
   });
 };
 
+export const reset = () => {
+  const hasProcessor = checkProcessor();
+
+  if (!hasProcessor) {
+    return;
+  }
+
+  processor.dispatch(state.reset({}));
+};
+
 export default {
   useInit,
   useData,
@@ -381,4 +391,5 @@ export default {
   publish,
   list,
   listRecent,
+  reset,
 };

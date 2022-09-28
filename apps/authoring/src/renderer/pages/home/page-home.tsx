@@ -2,13 +2,22 @@ import React, { useEffect, useState } from 'react';
 import * as styles from './page-home.module.scss';
 import { Projects } from '../../models';
 import { Logo } from '../../components/logo/comp-logo';
-import { RecentProjects, Start, Tutorials } from './elements';
+import { RecentProjects, Start } from './elements';
+import {
+  useHasActiveSlide,
+  resetActiveSlide,
+} from '../editor/page-editor-hooks';
 
 export const PageElement = () => {
+  const hasActiveSlide = useHasActiveSlide();
   const [projectList, setProjectList] = useState([]);
   const [hasProjects, setHasProjects] = useState(false);
 
   useEffect(() => {
+    if (hasActiveSlide) {
+      resetActiveSlide();
+    }
+
     Projects.listRecent().then(results => {
       if (results.error) {
         console.error(results);
@@ -20,7 +29,7 @@ export const PageElement = () => {
       const hasProjects = results.data.projects.length > 0;
       setHasProjects(hasProjects);
     });
-  }, []);
+  }, [hasActiveSlide]);
 
   return (
     <main className={styles.home}>
