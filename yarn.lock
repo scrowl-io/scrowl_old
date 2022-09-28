@@ -9176,6 +9176,14 @@ scheduler@^0.23.0:
     jsonschema "^1.4.1"
     xmlbuilder "^15.1.1"
 
+"scrowl-template-bullet-points@git+https://git@github.com/scrowl-io/template-bullet-points.git#v0.0.1":
+  version "0.0.1"
+  resolved "git+https://git@github.com/scrowl-io/template-bullet-points.git#74560c21f6c777c8f4564847bc462810a0cc4f67"
+  dependencies:
+    react "~18.1.0"
+    react-bootstrap "2.4.0"
+    react-dom "~18.1.0"
+
 "scrowl-template-introduction@git+https://git@github.com/scrowl-io/template-introduction.git#v0.0.12":
   version "0.0.12"
   resolved "git+https://git@github.com/scrowl-io/template-introduction.git#84ab92430f0e8bc1572dcf076cfedf84e715c802"

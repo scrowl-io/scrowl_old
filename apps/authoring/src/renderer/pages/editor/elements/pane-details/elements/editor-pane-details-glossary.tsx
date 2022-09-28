@@ -43,7 +43,6 @@ export const TabGlossary = () => {
 
   const glossaryDict = createGlossaryDict(project.glossary);
   const glossary = deepCopy(project.glossary);
-  console.log('writeable glossary', glossaryDict);
   const [activeTerm, setActiveTerm] = useState({ name: '', description: '' });
   const [activeTermIdx, setActiveTermIdx] = useState(-1);
   const [isGlossaryDrawerOpen, setGlossaryDrawerOpen] = useState(false);

@@ -44,11 +44,18 @@ export type TemplateManifestElementNumber = {
   label: string;
 };
 
+export type ManifestElementListText = {
+  value: Array<string>;
+  type: 'listText';
+  label: string;
+};
+
 export type TemplateManifestElements = {
   [key: string]:
     | TemplateManifestElementText
     | TemplateManifestElementNumber
-    | TemplateManifestElementTextarea;
+    | TemplateManifestElementTextarea
+    | ManifestElementListText;
 };
 
 export interface TemplateManifestMeta {
