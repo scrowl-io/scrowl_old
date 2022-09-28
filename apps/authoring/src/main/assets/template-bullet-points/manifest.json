@@ -4,9 +4,9 @@
     "aspect": "16:9"
   },
   "meta": {
-    "name": "two columns",
-    "filename": "two-columns",
-    "component": "TwoColumns"
+    "name": "Bullet Points",
+    "filename": "bullet-points",
+    "component": "BulletPoints"
   },
   "elements": {
     "title": {
@@ -19,15 +19,15 @@
       "type": "text",
       "label": "subtitle"
     },
-    "columnOne": {
-      "value": "Body of text (left slide).",
-      "type": "text",
-      "label": "columnOne"
-    },
-    "columnTwo": {
-      "value": "Body of text (right slide).",
-      "type": "text",
-      "label": "columnTwo"
+    "list": {
+      "value": [
+        "First bullet point",
+        "Second bullet point",
+        "Third bullet point",
+        "Forth bullet point"
+      ],
+      "type": "listText",
+      "label": "list"
     }
   }
 }
