@@ -18,6 +18,7 @@ export const GlossaryDrawer = (props: GlossaryDrawerProps) => {
         term={props.term}
         onHide={props.onHide}
         onSubmit={props.onSubmit}
+        onCancel={props.onCancel}
       />
     ),
   };

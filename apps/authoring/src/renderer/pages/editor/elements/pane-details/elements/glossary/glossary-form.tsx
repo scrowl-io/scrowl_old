@@ -3,7 +3,12 @@ import { Button, Form } from '@owlui/lib';
 import { GlossaryFormProps } from './glossary-types';
 import * as styles from '../../editor-pane-details.module.scss';
 
-export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
+export const GlossaryForm = ({
+  term,
+  onHide,
+  onSubmit,
+  onCancel,
+}: GlossaryFormProps) => {
   const prefix = 'form-glossary-term';
   const [data, setData] = useState({
     name: term.name || '',
@@ -24,6 +29,9 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
   const handleFormSubmit = () => {
     onSubmit(data);
   };
+  const handleFormCancel = () => {
+    onCancel(data);
+  };
   const handleKeyboardSubmit = (e: React.KeyboardEvent) => {
     const cancelButton = document.querySelector('.glossary-cancel-button');
     const cancelIsFocused = document.activeElement === cancelButton;
@@ -32,6 +40,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
       onSubmit(data);
     }
   };
+
   const form = [
     {
       type: 'input',
@@ -80,7 +89,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
       <div className="glossary-form-button-set d-flex justify-content-end">
         <Button
           className="glossary-cancel-button"
-          onClick={onHide}
+          onClick={handleFormCancel}
           variant="link"
         >
           Cancel
