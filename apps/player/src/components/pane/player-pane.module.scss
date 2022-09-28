@@ -9,6 +9,7 @@
     flex-shrink: 0;
     min-width: $owl-sys-size-sidebar-minwidth;
     width: $owl-sys-size-sidebar-width;
+    overflow: scroll;
     color: var(--owl-sidebar-color);
     border-right: var(--owl-border-width) var(--owl-border-color) solid;
     background: var(--owl-sidebar-bg);
