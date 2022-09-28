@@ -153,12 +153,13 @@ export const __tableCreate = (tableName: string, schema: StorageSchema) => {
   };
 
   const isDroppable = () => {
-    if (process.env.NODE_ENV !== 'development') {
-      return true; //TODO write migration step for tables when in PROD
+    if (process.env.NODE_ENV === 'development') {
+      const restart = parseInt(process.env.restart || '0');
+      return restart <= 1;
     }
 
-    const restart = parseInt(process.env.restart || '0');
-    return restart <= 1;
+    // TODO: write a migration step
+    return false;
   };
 
   return new Promise<StorageResult>(resolve => {
