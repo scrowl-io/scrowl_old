@@ -33,11 +33,13 @@ export const install = () => {
       };
       fs.dialogOpen(dialogOptions).then(openRes => {
         if (openRes.error) {
-          resolve({
+          const openError = {
             error: true,
             message: openRes.message,
             data: openRes.data,
-          });
+          };
+          Logger.error(openError);
+          resolve(openError);
           return;
         }
 
@@ -57,11 +59,13 @@ export const install = () => {
 
         fs.unarchive(source, dest).then(archiveRes => {
           if (archiveRes.error) {
-            resolve({
+            const archiveError = {
               error: true,
               message: archiveRes.message,
               data: archiveRes.data,
-            });
+            };
+            Logger.error(archiveError);
+            resolve(archiveError);
             return;
           }
 
@@ -76,13 +80,15 @@ export const install = () => {
         });
       });
     } catch (e) {
-      resolve({
+      const addError = {
         error: true,
         message: 'Failed to add template',
         data: {
           trace: e,
         },
-      });
+      };
+      Logger.error(addError);
+      resolve(addError);
     }
   });
 };
@@ -114,13 +120,15 @@ export const list = () => {
           });
         });
       } catch (e) {
-        resolve({
+        const listError = {
           error: true,
           message: 'Failed to get template info',
           data: {
             trace: e,
           },
-        });
+        };
+        Logger.error(listError);
+        resolve(listError);
       }
     });
   };
@@ -192,12 +200,16 @@ export const list = () => {
 
         resPromises.forEach(res => {
           if (res.status === 'rejected') {
-            console.error('Failed to get template record', res);
+            const rejectedMsg = 'Failed to get template record';
+            console.error(rejectedMsg, res);
+            Logger.info(rejectedMsg, res);
             return;
           }
 
           if (res.value.error) {
-            console.warn('Unable to get template record', res);
+            const recordErrorMsg = 'Unable to get template record';
+            console.warn(recordErrorMsg, res);
+            Logger.error(recordErrorMsg, res);
             return;
           }
 
@@ -245,38 +257,45 @@ export const load = (
       fs.existsFile(templateFolder)
         .then(existRes => {
           if (existRes.error) {
+            Logger.error(existRes);
             resolve(existRes);
             return;
           }
 
           if (!existRes.data.exists) {
-            resolve({
+            const existError: Requester.ApiResultError = {
               error: true,
               message: 'unable to load template: template does not exist',
-            });
+            };
+            Logger.error(existError);
+            resolve(existError);
             return;
           }
 
           fs.copy(templateFolder, dest)
             .then(resolve)
             .catch(e => {
-              resolve({
+              const copyError = {
                 error: true,
                 message: 'failed to copy template',
                 data: {
                   trace: e,
                 },
-              });
+              };
+              Logger.error(copyError);
+              resolve(copyError);
             });
         })
         .catch(e => {
-          resolve({
+          const loadError = {
             error: true,
             message: 'failed to copy template',
             data: {
               trace: e,
             },
-          });
+          };
+          Logger.error(loadError);
+          resolve(loadError);
         });
     });
   };
@@ -289,6 +308,7 @@ export const load = (
       try {
         fs.readFile(filename).then(readRes => {
           if (readRes.error) {
+            Logger.error(readRes);
             resolve(readRes);
             return;
           }
@@ -296,6 +316,7 @@ export const load = (
           const compileRes = Templater.compile(readRes.data.contents, data);
 
           if (compileRes.error) {
+            Logger.error(compileRes);
             resolve(compileRes);
             return;
           }
@@ -303,13 +324,15 @@ export const load = (
           fs.writeFileTemp(dest, compileRes.data.contents).then(resolve);
         });
       } catch (e) {
-        resolve({
+        const compileError = {
           error: true,
           message: 'Failed to compile canvas',
           data: {
             trace: e,
           },
-        });
+        };
+        Logger.error(compileError);
+        resolve(compileError);
       }
     });
   };
@@ -317,10 +340,12 @@ export const load = (
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       if (!manifest) {
-        resolve({
+        const missingDataError: Requester.ApiResultError = {
           error: true,
           message: `Unable to load template: template required`,
-        });
+        };
+        Logger.error(missingDataError);
+        resolve(missingDataError);
         return;
       }
       const ver = new Date().valueOf();
@@ -374,10 +399,12 @@ export const load = (
         }
 
         if (!isRendered) {
-          resolve({
+          const renderError: Requester.ApiResultError = {
             error: true,
             message: 'Failed to render canvas',
-          });
+          };
+          Logger.error(renderError);
+          resolve(renderError);
           return;
         }
 
@@ -389,13 +416,15 @@ export const load = (
         });
       });
     } catch (e) {
-      resolve({
+      const loadError = {
         error: true,
         message: 'Failed to load template',
         data: {
           trace: e,
         },
-      });
+      };
+      Logger.error(loadError);
+      resolve(loadError);
     }
   });
 };
@@ -413,18 +442,22 @@ export const add = (
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       if (!templateName) {
-        resolve({
+        const missingDataError: Requester.ApiResultError = {
           error: true,
           message: `Unable to add template to project (${projectId}): template required`,
-        });
+        };
+        Logger.error(missingDataError);
+        resolve(missingDataError);
         return;
       }
 
       if (!projectId) {
-        resolve({
+        const missingIdError: Requester.ApiResultError = {
           error: true,
           message: `Unable to add template (${templateName}) to project: project required`,
-        });
+        };
+        Logger.error(missingIdError);
+        resolve(missingIdError);
         return;
       }
 
@@ -433,15 +466,18 @@ export const add = (
 
       fs.existsFile(sourceManifest).then(existsRes => {
         if (existsRes.error) {
+          Logger.error(existsRes);
           resolve(existsRes);
           return;
         }
 
         if (!existsRes.data.exists) {
-          resolve({
+          const existError: Requester.ApiResultError = {
             error: true,
             message: `Unable to add template: template does not exist - ${templateName}`,
-          });
+          };
+          Logger.error(existError);
+          resolve(existError);
           return;
         }
 
@@ -459,6 +495,7 @@ export const add = (
         fs.copy(sourceFolder, destFolder)
           .then(copyRes => {
             if (copyRes.error) {
+              Logger.error(copyRes);
               resolve(copyRes);
               return;
             }
@@ -474,23 +511,27 @@ export const add = (
             });
           })
           .catch(e => {
-            resolve({
+            const addError = {
               error: true,
               message: `Failed to add template (${templateName}) to project (${projectId})`,
               data: {
                 trace: e,
               },
-            });
+            };
+            Logger.error(addError);
+            resolve(addError);
           });
       });
     } catch (e) {
-      resolve({
+      const addError = {
         error: true,
         message: 'Failed to add template',
         data: {
           trace: e,
         },
-      });
+      };
+      Logger.error(addError);
+      resolve(addError);
     }
   });
 };
@@ -512,14 +553,17 @@ export const locate = (name: string) => {
       Promise.allSettled(existReqs).then(existRes => {
         existRes.forEach(res => {
           if (res.status === 'rejected') {
+            Logger.info('location check rejected');
             return;
           }
 
           if (res.value.error) {
+            Logger.info(res.value);
             return;
           }
 
           if (!res.value.data.exists) {
+            Logger.info(res.value);
             return;
           }
 
@@ -533,7 +577,7 @@ export const locate = (name: string) => {
         });
 
         if (!isInstalled && !isInternal) {
-          resolve({
+          const locateError = {
             error: true,
             message: `Unable to locate template: ${name}`,
             data: {
@@ -541,7 +585,9 @@ export const locate = (name: string) => {
               installedPath,
               internalPath,
             },
-          });
+          };
+          Logger.error(locateError);
+          resolve(locateError);
           return;
         }
 
@@ -562,13 +608,15 @@ export const locate = (name: string) => {
         });
       });
     } catch (e) {
-      resolve({
+      const locateError = {
         error: true,
         message: 'failed to get url to template',
         data: {
           name,
         },
-      });
+      };
+      Logger.error(locateError);
+      resolve(locateError);
     }
   });
 };

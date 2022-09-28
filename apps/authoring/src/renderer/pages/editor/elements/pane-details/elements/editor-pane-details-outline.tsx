@@ -11,6 +11,7 @@ export const TabOutline = () => {
   const project = Projects.useData();
   const tabStyles = `${styles.tabOutline} tree-view nav flex-column`;
   const handleAddModule = () => {
+    console.log('[outline action] adding module - start');
     const modules = deepCopy(project.modules);
     const newIdx = modules.length;
     const newModule: ModuleTreeItem = {
@@ -24,13 +25,17 @@ export const TabOutline = () => {
     };
 
     modules.push(newModule);
+    console.log('[outline action] adding module - project update');
     Projects.update({ modules });
+    console.log('[outline action] adding module - setting active slide');
     updateActiveSlide(modules[newIdx].lessons[0].slides[0], {
       moduleIdx: newIdx,
       lessonIdx: 0,
       slideIdx: 0,
     });
+    console.log('[outline action] adding module - exploring templates');
     Templates.explore();
+    console.log('[outline action] adding module - end');
   };
 
   return (

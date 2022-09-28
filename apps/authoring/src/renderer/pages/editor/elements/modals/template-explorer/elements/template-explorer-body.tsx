@@ -45,10 +45,17 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
     }
 
     const updateList = (templates: Array<TemplateListItem>) => {
+      console.log('[template explorer] listing templates - updating list');
       const markSelectedTemplate = () => {
+        console.log(
+          '[template explorer] listing templates - marking selected template'
+        );
         for (let i = 0, ii = templates.length; i < ii; i++) {
           if (templates[i].meta.name === currentTemplate) {
             templates[i].isSelected = true;
+            console.log(
+              '[template explorer] listing templates - template selected'
+            );
             onSelectTemplate(templates[i]);
             break;
           }
@@ -62,8 +69,9 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
       setList(templates);
     };
 
+    console.log('[template explorer] listing templates - start');
     Templates.list().then(results => {
-      console.log('template list', results);
+      console.log('[template explorer] listing templates - result', results);
       if (results.error) {
         console.error(results);
         return;
@@ -71,6 +79,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
 
       updateList(results.data.templates);
       setInit(true);
+      console.log('[template explorer] listing templates - end');
     });
   }, [
     isInit,

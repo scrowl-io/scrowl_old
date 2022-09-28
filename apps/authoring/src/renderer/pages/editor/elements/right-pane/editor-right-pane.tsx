@@ -1,6 +1,7 @@
 import React from 'react';
 import * as styles from './editor-right-pane-details.module.scss';
 import { Button, Icon } from '@owlui/lib';
+import { Alert } from 'react-bootstrap';
 import { Pane } from '../../../../components';
 import { Projects, Templates } from '../../../../models';
 import { RightPaneContentForm } from './content/right-pane-content-form';
@@ -10,6 +11,10 @@ export const RightPane = () => {
   const isLoaded = Projects.useLoaded();
   const slideData = useActiveSlide();
   const hasActiveSlide = useHasActiveSlide();
+  const hasTemplate =
+    slideData.template &&
+    slideData.template.meta &&
+    slideData.template.meta.name;
   const handleExploreTemplates = () => {
     Templates.explore();
   };
@@ -36,7 +41,15 @@ export const RightPane = () => {
   ];
 
   if (!isLoaded || !hasActiveSlide) {
-    return <></>;
+    return (
+      <Pane className="slide-editor" side="right">
+        <div className={styles.slideEditorHeader}>
+          <Alert variant="light" className="w-100">
+            <small>Select a slide to edit settings</small>
+          </Alert>
+        </div>
+      </Pane>
+    );
   }
 
   return (
@@ -47,13 +60,13 @@ export const RightPane = () => {
         </span>
         <div>
           <div className={styles.slideEditorHeaderTitle}>
-            {slideData.template.meta.name}
+            {hasTemplate ? slideData.template.meta.name : ''}
           </div>
           <Button
             className={styles.slideEditorHeaderAction}
             variant="link"
             onClick={handleExploreTemplates}
-            pxScale="sm"
+            size="sm"
           >
             Change Template
           </Button>

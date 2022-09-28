@@ -51,6 +51,7 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       display: 'outlined',
       filled: true,
       actionHandler: () => {
+        console.log('[slide action menu] duplicating slide - start');
         if (!modules) {
           return;
         }
@@ -61,12 +62,17 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
         const newIdx = idx + 1;
 
         slideLesson.slides.splice(newIdx, 0, newSlide);
+        console.log('[slide action menu] duplicating slide - project update');
         Projects.update({ modules });
+        console.log(
+          '[slide action menu] duplicating slide - setting active slide'
+        );
         updateActiveSlide(slideLesson.slides[newIdx], {
           moduleIdx,
           lessonIdx,
           slideIdx: newIdx,
         });
+        console.log('[slide action menu] duplicating slide - end');
       },
     },
     {
@@ -75,19 +81,24 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
       icon: 'rectangle',
       display: 'outlined',
       actionHandler: () => {
+        console.log('[slide action menu] adding slide - start');
         const newSlide: SlideTreeItem = {
           name: 'Untitled Slide',
         };
         const newIdx = idx + 1;
 
         slideLesson.slides.splice(newIdx, 0, newSlide);
+        console.log('[slide action menu] adding slide - project update');
         Projects.update({ modules });
+        console.log('[slide action menu] adding slide - setting active slide');
         updateActiveSlide(slideLesson.slides[newIdx], {
           moduleIdx,
           lessonIdx,
           slideIdx: newIdx,
         });
+        console.log('[slide action menu] adding slide - exploring templates');
         Templates.explore();
+        console.log('[slide action menu] adding slide - end');
       },
     },
     {
