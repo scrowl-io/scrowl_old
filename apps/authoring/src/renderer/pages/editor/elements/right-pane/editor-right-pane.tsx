@@ -11,6 +11,10 @@ export const RightPane = () => {
   const isLoaded = Projects.useLoaded();
   const slideData = useActiveSlide();
   const hasActiveSlide = useHasActiveSlide();
+  const hasTemplate =
+    slideData.template &&
+    slideData.template.meta &&
+    slideData.template.meta.name;
   const handleExploreTemplates = () => {
     Templates.explore();
   };
@@ -56,7 +60,7 @@ export const RightPane = () => {
         </span>
         <div>
           <div className={styles.slideEditorHeaderTitle}>
-            {slideData.template.meta.name}
+            {hasTemplate ? slideData.template.meta.name : ''}
           </div>
           <Button
             className={styles.slideEditorHeaderAction}

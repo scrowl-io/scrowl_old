@@ -40,19 +40,24 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
   const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
   const addSlide = () => {
+    console.log('[lesson action] adding slide - start');
     const newSlide: SlideTreeItem = {
       name: 'Untitled Slide',
     };
     const slideIdx = lesson.slides.length;
 
     lesson.slides.push(newSlide);
+    console.log('[lesson action] adding slide - project update');
     Projects.update({ modules });
+    console.log('[lesson action] adding slide - setting active slide');
     updateActiveSlide(lesson.slides[slideIdx], {
       moduleIdx,
       lessonIdx: idx,
       slideIdx,
     });
+    console.log('[lesson action] adding slide - exploring templates');
     Templates.explore();
+    console.log('[lesson action] adding slide - end');
   };
 
   const lessonMenuItems: Array<ActionMenuItem> = [
@@ -96,6 +101,7 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
       filled: true,
       display: 'outlined',
       actionHandler: () => {
+        console.log('[lesson action menu] adding lesson - start');
         const newIdx = idx + 1;
         const newLesson: LessonTreeItem = {
           name: 'Untitled Lesson',
@@ -107,13 +113,19 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
         };
 
         lessonModule.lessons.splice(newIdx, 0, newLesson);
+        console.log('[lesson action menu] adding lesson - porject update');
         Projects.update({ modules });
+        console.log(
+          '[lesson action menu] adding lesson - setting active slide'
+        );
         updateActiveSlide(lessonModule.lessons[newIdx].slides[0], {
           moduleIdx,
           lessonIdx: newIdx,
           slideIdx: 0,
         });
+        console.log('[lesson action menu] adding lesson - exploring templates');
         Templates.explore();
+        console.log('[lesson action menu] adding lesson - end');
       },
     },
     {

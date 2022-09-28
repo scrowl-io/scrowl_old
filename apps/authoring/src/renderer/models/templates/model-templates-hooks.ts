@@ -81,14 +81,17 @@ export const install = () => {
 };
 
 export const explore = (open = true) => {
+  console.log('[template hooks] explore state - start');
   const hasProcessor = checkProcessor();
 
   if (!hasProcessor) {
+    console.log('[template hooks] explore state - canceled');
     return;
   }
 
   setTimeout(() => {
     processor.dispatch(state.explore(open));
+    console.log('[template hooks] explore state - end');
   }, 1);
 };
 
@@ -97,10 +100,12 @@ export const closeExplorer = () => {
 };
 
 export const list = (limit = 10) => {
+  console.log('[template hooks] listing - start');
   return new Promise<requester.ApiResult>(resolve => {
     const hasProcessor = checkProcessor();
 
     if (!hasProcessor) {
+      console.log('[template hooks] listing - canceled');
       resolve({
         error: true,
         message: 'Templates processor not set',
@@ -109,7 +114,9 @@ export const list = (limit = 10) => {
     }
 
     processor.dispatch(state.process(true));
+    console.log('[template hooks] listing - calling api');
     api.list(limit).then(result => {
+      console.log('[template hooks] listing - result', result);
       if (result.error) {
         console.error(result);
         return;
@@ -117,6 +124,7 @@ export const list = (limit = 10) => {
 
       resolve(result);
       processor.dispatch(state.process(false));
+      console.log('[template hooks] listing - end');
     });
   });
 };
