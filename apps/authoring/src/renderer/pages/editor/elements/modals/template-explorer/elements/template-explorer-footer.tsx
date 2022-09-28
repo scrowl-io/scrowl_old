@@ -8,10 +8,15 @@ export const Footer = ({
   selectedTemplate,
 }: TemplateExplorerFooterProps) => {
   const handleConfirmChange = () => {
+    console.log('[template explorer] template selection - start');
     const templateCopy = JSON.parse(JSON.stringify(selectedTemplate));
 
     delete templateCopy.isSelected;
+    console.log(
+      '[template explorer] template selection - updating active slide'
+    );
     updateActiveSlide({ template: templateCopy });
+    console.log('[template explorer] template selection - end');
     onClose();
   };
 
