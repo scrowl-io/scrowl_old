@@ -167,6 +167,7 @@ const $97d50e48d778806e$export$86fbec116b87613f = ({ templateList: templateList 
         msg: "Manifest does not have data"
     });
     let manifest = manifestRes.data;
+    console.log('manifest', manifest.glossary);
     if (typeof manifest === 'string') manifest = JSON.parse(manifest);
     const pageRes = $a0d8f6ad4094a27b$exports.getPages(manifest);
     if (pageRes.error) return /*#__PURE__*/ $bvorl$jsx($467d66ed0bb94ad0$export$edf27be85e5f6da0, {
@@ -176,12 +177,26 @@ const $97d50e48d778806e$export$86fbec116b87613f = ({ templateList: templateList 
         msg: "Project has no pages"
     });
     const pageConfig = pageRes.data;
+    const createGlossaryDict = (terms)=>{
+        const dict = {};
+        terms.forEach((item, idx)=>{
+            const heading = item.name.substring(0, 1).toUpperCase();
+            if (dict[heading] === undefined) dict[heading] = {};
+            dict[heading][item.name] = {
+                idx: idx,
+                description: item.description
+            };
+        });
+        return dict;
+    };
+    const test = createGlossaryDict(manifest.glossary);
     return /*#__PURE__*/ $bvorl$jsx($bvorl$HashRouter, {
         children: /*#__PURE__*/ $bvorl$jsxs("div", {
             className: $3d2763135302bec6$export$729c8b7179294ba,
             children: [
                 /*#__PURE__*/ $bvorl$jsx($1911174de1b1157d$export$5beeae30d1389e5, {
-                    config: pageConfig
+                    config: pageConfig,
+                    glossary: manifest.glossary
                 }),
                 /*#__PURE__*/ $bvorl$jsx("main", {
                     className: $3d2763135302bec6$export$f6cadf447928a533,
@@ -310,6 +325,30 @@ var $1550644884f0c301$export$ba0e3d50b55e781f;
 var $1550644884f0c301$export$fa3754856145d548;
 var $1550644884f0c301$export$7fe1c01b339ef5cd;
 var $1550644884f0c301$export$e61aa1e86c2900d6;
+var $1550644884f0c301$export$3ea5fe617edd9421;
+var $1550644884f0c301$export$93e415b7103d3796;
+var $1550644884f0c301$export$5d0bd84f61c0b80;
+var $1550644884f0c301$export$910b8f9b42cf3a42;
+var $1550644884f0c301$export$f0ee8fc64251109d;
+var $1550644884f0c301$export$2433368785f38aa6;
+var $1550644884f0c301$export$9f881db0cea327af;
+var $1550644884f0c301$export$d46d76de3c3f7769;
+var $1550644884f0c301$export$f9090291adfe88c3;
+var $1550644884f0c301$export$c927d710fd04f98c;
+var $1550644884f0c301$export$85272d34f1abc8b5;
+var $1550644884f0c301$export$f139f40bf0616829;
+var $1550644884f0c301$export$4481ad9abad416ae;
+var $1550644884f0c301$export$bcb3cf06569550ec;
+var $1550644884f0c301$export$b0cb6c2617cbac69;
+var $1550644884f0c301$export$c5629cdfba1595ba;
+var $1550644884f0c301$export$8ae958f09c1b94f4;
+var $1550644884f0c301$export$b33b798d76d48b76;
+var $1550644884f0c301$export$77025b5d71f757f9;
+var $1550644884f0c301$export$6d59db4903f20f7d;
+var $1550644884f0c301$export$20231cd9399b8094;
+var $1550644884f0c301$export$bf14814b2b9abe8d;
+var $1550644884f0c301$export$fc35462eb3d04961;
+var $1550644884f0c301$export$cfeb7236531fd807;
 $1550644884f0c301$export$80e4b313e5e6b30d = "nav";
 $1550644884f0c301$export$f91427ed400cf646 = "tree-view__header";
 $1550644884f0c301$export$fc36764bd7bec3e8 = "tree-view__header";
@@ -333,6 +372,30 @@ $1550644884f0c301$export$ba0e3d50b55e781f = "tree-view--module";
 $1550644884f0c301$export$fa3754856145d548 = "tree-view--module";
 $1550644884f0c301$export$7fe1c01b339ef5cd = "tree-view--lesson";
 $1550644884f0c301$export$e61aa1e86c2900d6 = "tree-view--lesson";
+$1550644884f0c301$export$3ea5fe617edd9421 = "tab-glossary";
+$1550644884f0c301$export$93e415b7103d3796 = "tab-glossary";
+$1550644884f0c301$export$5d0bd84f61c0b80 = "tab-glossary__list";
+$1550644884f0c301$export$910b8f9b42cf3a42 = "tab-glossary__list";
+$1550644884f0c301$export$f0ee8fc64251109d = "tab-glossary__header";
+$1550644884f0c301$export$2433368785f38aa6 = "tab-glossary__header";
+$1550644884f0c301$export$9f881db0cea327af = "tab-glossary__term";
+$1550644884f0c301$export$d46d76de3c3f7769 = "tab-glossary__term";
+$1550644884f0c301$export$f9090291adfe88c3 = "tab-glossary__term--word";
+$1550644884f0c301$export$c927d710fd04f98c = "tab_glossary__term--word";
+$1550644884f0c301$export$85272d34f1abc8b5 = "tab-glossary__term--definition";
+$1550644884f0c301$export$f139f40bf0616829 = "tab-glossary__term--definition";
+$1550644884f0c301$export$4481ad9abad416ae = "tab_glossary__term--word";
+$1550644884f0c301$export$bcb3cf06569550ec = "tab-glossary__owl-offcanvas-form";
+$1550644884f0c301$export$b0cb6c2617cbac69 = "tab-glossary__owl-offcanvas-form";
+$1550644884f0c301$export$c5629cdfba1595ba = "owlui-offcanvas-header";
+$1550644884f0c301$export$8ae958f09c1b94f4 = "owlui-offcanvas-header";
+$1550644884f0c301$export$b33b798d76d48b76 = "btn-close";
+$1550644884f0c301$export$77025b5d71f757f9 = "btn-close";
+$1550644884f0c301$export$6d59db4903f20f7d = "description";
+$1550644884f0c301$export$20231cd9399b8094 = "glossary-form-button-set";
+$1550644884f0c301$export$bf14814b2b9abe8d = "glossary-form-button-set";
+$1550644884f0c301$export$fc35462eb3d04961 = "glossary-submit-button";
+$1550644884f0c301$export$cfeb7236531fd807 = "glossary-submit-button";
 const $a514e2e9f4953fa4$export$8ac254ae510b04b0 = ({ config: config , idx: idx  })=>{
     const [open, setOpen] = $bvorl$useState(true);
     const itemId = `tree-item-module-${idx}-item`;
@@ -449,6 +512,76 @@ const $bccef95645a1a7fb$export$9fb93abafa4ff69b = ({ config: config  })=>{
 var $bccef95645a1a7fb$export$2e2bcd8739ae039 = {
     TabNav: $bccef95645a1a7fb$export$9fb93abafa4ff69b
 };
+const $83886ee4c9a5e4fb$export$c62bf9fec62e23d7 = ({ glossary: glossary  })=>{
+    const entries = Object.keys(glossary).sort((a, b)=>{
+        return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+    return /*#__PURE__*/ $bvorl$jsx($bvorl$Fragment, {
+        children: entries.map((entry, idx)=>{
+            return /*#__PURE__*/ $bvorl$jsxs("div", {
+                className: $1550644884f0c301$export$d46d76de3c3f7769,
+                id: `glossary-item-${entry}`,
+                children: [
+                    /*#__PURE__*/ $bvorl$jsx("div", {
+                        className: "d-flex justify-content-between",
+                        children: /*#__PURE__*/ $bvorl$jsx("dt", {
+                            className: $1550644884f0c301$export$c927d710fd04f98c,
+                            children: entry
+                        })
+                    }),
+                    /*#__PURE__*/ $bvorl$jsx("dd", {
+                        className: $1550644884f0c301$export$f139f40bf0616829,
+                        children: glossary[entry].description
+                    })
+                ]
+            }, idx);
+        })
+    });
+};
+const $83886ee4c9a5e4fb$export$8be784f7b2f2a1df = ({ glossary: glossary  })=>{
+    const headings = Object.keys(glossary).sort();
+    if (!headings) return /*#__PURE__*/ $bvorl$jsx($bvorl$Fragment, {});
+    return /*#__PURE__*/ $bvorl$jsx($bvorl$Fragment, {
+        children: headings.map((heading, idx)=>{
+            return /*#__PURE__*/ $bvorl$jsxs("div", {
+                children: [
+                    /*#__PURE__*/ $bvorl$jsx("header", {
+                        className: $1550644884f0c301$export$2433368785f38aa6,
+                        children: heading
+                    }),
+                    /*#__PURE__*/ $bvorl$jsx($83886ee4c9a5e4fb$export$c62bf9fec62e23d7, {
+                        glossary: glossary[heading]
+                    })
+                ]
+            }, idx);
+        })
+    });
+};
+var $83886ee4c9a5e4fb$export$2e2bcd8739ae039 = {
+    GlossaryList: $83886ee4c9a5e4fb$export$8be784f7b2f2a1df,
+    GlossaryListEntries: $83886ee4c9a5e4fb$export$c62bf9fec62e23d7
+};
+const $f99edf023dc8c88e$export$919a80769f1887b5 = ({ glossary: glossary  })=>{
+    const createGlossaryDict = (terms)=>{
+        const dict = {};
+        terms.forEach((item, idx)=>{
+            const heading = item.name.substring(0, 1).toUpperCase();
+            if (dict[heading] === undefined) dict[heading] = {};
+            dict[heading][item.name] = {
+                idx: idx,
+                description: item.description
+            };
+        });
+        return dict;
+    };
+    const glossaryDict = createGlossaryDict(glossary);
+    return /*#__PURE__*/ $bvorl$jsx($83886ee4c9a5e4fb$export$8be784f7b2f2a1df, {
+        glossary: glossaryDict
+    });
+};
+var $f99edf023dc8c88e$export$2e2bcd8739ae039 = {
+    TabGlossary: $f99edf023dc8c88e$export$919a80769f1887b5
+};
 const $1911174de1b1157d$var$toModuleFormat = (config)=>{
     const dict = {};
     config.forEach((def)=>{
@@ -462,14 +595,22 @@ const $1911174de1b1157d$var$toModuleFormat = (config)=>{
         };
     });
 };
-const $1911174de1b1157d$export$5beeae30d1389e5 = ({ config: config  })=>{
+const $1911174de1b1157d$export$5beeae30d1389e5 = ({ config: config , glossary: glossary  })=>{
     const fConfig = $1911174de1b1157d$var$toModuleFormat(config);
+    console.log('fConfig', fConfig);
     const tabItems = [
         {
             id: '1',
             title: 'Outline',
             view: /*#__PURE__*/ $bvorl$jsx($bccef95645a1a7fb$export$9fb93abafa4ff69b, {
                 config: fConfig
+            })
+        },
+        {
+            id: '2',
+            title: 'Glossary',
+            view: /*#__PURE__*/ $bvorl$jsx($f99edf023dc8c88e$export$919a80769f1887b5, {
+                glossary: glossary
             })
         }, 
     ];
