@@ -318,7 +318,7 @@ export const publish = (data: ProjectData) => {
   });
 };
 
-export const list = (limit = 10) => {
+export const list = (limit = 100) => {
   return new Promise<requester.ApiResult>(resolve => {
     const hasProcessor = checkProcessor();
 

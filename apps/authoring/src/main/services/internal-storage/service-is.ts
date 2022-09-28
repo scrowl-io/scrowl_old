@@ -305,7 +305,7 @@ export const read = (
       }
 
       if (limit) {
-        DB.select().from(tableName).limit(10).then(returnResult);
+        DB.select().from(tableName).limit(100).then(returnResult);
         return;
       }
 
