@@ -229,7 +229,23 @@ $parcel$defineInteropFlag($7da050e5dc1a885d$exports);
 $parcel$export($7da050e5dc1a885d$exports, "Slide", () => $7da050e5dc1a885d$export$d8dc01b5c85a37b9);
 $parcel$export($7da050e5dc1a885d$exports, "default", () => $7da050e5dc1a885d$export$2e2bcd8739ae039);
 var $70882c1f95c290bb$export$c1742949d0193489;
+var $70882c1f95c290bb$export$3d7557c9cb80ffc0;
+var $70882c1f95c290bb$export$c5706146bc63213;
+var $70882c1f95c290bb$export$454716bc11f1b01e;
+var $70882c1f95c290bb$export$17f0d4d3778c4cf8;
+var $70882c1f95c290bb$export$a5c5655a77168f52;
+var $70882c1f95c290bb$export$6ccb119fe62ef98b;
+var $70882c1f95c290bb$export$7b686dbbcc2ed1de;
+var $70882c1f95c290bb$export$20d4aa1b982023d0;
 $70882c1f95c290bb$export$c1742949d0193489 = "slide";
+$70882c1f95c290bb$export$3d7557c9cb80ffc0 = "aspect-ratio";
+$70882c1f95c290bb$export$c5706146bc63213 = "aspect-ratio";
+$70882c1f95c290bb$export$454716bc11f1b01e = "aspect-ratio--4x3";
+$70882c1f95c290bb$export$17f0d4d3778c4cf8 = "aspect-ratio--4x3";
+$70882c1f95c290bb$export$a5c5655a77168f52 = "aspect-ratio--16x9";
+$70882c1f95c290bb$export$6ccb119fe62ef98b = "aspect-ratio--16x9";
+$70882c1f95c290bb$export$7b686dbbcc2ed1de = "aspect-ratio--16x10";
+$70882c1f95c290bb$export$20d4aa1b982023d0 = "aspect-ratio--16x10";
 const $7da050e5dc1a885d$var$aspectRatios = {
     '4:3': {
         label: 'Standard 4:3',
@@ -257,7 +273,6 @@ const $7da050e5dc1a885d$export$d8dc01b5c85a37b9 = ({ children: children , classN
     });
     return /*#__PURE__*/ $bvorl$jsx("div", {
         className: cssClasses,
-        style: slideStyle,
         children: children
     });
 };

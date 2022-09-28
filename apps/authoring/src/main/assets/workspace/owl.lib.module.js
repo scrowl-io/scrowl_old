@@ -11848,7 +11848,8 @@ const $1a67f29333881c92$export$931cbfb6bfb85fc = (props)=>{
         'theme',
         'pxScale',
         'items',
-        'button'
+        'button',
+        'showSelected'
     ]);
     const getItemIdx = (ev)=>{
         if (!ev.currentTarget.dataset.index) {
