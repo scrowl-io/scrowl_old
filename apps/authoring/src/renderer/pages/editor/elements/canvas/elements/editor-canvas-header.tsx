@@ -20,20 +20,26 @@ export const Header = ({ onUpdate }: EditorCanvasHeaderProps) => {
   };
 
   return (
-    <div className={styles.slideNameContainer}>
-      <span className={styles.slideNameIcon}>
-        <Icon icon="rectangle" display="outlined" />
-      </span>
-      {slideName ? (
-        <input
-          name="slideName"
-          id="slideNameInput"
-          className="owlui-form-control"
-          value={slideName}
-          onChange={handleSlideNameChange}
-        />
-      ) : (
-        <></>
+    <div className={styles.workspace__header}>
+      {slideName && (
+        <>
+          <h1 className="visually-hidden">{slideName}</h1>
+          <Icon
+            icon="rectangle"
+            display="outlined"
+            opsz={20}
+            appearance="Slide"
+          />
+          <div className={styles.workspace__header__slidename}>
+            <input
+              name="slideName"
+              id="slideNameInput"
+              className="owlui-form-control"
+              value={slideName}
+              onChange={handleSlideNameChange}
+            />
+          </div>
+        </>
       )}
     </div>
   );

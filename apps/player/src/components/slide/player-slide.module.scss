@@ -1,10 +1,23 @@
+@use '@owlui/lib/src/theme/utils' as *;
+
 .slide {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.562);
-  border: 1px solid #cacaca;
-  box-shadow: 0px 0px 12px #dadada;
-  background-color: #ffffff;
-  overflow-y: auto;
+  --bs-heading-color: var(--bs-gray-900);
+  --bs-body-color: var(--bs-gray-900);
+  --bs-body-bg: var(--bs-white);
+
+  margin: 0 $owl-sys-space-workspace $owl-sys-space-workspace;
+  color: var(--bs-body-color);
+  border: var(--owl-border-width) solid var(--owl-border-color);
+  background: var(--bs-body-bg);
+  box-shadow: var(--owl-box-shadow);
+
+  &:not(.ratio) {
+    height: calc(100% - $owl-sys-space-workspace );
+    width: 100%;
+  }
+
+  &.ratio-16x9 {
+    max-height: 110vmin;
+    max-width: 110vmin;
+  }
 }

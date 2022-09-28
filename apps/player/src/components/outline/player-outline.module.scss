@@ -109,7 +109,7 @@
   &--module,
   &--lesson {
     position: relative;
-    line-height: var(--bs-line-height-sm);
+    line-height: $owl-ref-typeface-lineheight-sm;
   }
 
   &--module .nav,

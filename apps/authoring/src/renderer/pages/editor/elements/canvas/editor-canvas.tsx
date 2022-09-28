@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Templates, Projects } from '../../../../models';
+import * as styles from './editor-canvas.module.scss';
 import { requester } from '../../../../services';
 import {
   useActiveSlide,
@@ -23,7 +24,7 @@ export const Canvas = () => {
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [slideStyle, setSlideStyle] = useState({
-    transform: 'translate(-50%, -50%) scale(.33)',
+    transform: 'scale(.33)',
   });
 
   useEffect(() => {
@@ -68,19 +69,25 @@ export const Canvas = () => {
   };
 
   return (
-    <div>
+    <div className={styles.workspace}>
       <Header onUpdate={updateSlideTitle} />
-      <Slide options={slideOpts} style={slideStyle}>
-        <iframe
-          src={canvasUrl}
-          title="Scrowl Editor Canvas"
-          referrerPolicy="unsafe-url"
-          sandbox="allow-same-origin allow-scripts"
-          height="100%"
-          width="100%"
-          id="template-iframe"
-        ></iframe>
-      </Slide>
+      <div className={styles.workspace__body}>
+        <Slide
+          options={slideOpts}
+          // className="ratio ratio-16x9"
+        >
+          <iframe
+            src={canvasUrl}
+            title="Scrowl Editor Canvas"
+            referrerPolicy="unsafe-url"
+            sandbox="allow-same-origin allow-scripts"
+            height="100%"
+            width="100%"
+            id="template-iframe"
+          ></iframe>
+        </Slide>
+      </div>
+      <div className={styles.workspace__footer}></div>
     </div>
   );
 };

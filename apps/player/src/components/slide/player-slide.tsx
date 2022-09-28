@@ -35,11 +35,7 @@ export const Slide = ({ children, className, options, style }: SlideProps) => {
     height: `${aspect.height}px`,
   });
 
-  return (
-    <div className={cssClasses} style={slideStyle}>
-      {children}
-    </div>
-  );
+  return <div className={cssClasses}>{children}</div>;
 };
 
 export default {

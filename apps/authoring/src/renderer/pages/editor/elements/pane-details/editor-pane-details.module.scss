@@ -164,7 +164,7 @@
       padding: 0.25rem 1rem;
       color: var(--owl-sidebar-header-color);
       font-weight: 700;
-      line-height: var(--bs-line-height-sm);
+      line-height: $owl-ref-typeface-lineheight-sm;
       letter-spacing: 0.025em;
       text-transform: uppercase;
       background: #e9ecef;
@@ -438,7 +438,7 @@
   &--lesson,
   &--slide {
     position: relative;
-    line-height: var(--bs-line-height-sm);
+    line-height: $owl-ref-typeface-lineheight-sm;
   }
 
   &--module .nav,
@@ -456,10 +456,6 @@
   }
 }
 
-.owlui-form-label {
-  color: var(--owl-typeface-label-color);
-}
-
 .owlui-offcanvas-header {
   font-weight: normal !important;
 }
@@ -475,6 +471,7 @@
 .scrowl-template-browser {
   display: flex;
   justify-content: space-evenly;
+
   &--item {
     border: none;
     background: none;
