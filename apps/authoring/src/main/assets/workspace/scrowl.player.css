@@ -155,6 +155,11 @@
   box-shadow: -2px 0 0 0 var(--owl-color-module);
 }
 
+.tree-view--lesson {
+  margin-bottom: .5rem;
+  margin-left: 1.5rem;
+}
+
 .tree-view--lesson .nav {
   box-shadow: -2px 0 0 0 var(--owl-color-lesson);
 }
