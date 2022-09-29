@@ -207,7 +207,13 @@ const TreeViewLesson = (props: TreeViewLessonProps) => {
               />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="interests" display="outlined" filled={!open} />
+              <Icon
+                icon="interests"
+                display="sharp"
+                grad={200}
+                opsz={20}
+                filled={!open}
+              />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>

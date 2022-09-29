@@ -237,7 +237,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
               />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="folder" display="outlined" filled={!open} />
+              <Icon icon="folder" display="outlined" opsz={20} filled={!open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>

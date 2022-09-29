@@ -181,7 +181,13 @@ const TreeViewSlide = (props: TreeViewSlideProps) => {
           onClick={handleSlideSelection}
         >
           <span className={styles.treeViewItemIconDetail}>
-            <Icon icon="rectangle" display="outlined" />
+            <Icon
+              icon="rectangle"
+              display="outlined"
+              opsz={20}
+              grad={200}
+              appearance="Slide"
+            />
           </span>
           <span className={styles.treeViewItemLabel}>{tree.name}</span>
         </Button>
