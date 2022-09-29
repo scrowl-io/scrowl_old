@@ -418,6 +418,7 @@ const createScormPackage = (
           // description: config?.scormConfig?.description,
           zip: true,
           version: '0.0.1',
+          date: today,
           outputFolder: destFolder,
         },
       };
