@@ -65,7 +65,7 @@ export const Canvas = () => {
   const updateSlideTitle = (title?: string) => {
     const payload = { name: title };
 
-    updateActiveSlide(payload, position);
+    updateActiveSlide(payload);
   };
 
   return (
