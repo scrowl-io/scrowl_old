@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import React from 'react';
 import { Tabs, Drawer, Button, Icon, TextInputProps, Input } from '@owlui/lib';
 import {
@@ -9,7 +10,6 @@ import {
 import { utls } from '../../services';
 import { Pane } from '../';
 import { TabNav, TabGlossary } from './elements';
-import * as styles from './player-outline.module.scss';
 
 const toModuleFormat = (config: NavConfig): ModuleConfigList => {
   const dict: ModuleConfigDict = {};
@@ -38,7 +38,7 @@ export const Outline = ({ config, glossary }: OutlineProps) => {
   };
 
   const fConfig = toModuleFormat(config);
-  console.log('fConfig', fConfig);
+
   const tabItems = [
     {
       id: '1',
@@ -70,11 +70,7 @@ export const Outline = ({ config, glossary }: OutlineProps) => {
 
   const content = {
     header: {
-      content: (
-        <div>
-          <Input inputProps={playerPaneInputProps} />
-        </div>
-      ),
+      content: <div>{/* <Input inputProps={playerPaneInputProps} /> */}</div>,
       bsProps: {
         closeButton: true,
         className: '',

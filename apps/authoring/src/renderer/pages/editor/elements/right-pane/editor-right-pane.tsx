@@ -54,24 +54,25 @@ export const RightPane = () => {
 
   return (
     <Pane className="slide-editor" side="right">
-      <div className={styles.slideEditorHeader}>
-        <span className={styles.slideEditorHeaderIcon}>
-          <Icon icon="dashboard" display="sharp" filled={true} />
-        </span>
-        <div>
-          <div className={styles.slideEditorHeaderTitle}>
-            {hasTemplate ? slideData.template.meta.name : ''}
+      {hasTemplate && (
+        <div className={styles.slideEditorHeader}>
+          <span className={styles.slideEditorHeaderIcon}>
+            <Icon icon="dashboard" display="sharp" filled={true} opsz={20} />
+          </span>
+          <div>
+            <div className={styles.slideEditorHeaderTitle}>
+              {slideData.template.meta.name}
+            </div>
+            <Button
+              className={styles.slideEditorHeaderAction}
+              variant="link"
+              onClick={handleExploreTemplates}
+            >
+              Change Template
+            </Button>
           </div>
-          <Button
-            className={styles.slideEditorHeaderAction}
-            variant="link"
-            onClick={handleExploreTemplates}
-            size="sm"
-          >
-            Change Template
-          </Button>
         </div>
-      </div>
+      )}
       <div className={styles.templateOptionsContent}>
         <RightPaneContentForm />
       </div>

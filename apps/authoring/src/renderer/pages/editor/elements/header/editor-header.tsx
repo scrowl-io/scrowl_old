@@ -11,27 +11,28 @@ export const Header = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showSavetooltip, setShowSaveTooltip] = useState(false);
   const project = Projects.useData();
+  const [projectName, setProjectName] = useState(project.name);
   const disableElement = !project.name.trim();
 
   const handleFilenameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const name = ev.currentTarget.value;
 
+    setProjectName(name);
     Projects.update({ name });
   };
 
   return (
     <Toolbar>
       <Logo href="/" sizing="sm" />
-      <div className={styles.filename} data-value={project.name}>
+      <div className={styles.filename} data-value={projectName}>
         <input
           name="filename"
           id="filenameInput"
           className="owlui-form-control"
-          value={project.name}
+          value={projectName}
           placeholder="Untitled Project"
           onChange={handleFilenameChange}
           size={13}
-          disabled={disableElement}
         />
       </div>
       <Navbar.Collapse>

@@ -3,35 +3,56 @@ import { Button, Form } from '@owlui/lib';
 import { GlossaryFormProps } from './glossary-types';
 import * as styles from '../../editor-pane-details.module.scss';
 
-export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
+export const GlossaryForm = ({
+  term,
+  onSubmit,
+  onCancel,
+  onChange,
+}: GlossaryFormProps) => {
   const prefix = 'form-glossary-term';
-  const [data, setData] = useState({
-    name: term.name || '',
-    description: term.description || '',
-  });
+  const [termName, setTermName] = useState(term.name || '');
+  const [termDescription, setTermDescription] = useState(
+    term.description || ''
+  );
+
   const handleFormChangeName = (ev: React.FormEvent<HTMLInputElement>) => {
     const name = ev.currentTarget.value;
-
-    setData({ name, description: data.description });
+    setTermName(name);
+    onChange({ name, description: termDescription });
   };
+
   const handleFormChangeDescription = (
     ev: React.FormEvent<HTMLInputElement>
   ) => {
     const description = ev.currentTarget.value;
 
-    setData({ name: data.name, description: description });
+    setTermDescription(description);
+    onChange({ name: termName, description });
   };
+
   const handleFormSubmit = () => {
-    onSubmit(data);
+    onSubmit({
+      name: termName,
+      description: termDescription,
+    });
   };
+
+  const handleFormCancel = () => {
+    setTermName('');
+    setTermDescription('');
+    onCancel();
+  };
+
   const handleKeyboardSubmit = (e: React.KeyboardEvent) => {
     const cancelButton = document.querySelector('.glossary-cancel-button');
     const cancelIsFocused = document.activeElement === cancelButton;
+
     if (e.key === 'Enter' && !cancelIsFocused) {
       e.preventDefault();
-      onSubmit(data);
+      handleFormSubmit();
     }
   };
+
   const form = [
     {
       type: 'input',
@@ -45,7 +66,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
           name: `${prefix}-name`,
           type: 'text',
           placeholder: 'Enter Term',
-          value: data.name,
+          value: termName,
           onChange: handleFormChangeName,
         },
       },
@@ -63,7 +84,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
           name: `${prefix}-description`,
           type: 'textarea',
           placeholder: 'Define the Term',
-          value: data.description,
+          value: termDescription,
           onChange: handleFormChangeDescription,
           as: 'textarea',
         },
@@ -80,7 +101,7 @@ export const GlossaryForm = ({ term, onHide, onSubmit }: GlossaryFormProps) => {
       <div className="glossary-form-button-set d-flex justify-content-end">
         <Button
           className="glossary-cancel-button"
-          onClick={onHide}
+          onClick={handleFormCancel}
           variant="link"
         >
           Cancel

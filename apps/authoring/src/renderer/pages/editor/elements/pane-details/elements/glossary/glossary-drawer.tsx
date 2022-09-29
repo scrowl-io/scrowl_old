@@ -4,7 +4,13 @@ import * as styles from '../../editor-pane-details.module.scss';
 import { GlossaryDrawerProps } from './glossary-types';
 import { GlossaryForm } from './glossary-form';
 
-export const GlossaryDrawer = (props: GlossaryDrawerProps) => {
+export const GlossaryDrawer = ({
+  onChange,
+  onSubmit,
+  onCancel,
+  term,
+  ...props
+}: GlossaryDrawerProps) => {
   const content = {
     header: {
       content: <h4>Add Glossary Term</h4>,
@@ -15,9 +21,10 @@ export const GlossaryDrawer = (props: GlossaryDrawerProps) => {
     },
     body: (
       <GlossaryForm
-        term={props.term}
-        onHide={props.onHide}
-        onSubmit={props.onSubmit}
+        term={term}
+        onSubmit={onSubmit}
+        onCancel={onCancel}
+        onChange={onChange}
       />
     ),
   };

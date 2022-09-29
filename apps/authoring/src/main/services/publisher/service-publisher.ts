@@ -17,7 +17,7 @@ import {
   writeFile,
   dirName,
 } from '../file-system';
-import { getDateStamp } from '../internal-storage';
+import { getDateStampLocal } from '../internal-storage';
 
 export const assetPath = getAssetPath(join('assets'));
 
@@ -405,7 +405,7 @@ const createScormPackage = (
   return new Promise<ApiResult>(resolve => {
     try {
       const destFolder = dirName(dest);
-      const today = getDateStamp();
+      const today = getDateStampLocal();
       const opts = {
         version: '1.2',
         language: 'en-US',
@@ -418,6 +418,7 @@ const createScormPackage = (
           // description: config?.scormConfig?.description,
           zip: true,
           version: '0.0.1',
+          date: today,
           outputFolder: destFolder,
         },
       };

@@ -1,6 +1,10 @@
 @use '@owlui/lib/src/theme/utils' as *;
 
 .form-builder {
+  .form-control {
+    margin-bottom: 1em;
+  }
+
   textarea {
     height: 10em;
   }

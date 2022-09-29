@@ -1,7 +1,7 @@
 {
   "name": "@scrowl/authoring",
   "productName": "scrowl-authoring",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "A tool used to create online training materials",
   "license": "MIT",
   "keywords": [],
@@ -106,10 +106,13 @@
     "files": [
       "dist/*",
       "../../node_modules/**/*",
-      "package.json"
+      "./package.json"
     ],
     "extraFiles": [
-      "src/main/assets/**"
+      "./src/main/assets/**"
+    ],
+    "extraResources": [
+      "./assets/**"
     ],
     "dmg": {
       "contents": [
@@ -126,7 +129,8 @@
       ]
     },
     "directories": {
-      "output": "release/build"
+      "output": "release/build",
+      "buildResources": "assets"
     },
     "publish": null
   },

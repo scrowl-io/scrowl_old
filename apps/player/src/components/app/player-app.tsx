@@ -31,7 +31,6 @@ export const App = ({ templateList }: AppProps) => {
 
   let manifest = manifestRes.data;
 
-  console.log('manifest', manifest.glossary);
   if (typeof manifest === 'string') {
     manifest = JSON.parse(manifest);
   }
