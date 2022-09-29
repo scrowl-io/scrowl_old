@@ -351,6 +351,7 @@
     }
 
     &.slideActive {
+      color: var(--owl-selection-color);
       background: var(--owl-selection-bg);
     }
   }
@@ -358,9 +359,9 @@
   &__item {
     display: flex;
     flex-grow: 1;
-    padding: 3px 8px 7.92px 21px;
+    padding: 6px 8px 4px 21px;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.6;
     color: inherit;
     font-size: var(--owl-font-size-sm);
     text-decoration: none;
@@ -413,10 +414,13 @@
 
       &--detail {
         margin-right: 0.5em;
-        line-height: 1rem;
-        font-size: 0.75rem;
-        position: relative;
-        top: 0.3rem;
+        align-self: flex-start;
+
+
+        > span[class^="owlui-icons"]:first-child {
+          font-size: 1.2em;
+          line-height: 1;
+        }
       }
     }
 
@@ -426,9 +430,7 @@
     }
 
     &__label {
-      position: relative;
-      top: 0.25rem;
-      line-height: 1rem;
+      line-height: 1.4;
       color: inherit;
       font-size: var(--owl-font-size-sm);
     }

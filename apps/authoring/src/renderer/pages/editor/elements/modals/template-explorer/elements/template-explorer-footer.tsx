@@ -1,4 +1,5 @@
 import React from 'react';
+import { ButtonGroup } from 'react-bootstrap';
 import { Button } from '@owlui/lib';
 import { TemplateExplorerFooterProps } from '../editor-modal-template-explorer.types';
 import { Projects } from '../../../../../../models';
@@ -33,14 +34,14 @@ export const Footer = ({
   };
 
   return (
-    <>
-      <Button variant="link" onClick={onClose}>
+    <ButtonGroup>
+      <Button variant="link" size="sm" onClick={onClose}>
         Cancel
       </Button>
-      <Button variant="success" onClick={handleConfirmChange}>
+      <Button variant="success" size="sm" onClick={handleConfirmChange}>
         Apply
       </Button>
-    </>
+    </ButtonGroup>
   );
 };
 

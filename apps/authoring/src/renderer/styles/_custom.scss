@@ -5,6 +5,20 @@
 // OSG Bootstrap Theme Variables and Overrides
 //
 
+.owlui-modal-title {
+  @extend .h5;
+
+  &.h1,
+  &.h2,
+  &.h3,
+  &.h4,
+  &.h5 {
+    margin-bottom: 0;
+    line-height: var(--bs-modal-title-line-height);
+    user-select: none;
+  }
+}
+
 .owl-avatar {
   display: inline-block;
   padding: 0.25rem;

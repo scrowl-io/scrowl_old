@@ -14,7 +14,7 @@ export type ProjectExplorerBodyProps = {
   show: boolean;
 };
 
-export type ProjectExlporerTableItem = {
+export type ProjectExplorerTableItem = {
   id?: string;
   name?: string;
   link?: JSX.Element;
@@ -57,7 +57,7 @@ const ProjectExplorerBody = ({ show }: ProjectExplorerBodyProps) => {
     }
 
     const searchedItems = sourceItems.filter(
-      (item: ProjectExlporerTableItem) => {
+      (item: ProjectExplorerTableItem) => {
         const lookup = item.name ? item.name.toLowerCase() : '';
 
         return lookup.includes(searchValue.toLowerCase());
@@ -112,13 +112,14 @@ const ProjectExplorerBody = ({ show }: ProjectExplorerBodyProps) => {
       }
 
       const items = results.data.projects.map(
-        (project: Projects.ProjectData): ProjectExlporerTableItem => {
+        (project: Projects.ProjectData): ProjectExplorerTableItem => {
           return {
             id: project.id,
             name: project.name,
             link: (
               <Button
                 variant="link"
+                size="sm"
                 data-project-id={project.id}
                 onClick={handleOpenProject}
               >
@@ -152,7 +153,7 @@ export const ModalProjectExplorer = () => {
       closeButton: true,
       closeLabel: 'Close',
     },
-    content: <></>,
+    content: <>Open Recent...</>,
   };
   const body = {
     content: <ProjectExplorerBody show={showModalExplorer} />,
