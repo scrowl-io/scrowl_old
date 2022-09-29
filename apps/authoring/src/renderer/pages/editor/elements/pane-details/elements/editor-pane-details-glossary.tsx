@@ -94,6 +94,7 @@ export const TabGlossary = () => {
     }
 
     setActiveTerm(term);
+    setActiveTermIdx(0);
     Projects.update({ glossary });
     setGlossaryDrawerOpen(false);
   };
