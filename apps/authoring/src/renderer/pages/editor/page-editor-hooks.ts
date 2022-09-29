@@ -61,6 +61,15 @@ export const useHasActiveSlide = () => {
   return useSelector((state: State.RootState) => state.editor.hasActiveSlide);
 };
 
+export const resetActiveSlide = () => {
+  if (!processor.dispatch) {
+    console.info('preference processor not set!');
+    return;
+  }
+
+  processor.dispatch(state.resetActiveSlide({}));
+};
+
 export default {
   useInit,
   useActiveSlide,
@@ -69,4 +78,5 @@ export default {
   updateActiveSlidePosition,
   updateActiveSlideTemplate,
   useHasActiveSlide,
+  resetActiveSlide,
 };

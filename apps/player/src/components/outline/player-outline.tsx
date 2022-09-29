@@ -8,7 +8,7 @@ import {
 } from './player-outline.types';
 import { utls } from '../../services';
 import { Pane } from '../';
-import { TabNav } from './elements';
+import { TabNav, TabGlossary } from './elements';
 
 const toModuleFormat = (config: NavConfig): ModuleConfigList => {
   const dict: ModuleConfigDict = {};
@@ -29,13 +29,19 @@ const toModuleFormat = (config: NavConfig): ModuleConfigList => {
   });
 };
 
-export const Outline = ({ config }: OutlineProps) => {
+export const Outline = ({ config, glossary }: OutlineProps) => {
   const fConfig = toModuleFormat(config);
+  console.log('fConfig', fConfig);
   const tabItems = [
     {
       id: '1',
       title: 'Outline',
       view: <TabNav config={fConfig} />,
+    },
+    {
+      id: '2',
+      title: 'Glossary',
+      view: <TabGlossary glossary={glossary} />,
     },
   ];
 

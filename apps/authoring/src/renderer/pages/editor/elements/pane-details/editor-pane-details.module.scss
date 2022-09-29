@@ -1,5 +1,4 @@
-@use 'sass:selector';
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .owlui-tab-content {
   overflow-y: auto;
@@ -165,7 +164,7 @@
       padding: 0.25rem 1rem;
       color: var(--owl-sidebar-header-color);
       font-weight: 700;
-      line-height: var(--osg-line-height-sm);
+      line-height: $owl-ref-typeface-lineheight-sm;
       letter-spacing: 0.025em;
       text-transform: uppercase;
       background: #e9ecef;
@@ -352,6 +351,7 @@
     }
 
     &.slideActive {
+      color: var(--owl-selection-color);
       background: var(--owl-selection-bg);
     }
   }
@@ -359,9 +359,9 @@
   &__item {
     display: flex;
     flex-grow: 1;
-    padding: 3px 8px 7.92px 21px;
+    padding: 6px 8px 4px 21px;
     margin: 0;
-    line-height: 1.4;
+    line-height: 1.6;
     color: inherit;
     font-size: var(--owl-font-size-sm);
     text-decoration: none;
@@ -414,10 +414,13 @@
 
       &--detail {
         margin-right: 0.5em;
-        line-height: 1rem;
-        font-size: 0.75rem;
-        position: relative;
-        top: 0.3rem;
+        align-self: flex-start;
+
+
+        > span[class^="owlui-icons"]:first-child {
+          font-size: 1.2em;
+          line-height: 1;
+        }
       }
     }
 
@@ -427,9 +430,7 @@
     }
 
     &__label {
-      position: relative;
-      top: 0.25rem;
-      line-height: 1rem;
+      line-height: 1.4;
       color: inherit;
       font-size: var(--owl-font-size-sm);
     }
@@ -439,7 +440,7 @@
   &--lesson,
   &--slide {
     position: relative;
-    line-height: var(--osg-line-height-sm);
+    line-height: $owl-ref-typeface-lineheight-sm;
   }
 
   &--module .nav,
@@ -457,10 +458,6 @@
   }
 }
 
-.owlui-form-label {
-  color: var(--owl-typeface-label-color);
-}
-
 .owlui-offcanvas-header {
   font-weight: normal !important;
 }
@@ -476,6 +473,7 @@
 .scrowl-template-browser {
   display: flex;
   justify-content: space-evenly;
+
   &--item {
     border: none;
     background: none;

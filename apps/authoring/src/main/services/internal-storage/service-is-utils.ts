@@ -23,8 +23,18 @@ export const getDateStamp = () => {
   return `${stampYear}-${stampMonth}-${stampDate}`;
 };
 
+export const getDateStampLocal = () => {
+  const now = new Date();
+  const stampYear = now.getFullYear();
+  const stampMonth = addLeadZero(now.getMonth() + 1);
+  const stampDate = addLeadZero(now.getDate());
+
+  return `${stampYear}-${stampMonth}-${stampDate}`;
+};
+
 export default {
   getTimestamp,
   getDateStamp,
+  getDateStampLocal,
   addLeadZero,
 };

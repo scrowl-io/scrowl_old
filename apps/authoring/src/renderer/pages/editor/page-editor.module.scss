@@ -1,4 +1,4 @@
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .editor {
   display: flex;
@@ -8,21 +8,4 @@
   bottom: $owl-sys-size-footer-height;
   left: 0;
   right: 0;
-}
-
-.workspace {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  color: var(--owl-workspace-color);
-  background: var(--owl-workspace-bg);
-  overflow-y: auto;
-
-  &__body {
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 }

@@ -1,8 +1,10 @@
-@import '../../styles/bs';
-@import '../../styles/variables';
-@import '@owlui/lib/src/theme/global/tokens';
+@use '@owlui/lib/src/theme/utils' as *;
 
 .form-builder {
+  .form-control {
+    margin-bottom: 1em;
+  }
+
   textarea {
     height: 10em;
   }

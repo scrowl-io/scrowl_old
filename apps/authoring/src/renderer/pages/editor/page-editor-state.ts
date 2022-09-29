@@ -34,7 +34,15 @@ export const config: StateConfig = {
     },
     updateActiveSlideTemplate: (state, action) => {
       state.activeSlide.template = action.payload;
-      state.editSlideRef.template = action.payload;
+    },
+    resetActiveSlide: state => {
+      state.hasActiveSlide = false;
+      state.activeSlide = {};
+      state.activeSlidePosition = {
+        moduleIdx: -1,
+        lessonIdx: -1,
+        slideIdx: -1,
+      };
     },
   },
 };
@@ -46,6 +54,7 @@ export const {
   updateSlide,
   updateSlidePosition,
   updateActiveSlideTemplate,
+  resetActiveSlide,
 } = slice.actions;
 
 export const reducer = slice.reducer;

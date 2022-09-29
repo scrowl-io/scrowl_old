@@ -40,6 +40,7 @@ export const TabGlossary = () => {
   };
 
   const project = Projects.useData();
+
   const glossaryDict = createGlossaryDict(project.glossary);
   const glossary = deepCopy(project.glossary);
   const [activeTerm, setActiveTerm] = useState({ name: '', description: '' });

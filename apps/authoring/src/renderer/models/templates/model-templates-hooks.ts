@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Menu, State, requester } from '../../services';
+import { State, requester } from '../../services';
 import * as api from './model-templates-api';
 import * as state from './model-templates-state';
 import { TemplateManifest } from './model-templates.types';
@@ -56,22 +55,22 @@ const checkProcessor = () => {
 };
 
 export const useMenuEvents = () => {
-  const handleInstallEvent = () => {
-    install();
-  };
-  const handleExploreEvent = () => {
-    explore();
-  };
+  // const handleInstallEvent = () => {
+  //   install();
+  // };
+  // const handleExploreEvent = () => {
+  //   explore();
+  // };
 
-  useEffect(() => {
-    Menu.File.onTemplateAdd(handleInstallEvent);
-    Menu.File.onTemplateOpen(handleExploreEvent);
+  // useEffect(() => {
+  //   Menu.File.onTemplateAdd(handleInstallEvent);
+  //   Menu.File.onTemplateOpen(handleExploreEvent);
 
-    return () => {
-      Menu.File.offTemplateAdd();
-      Menu.File.offTemplateOpen();
-    };
-  }, []);
+  //   return () => {
+  //     Menu.File.offTemplateAdd();
+  //     Menu.File.offTemplateOpen();
+  //   };
+  // }, []);
 
   return;
 };
@@ -81,14 +80,17 @@ export const install = () => {
 };
 
 export const explore = (open = true) => {
+  console.log('[template hooks] explore state - start');
   const hasProcessor = checkProcessor();
 
   if (!hasProcessor) {
+    console.log('[template hooks] explore state - canceled');
     return;
   }
 
   setTimeout(() => {
     processor.dispatch(state.explore(open));
+    console.log('[template hooks] explore state - end');
   }, 1);
 };
 
@@ -96,11 +98,13 @@ export const closeExplorer = () => {
   return processor.dispatch(state.explore(false));
 };
 
-export const list = (limit = 10) => {
+export const list = (limit = 100) => {
+  console.log('[template hooks] listing - start');
   return new Promise<requester.ApiResult>(resolve => {
     const hasProcessor = checkProcessor();
 
     if (!hasProcessor) {
+      console.log('[template hooks] listing - canceled');
       resolve({
         error: true,
         message: 'Templates processor not set',
@@ -109,7 +113,9 @@ export const list = (limit = 10) => {
     }
 
     processor.dispatch(state.process(true));
+    console.log('[template hooks] listing - calling api');
     api.list(limit).then(result => {
+      console.log('[template hooks] listing - result', result);
       if (result.error) {
         console.error(result);
         return;
@@ -117,6 +123,7 @@ export const list = (limit = 10) => {
 
       resolve(result);
       processor.dispatch(state.process(false));
+      console.log('[template hooks] listing - end');
     });
   });
 };

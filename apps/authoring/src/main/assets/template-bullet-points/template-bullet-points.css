@@ -1,0 +1,44 @@
+.bullet-points {
+  background-color: #fff;
+  border: 1px solid #000;
+  margin: 3em;
+  padding: 2em;
+}
+
+.bullet-points h2, .bullet-points h3, .bullet-points h6, .bullet-points p, .bullet-points li {
+  font-family: sans-serif;
+}
+
+.bullet-points h2 {
+  font-size: 4em;
+}
+
+.bullet-points h3 {
+  font-size: 3em;
+}
+
+.bullet-points h6 {
+  margin-top: 0;
+  font-size: 2em;
+}
+
+.bullet-points p, .bullet-points li {
+  font-size: 2em;
+}
+
+.bullet-points li {
+  margin-top: .5rem;
+  padding-left: 1rem;
+}
+
+.bullet-points li::marker {
+  font-size: 1.25em;
+}
+
+.bullet-points hr {
+  height: .2em;
+  background-color: #000;
+  border: none;
+}
+
+/*# sourceMappingURL=template-bullet-points.css.map */

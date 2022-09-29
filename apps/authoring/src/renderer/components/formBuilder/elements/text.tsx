@@ -23,7 +23,12 @@ export const Text = ({ config, name, onUpdate }: FormElementProps) => {
   return (
     <Form.Group>
       <Form.Label>{config.label}</Form.Label>
-      <Form.Control type="text" value={value} onChange={handlerUpdateValue} />
+      <Form.Control
+        type="text"
+        value={value}
+        size="sm"
+        onChange={handlerUpdateValue}
+      />
     </Form.Group>
   );
 };

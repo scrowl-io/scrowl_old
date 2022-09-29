@@ -268,6 +268,8 @@ export const save = (data: ProjectData) => {
   });
 };
 
+let updateTimer: ReturnType<typeof setTimeout>;
+
 export const update = (data: ProjectData, autoSave = false) => {
   if (!processor.dispatch) {
     console.error('preference processor not set!');
@@ -280,7 +282,17 @@ export const update = (data: ProjectData, autoSave = false) => {
   }
 
   if (!autoSave) {
-    processor.dispatch(state.update(data));
+    if (updateTimer) {
+      clearTimeout(updateTimer);
+    }
+
+    // delay update until changes have been completed
+    updateTimer = setTimeout(() => {
+      // ensure update is non-blocking
+      window.requestAnimationFrame(() => {
+        processor.dispatch(state.update(data));
+      });
+    }, 250);
   } else {
     save(data);
   }
@@ -318,7 +330,7 @@ export const publish = (data: ProjectData) => {
   });
 };
 
-export const list = (limit = 10) => {
+export const list = (limit = 100) => {
   return new Promise<requester.ApiResult>(resolve => {
     const hasProcessor = checkProcessor();
 
@@ -368,6 +380,16 @@ export const listRecent = (limit = 10) => {
   });
 };
 
+export const reset = () => {
+  const hasProcessor = checkProcessor();
+
+  if (!hasProcessor) {
+    return;
+  }
+
+  processor.dispatch(state.reset({}));
+};
+
 export default {
   useInit,
   useData,
@@ -381,4 +403,5 @@ export default {
   publish,
   list,
   listRecent,
+  reset,
 };

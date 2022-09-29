@@ -20,20 +20,31 @@ export const Header = ({ onUpdate }: EditorCanvasHeaderProps) => {
   };
 
   return (
-    <div className={styles.slideNameContainer}>
-      <span className={styles.slideNameIcon}>
-        <Icon icon="rectangle" display="outlined" />
-      </span>
-      {slideName ? (
-        <input
-          name="slideName"
-          id="slideNameInput"
-          className="owlui-form-control"
-          value={slideName}
-          onChange={handleSlideNameChange}
-        />
-      ) : (
-        <></>
+    <div className={styles.workspaceHeader}>
+      {slideData.template && ( // This should probably be based on a better field to tell if a slide is selected
+        <>
+          <h1 className="visually-hidden">{slideName}</h1>
+          <Icon
+            icon="rectangle"
+            display="outlined"
+            opsz={20}
+            appearance="Slide"
+          />
+          <div
+            className={styles.workspaceHeaderSlideName}
+            data-value={slideName}
+          >
+            <input
+              name="slideName"
+              id="slideNameInput"
+              className="owlui-form-control"
+              value={slideName}
+              placeholder="Untitled Slide"
+              onChange={handleSlideNameChange}
+              size={13}
+            />
+          </div>
+        </>
       )}
     </div>
   );

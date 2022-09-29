@@ -1,0 +1,33 @@
+{
+  "version": "1.0.0",
+  "slide": {
+    "aspect": "16:9"
+  },
+  "meta": {
+    "name": "Bullet Points",
+    "filename": "bullet-points",
+    "component": "BulletPoints"
+  },
+  "elements": {
+    "title": {
+      "value": "Building a Respectful Workplace",
+      "type": "text",
+      "label": "title"
+    },
+    "subtitle": {
+      "value": "Introduction",
+      "type": "text",
+      "label": "subtitle"
+    },
+    "list": {
+      "value": [
+        "First bullet point",
+        "Second bullet point",
+        "Third bullet point",
+        "Forth bullet point"
+      ],
+      "type": "listText",
+      "label": "list"
+    }
+  }
+}

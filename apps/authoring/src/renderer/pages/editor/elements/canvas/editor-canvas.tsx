@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Templates, Projects } from '../../../../models';
+import * as styles from './editor-canvas.module.scss';
 import { requester } from '../../../../services';
 import {
   useActiveSlide,
   updateActiveSlide,
   useActiveSlidePosition,
-} from '../../page-editor-hooks';
+  SlidePosition,
+} from '../../';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 import { Header } from './elements';
 
 export const Canvas = () => {
-  const position = useActiveSlidePosition();
+  const project: Projects.ProjectData = Projects.useData();
+  const position: SlidePosition = useActiveSlidePosition();
   const [refPosition, setRefPosition] = useState(position);
   const slideData: Projects.ProjectSlide = useActiveSlide();
   const [prevPrevSlideTemplate, setPrevSlideTemplate] = useState(
@@ -23,7 +26,7 @@ export const Canvas = () => {
   });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [slideStyle, setSlideStyle] = useState({
-    transform: 'translate(-50%, -50%) scale(.33)',
+    transform: 'scale(.33)',
   });
 
   useEffect(() => {
@@ -63,24 +66,43 @@ export const Canvas = () => {
 
   const updateSlideTitle = (title?: string) => {
     const payload = { name: title };
+    const modules: Array<Projects.ProjectModule> = JSON.parse(
+      JSON.stringify(project.modules)
+    );
+    const updatedSlide = Object.assign(
+      JSON.parse(JSON.stringify(slideData)),
+      payload
+    );
 
-    updateActiveSlide(payload, position);
+    updateActiveSlide(payload);
+    modules[position.moduleIdx].lessons[position.lessonIdx].slides[
+      position.slideIdx
+    ] = updatedSlide;
+    Projects.update({ modules });
   };
 
   return (
-    <div>
+    <div className={styles.workspace}>
       <Header onUpdate={updateSlideTitle} />
-      <Slide options={slideOpts} style={slideStyle}>
-        <iframe
-          src={canvasUrl}
-          title="Scrowl Editor Canvas"
-          referrerPolicy="unsafe-url"
-          sandbox="allow-same-origin allow-scripts"
-          height="100%"
-          width="100%"
-          id="template-iframe"
-        ></iframe>
-      </Slide>
+      <div className={styles.workspace__body}>
+        {canvasUrl && (
+          <Slide
+            options={slideOpts}
+            className="aspect-ratio aspect-ratio--16x9"
+          >
+            <iframe
+              src={canvasUrl}
+              title="Scrowl Editor Canvas"
+              referrerPolicy="unsafe-url"
+              sandbox="allow-same-origin allow-scripts"
+              height="100%"
+              width="100%"
+              id="template-iframe"
+            ></iframe>
+          </Slide>
+        )}
+      </div>
+      <div className={styles.workspace__footer}></div>
     </div>
   );
 };

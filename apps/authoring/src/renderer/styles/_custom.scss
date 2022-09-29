@@ -1,7 +1,23 @@
-@import './variables';
-@import '@owlui/lib/src/theme/global/tokens';
+@use './temp';
+@use '@owlui/lib/src/theme/utils' as *;
+@use '@owlui/lib/src/theme/global/bootstrap' as *;
+
 // OSG Bootstrap Theme Variables and Overrides
 //
+
+.owlui-modal-title {
+  @extend .h5;
+
+  &.h1,
+  &.h2,
+  &.h3,
+  &.h4,
+  &.h5 {
+    margin-bottom: 0;
+    line-height: var(--bs-modal-title-line-height);
+    user-select: none;
+  }
+}
 
 .owl-avatar {
   display: inline-block;
@@ -48,6 +64,16 @@
     &--purple {
       --owl-avatar-border-color: var(--bs-purple);
     }
+  }
+}
+
+.btn,
+.owlui-btn, {
+  span[class^='owlui-icons']:first-child {
+    margin-right: 0.25em;
+    font-size: 1.5em;
+    line-height: 0.66;
+    vertical-align: inherit;
   }
 }
 
@@ -164,7 +190,7 @@
     align-items: center;
     justify-content: space-between;
     margin: calc($owl-sys-space-sidebar/2) calc($owl-sys-space-sidebar/2) calc($owl-sys-space-sidebar/2) $owl-sys-space-sidebar;
-    line-height: var(--osg-line-height-sm);
+    line-height: $owl-ref-typeface-lineheight-sm;
     font-size: 0.75rem;
     user-select: none;
   }
@@ -259,4 +285,62 @@
   &:focus-within {
     box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), .5);
   }
+}
+
+
+@mixin lightMode {
+  .btn-ghost-primary {
+    @include button-outline-variant(
+      $gray-700,
+      $color-hover: color-contrast(shade-color($primary, 20%)),
+      $active-background: shade-color($primary, 20%),
+      $active-border: shade-color($primary, 20%),
+      $active-color: color-contrast(shade-color($primary, 20%))
+    );
+
+    --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
+
+    &:first-child {
+      &:hover,
+      &:focus {
+        & + .dropdown-toggle-split {
+          color: color-contrast(shade-color($primary, 20%));
+          border-color: shade-color($primary, 20%);
+          background: shade-color($primary, 20%);
+        }
+      }
+
+      &:active {
+        box-shadow: none;
+
+        & + .dropdown-toggle-split {
+          box-shadow: none;
+        }
+      }
+    }
+
+    &.dropdown-toggle-split:active {
+      box-shadow: none;
+    }
+  }
+}
+
+@mixin darkMode {
+  .btn-ghost-primary {
+    @include button-outline-variant(
+      $gray-300,
+      $color-hover: color-contrast(shade-color($primary, 20%)),
+      $active-background: shade-color($primary, 20%),
+      $active-border: shade-color($primary, 20%),
+      $active-color: color-contrast(shade-color($primary, 20%))
+    );
+  }
+}
+
+.theme--dark {
+  @include darkMode;
+}
+
+.theme--default {
+  @include lightMode;
 }

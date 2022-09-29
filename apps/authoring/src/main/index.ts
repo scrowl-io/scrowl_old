@@ -21,6 +21,13 @@ import { init as initModels } from './models';
 import { Menu, Publisher, Requester } from './services';
 
 const __rootdir = path.join(__dirname, '../../');
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
+const getAssetPath = (...paths: string[]): string => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
+const appIconPath = getAssetPath('icon.png');
 
 let mainWindow: BrowserWindow | null = null;
 
@@ -45,21 +52,13 @@ const createWindow = async () => {
     console.log(`\n\nAdded Extensions: ${installResult}\n\n`);
   }
 
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'assets')
-    : path.join(__rootdir, 'dist', 'assets');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
-
   function getBrowserWindow(preloadPath: string) {
     const browserWindowConfig: BrowserWindowConstructorOptions = {
       show: false,
       width: 1440,
       minWidth: 1024,
       height: 728,
-      icon: getAssetPath('icon.png'),
+      icon: appIconPath,
       webPreferences: {
         preload: preloadPath,
       },
@@ -94,7 +93,7 @@ const createWindow = async () => {
     }
 
     if (isDevelopment) {
-      mainWindow.webContents.openDevTools({ mode: 'detach' });
+      mainWindow.webContents.openDevTools({ mode: 'detach', activate: false });
     }
   });
 
@@ -151,6 +150,10 @@ app.on('window-all-closed', () => {
 });
 
 const createApp = () => {
+  if (isDARWIN) {
+    app.dock.setIcon(appIconPath);
+  }
+
   app
     .whenReady()
     .then(() => {

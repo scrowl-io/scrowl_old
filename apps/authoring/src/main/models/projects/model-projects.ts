@@ -12,9 +12,9 @@ import {
   Requester,
 } from '../../services';
 import * as table from './model-projects-schema';
-import { data } from './model-project.mock';
+// import { data } from './model-project.mock';
 import { requester } from '../../../renderer/services';
-import { add as addTemplate } from '../templates';
+// import { add as addTemplate } from '../templates';
 import { SaveDialogOptions } from 'electron';
 
 const writeProjectTemp = (
@@ -24,11 +24,13 @@ const writeProjectTemp = (
 ) => {
   return new Promise<Requester.ApiResult>(resolve => {
     if (!project.id) {
-      resolve({
+      const missingIdError: Requester.ApiResultError = {
         error: true,
         message:
           'Unable to add project to temporary directory: project id required',
-      });
+      };
+      Logger.error(missingIdError);
+      resolve(missingIdError);
       return;
     }
 
@@ -52,91 +54,98 @@ const writeProjectTemp = (
 };
 
 export const create = () => {
-  const addProjectTemplates = (project: ProjectData) => {
-    return new Promise<Requester.ApiResult>(resolve => {
-      try {
-        const modules = project.modules || [];
+  // const addProjectTemplates = (project: ProjectData) => {
+  //   return new Promise<Requester.ApiResult>(resolve => {
+  //     try {
+  //       const modules = project.modules || [];
 
-        if (!modules.length) {
-          resolve({
-            error: true,
-            message: 'Unable to add templates: project requires modules',
-          });
-          return;
-        }
+  //       if (!modules.length) {
+  //         const missingModulesError: Requester.ApiResultError = {
+  //           error: true,
+  //           message: 'Unable to add templates: project requires modules',
+  //         };
+  //         Logger.error(missingModulesError);
+  //         resolve(missingModulesError);
+  //         return;
+  //       }
 
-        if (!project.id) {
-          resolve({
-            error: true,
-            message: 'Unable to add templates: project id required',
-          });
-          return;
-        }
+  //       if (!project.id) {
+  //         const missingIdError: Requester.ApiResultError = {
+  //           error: true,
+  //           message: 'Unable to add templates: project id required',
+  //         };
+  //         Logger.error(missingIdError);
+  //         resolve(missingIdError);
+  //         return;
+  //       }
 
-        const projectId = project.id;
-        const templateNames = new Set<string>();
+  //       const projectId = project.id;
+  //       const templateNames = new Set<string>();
 
-        modules.forEach(module => {
-          module.lessons.forEach(lesson => {
-            lesson.slides.forEach(slide => {
-              if (!slide.template) {
-                return;
-              }
+  //       modules.forEach(module => {
+  //         module.lessons.forEach(lesson => {
+  //           lesson.slides.forEach(slide => {
+  //             if (!slide.template) {
+  //               return;
+  //             }
 
-              templateNames.add(slide.template.meta.name);
-            });
-          });
-        });
+  //             templateNames.add(slide.template.meta.name);
+  //           });
+  //         });
+  //       });
 
-        const addPromises = Array.from(templateNames).map((name: string) => {
-          return addTemplate(undefined, name, projectId);
-        });
+  //       const addPromises = Array.from(templateNames).map((name: string) => {
+  //         return addTemplate(undefined, name, projectId);
+  //       });
 
-        Promise.allSettled(addPromises).then(addRes => {
-          const templates: Array<{
-            [key: string]: string;
-          }> = [];
+  //       Promise.allSettled(addPromises).then(addRes => {
+  //         const templates: Array<{
+  //           [key: string]: string;
+  //         }> = [];
 
-          addRes.forEach(res => {
-            if (res.status === 'rejected') {
-              Logger.error('Failed to add template', res);
-              return;
-            }
+  //         addRes.forEach(res => {
+  //           if (res.status === 'rejected') {
+  //             Logger.error('Failed to add template', res);
+  //             return;
+  //           }
 
-            if (res.value.error) {
-              Logger.warn('Unable to add template', res);
-              return;
-            }
+  //           if (res.value.error) {
+  //             Logger.warn('Unable to add template', res);
+  //             return;
+  //           }
 
-            templates.push(res.value.data);
-          });
+  //           templates.push(res.value.data);
+  //         });
 
-          resolve({
-            error: false,
-            data: {
-              templates,
-            },
-          });
-        });
-      } catch (e) {
-        resolve({
-          error: true,
-          message: 'Failed to add templates to project',
-          data: {
-            trace: e,
-          },
-        });
-      }
-    });
-  };
+  //         resolve({
+  //           error: false,
+  //           data: {
+  //             templates,
+  //           },
+  //         });
+  //       });
+  //     } catch (e) {
+  //       const createError = {
+  //         error: true,
+  //         message: 'Failed to add templates to project',
+  //         data: {
+  //           trace: e,
+  //         },
+  //       };
+  //       Logger.error(createError);
+  //       resolve(createError);
+  //     }
+  //   });
+  // };
   // TODO add support for handling duplicating a project when a project ID is passed
   return new Promise<Requester.ApiResult>(resolve => {
     try {
       let project: ProjectData = {
-        name: data.name,
+        name: 'Untitled Project',
       };
       const complete = (res: Requester.ApiResult) => {
         if (res.error) {
+          Logger.error(res);
           resolve(res);
           return;
         }
@@ -153,16 +162,21 @@ export const create = () => {
       IS.create(table.name, project).then(createRes => {
         if (createRes.error) {
           createRes.message = 'Unable to create project';
+          Logger.error(createRes);
           resolve(createRes);
           return;
         }
 
         project = {
           ...createRes.data.item,
-          scormConfig: data.scormConfig,
-          modules: data.modules || [],
-          glossary: data.glossary || [],
-          resources: data.resources || [],
+          scormConfig: {
+            name: project.name,
+            description: '',
+            authors: '',
+          },
+          modules: [],
+          glossary: [],
+          resources: [],
         };
         writeProjectTemp(
           project,
@@ -174,17 +188,19 @@ export const create = () => {
             return;
           }
 
-          addProjectTemplates(project).then(complete);
+          // addProjectTemplates(project).then(complete);
         });
       });
     } catch (e) {
-      resolve({
+      const createError = {
         error: true,
         message: 'Failed to create project',
         data: {
           trace: e,
         },
-      });
+      };
+      Logger.error(createError);
+      resolve(createError);
     }
   });
 };
@@ -196,10 +212,12 @@ export const save = (
 ) => {
   return new Promise<Requester.ApiResult>(resolve => {
     if (!project.id) {
-      resolve({
+      const missingIdError: Requester.ApiResultError = {
         error: true,
         message: 'Unable to save: project id required',
-      });
+      };
+      Logger.error(missingIdError);
+      resolve(missingIdError);
       return;
     }
 
@@ -213,16 +231,19 @@ export const save = (
     IS.update(table.name, data, { id: data.id })
       .then(updateRes => {
         if (updateRes.error) {
+          Logger.error(updateRes);
           resolve(updateRes);
           return;
         }
 
         if (!updateRes.data.item) {
-          resolve({
+          const malformedError: Requester.ApiResultError = {
             error: true,
             message: 'Malformed save: project was not returned',
             data: updateRes,
-          });
+          };
+          Logger.error(malformedError);
+          resolve(malformedError);
           return;
         }
 
@@ -239,6 +260,7 @@ export const save = (
           JSON.stringify(updatedProject, null, 2)
         ).then(writeRes => {
           if (writeRes.error) {
+            Logger.error(writeRes);
             resolve(writeRes);
             return;
           }
@@ -253,6 +275,7 @@ export const save = (
           // copy the project temp folder into the save folder
           fs.copyTempToSave(from, to).then(copyRes => {
             if (copyRes.error) {
+              Logger.error(copyRes);
               resolve(copyRes);
               return;
             }
@@ -267,13 +290,15 @@ export const save = (
         });
       })
       .catch(e => {
-        resolve({
+        const saveError = {
           error: true,
           message: 'Failed to save changes to storage',
           data: {
             trace: e,
           },
-        });
+        };
+        Logger.error(saveError);
+        resolve(saveError);
       });
   });
 };
@@ -285,6 +310,7 @@ export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
         fs.existsFileSave(fs.join(`${project.id}`, 'manifest.json')).then(
           res => {
             if (res.error) {
+              Logger.error(res);
               resolve(res);
               return;
             }
@@ -299,14 +325,16 @@ export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
           }
         );
       } catch (e) {
-        resolve({
+        const listError = {
           error: true,
           message: 'Failed to check project existence',
           data: {
             trace: e,
             project,
           },
-        });
+        };
+        Logger.error(listError);
+        resolve(listError);
       }
     });
   };
@@ -343,13 +371,15 @@ export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
           });
         });
       } catch (e) {
-        resolve({
+        const listRecentError = {
           error: true,
           message: 'Failed to read projects files',
           data: {
             trace: e,
           },
-        });
+        };
+        Logger.error(listRecentError);
+        resolve(listRecentError);
       }
     };
 
@@ -363,6 +393,7 @@ export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
 
       IS.read(table.name, undefined, orderBy, limit).then(readRes => {
         if (readRes.error) {
+          Logger.error(readRes);
           resolve(readRes);
           return;
         }
@@ -380,13 +411,15 @@ export const listRecent = (ev: Requester.RequestEvent, limit?: number) => {
         });
       });
     } catch (e) {
-      resolve({
+      const listRecentError = {
         error: true,
         message: 'Failed to read projects from storage',
         data: {
           trace: e,
         },
-      });
+      };
+      Logger.error(listRecentError);
+      resolve(listRecentError);
     }
   });
 };
@@ -398,6 +431,7 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
         fs.existsFileSave(fs.join(`${project.id}`, 'manifest.json')).then(
           res => {
             if (res.error) {
+              Logger.error(res);
               resolve(res);
               return;
             }
@@ -412,14 +446,16 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
           }
         );
       } catch (e) {
-        resolve({
+        const existError = {
           error: true,
           message: 'Failed to check project existence',
           data: {
             trace: e,
             project,
           },
-        });
+        };
+        Logger.error(existError);
+        resolve(existError);
       }
     });
   };
@@ -456,13 +492,15 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
           });
         });
       } catch (e) {
-        resolve({
+        const manifestError = {
           error: true,
           message: 'Failed to read projects files',
           data: {
             trace: e,
           },
-        });
+        };
+        Logger.error(manifestError);
+        resolve(manifestError);
       }
     };
 
@@ -476,6 +514,7 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
 
       IS.read(table.name, undefined, orderBy, limit).then(readRes => {
         if (readRes.error) {
+          Logger.error(readRes);
           resolve(readRes);
           return;
         }
@@ -493,13 +532,15 @@ export const list = (ev: Requester.RequestEvent, limit?: number) => {
         });
       });
     } catch (e) {
-      resolve({
+      const listError = {
         error: true,
         message: 'Failed to read projects from storage',
         data: {
           trace: e,
         },
-      });
+      };
+      Logger.error(listError);
+      resolve(listError);
     }
   });
 };
@@ -513,6 +554,7 @@ export const open = (ev: Requester.RequestEvent, projectId: number) => {
 
         fs.copyTempToSave(from, to).then(copyRes => {
           if (copyRes.error) {
+            Logger.error(copyRes);
             resolve(copyRes);
             return;
           }
@@ -522,13 +564,15 @@ export const open = (ev: Requester.RequestEvent, projectId: number) => {
           );
         });
       } catch (e) {
-        resolve({
+        const openError = {
           error: true,
           message: 'Failed to open temporary project folder',
           data: {
             trace: e,
           },
-        });
+        };
+        Logger.error(openError);
+        resolve(openError);
       }
     });
   };
@@ -539,30 +583,35 @@ export const open = (ev: Requester.RequestEvent, projectId: number) => {
         project.opened_at = IS.getTimestamp();
         save(ev, project, true).then(resolve);
       } catch (e) {
-        resolve({
+        const openError = {
           error: true,
           message: 'Failed to update project while writing meta data',
           data: {
             trace: e,
             projectId,
           },
-        });
+        };
+        Logger.error(openError);
+        resolve(openError);
       }
     });
   };
 
   return new Promise<Requester.ApiResult>(resolve => {
     if (!projectId) {
-      resolve({
+      const missingIdError: Requester.ApiResultError = {
         error: true,
         message: 'Unable to open: project id required',
-      });
+      };
+      Logger.error(missingIdError);
+      resolve(missingIdError);
       return;
     }
 
     try {
       updateTempFolder().then(tempRes => {
         if (tempRes.error) {
+          Logger.error(tempRes);
           resolve(tempRes);
           return;
         }
@@ -571,14 +620,16 @@ export const open = (ev: Requester.RequestEvent, projectId: number) => {
         openProject(data).then(resolve);
       });
     } catch (e) {
-      resolve({
+      const openError = {
         error: true,
         message: 'Failed to open project',
         data: {
           trace: e,
           projectId,
         },
-      });
+      };
+      Logger.error(openError);
+      resolve(openError);
     }
   });
 };
@@ -590,38 +641,46 @@ export const importFile = (
 ) => {
   return new Promise<ImportResult>(resolve => {
     if (!project) {
-      resolve({
+      const missingProjectError: Requester.ApiResultError = {
         error: true,
         message: 'Unable to import a file - project required',
-      });
+      };
+      Logger.error(missingProjectError);
+      resolve(missingProjectError);
       return;
     }
 
     if (!project.workingDir) {
-      resolve({
+      const pathingError: Requester.ApiResultError = {
         error: true,
         message: 'Unable to import a file - project working directory required',
-      });
+      };
+      Logger.error(pathingError);
+      resolve(pathingError);
       return;
     }
 
     if (!fileTypes || !fileTypes.length) {
-      resolve({
+      const missingFileTypesError: Requester.ApiResultError = {
         error: true,
         message: 'Unable to import a file - file types required',
-      });
+      };
+      Logger.error(missingFileTypesError);
+      resolve(missingFileTypesError);
       return;
     }
 
     const filters = fs.getDialogMediaFilters(fileTypes);
 
     if (!filters.length) {
-      resolve({
+      const importError: Requester.ApiResultError = {
         error: true,
         message: `Unable to import a file: ${fileTypes.join(
           ', '
         )} - not supported`,
-      });
+      };
+      Logger.error(importError);
+      resolve(importError);
       return;
     }
 
@@ -632,32 +691,38 @@ export const importFile = (
 
     fs.dialogOpen(dialogOptions).then(openRes => {
       if (openRes.error) {
+        Logger.error(openRes);
         resolve(openRes);
         return;
       }
 
       if (!openRes.data.filePaths.length) {
-        resolve({
+        const noFileError: Requester.ApiResultError = {
           error: true,
           message: 'Unable to import file - no file selected',
-        });
+        };
+        Logger.error(noFileError);
+        resolve(noFileError);
         return;
       }
 
       const importSource = openRes.data.filePaths[0];
 
       if (!project.workingDir) {
-        resolve({
+        const workingPathError: Requester.ApiResultError = {
           error: true,
           message:
             'Unable to import a file - project working directory required',
-        });
+        };
+        Logger.error(workingPathError);
+        resolve(workingPathError);
         return;
       }
 
       const copyRes = fs.fileTempSync(importSource, project.workingDir);
 
       if (copyRes.error) {
+        Logger.error(copyRes);
         resolve(copyRes);
       }
 
@@ -677,14 +742,25 @@ export const importFile = (
 };
 
 export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
-  return new Promise<Requester.ApiResult>((resolve, reject) => {
+  return new Promise<Requester.ApiResult>(resolve => {
     if (!project || !project.id) {
-      reject('Unable to publish project: project data required');
+      const missingIdError: Requester.ApiResultError = {
+        error: true,
+        message: 'Unable to publish project: project data required',
+      };
+      Logger.error(missingIdError);
+      resolve(missingIdError);
       return;
     }
 
     save(ev, project, true)
       .then(saveRes => {
+        if (saveRes.error) {
+          Logger.error(saveRes);
+          resolve(saveRes);
+          return;
+        }
+
         try {
           const filename = `${Publisher.toScormCase(project.name || '')}`;
           const dialogOptions: SaveDialogOptions = {
@@ -696,6 +772,7 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
 
           fs.dialogSave(dialogOptions).then(dialogRes => {
             if (dialogRes.error) {
+              Logger.error(dialogRes);
               resolve(dialogRes);
               return;
             }
@@ -706,11 +783,13 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
             }
 
             if (!dialogRes.data.filePath) {
-              resolve({
+              const missingPathError = {
                 error: true,
                 message: 'File path required',
                 data: dialogRes.data,
-              });
+              };
+              Logger.error(missingPathError);
+              resolve(missingPathError);
               return;
             }
 
@@ -719,17 +798,27 @@ export const publish = (ev: Requester.RequestEvent, project: ProjectData) => {
             Publisher.pack(saveRes.data.project, filepath).then(resolve);
           });
         } catch (e) {
-          resolve({
+          const publishError = {
             error: true,
             message: 'Failed to publish',
             data: {
               trace: e,
             },
-          });
+          };
+          Logger.error(publishError);
+          resolve(publishError);
         }
       })
-      .catch(() => {
-        reject('Unable to publish project: Error saving project.');
+      .catch(e => {
+        const publishError = {
+          error: true,
+          message: 'Failed to publish',
+          data: {
+            trace: e,
+          },
+        };
+        Logger.error(publishError);
+        resolve(publishError);
       });
   });
 };

@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { MenuItemConstructorOptions, KeyboardEvent } from 'electron';
-
-const separator: MenuItemConstructorOptions = { type: 'separator' };
+import { MenuItemConstructorOptions } from 'electron';
 
 export const template: MenuItemConstructorOptions = {
   label: 'Edit',

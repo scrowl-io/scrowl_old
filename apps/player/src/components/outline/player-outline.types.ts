@@ -46,6 +46,27 @@ export type OutlineTabNavProps = OutlineTabNavCommons;
 
 export interface OutlineCommons {
   config: NavConfig;
+  glossary: any;
 }
 
 export type OutlineProps = OutlineCommons;
+
+export type GlossaryItem = { name: string; description: string };
+export type GlossaryData = Array<GlossaryItem>;
+
+export type GlossaryDictTerm = {
+  idx: number;
+  description: string;
+};
+
+export type GlossaryDictEntries = {
+  [term: string]: GlossaryDictTerm;
+};
+
+export type GlossaryDict = {
+  [heading: string]: GlossaryDictEntries;
+};
+
+export type GlossaryListProps = {
+  glossary: any;
+};

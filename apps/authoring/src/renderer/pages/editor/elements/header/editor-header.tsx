@@ -3,6 +3,7 @@ import * as styles from './editor-header.module.scss';
 import { Projects } from '../../../../models';
 import { Logo, Toolbar } from '../../../../components';
 import { PublishButton, SaveTooltip } from './elements';
+import { Navbar, Nav } from 'react-bootstrap';
 
 export const Header = () => {
   // Once the implementation of the "unsaved" state is defined, this
@@ -10,46 +11,46 @@ export const Header = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showSavetooltip, setShowSaveTooltip] = useState(false);
   const project = Projects.useData();
+  const [projectName, setProjectName] = useState(project.name);
   const disableElement = !project.name.trim();
 
   const handleFilenameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     const name = ev.currentTarget.value;
 
+    setProjectName(name);
     Projects.update({ name });
   };
 
   return (
     <Toolbar>
-      <div className="navbar navbar-expand scrowl__navbar">
-        <Logo href="/" sizing="sm" />
-        <div className={styles.filename} data-value={project.name}>
-          <input
-            name="filename"
-            id="filenameInput"
-            className="owlui-form-control"
-            value={project.name}
-            placeholder="Untitled Project"
-            onChange={handleFilenameChange}
-            size={13}
-            disabled={disableElement}
-          />
-        </div>
-        <div className={`collapse`}>
-          <ul className={`align-items-center me-auto`}>
-            {showSavetooltip && (
-              <li className="nav-item">
-                <SaveTooltip />
-              </li>
-            )}
-          </ul>
-        </div>
+      <Logo href="/" sizing="sm" />
+      <div className={styles.filename} data-value={projectName}>
+        <input
+          name="filename"
+          id="filenameInput"
+          className="owlui-form-control"
+          value={projectName}
+          placeholder="Untitled Project"
+          onChange={handleFilenameChange}
+          size={13}
+        />
       </div>
-      <ul className="navbar-nav align-items-center">
-        <li className="scrowl-navbar__actions">
+      <Navbar.Collapse>
+        <ul className={`align-items-center me-auto`}>
+          {showSavetooltip && (
+            <li className="nav-item">
+              <SaveTooltip />
+            </li>
+          )}
+        </ul>
+      </Navbar.Collapse>
+      <Nav className="align-items-center me-auto"></Nav>
+      <Nav className="align-items-center">
+        <Nav.Item className="scrowl-navbar__actions">
           {/* <PreviewButton disabled={disableElement} /> Preview button temporarily being disabled */}
           <PublishButton disabled={disableElement} />
-        </li>
-      </ul>
+        </Nav.Item>
+      </Nav>
     </Toolbar>
   );
 };

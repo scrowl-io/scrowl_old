@@ -36,6 +36,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
   const toggleModalDelete = () => setModalDelete(!showModalDelete);
 
   const addLesson = () => {
+    console.log('[module action] adding lesson - start');
     if (!modules) {
       return;
     }
@@ -51,13 +52,17 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
     };
 
     modules[idx].lessons.push(newLesson);
+    console.log('[module action] adding lesson - project update');
     Projects.update({ modules });
+    console.log('[module action] adding lesson - setting active slide');
     updateActiveSlide(modules[idx].lessons[newIdx].slides[0], {
       moduleIdx: idx,
       lessonIdx: newIdx,
       slideIdx: 0,
     });
+    console.log('[module action] adding lesson - exploring templates');
     Templates.explore();
+    console.log('[module action] adding lesson - end');
   };
 
   const moduleMenuItems: Array<ActionMenuItem> = [
@@ -110,6 +115,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
       filled: true,
       display: 'outlined',
       actionHandler: () => {
+        console.log('[module action menu] adding module - start');
         const newIdx = idx + 1;
         const newModule: ModuleTreeItem = {
           name: 'Untitled Module',
@@ -122,13 +128,19 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
         };
 
         modules.splice(newIdx, 0, newModule);
+        console.log('[module action menu] adding module - updating project');
         Projects.update({ modules });
+        console.log(
+          '[module action menu] adding module - setting active slide'
+        );
         updateActiveSlide(modules[newIdx].lessons[0].slides[0], {
           moduleIdx: newIdx,
           lessonIdx: 0,
           slideIdx: 0,
         });
+        console.log('[module action menu] adding module - exploring templates');
         Templates.explore();
+        console.log('[module action menu] adding module - end');
       },
     },
     {
@@ -200,6 +212,10 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
     Projects.update({ modules });
   };
 
+  if (isActiveModule && !open) {
+    setOpen(isActiveModule);
+  }
+
   return (
     <div className={styles.treeViewModule} key={idx}>
       <div className={styles.treeViewHeader}>
@@ -221,7 +237,7 @@ const TreeViewModule = (props: TreeViewModuleProps) => {
               />
             </span>
             <span className={styles.treeViewItemIconDetail}>
-              <Icon icon="folder" display="outlined" filled={!open} />
+              <Icon icon="folder" display="outlined" opsz={20} filled={!open} />
             </span>
             <span className={styles.treeViewItemLabel}>{tree.name}</span>
           </div>

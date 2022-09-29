@@ -2,7 +2,7 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import * as styles from './comp-formBuilder.module.scss';
 import { FormBuilderProps, FormElementProps } from './comp-form-builder.types';
-import { Number, Text, Textarea } from './elements';
+import { Number, Text, Textarea, ListText } from './elements';
 
 export const FormElement = ({ config, name, onUpdate }: FormElementProps) => {
   switch (config.type) {
@@ -12,6 +12,8 @@ export const FormElement = ({ config, name, onUpdate }: FormElementProps) => {
       return <Text config={config} name={name} onUpdate={onUpdate} />;
     case 'textarea':
       return <Textarea config={config} name={name} onUpdate={onUpdate} />;
+    case 'listText':
+      return <ListText config={config} name={name} onUpdate={onUpdate} />;
     default:
       console.error('Form element not support', name, config);
       return <></>;
@@ -33,7 +35,7 @@ export const FormBuilder = ({
 
   return (
     <Form className={styles.formBuilder}>
-      <div>{name}</div>
+      <div className="visually-hidden">{name}</div>
       {controls.map((ctrl: string, idx: number) => {
         return (
           <FormElement
