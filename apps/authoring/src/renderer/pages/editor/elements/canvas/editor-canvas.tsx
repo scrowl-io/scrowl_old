@@ -6,12 +6,14 @@ import {
   useActiveSlide,
   updateActiveSlide,
   useActiveSlidePosition,
-} from '../../page-editor-hooks';
+  SlidePosition,
+} from '../../';
 import { Slide, SlideCommons } from '@scrowl/player/src/components/slide';
 import { Header } from './elements';
 
 export const Canvas = () => {
-  const position = useActiveSlidePosition();
+  const project: Projects.ProjectData = Projects.useData();
+  const position: SlidePosition = useActiveSlidePosition();
   const [refPosition, setRefPosition] = useState(position);
   const slideData: Projects.ProjectSlide = useActiveSlide();
   const [prevPrevSlideTemplate, setPrevSlideTemplate] = useState(
@@ -64,8 +66,19 @@ export const Canvas = () => {
 
   const updateSlideTitle = (title?: string) => {
     const payload = { name: title };
+    const modules: Array<Projects.ProjectModule> = JSON.parse(
+      JSON.stringify(project.modules)
+    );
+    const updatedSlide = Object.assign(
+      JSON.parse(JSON.stringify(slideData)),
+      payload
+    );
 
     updateActiveSlide(payload);
+    modules[position.moduleIdx].lessons[position.lessonIdx].slides[
+      position.slideIdx
+    ] = updatedSlide;
+    Projects.update({ modules });
   };
 
   return (
