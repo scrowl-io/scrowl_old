@@ -47,18 +47,24 @@ export const TabGlossary = () => {
   const [isGlossaryDrawerOpen, setGlossaryDrawerOpen] = useState(false);
 
   const handleGlossaryEdit = (idx: number) => {
-    setActiveTerm(project.glossary[idx]);
-    setActiveTermIdx(idx);
+    if (activeTermIdx !== idx) {
+      setActiveTerm(project.glossary[idx]);
+      setActiveTermIdx(idx);
+    }
+
     setGlossaryDrawerOpen(true);
   };
 
   const handleGlossaryAdd = () => {
-    setActiveTermIdx(-1);
+    if (activeTermIdx !== -1) {
+      setActiveTerm({ name: '', description: '' });
+      setActiveTermIdx(-1);
+    }
+
     setGlossaryDrawerOpen(true);
   };
 
-  const handleGlossaryDrawerClose = (data: GlossaryItem) => {
-    setActiveTerm({ name: data.name, description: data.description });
+  const handleGlossaryDrawerClose = () => {
     setGlossaryDrawerOpen(false);
   };
 
@@ -68,7 +74,11 @@ export const TabGlossary = () => {
   };
 
   const handleGlossaryCancel = () => {
-    setActiveTerm({ name: '', description: '' });
+    if (activeTermIdx === -1) {
+      setActiveTerm({ name: '', description: '' });
+    } else {
+      setActiveTerm(project.glossary[activeTermIdx]);
+    }
 
     setGlossaryDrawerOpen(false);
   };
@@ -82,8 +92,9 @@ export const TabGlossary = () => {
       glossary[activeTermIdx] = term;
     }
 
+    setActiveTerm(term);
     Projects.update({ glossary });
-    handleGlossaryCancel();
+    setGlossaryDrawerOpen(false);
   };
 
   return (
@@ -98,6 +109,7 @@ export const TabGlossary = () => {
         show={isGlossaryDrawerOpen}
         onHide={handleGlossaryDrawerClose}
         term={activeTerm}
+        onChange={setActiveTerm}
         onSubmit={handleGlossaryUpdate}
         onCancel={handleGlossaryCancel}
       />
