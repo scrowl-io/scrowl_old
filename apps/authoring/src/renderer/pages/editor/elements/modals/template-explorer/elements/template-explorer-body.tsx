@@ -1,5 +1,6 @@
+/* eslint-disable no-constant-condition */
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter, Icon } from '@owlui/lib';
+import { Icon } from '@owlui/lib';
 import {
   TemplateExplorerBodyProps,
   TemplateListItem,
@@ -108,7 +109,7 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
               }}
             >
               <div className={styles['template-explorer__item__preview']}>
-                {false ? ( // eslint-disable-next-line no-constant-condition
+                {false ? (
                   <img alt="Preview of Template" />
                 ) : (
                   <Icon
