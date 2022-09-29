@@ -1,7 +1,7 @@
 import {jsx as $bvorl$jsx, jsxs as $bvorl$jsxs, Fragment as $bvorl$Fragment} from "react/jsx-runtime";
-import {useState as $bvorl$useState} from "react";
+import $bvorl$react, {useState as $bvorl$useState} from "react";
 import {HashRouter as $bvorl$HashRouter, Routes as $bvorl$Routes, Route as $bvorl$Route, Navigate as $bvorl$Navigate} from "react-router-dom";
-import {Tabs as $bvorl$Tabs, Button as $bvorl$Button, Icon as $bvorl$Icon} from "@owlui/lib";
+import {Tabs as $bvorl$Tabs, Button as $bvorl$Button, Icon as $bvorl$Icon, Drawer as $bvorl$Drawer} from "@owlui/lib";
 import {Collapse as $bvorl$Collapse} from "react-bootstrap";
 function $parcel$exportWildcard(dest, source) {
   Object.keys(source).forEach(function(key) {
@@ -162,7 +162,6 @@ const $97d50e48d778806e$export$86fbec116b87613f = ({ templateList: templateList 
         msg: "Manifest does not have data"
     });
     let manifest = manifestRes.data;
-    console.log('manifest', manifest.glossary);
     if (typeof manifest === 'string') manifest = JSON.parse(manifest);
     const pageRes = $a0d8f6ad4094a27b$exports.getPages(manifest);
     if (pageRes.error) return /*#__PURE__*/ $bvorl$jsx($467d66ed0bb94ad0$export$edf27be85e5f6da0, {
@@ -344,6 +343,13 @@ var $1550644884f0c301$export$20231cd9399b8094;
 var $1550644884f0c301$export$bf14814b2b9abe8d;
 var $1550644884f0c301$export$fc35462eb3d04961;
 var $1550644884f0c301$export$cfeb7236531fd807;
+var $1550644884f0c301$export$f39683ada65b28e2;
+var $1550644884f0c301$export$e6fa2a927b577228;
+var $1550644884f0c301$export$3bb31bb2aa2d148;
+var $1550644884f0c301$export$f3afef97986c6834;
+var $1550644884f0c301$export$6dff30574f79a202;
+var $1550644884f0c301$export$7f506c70190d2dd3;
+var $1550644884f0c301$export$610665bf6d31ae2;
 $1550644884f0c301$export$80e4b313e5e6b30d = "nav";
 $1550644884f0c301$export$f91427ed400cf646 = "tree-view__header";
 $1550644884f0c301$export$fc36764bd7bec3e8 = "tree-view__header";
@@ -391,6 +397,13 @@ $1550644884f0c301$export$20231cd9399b8094 = "glossary-form-button-set";
 $1550644884f0c301$export$bf14814b2b9abe8d = "glossary-form-button-set";
 $1550644884f0c301$export$fc35462eb3d04961 = "glossary-submit-button";
 $1550644884f0c301$export$cfeb7236531fd807 = "glossary-submit-button";
+$1550644884f0c301$export$f39683ada65b28e2 = "left-pane-icon";
+$1550644884f0c301$export$e6fa2a927b577228 = "left-pane-icon";
+$1550644884f0c301$export$3bb31bb2aa2d148 = "owlui-offcanvas-body";
+$1550644884f0c301$export$f3afef97986c6834 = "owlui-offcanvas-body";
+$1550644884f0c301$export$6dff30574f79a202 = "pane";
+$1550644884f0c301$export$7f506c70190d2dd3 = "owlui-nav-tabs";
+$1550644884f0c301$export$610665bf6d31ae2 = "owlui-nav-tabs";
 const $a514e2e9f4953fa4$export$8ac254ae510b04b0 = ({ config: config , idx: idx  })=>{
     const [open, setOpen] = $bvorl$useState(true);
     const itemId = `tree-item-module-${idx}-item`;
@@ -591,8 +604,11 @@ const $1911174de1b1157d$var$toModuleFormat = (config)=>{
     });
 };
 const $1911174de1b1157d$export$5beeae30d1389e5 = ({ config: config , glossary: glossary  })=>{
+    const [show, setShow] = $bvorl$react.useState(false);
+    const toggleShow = ()=>{
+        setShow(!show);
+    };
     const fConfig = $1911174de1b1157d$var$toModuleFormat(config);
-    console.log('fConfig', fConfig);
     const tabItems = [
         {
             id: '1',
@@ -609,11 +625,58 @@ const $1911174de1b1157d$export$5beeae30d1389e5 = ({ config: config , glossary: g
             })
         }, 
     ];
-    return /*#__PURE__*/ $bvorl$jsx($3d4a40b33ce1b2c0$export$fd2e1a4921eb839b, {
-        children: /*#__PURE__*/ $bvorl$jsx($bvorl$Tabs, {
-            items: tabItems,
-            pxScale: "Sm"
+    const playerPaneInputProps = {
+        label: {
+            content: '',
+            htmlFor: 'text'
+        },
+        control: {
+            id: 'text',
+            type: 'text',
+            disabled: false,
+            readOnly: false,
+            plaintext: false,
+            placeholder: 'Search course...',
+            value: ''
+        }
+    };
+    const content = {
+        header: {
+            content: /*#__PURE__*/ $bvorl$jsx("div", {}),
+            bsProps: {
+                closeButton: true,
+                className: ''
+            }
+        },
+        body: /*#__PURE__*/ $bvorl$jsx($3d4a40b33ce1b2c0$export$fd2e1a4921eb839b, {
+            children: /*#__PURE__*/ $bvorl$jsx($bvorl$Tabs, {
+                items: tabItems,
+                pxScale: "Sm"
+            })
         })
+    };
+    return /*#__PURE__*/ $bvorl$jsxs($bvorl$Fragment, {
+        children: [
+            /*#__PURE__*/ $bvorl$jsx($bvorl$Button, {
+                style: {
+                    height: '5vh',
+                    fontSize: '2rem',
+                    color: '#000000',
+                    margin: '0 .5rem'
+                },
+                variant: "link",
+                onClick: toggleShow,
+                children: /*#__PURE__*/ $bvorl$jsx($bvorl$Icon, {
+                    icon: "menu",
+                    display: "outlined"
+                })
+            }),
+            /*#__PURE__*/ $bvorl$jsx($bvorl$Drawer, {
+                show: show,
+                onHide: toggleShow,
+                drawer: content
+            })
+        ]
     });
 };
 var $1911174de1b1157d$export$2e2bcd8739ae039 = {
