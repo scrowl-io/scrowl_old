@@ -106,10 +106,13 @@
     "files": [
       "dist/*",
       "../../node_modules/**/*",
-      "package.json"
+      "./package.json"
     ],
     "extraFiles": [
-      "src/main/assets/**"
+      "./src/main/assets/**"
+    ],
+    "extraResources": [
+      "./assets/**"
     ],
     "dmg": {
       "contents": [
@@ -126,7 +129,8 @@
       ]
     },
     "directories": {
-      "output": "release/build"
+      "output": "release/build",
+      "buildResources": "assets"
     },
     "publish": null
   },
