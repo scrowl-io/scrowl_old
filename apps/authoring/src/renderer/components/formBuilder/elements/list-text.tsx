@@ -43,6 +43,7 @@ export const ListText = (props: FormElementProps) => {
         type="text"
         as="textarea"
         value={value}
+        size="sm"
         onChange={handlerUpdateValue}
       />
     </Form.Group>

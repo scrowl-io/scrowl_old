@@ -27,6 +27,7 @@ export const Textarea = ({ config, name, onUpdate }: FormElementProps) => {
         type="text"
         as="textarea"
         value={value}
+        size="sm"
         onChange={handlerUpdateValue}
       />
     </Form.Group>
