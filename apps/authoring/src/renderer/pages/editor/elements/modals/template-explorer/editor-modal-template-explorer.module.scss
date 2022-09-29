@@ -4,12 +4,6 @@
 .template-explorer {
   user-select: none;
 
-  .owlui-modal-title {
-    @extend .h5;
-    margin-bottom: 0;
-    line-height: var(--bs-modal-title-line-height);
-  }
-
   .owlui-modal-body {
     background: var(--owl-template-browser-bg);
   }

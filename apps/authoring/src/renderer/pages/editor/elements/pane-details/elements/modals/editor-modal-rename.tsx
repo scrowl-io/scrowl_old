@@ -1,6 +1,7 @@
 /* eslint-disable import/named */
 import React, { useState } from 'react';
 import { Modal, ModalDefaultProps, Button } from '@owlui/lib';
+import { ButtonGroup } from 'react-bootstrap';
 import * as styles from '../../editor-pane-details.module.scss';
 
 export interface RenameModalProps extends ModalDefaultProps {
@@ -21,7 +22,7 @@ export const RenameModal = ({
       closeButton: true,
       closeLabel: 'Close',
     },
-    content: <h2>{label}</h2>,
+    content: <>{label}</>,
   };
   const handleNameChange = (ev: React.FormEvent<HTMLInputElement>) => {
     updateName(ev.currentTarget.value);
@@ -32,7 +33,7 @@ export const RenameModal = ({
         <input
           name="newName"
           id="newNameInput"
-          className="owlui-form-control"
+          className="owlui-form-control owlui-form-control-lg"
           value={name}
           placeholder=""
           onChange={handleNameChange}
@@ -49,18 +50,19 @@ export const RenameModal = ({
   };
   const footer = {
     content: (
-      <>
-        <Button onClick={props.onHide} variant="light">
+      <ButtonGroup>
+        <Button onClick={props.onHide} variant="link" size="sm">
           Cancel
         </Button>
         <Button
           onClick={handleUpdate}
           variant="success"
           className={styles.glossarySubmitButton}
+          size="sm"
         >
           Update
         </Button>
-      </>
+      </ButtonGroup>
     ),
   };
 
