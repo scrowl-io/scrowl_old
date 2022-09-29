@@ -18,8 +18,8 @@ export type ProjectExplorerTableItem = {
   id?: string;
   name?: string;
   link?: JSX.Element;
-  created_at?: string | Date | number;
-  updated_at?: string | Date | number;
+  created_at?: string;
+  updated_at?: string;
 };
 
 const ProjectExplorerBody = ({ show }: ProjectExplorerBodyProps) => {
