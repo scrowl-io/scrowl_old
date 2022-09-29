@@ -35,7 +35,7 @@ export const FormBuilder = ({
 
   return (
     <Form className={styles.formBuilder}>
-      <div>{name}</div>
+      <div className="visually-hidden">{name}</div>
       {controls.map((ctrl: string, idx: number) => {
         return (
           <FormElement

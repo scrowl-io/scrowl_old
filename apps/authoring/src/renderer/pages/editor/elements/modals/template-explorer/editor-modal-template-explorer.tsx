@@ -35,6 +35,7 @@ export const TemplateExplorerModal = () => {
       header={header}
       body={body}
       footer={footer}
+      size="xl"
     />
   );
 };

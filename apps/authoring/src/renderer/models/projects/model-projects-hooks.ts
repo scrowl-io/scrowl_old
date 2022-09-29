@@ -268,6 +268,8 @@ export const save = (data: ProjectData) => {
   });
 };
 
+let updateTimer: ReturnType<typeof setTimeout>;
+
 export const update = (data: ProjectData, autoSave = false) => {
   if (!processor.dispatch) {
     console.error('preference processor not set!');
@@ -280,7 +282,17 @@ export const update = (data: ProjectData, autoSave = false) => {
   }
 
   if (!autoSave) {
-    processor.dispatch(state.update(data));
+    if (updateTimer) {
+      clearTimeout(updateTimer);
+    }
+
+    // delay update until changes have been completed
+    updateTimer = setTimeout(() => {
+      // ensure update is non-blocking
+      window.requestAnimationFrame(() => {
+        processor.dispatch(state.update(data));
+      });
+    }, 250);
   } else {
     save(data);
   }

@@ -1,5 +1,6 @@
+/* eslint-disable no-constant-condition */
 import React, { useEffect, useState } from 'react';
-import { Card, CardBody, CardFooter, Icon } from '@owlui/lib';
+import { Icon } from '@owlui/lib';
 import {
   TemplateExplorerBodyProps,
   TemplateListItem,
@@ -91,55 +92,51 @@ export const Body = ({ onSelectTemplate }: TemplateExplorerBodyProps) => {
   ]);
 
   return (
-    <div className={styles.templateExplorerBody}>
+    <div className={styles['template-explorer__body']}>
       {!isInit ? (
         <div>Loading...</div>
       ) : (
-        <div className={styles.templateExplorerList}>
-          {list.map((item: TemplateListItem, idx: number) => {
-            return (
-              <div
-                className={`${styles.templateExplorerSlide}${
-                  item.isSelected ? ' active' : ''
-                }`}
-                key={idx}
-              >
-                <button
-                  id={`explorer-template-${idx}`}
-                  className={styles.templateExplorerSlideAction}
-                  onClick={() => {
-                    handleSlideSelection(item);
-                  }}
-                >
-                  {currentTemplate === item.meta.name ? (
-                    <span className={styles.templateExplorerSlideActive}>
-                      <Icon icon="check_circle" />
-                    </span>
-                  ) : (
-                    <></>
-                  )}
-                  <Card className="template-explorer__slide__card">
-                    <CardBody className={styles.templateExplorerSlideCardBody}>
-                      <div className={styles.templateExplorerSlideType}>
-                        <Icon display="sharp" icon="dashboard" filled={true} />
-                      </div>
-                      <div className={styles.templateExplorerSlideImg}>
-                        <Icon display="sharp" icon="dashboard" filled={true} />
-                      </div>
-                    </CardBody>
-                    <CardFooter
-                      className={styles.templateExplorerSlideCardFooter}
-                    >
-                      <label htmlFor={`explorer-template-${idx}`}>
-                        {item.meta.name}
-                      </label>
-                    </CardFooter>
-                  </Card>
-                </button>
+        list.map((item: TemplateListItem, idx: number) => {
+          return (
+            <button
+              key={idx}
+              id={`explorer-template-${idx}`}
+              className={`${styles['template-explorer__item']} ${
+                item.isSelected && 'active'
+              }`}
+              onClick={() => {
+                handleSlideSelection(item);
+              }}
+            >
+              <div className={styles['template-explorer__item__preview']}>
+                {false ? (
+                  <img alt="Preview of Template" />
+                ) : (
+                  <Icon
+                    display="sharp"
+                    icon="dashboard"
+                    opsz={48}
+                    filled={true}
+                  />
+                )}
               </div>
-            );
-          })}
-        </div>
+              <span className={styles['template-explorer__item__type']}>
+                <Icon
+                  display="sharp"
+                  icon="dashboard"
+                  opsz={20}
+                  filled={true}
+                />
+              </span>
+              <label>{item.meta.name}</label>
+              {currentTemplate === item.meta.name && (
+                <span className={styles['template-explorer__item__active']}>
+                  <Icon icon="check_circle" opsz={20} />
+                </span>
+              )}
+            </button>
+          );
+        })
       )}
     </div>
   );
