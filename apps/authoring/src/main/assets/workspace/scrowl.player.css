@@ -155,6 +155,11 @@
   box-shadow: -2px 0 0 0 var(--owl-color-module);
 }
 
+.tree-view--lesson {
+  margin-bottom: .5rem;
+  margin-left: 1.5rem;
+}
+
 .tree-view--lesson .nav {
   box-shadow: -2px 0 0 0 var(--owl-color-lesson);
 }
@@ -283,11 +288,23 @@
   margin: 0;
 }
 
+.left-pane-icon {
+  height: 5vh;
+  color: #000;
+  font-size: 2rem;
+}
+
+.owlui-offcanvas-body {
+  padding: 0;
+}
+
+.pane .owlui-nav-tabs {
+  padding: 1rem .25rem;
+}
+
 .pane--left {
   min-width: 16rem;
-  width: 19rem;
   color: var(--owl-sidebar-color);
-  border-right: var(--owl-border-width) var(--owl-border-color) solid;
   background: var(--owl-sidebar-bg);
   flex-flow: column;
   flex-shrink: 0;

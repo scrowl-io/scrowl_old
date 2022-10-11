@@ -1,5 +1,6 @@
+/* eslint-disable import/named */
 import React from 'react';
-import { Tabs } from '@owlui/lib';
+import { Tabs, Drawer, Button, Icon, TextInputProps, Input } from '@owlui/lib';
 import {
   OutlineProps,
   NavConfig,
@@ -30,8 +31,14 @@ const toModuleFormat = (config: NavConfig): ModuleConfigList => {
 };
 
 export const Outline = ({ config, glossary }: OutlineProps) => {
+  const [show, setShow] = React.useState(false);
+
+  const toggleShow = () => {
+    setShow(!show);
+  };
+
   const fConfig = toModuleFormat(config);
-  console.log('fConfig', fConfig);
+
   const tabItems = [
     {
       id: '1',
@@ -45,10 +52,53 @@ export const Outline = ({ config, glossary }: OutlineProps) => {
     },
   ];
 
+  const playerPaneInputProps: TextInputProps = {
+    label: {
+      content: '',
+      htmlFor: 'text',
+    },
+    control: {
+      id: 'text',
+      type: 'text',
+      disabled: false,
+      readOnly: false,
+      plaintext: false,
+      placeholder: 'Search course...',
+      value: '',
+    },
+  };
+
+  const content = {
+    header: {
+      content: <div>{/* <Input inputProps={playerPaneInputProps} /> */}</div>,
+      bsProps: {
+        closeButton: true,
+        className: '',
+      },
+    },
+    body: (
+      <Pane>
+        <Tabs items={tabItems} pxScale="Sm" />
+      </Pane>
+    ),
+  };
+
   return (
-    <Pane>
-      <Tabs items={tabItems} pxScale="Sm" />
-    </Pane>
+    <>
+      <Button
+        style={{
+          height: '5vh',
+          fontSize: '2rem',
+          color: '#000000',
+          margin: '0 .5rem',
+        }}
+        variant="link"
+        onClick={toggleShow}
+      >
+        <Icon icon="menu" display="outlined" />
+      </Button>
+      <Drawer show={show} onHide={toggleShow} drawer={content} />
+    </>
   );
 };
 
