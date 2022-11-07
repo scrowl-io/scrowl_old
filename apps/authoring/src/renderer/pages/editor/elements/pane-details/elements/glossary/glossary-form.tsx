@@ -56,38 +56,34 @@ export const GlossaryForm = ({
   const form = [
     {
       type: 'input',
-      inputProps: {
-        label: {
-          content: 'TERM',
-          htmlFor: `${prefix}-name`,
-        },
-        control: {
-          id: `${prefix}-name`,
-          name: `${prefix}-name`,
-          type: 'text',
-          placeholder: 'Enter Term',
-          value: termName,
-          onChange: handleFormChangeName,
-        },
+      label: {
+        content: 'TERM',
+        htmlFor: `${prefix}-name`,
+      },
+      control: {
+        id: `${prefix}-name`,
+        name: `${prefix}-name`,
+        type: 'text',
+        placeholder: 'Enter Term',
+        value: termName,
+        onChange: handleFormChangeName,
       },
     },
     {
       type: 'input',
-      inputProps: {
-        label: {
-          content: 'DEFINITION',
-          htmlFor: `${prefix}-description`,
-        },
-        control: {
-          id: `${prefix}-description`,
-          className: 'description',
-          name: `${prefix}-description`,
-          type: 'textarea',
-          placeholder: 'Define the Term',
-          value: termDescription,
-          onChange: handleFormChangeDescription,
-          as: 'textarea',
-        },
+      label: {
+        content: 'DEFINITION',
+        htmlFor: `${prefix}-description`,
+      },
+      control: {
+        id: `${prefix}-description`,
+        className: 'description',
+        name: `${prefix}-description`,
+        type: 'textarea',
+        placeholder: 'Define the Term',
+        value: termDescription,
+        onChange: handleFormChangeDescription,
+        as: 'textarea',
       },
     },
   ];

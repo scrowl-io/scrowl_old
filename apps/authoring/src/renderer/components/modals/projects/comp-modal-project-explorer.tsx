@@ -1,13 +1,6 @@
 /* eslint-disable import/named */
 import React, { useEffect, useState } from 'react';
-import {
-  Modal,
-  Table,
-  TableData,
-  Input,
-  TextInputProps,
-  Button,
-} from '@owlui/lib';
+import { Modal, Table, TableData, Input, Button } from '@owlui/lib';
 import { Projects } from '../../../models';
 
 export type ProjectExplorerBodyProps = {
@@ -83,21 +76,15 @@ const ProjectExplorerBody = ({ show }: ProjectExplorerBodyProps) => {
     ],
     items: filteredItems,
   };
-  const searchInputOpts: TextInputProps = {
-    label: {
-      content: 'Project Search',
-      htmlFor: 'text',
-    },
-    control: {
-      id: 'text',
-      type: 'text',
-      disabled: false,
-      readOnly: false,
-      plaintext: false,
-      placeholder: 'e.g. Safety Training',
-      value: searchInput,
-      onChange: e => searchItems((e.target as HTMLInputElement).value),
-    },
+  const searchInputOpts = {
+    type: 'text',
+    disabled: false,
+    readOnly: false,
+    plaintext: false,
+    placeholder: 'e.g. Safety Training',
+    value: searchInput,
+    onChange: (e: React.ChangeEvent) =>
+      searchItems((e.target as HTMLInputElement).value),
   };
 
   useEffect(() => {
@@ -139,7 +126,7 @@ const ProjectExplorerBody = ({ show }: ProjectExplorerBodyProps) => {
 
   return (
     <>
-      <Input inputProps={searchInputOpts} />
+      <Input control={searchInputOpts} />
       <hr />
       <Table tableData={projectsData} />
     </>
@@ -149,10 +136,8 @@ const ProjectExplorerBody = ({ show }: ProjectExplorerBodyProps) => {
 export const ModalProjectExplorer = () => {
   const showModalExplorer = Projects.useExplorer();
   const header = {
-    bsProps: {
-      closeButton: true,
-      closeLabel: 'Close',
-    },
+    closeButton: true,
+    closeLabel: 'Close',
     content: <>Open Recent...</>,
   };
   const body = {
